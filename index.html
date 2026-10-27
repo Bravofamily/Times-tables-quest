@@ -280,6 +280,27 @@ svg.hero.draw{animation:draw .5s ease-in-out 3}
 .abedit{font:inherit;font-weight:800;font-size:14px;border:2px solid var(--hc,#8b5cf6);background:#fff;color:var(--hc2,#6d28d9);border-radius:999px;padding:3px 12px;cursor:pointer;min-height:32px}
 .herocard .abmini{font-weight:800;color:#64748b;font-size:14px}
 @media (max-width:560px){.abgrid.ages{grid-template-columns:repeat(4,1fr)}.abgrid.grades{grid-template-columns:repeat(2,1fr)}.abbtn{font-size:28px;min-height:64px}.about .abq{font-size:24px}.about .abhero{width:100px}}
+/* ---------- v8: Melrose + Cayden ---------- */
+body.theme-melrose{background:linear-gradient(160deg,#fdf4ff 0%,#f5d0fe 38%,#f9a8d4 70%,#ddd6fe 100%);background-attachment:fixed}
+body.theme-cayden{background:linear-gradient(160deg,#fef2f2 0%,#fecaca 35%,#dbeafe 68%,#93c5fd 100%);background-attachment:fixed}
+body.theme-melrose{--hc:#c026d3;--hc2:#86198f;--hcl:#fdf4ff}
+body.theme-cayden{--hc:#dc2626;--hc2:#1d4ed8;--hcl:#eff6ff}
+.herocard.melrose{background:linear-gradient(#fdf4ff,#f5d0fe);box-shadow:0 7px 0 #d946ef}
+.herocard.cayden{background:linear-gradient(135deg,#fee2e2 0%,#fff 50%,#dbeafe 100%);box-shadow:0 7px 0 #2563eb}
+.herocard.melrose .ht{color:#a21caf}.herocard.cayden .ht{color:#b91c1c}
+@media (min-width:700px){.herocards{grid-template-columns:repeat(3,1fr);max-width:900px}.herocard .hsv{width:min(140px,100%)}}
+svg.hero.flutter{animation:flutter .6s ease-in-out 2}
+@keyframes flutter{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-14px) rotate(-6deg)}50%{transform:translateY(-20px) rotate(0) scale(1.04)}75%{transform:translateY(-14px) rotate(6deg)}}
+svg.hero.dunk{animation:dunk .7s cubic-bezier(.3,1.4,.5,1) 2}
+@keyframes dunk{0%,100%{transform:translateY(0) scale(1)}20%{transform:translateY(6px) scale(1.04,.94)}55%{transform:translateY(-34px) rotate(-6deg) scale(1.06)}80%{transform:translateY(4px) scale(1.03,.96)}}
+.speedfx,.bubblefx{position:fixed;pointer-events:none;z-index:60}
+.speedfx line{animation:sline .45s ease-out forwards;opacity:0}
+@keyframes sline{0%{opacity:0;stroke-dasharray:4 60}30%{opacity:1}100%{opacity:0;stroke-dasharray:60 0}}
+.speedfx .powtxt{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:34px;font-weight:900;color:#facc15;-webkit-text-stroke:2px #1e3a8a;text-shadow:3px 3px 0 #dc2626;animation:powpop .9s ease-out forwards;white-space:nowrap}
+@keyframes powpop{0%{transform:translate(-50%,-50%) scale(.2) rotate(-12deg);opacity:0}30%{transform:translate(-50%,-50%) scale(1.2) rotate(-6deg);opacity:1}100%{transform:translate(-50%,-80%) scale(1) rotate(-6deg);opacity:0}}
+.bubblefx span{position:absolute;bottom:0;animation:bubup 1.4s ease-out forwards;opacity:0}
+@keyframes bubup{0%{transform:translateY(0) scale(.4);opacity:0}20%{opacity:1}100%{transform:translateY(-140px) scale(1.1);opacity:0}}
+.prop.ball.dance{animation:dance2 .5s ease-in-out 3}
 </style>
 </head>
 <body>
@@ -402,8 +423,8 @@ const HSTYLE={
   learn:(k,n,th,pl)=>`Let's set up <b>${k} rows</b> with <b>${n} ${th}</b> in each row for a big concert at the ${pl.name}!`,
   closetHelp:'Tap a doll to hold it, a doll outfit to dress your doll, and the mic to sing. Tap Sage to hear her sing! 🎶'}
 };
-/* what b is to a. Only Emi and Blú are sister and brother; Sage and Eshon are cousins to everyone. */
-function relTo(a,b){if(a==='emi'&&b==='blu')return 'little brother';if(a==='blu'&&b==='emi')return 'big sister';return 'cousin';}
+/* what b is to a. Emi & Blú are sister and brother; Melrose & Cayden are sister and brother; every other pair is cousins. */
+function relTo(a,b){if(a==='melrose'&&b==='cayden')return 'big brother';if(a==='cayden'&&b==='melrose')return 'little sister';if(a==='emi'&&b==='blu')return 'little brother';if(a==='blu'&&b==='emi')return 'big sister';return 'cousin';}
 const SIB_INTRO={emi:"And I'm {me}, your {myrel}! I'll cheer for you with all my love! 🌸",blu:"And I'm {me}, your {myrel}! My star shield will keep you safe! ⭐",sage:"And I'm {me}, your {myrel}! I'll sing you brave songs all the way! 🎤"};
 const HERO_INTRO={emi:"I'm {title}! I'll bring back the colours with my big, loving heart! 💖",blu:"I'm {title}! I'll protect everyone and bring back the music! 🎵",sage:"I'm {title}! My singing voice will bring the music back to the whole kingdom! 🎤"};
 SIDE.sage=["You've got this, {rel}! I'll sing you a brave song! 🎤","Cousin {me} is right here, {hero}! Let's be brave together! 💚","La la la! That's my cheer song for you, {hero}! 🎶"];
@@ -483,6 +504,130 @@ Object.assign(SLOTNAMES,{buddy:'Doodle Buddy',pocket:'Pocket'});
 /* Doodle Pad colours: green and black always; more unlock with prizes */
 const PAD_COLORS=[{c:'#16a34a',n:'Green'},{c:'#1f2937',n:'Black'},{c:'#ef4444',n:'Red',need:'colors'},{c:'#f97316',n:'Orange',need:'colors'},{c:'#facc15',n:'Yellow',need:'colors'},{c:'#3b82f6',n:'Blue',need:'colors'},{c:'#a855f7',n:'Purple',need:'colors'},
  {c:'#ec4899',n:'Glow Pink',need:'neon'},{c:'#22d3ee',n:'Glow Blue',need:'neon'},{c:'#a3e635',n:'Glow Lime',need:'neon'},{c:'#eab308',n:'Gold',need:'golden'}];
+/* ---------- v8: Melrose the Mermaid Fairy (8) + her big brother Cayden the Slam Dunk Hero (10) ---------- */
+/* Designed only from text descriptions. Melrose & Cayden are sister and brother, and cousins to Emi, Blú, Sage and Eshon. */
+const NEWH=['melrose','cayden'];
+HEROES.melrose={id:'melrose',name:'Melrose',title:'Melrose the Mermaid Fairy',sib:'cayden',closet:'Dress-Up Closet',closetE:'🧚',fx:['✨','🧚','🐚','💖','🫧','💜'],power:'Sparkle Splash',
+ palette:['#e879f9','#c026d3','#f472b6','#a855f7','#f0abfc','#db2777','#d946ef','#fbcfe8','#9333ea','#fda4af','#c084fc','#ec4899'],icons:['🐚','🦪','🐚','⭐'],
+ blurb:'Mermaid-loving little sister who adores fairies and dress-up. Her sparkles make the sea shine!',verb:'🐚 Place',thing:'seashell',things:'seashells'};
+HEROES.cayden={id:'cayden',name:'Cayden',title:'Cayden the Slam Dunk Hero',sib:'melrose',closet:'Sports Locker',closetE:'🏆',fx:['🏀','🏈','⚡','💥','⭐','🔥'],power:'Slam Dunk Power',
+ palette:['#ef4444','#2563eb','#dc2626','#3b82f6','#f87171','#1d4ed8','#b91c1c','#60a5fa','#f97316','#1e40af','#fb7185','#0ea5e9'],icons:['🏀','🏈','🏀','⚡'],
+ blurb:'Super-fast big brother who loves football, basketball and anime. His power moves leave speed lines!',verb:'🏀 Pass',thing:'ball',things:'balls'};
+HSTYLE.melrose={tag:'🧜‍♀️',right:'flutter',win:'flutter',sfx:'splash',pow:'✨',shield:'🫧',conf:['#e879f9','#f0abfc','#c026d3','#f472b6','#fff','#a855f7'],
+ learn:(k,n,th,pl)=>`Let's line up <b>${k} rows</b> with <b>${n} ${th}</b> in each row on the sand at the ${pl.name}!`,
+ closetHelp:'Tap a treasure to wear it or take it off. Mix wings, tails and crowns for your own look! Tap Melrose to see her sparkle! ✨'};
+HSTYLE.cayden={tag:'🏀',right:'dunk',win:'dunk',sfx:'swish',pow:'💥',shield:'🛡️',conf:['#ef4444','#3b82f6','#fff','#1d4ed8','#f87171','#facc15'],
+ learn:(k,n,th,pl)=>`Let's set up <b>${k} rows</b> with <b>${n} ${th}</b> in each row for practice drills at the ${pl.name}!`,
+ closetHelp:'Tap gear to put it on or take it off. Build your own all-star look! Tap Cayden to see his power move! ⚡'};
+SIB_INTRO.melrose="And I'm {me}, your {myrel}! I'll sprinkle fairy sparkles on every answer! ✨🧚";
+SIB_INTRO.cayden="And I'm {me}, your {myrel}! I'll coach you like a champion. Let's go! 🏀";
+HERO_INTRO.melrose="I'm {title}! I have fairy wings AND a mermaid tail, and my Sparkle Splash will wash the muddles away! 🧜‍♀️✨";
+HERO_INTRO.cayden="I'm {title}! I'm fast like an anime hero and I never miss a dunk. Time to win this game! 🏀⚡";
+HERO_TEAM.melrose="Family crew, let's go! My big brother, my cousins and me: Team Mermaid Fairy will save the kingdom! 🧚💜";
+HERO_TEAM.cayden="Huddle up, family! Little sister, cousins, on three: one, two, three, TEAM! 🏀🏈";
+SIDE.melrose=["Go, big brother! I'm sending fairy sparkles your way! ✨","You can do it, {rel}! Even mermaids learn one wave at a time! 🧜‍♀️","{me} believes in you, {hero}! Flutter, flutter, brave wings! 🧚"];
+SIDE.cayden=["Big brother's got your back, {hero}! Eyes on the ball! 🏀","Let's go, {rel}! Every champion practises first! 💪","Power up, {hero}! I can see your speed lines already! ⚡"];
+BRAVE.melrose=["Wings out, tail ready! Sparkle Splash, go! ✨","I'll splash this minion with a wave of glitter! 🧜‍♀️"];
+BRAVE.cayden=["Game face on! Slam Dunk Power, ACTIVATE! 💥","I'll juke left, spin right and dunk on this minion! 🏀"];
+VICTORY.melrose=["Splash! The sea is sparkling again! 🧜‍♀️","Fairy dance time! Twirl, twirl, sparkle! 🧚","We did it! That deserves a brand-new crown! 👑"];
+VICTORY.cayden=["SWISH! Nothing but net! 🏀","Touchdown! Do the victory dance! 🏈","That was my ultimate power move! ⚡"];
+SIB_PROUD.melrose=["Yay, {hero}! Best big brother ever! You shine brighter than a pearl! 🦪","Sparkly high five, {hero}! ✨✋"];
+SIB_PROUD.cayden=["MVP! MVP! That's my little sister! 🏆","Great teamwork, {hero}! Fist bump! 👊"];
+LOSE_SIB.melrose=["It's okay, {hero}! Even fairies need practice flying! 🧚","Let's dive back in and try again, {hero}! 🫧"];
+LOSE_SIB.cayden=["That's just halftime, {hero}! We come back stronger! 🏀","Shake it off, {hero}! Champions keep practising! 💪"];
+LOSE_HERO.melrose=["My wings got a bit wobbly. I'll flutter back and try again!","Oops, that wave knocked me over! I'll swim right back!"];
+LOSE_HERO.cayden=["That was just a missed shot. I'll practise and come back!","Every champion loses sometimes. Rematch time!"];
+RETRY_HERO.melrose=["New numbers, new sparkles! Here I come! ✨","I've polished my tail and my wings. Let's try again! 🧜‍♀️"];
+RETRY_HERO.cayden=["New game, new numbers! Let's go! 🏀","I trained super hard! Round two! ⚡"];
+OWL_WIN.melrose="{hero}'s Sparkle Splash made the whole {place} shimmer again!";
+OWL_WIN.cayden="{hero}'s Slam Dunk Power brought the cheering back to the {place}!";
+ENC.melrose="\"Keep shining, you've got this!\" ✨";
+ENC.cayden="\"Shake it off, next play!\" 🏀";
+/* Each new hero has their own world, but the same 12 chapters, tables and final Muddle Monster. */
+const HPLACES={
+ melrose:[
+  {name:'Fairy Glen',e:'🧚',bg:'linear-gradient(#f5d0fe,#fbcfe8 55%,#86efac)',props:['flower','star','flower','flower','star','flower','flower'],desc:'Tiny fairies live in the flowers and dance on dewdrops.',lost:'the fairy lights went out and the flowers fell asleep',back:'fairy lights are twinkling in every flower again',
+   melrose:"Don't worry, little fairies! I'll flutter in and wake up every flower!"},
+  {name:'Seashell Shore',e:'🐚',bg:'linear-gradient(#e9d5ff,#fbcfe8 50%,#fde68a)',props:['shell','shell','star','shell','shell','shell','star'],desc:'The shells here sing when the waves tickle them.',lost:'the shells went silent and the waves stopped dancing',back:'the shells are singing with the waves again',
+   melrose:"Listen... the shells stopped singing! I'll help them hum their wave song again!"},
+  {name:'Mermaid Lagoon',e:'🧜‍♀️',bg:'linear-gradient(#f0abfc,#a5f3fc 45%,#0ea5e9)',props:['shell','star','shell','shell','star','shell','shell'],desc:'Mermaids swim here in a lagoon as bright as a rainbow.',lost:'the water turned grey and the mermaids hid',back:'the lagoon is glittering pink, purple and blue again',
+   melrose:"This is my favourite place in the whole sea! Flip, flip, here comes my tail!"},
+  {name:'Dress-Up Boutique',e:'👗',bg:'linear-gradient(#fdf2f8,#f5d0fe 55%,#d8b4fe)',props:['star','flower','star','shell','star','flower','star'],desc:'A magic shop full of gowns, crowns and wings for every adventure.',lost:'every outfit lost its sparkle',back:'every dress and crown is sparkling again',
+   melrose:"Gowns, wings and crowns! I'll make every outfit sparkle again!"},
+  {name:'Coral Reef',e:'🪸',bg:'linear-gradient(#a5f3fc,#f9a8d4 55%,#c026d3)',props:['shell','flower','shell','shell','flower','shell','star'],desc:'The coral here glows in a hundred colours.',lost:'the coral lost its glow',back:'the coral is glowing in every colour again',
+   melrose:"The coral looks so sad! A little Sparkle Splash will bring back its glow!"},
+  {name:'Pearl Grotto',e:'🦪',bg:'linear-gradient(#ddd6fe,#a78bfa 50%,#6d28d9)',props:['shell','star','shell','star','shell','star','shell'],desc:'A secret cave where oysters keep their shiniest pearls.',lost:'the pearls stopped shining',back:'the grotto is full of shining pearls again',
+   melrose:"Oysters, open up! I'll help you polish your pearls until they shine!"},
+  {name:'Rainbow Waterfall',e:'🌈',bg:'linear-gradient(#fbcfe8,#c4b5fd 50%,#67e8f9)',props:['star','shell','flower','star','shell','flower','star'],desc:'A waterfall where fairies and mermaids meet to play.',lost:'the rainbow fell into the water and washed away',back:'the rainbow is shining over the waterfall again',
+   melrose:"Fairies on top, mermaids at the bottom, and me in the middle! Let's fix the rainbow!"},
+  {name:'Moonbeam Fairy Ring',e:'🌙',bg:'linear-gradient(#1e1b4b,#6d28d9 55%,#e879f9)',props:['star','star','flower','star','star','flower','star'],desc:'A circle of glowing mushrooms where fairies dance at night.',lost:'the mushrooms went dark and the fairy dance stopped',back:'the fairies are dancing under the moon again',
+   melrose:"A fairy dance needs light! I'll twirl my wand and wake up the moonbeams!"},
+  {name:'Bubble Castle',e:'🫧',bg:'linear-gradient(#e0f2fe,#f5d0fe 50%,#c084fc)',props:['shell','star','shell','shell','star','shell','star'],desc:'A castle made of giant, wobbly bubbles at the bottom of the sea.',lost:'the bubbles popped and the castle is falling down',back:'the Bubble Castle is floating tall again',
+   melrose:"Pop, pop, oh no! I'll blow new bubbles to fix the castle walls!"},
+  {name:'Pixie Toadstool Village',e:'🍄',bg:'linear-gradient(#fce7f3,#f9a8d4 50%,#86efac)',props:['flower','flower','star','flower','flower','star','flower'],desc:'Tiny pixies live in spotted toadstool houses.',lost:'the pixies lost their wings',back:'the pixies are flying around the toadstools again',
+   melrose:"Pixies, don't be scared! I'll share my wing sparkles with you!"},
+  {name:'Mermaid Masquerade',e:'🎭',bg:'linear-gradient(#fdf4ff,#e879f9 50%,#9333ea)',props:['star','shell','star','flower','star','shell','star'],desc:'The fanciest dress-up party under the sea!',lost:'the masks and gowns turned grey',back:'the whole party is shimmering and dancing again',
+   melrose:"It's dress-up time! Masks, gowns and sparkles for everyone!"},
+  {name:'Muddle Whirlpool Tower',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','shell','flower','star','shell','flower','star'],desc:"A spinning whirlpool tower, the hideout of the Muddle Monster himself!",lost:'all the stolen sparkles are trapped inside',back:'sparkles burst out over the whole Number Kingdom and the sea',
+   melrose:"Muddle Monster, give back our sparkles! Fairy wings, mermaid tail, let's finish this!"}],
+ cayden:[
+  {name:'Backyard Court',e:'🏀',bg:'linear-gradient(#bfdbfe,#fecaca 55%,#f97316)',props:['ball','ball','star','ball','ball','star','ball'],desc:'Where every champion takes their very first shot.',lost:'the hoop lost its net and the balls went flat',back:'the balls are bouncing and the net is swishing again',
+   cayden:"My home court! I'll pump up these balls and get the hoop swishing again!"},
+  {name:'Football Field',e:'🏈',bg:'linear-gradient(#bfdbfe,#86efac 55%,#16a34a)',props:['ball','star','ball','ball','star','ball','ball'],desc:'Fresh grass, white lines and a crowd that loves to cheer.',lost:'the goalposts fell and the crowd went quiet',back:'the crowd is cheering for every touchdown again',
+   cayden:"Hut, hut, HIKE! I'll run this one in for a touchdown!"},
+  {name:'Speed Track',e:'⚡',bg:'linear-gradient(#fee2e2,#ef4444 50%,#1e3a8a)',props:['star','ball','star','star','ball','star','star'],desc:'A glowing track where the fastest runners race.',lost:'all the runners got stuck in slow motion',back:'runners are zooming around the track again',
+   cayden:"Watch my speed lines! I'll zoom so fast the numbers can't keep up!"},
+  {name:'Big Arena',e:'🏟️',bg:'linear-gradient(#1e3a8a,#3b82f6 50%,#fca5a5)',props:['ball','star','ball','star','ball','star','ball'],desc:'The giant arena where the big games are played.',lost:'the scoreboard is scrambled and the lights are off',back:'the scoreboard is lit up and the arena is roaring again',
+   cayden:"This is where champions play! Let's fix that scrambled scoreboard!"},
+  {name:'Power-Up Dojo',e:'🥋',bg:'linear-gradient(#fef2f2,#fca5a5 55%,#b91c1c)',props:['star','ball','star','star','ball','star','ball'],desc:'Heroes train here to unlock their special power moves.',lost:'every power move got muddled up',back:'power moves are flashing all over the dojo again',
+   cayden:"Time for training! Focus... breathe... POWER UP! ⚡"},
+  {name:'Skyline Rooftop Court',e:'🌆',bg:'linear-gradient(#fdba74,#f472b6 45%,#3b82f6)',props:['ball','star','ball','ball','star','ball','star'],desc:'A basketball court on top of the tallest building in the city.',lost:'the hoop blew away in a muddle storm',back:'the rooftop court is ready for sky-high dunks again',
+   cayden:"A court in the sky! I'll jump so high I'll dunk on a cloud!"},
+  {name:'Comic Hero City',e:'💥',bg:'linear-gradient(#fef9c3,#fca5a5 50%,#60a5fa)',props:['star','star','ball','star','star','ball','star'],desc:'A city drawn like a comic book, with POW and ZOOM everywhere.',lost:'all the comic colours turned grey',back:'the city is bursting with POW, ZOOM and colour again',
+   cayden:"Every hero here needs their colours back! Let's power up the city!"},
+  {name:'Thunder Training Temple',e:'🏯',bg:'linear-gradient(#1e1b4b,#1d4ed8 55%,#ef4444)',props:['star','ball','star','star','ball','star','star'],desc:'An ancient temple where heroes learn the Thunder Pass.',lost:'the thunder drums went silent',back:'thunder drums are booming in the temple again',
+   cayden:"I'll learn the Thunder Pass! Throw fast, throw true, BOOM!"},
+  {name:'Night Game Stadium',e:'🌙',bg:'linear-gradient(#0f172a,#1e3a8a 55%,#dc2626)',props:['ball','star','ball','star','ball','star','ball'],desc:'The stadium lights up the night for the biggest game of the season.',lost:'the stadium lights went out',back:'the stadium lights are shining bright again',
+   cayden:"Lights out? No problem! My power moves glow in the dark!"},
+  {name:'All-Star Locker Room',e:'🎽',bg:'linear-gradient(#eff6ff,#bfdbfe 50%,#ef4444)',props:['ball','ball','star','ball','ball','star','ball'],desc:'Where every team gets ready before the big game.',lost:'all the jerseys got mixed up',back:'every jersey is back on its hook, ready to play',
+   cayden:"Let's sort these jerseys! Every team needs its colours!"},
+  {name:'Championship Court',e:'🏆',bg:'linear-gradient(#fef08a,#f87171 50%,#2563eb)',props:['star','ball','star','ball','star','ball','star'],desc:'The court where the final championship is played.',lost:'the championship trophy lost its shine',back:'the trophy is shining and the fans are cheering again',
+   cayden:"This is the championship! Let's play the best game ever!"},
+  {name:'Muddle Mega-Dome',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','ball','star','ball','star','ball','star'],desc:"A spooky, swirly dome, the home court of the Muddle Monster himself!",lost:'all the stolen cheers are trapped inside',back:'cheers and colour burst out over the whole Number Kingdom',
+   cayden:"Muddle Monster, it's game time! My whole crew is here. Let's win this!"}]};
+/* themed minions per hero (chapter 12 is always the Muddle Monster) */
+const HBOSS={
+ melrose:{1:['🐌','Sir Slime the Sea Snail'],2:['🦀','Pinchy Pair the Crab'],10:['🪼','Jiggly Jelly Ten'],5:['🦞','Lobster Five-Claw'],3:['🦋','Muddle Moth Trio'],4:['🐸','Four-Hop Toad'],
+  9:['🐡','Puffer Nine'],6:['🦈','Snappy Six Shark'],7:['🦑','Inky Seven Squid'],8:['🐙','Octo-Eight Tangle'],11:['🌊','Wild Wave Eleven']},
+ cayden:{1:['🏀','Bouncy the Dribble Minion'],2:['🏈','The Fumble Twins'],10:['🎾','Ten-Serve Tennis Ball'],5:['🥎','Fastball Five'],3:['🏐','Triple Spike'],4:['🎳','Four-Strike Bowler'],
+  9:['🏉','Nine-Yard Ned'],6:['⚽','Spinner Six'],7:['🏓','Ping-Pong Seven'],8:['🎱','Behind-the-Eight Ball'],11:['🥅','Captain Fumble the Goalie']}};
+const HTAUNTS={melrose:["Bubble, bubble, numbers in trouble! You'll never solve my ×{n} riddles!","Hee hee! I tangled the ×{n} table in seaweed!","No sparkles, no songs, only muddles!"],
+ cayden:["Bounce, bounce! I scrambled the ×{n} table! Try and catch it!","You can't score on me! My ×{n} defence is too strong!","Fumble, fumble! No cheering, only muddles!"]};
+function bossOf(n){const o=(save&&save.hero)?HBOSS[save.hero]:null;return (o&&o[n])||BOSSES[n];}
+HCTX.melrose=[{e:'🐚',one:'seashell',many:'seashells',g1:'sand bucket',gs:'sand buckets'},{e:'🦪',one:'pearl',many:'pearls',g1:'treasure chest',gs:'treasure chests'},
+ {e:'🧚',one:'fairy',many:'fairies',g1:'flower',gs:'flowers'},{e:'👑',one:'crown',many:'crowns',g1:'dress-up box',gs:'dress-up boxes'},
+ {e:'🐠',one:'fish',many:'fish',g1:'coral reef',gs:'coral reefs'},{e:'⭐',one:'starfish',many:'starfish',g1:'tide pool',gs:'tide pools'},
+ {e:'🫧',one:'bubble',many:'bubbles',g1:'bubble wand',gs:'bubble wands'}];
+HCTX.cayden=[{e:'🏀',one:'basketball',many:'basketballs',g1:'ball rack',gs:'ball racks'},{e:'🏈',one:'football',many:'footballs',g1:'equipment bag',gs:'equipment bags'},
+ {e:'🎽',one:'jersey',many:'jerseys',g1:'team',gs:'teams'},{e:'👟',one:'sneaker',many:'sneakers',g1:'shoe box',gs:'shoe boxes'},
+ {e:'🏆',one:'trophy',many:'trophies',g1:'trophy shelf',gs:'trophy shelves'},{e:'⚡',one:'power move',many:'power moves',g1:'training level',gs:'training levels'},
+ {e:'📖',one:'comic page',many:'comic pages',g1:'comic book',gs:'comic books'}];
+REWARDS.melrose=[{id:'wings',name:'Fairy Wings',e:'🧚',slot:'back'},{id:'shellclip',name:'Seashell Hair Clip',e:'🐚',slot:'head'},
+ {id:'tail',name:'Mermaid Tail',e:'🧜‍♀️',slot:'outfit'},{id:'wand',name:'Sparkle Wand',e:'🪄',slot:'hand'},
+ {id:'pearls',name:'Pearl Necklace',e:'🦪',slot:'neck'},{id:'fairydress',name:'Flower Fairy Dress',e:'🌸',slot:'outfit'},
+ {id:'rbwings',name:'Rainbow Wings',e:'🌈',slot:'back'},{id:'tiara',name:'Starfish Tiara',e:'⭐',slot:'head'},
+ {id:'bubbles',name:'Bubble Wand',e:'🫧',slot:'hand'},{id:'fishpal',name:'Coral the Fish Friend',e:'🐠',slot:'pet'},
+ {id:'crown',name:'Mermaid Crown',e:'👑',slot:'head'},{id:'gown',name:'Mermaid Fairy Gown',e:'✨',slot:'outfit'}];
+REWARDS.cayden=[{id:'bball',name:'Red-and-Blue Basketball',e:'🏀',slot:'hand'},{id:'hband',name:'Power Headband',e:'🔴',slot:'head'},
+ {id:'football',name:'Lucky Football',e:'🏈',slot:'hand'},{id:'speed',name:'Lightning Sneakers',e:'👟',slot:'feet'},
+ {id:'cap',name:'Team Cap',e:'🧢',slot:'head'},{id:'whistle',name:'Coach Whistle',e:'📣',slot:'neck'},
+ {id:'allstar',name:'All-Star Jersey',e:'⭐',slot:'outfit'},{id:'aura',name:'Power-Up Aura',e:'⚡',slot:'back'},
+ {id:'medal',name:'Gold Medal',e:'🥇',slot:'neck'},{id:'cape',name:'Speed-Line Cape',e:'🦸',slot:'back'},
+ {id:'trophy',name:'Champion Trophy',e:'🏆',slot:'hand'},{id:'ultimate',name:'Ultimate Slam Jersey',e:'🌟',slot:'outfit'}];
+Object.assign(SLOTNAMES,{pet:'Pet Friend'});
+SIBS.melrose=['cayden','emi','sage'];
+SIBS.cayden=['melrose','eshon','blu'];
+HERO_ORDER.push('melrose','cayden');
 /* ---------- original cartoon SVG characters ---------- */
 const SKIN='#8d5524',EMI_SKIN='#c98d63',SKIN_L='#a0643a',HAIR='#2b1a10';
 function starPts(cx,cy,R,r){let p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r:R;p.push((cx+rr*Math.cos(a)).toFixed(1)+','+(cy+rr*Math.sin(a)).toFixed(1));}return p.join(' ');}
@@ -550,7 +695,7 @@ function bluSVG(eq,cls){eq=eq||{};
  const hi={drum:'🥁',guitar:'🎸',trumpet:'🎺',piano:'🎹',violin:'🎻',sax:'🎷'}[eq.hand];
  if(hi)s+=`<text x="170" y="222" font-size="38" text-anchor="middle">${hi}</text>`;
  return s+'</svg>';}
-function heroSVGeq(id,eq,cls){return id==='emi'?emiSVG(eq,cls):id==='sage'?sageSVG(eq,cls):id==='eshon'?eshonSVG(eq,cls):bluSVG(eq,cls);}
+function heroSVGeq(id,eq,cls){return id==='melrose'?melroseSVG(eq,cls):id==='cayden'?caydenSVG(eq,cls):id==='emi'?emiSVG(eq,cls):id==='sage'?sageSVG(eq,cls):id==='eshon'?eshonSVG(eq,cls):bluSVG(eq,cls);}
 function heroSVG(id,cls){const eq=(save.profiles[id]&&save.profiles[id].eq)||{};return heroSVGeq(id,eq,cls);}
 function owlSVG(){return `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Professor Hoot" style="display:block;width:100%;height:auto;overflow:visible">
  <path d="M30 34 L24 10 L46 26Z M90 34 L96 10 L74 26Z" fill="#7c4a1e"/><ellipse cx="60" cy="78" rx="44" ry="52" fill="#92400e"/><ellipse cx="60" cy="92" rx="29" ry="32" fill="#fde68a"/>
@@ -568,7 +713,7 @@ function monsterSVG(){return `<svg class="monster" viewBox="0 0 160 160" xmlns="
  <path d="M104 76 m-12 0 a12 12 0 1 1 12 12 a8 8 0 1 1 -8 -8 a4 4 0 1 1 4 4" stroke="#3b0764" stroke-width="3.5" fill="none"/>
  <path d="M44 110 Q80 140 118 110 Z" fill="#3b0764"/><path d="M50 112 l8 10 l8 -8 l8 10 l8 -10 l8 10 l8 -8 l8 6" stroke="#fff" stroke-width="4" fill="none" stroke-linejoin="round"/>
  <g font-weight="900" font-size="22" fill="#fde047"><text x="2" y="40" transform="rotate(-20 2 40)">7</text><text x="136" y="28" transform="rotate(25 136 28)">×</text><text x="146" y="120">3</text><text x="0" y="118">?</text><text x="70" y="12">9</text></g></svg>`;}
-function bossFace(n){return n===12?monsterSVG():`<span>${BOSSES[n][0]}</span>`;}
+function bossFace(n){return n===12?monsterSVG():`<span>${bossOf(n)[0]}</span>`;}
 
 /* Sage: brown skin, two curly puffs, big red sparkly bow, mint/aqua skirt outfit, white sneakers */
 function dollSVG(type,fit){/* small doll held in Sage's right hand, drawn around x 172, y 222 */
@@ -662,6 +807,95 @@ function eshonSVG(eq,cls){eq=eq||{};
  if(eq.buddy)s+=buddySVG(eq.buddy);
  return s+'</svg>';}
 function buddyFx(t){return `<svg viewBox="140 186 64 78" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;overflow:visible">${buddySVG(t)}</svg>`;}
+/* ---------- v8 SVGs: Melrose (tan, green eyes, long curly hair) + Cayden (tan, green eyes, short curly hair, glasses) ---------- */
+const MEL_SKIN='#c99a6e',CAY_SKIN='#c18c5d',MEL_HAIR='#4a2a14',CAY_HAIR='#3b2210';
+const FDEFS=`<defs><linearGradient id="g-mel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset=".5" stop-color="#e879f9"/><stop offset="1" stop-color="#9333ea"/></linearGradient><linearGradient id="g-tail" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e879f9"/><stop offset=".55" stop-color="#a855f7"/><stop offset="1" stop-color="#22d3ee"/></linearGradient><linearGradient id="g-cay" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ef4444"/><stop offset=".5" stop-color="#ef4444"/><stop offset=".5" stop-color="#2563eb"/><stop offset="1" stop-color="#2563eb"/></linearGradient><radialGradient id="g-aura"><stop offset=".55" stop-color="#facc15" stop-opacity=".0"/><stop offset=".8" stop-color="#60a5fa" stop-opacity=".55"/><stop offset="1" stop-color="#ef4444" stop-opacity="0"/></radialGradient></defs>`;
+/* cartoon face with green eyes */
+function faceG(xl,xr,ey,mouthW,lash){const eye=x=>`<ellipse cx="${x}" cy="${ey}" rx="8" ry="9.5" fill="#fff" stroke="#1f2937" stroke-width="1.5"/><circle cx="${x}" cy="${ey+1}" r="6.2" fill="#22a05a"/><circle cx="${x}" cy="${ey+1}" r="3.4" fill="#0b2a17"/><circle cx="${x+2.4}" cy="${ey-2}" r="2.2" fill="#fff"/>`;
+ const l=lash?`<path d="M${xl-8} ${ey-6} l-5 -4 M${xl-5} ${ey-9} l-3 -5 M${xr+8} ${ey-6} l5 -4 M${xr+5} ${ey-9} l3 -5" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>`:'';
+ return `<g class="eyes">${eye(xl)}${eye(xr)}${l}</g>
+ <ellipse cx="${xl-13}" cy="${ey+19}" rx="8" ry="5.5" fill="#f472b6" opacity=".45"/><ellipse cx="${xr+13}" cy="${ey+19}" rx="8" ry="5.5" fill="#f472b6" opacity=".45"/>
+ <path d="M${105-mouthW} ${ey+20} Q105 ${ey+46} ${105+mouthW} ${ey+20} Q105 ${ey+26} ${105-mouthW} ${ey+20}Z" fill="#7f1d1d"/>
+ <path d="M${105-mouthW+4} ${ey+22} Q105 ${ey+27} ${105+mouthW-4} ${ey+22} L${105+mouthW-6} ${ey+25} Q105 ${ey+30} ${105-mouthW+6} ${ey+25}Z" fill="#fff"/>
+ <ellipse cx="105" cy="${ey+35}" rx="6" ry="3.5" fill="#fb7185"/>`;}
+function sparkles(pts,c){return pts.map(([x,y,r])=>`<polygon points="${starPts(x,y,r,r*.4)}" fill="${c||'#fff'}" opacity=".9"/>`).join('');}
+function melroseSVG(eq,cls){eq=eq||{};const o=eq.outfit;
+ let s=`<svg class="hero melrose ${cls||'idle'}" viewBox="0 0 210 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Melrose">${DEFS}${FDEFS}`;
+ // wings behind
+ if(eq.back==='wings'||eq.back==='rbwings'){const f=eq.back==='rbwings'?'url(#g-rbw)':'#fbcfe8',st=eq.back==='rbwings'?'#7c3aed':'#d946ef';
+  s+=`<g opacity=".88" stroke="${st}" stroke-width="3"><path d="M92 170 C40 110 6 140 22 176 C30 196 70 190 92 178Z" fill="${f}"/><path d="M118 170 C170 110 204 140 188 176 C180 196 140 190 118 178Z" fill="${f}"/>
+  <path d="M92 182 C52 196 34 232 56 240 C74 246 88 214 94 190Z" fill="${f}"/><path d="M118 182 C158 196 176 232 154 240 C136 246 122 214 116 190Z" fill="${f}"/></g>${sparkles([[30,160,6],[180,158,6],[50,228,5],[160,228,5]])}`;}
+ // long curly hair behind
+ s+=`<g fill="${MEL_HAIR}"><path d="M44 100 C40 150 46 190 62 204 L148 204 C164 190 170 150 166 100Z"/>${curls(105,108,64,15,150,390,15)}${curls(56,150,6,13,0,360,90)}${curls(154,150,6,13,0,360,90)}<circle cx="60" cy="196" r="15"/><circle cx="150" cy="196" r="15"/><circle cx="82" cy="202" r="13"/><circle cx="128" cy="202" r="13"/></g>`;
+ // legs or tail
+ if(o==='tail'){s+=`<path d="M72 206 C68 236 92 246 104 250 C116 246 142 236 138 206Z" fill="url(#g-tail)" stroke="#86198f" stroke-width="3"/><path d="M104 248 C88 254 74 266 70 268 C90 270 100 262 105 256 C110 262 120 270 140 268 C136 266 122 254 106 248Z" fill="#22d3ee" stroke="#0e7490" stroke-width="3"/>
+  <path d="M80 218 q6 6 12 0 q6 6 12 0 q6 6 12 0 q6 6 12 0 M84 232 q5 5 10 0 q5 5 10 0 q5 5 10 0 q5 5 10 0" stroke="#fdf4ff" stroke-width="2" fill="none" opacity=".8"/>`;}
+ else if(o!=='gown'){s+=`<rect x="90" y="226" width="12" height="26" rx="6" fill="${MEL_SKIN}"/><rect x="108" y="226" width="12" height="26" rx="6" fill="${MEL_SKIN}"/>
+  <path d="M82 252 h24 a6 6 0 0 1 0 12 h-24z" fill="#c026d3" stroke="#701a75" stroke-width="2"/><path d="M104 252 h24 a6 6 0 0 1 0 12 h-24z" fill="#c026d3" stroke="#701a75" stroke-width="2"/><circle cx="96" cy="256" r="3" fill="#fbcfe8"/><circle cx="118" cy="256" r="3" fill="#fbcfe8"/>`;}
+ // arms
+ s+=`<path d="M82 170 Q60 190 56 210" stroke="${MEL_SKIN}" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M128 170 Q150 190 154 206" stroke="${MEL_SKIN}" stroke-width="12" stroke-linecap="round" fill="none"/><circle cx="56" cy="212" r="7.5" fill="${MEL_SKIN}"/><circle cx="154" cy="208" r="7.5" fill="${MEL_SKIN}"/>`;
+ // neck + outfit
+ s+=`<rect x="98" y="146" width="14" height="18" fill="${MEL_SKIN}"/>`;
+ if(o==='tail')s+=`<path d="M78 166 Q105 156 132 166 L136 206 L74 206Z" fill="#c026d3" stroke="#701a75" stroke-width="3"/><path d="M84 176 q10 -10 20 0 q10 -10 20 0" stroke="#fbcfe8" stroke-width="3" fill="none"/><text x="88" y="196" font-size="15">🐚</text><text x="106" y="196" font-size="15">🐚</text>`;
+ else if(o==='fairydress')s+=`<path d="M80 166 Q105 156 130 166 L134 196 L76 196Z" fill="#86efac" stroke="#15803d" stroke-width="3"/>
+  <g stroke="#be185d" stroke-width="2.5"><path d="M76 194 Q60 230 72 238 Q84 222 92 236 Q100 220 105 238 Q110 220 118 236 Q126 222 138 238 Q150 230 134 194Z" fill="#f9a8d4"/></g><path d="M86 204 l-4 24 M105 204 v26 M124 204 l4 24" stroke="#fdf2f8" stroke-width="2"/><circle cx="105" cy="180" r="6" fill="#f472b6"/><circle cx="105" cy="180" r="2.5" fill="#facc15"/>`;
+ else if(o==='gown')s+=`<path d="M80 166 Q105 156 130 166 L134 196 C150 220 160 246 168 264 L42 264 C50 246 60 220 76 196Z" fill="url(#g-mel)" stroke="#86198f" stroke-width="3"/><path d="M76 196 Q105 206 134 196" stroke="#fdf4ff" stroke-width="3" fill="none"/>${sparkles([[70,236,5],[100,222,4],[132,240,5],[150,256,4],[60,256,4],[115,252,5],[92,180,4],[120,176,3]])}`;
+ else s+=`<path d="M80 166 Q105 156 130 166 L134 196 L76 196Z" fill="#e879f9" stroke="#86198f" stroke-width="3"/><path d="M76 194 Q60 226 70 234 L140 234 Q150 226 134 194Z" fill="url(#g-mel)" stroke="#86198f" stroke-width="3"/><path d="M76 196 Q105 204 134 196" stroke="#fdf4ff" stroke-width="3" fill="none"/>${sparkles([[88,214,4],[112,222,4],[126,208,3],[98,182,3]])}`;
+ if(eq.neck==='pearls')s+=`<g fill="#fdf4ff" stroke="#d8b4fe" stroke-width="1">${[[88,160],[93,165],[99,168],[105,169],[111,168],[117,165],[122,160]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3.6"/>`).join('')}</g>`;
+ // head
+ s+=`<circle cx="46" cy="104" r="9" fill="${MEL_SKIN}"/><circle cx="164" cy="104" r="9" fill="${MEL_SKIN}"/><circle cx="105" cy="98" r="58" fill="${MEL_SKIN}"/>`;
+ // curly bangs + side curls framing the face
+ s+=`<g fill="${MEL_HAIR}"><path d="M48 92 C46 50 76 36 105 36 C134 36 164 50 162 92 C150 70 132 62 105 64 C78 62 60 70 48 92Z"/>${curls(105,96,58,12,196,344,12)}${curls(48,118,4,10,0,360,120)}${curls(162,118,4,10,0,360,120)}<circle cx="46" cy="138" r="10"/><circle cx="164" cy="138" r="10"/></g>
+ <path d="M70 58 q8 -8 16 0 M120 54 q8 -8 16 0" stroke="#7c4a2a" stroke-width="3" fill="none" opacity=".7"/>`;
+ s+=`<path d="M77 84 Q87 79 97 84 M113 84 Q123 79 133 84" stroke="${MEL_HAIR}" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+ s+=faceG(85,125,102,22,true);
+ // head items (default: little pink star clip)
+ if(eq.head==='shellclip')s+=`<g transform="translate(140 52) rotate(20)"><path d="M-14 8 Q0 -20 14 8Z" fill="#fbcfe8" stroke="#c026d3" stroke-width="2.5"/><path d="M0 8 L0 -10 M-7 8 L-4 -6 M7 8 L4 -6" stroke="#c026d3" stroke-width="2"/></g>`;
+ else if(eq.head==='tiara')s+=`<path d="M70 50 Q105 34 140 50" stroke="#facc15" stroke-width="5" fill="none"/><polygon points="${starPts(105,34,13,5.5)}" fill="#fb923c" stroke="#c2410c" stroke-width="2"/><polygon points="${starPts(82,44,7,3)}" fill="#f472b6"/><polygon points="${starPts(128,44,7,3)}" fill="#f472b6"/>`;
+ else if(eq.head==='crown')s+=`<path d="M70 46 L76 18 L90 36 L105 12 L120 36 L134 18 L140 46Z" fill="url(#g-gold)" stroke="#a16207" stroke-width="3" stroke-linejoin="round"/><circle cx="105" cy="34" r="5" fill="#c026d3"/><circle cx="84" cy="38" r="3.5" fill="#22d3ee"/><circle cx="126" cy="38" r="3.5" fill="#22d3ee"/><path d="M68 46 q37 10 74 0" stroke="#fdf4ff" stroke-width="3" fill="none"/>`;
+ else s+=`<polygon points="${starPts(146,56,9,4)}" fill="#f472b6" stroke="#be185d" stroke-width="1.5"/>`;
+ // hand items (left hand ~56,212)
+ if(eq.hand==='wand')s+=`<path d="M58 214 L34 170" stroke="#c026d3" stroke-width="5" stroke-linecap="round"/><polygon points="${starPts(32,164,14,6)}" fill="url(#g-gold)" stroke="#ca8a04" stroke-width="2"/>${sparkles([[14,150,5],[48,146,4],[20,182,4]],'#f0abfc')}`;
+ if(eq.hand==='bubbles')s+=`<path d="M58 214 L40 178" stroke="#a855f7" stroke-width="4.5" stroke-linecap="round"/><circle cx="36" cy="170" r="10" fill="none" stroke="#a855f7" stroke-width="4"/><g fill="#e0f2fe" fill-opacity=".5" stroke="#38bdf8" stroke-width="2"><circle cx="18" cy="150" r="9"/><circle cx="40" cy="138" r="6"/><circle cx="12" cy="124" r="5"/></g>`;
+ if(eq.pet==='fishpal')s+=`<g transform="translate(176 230)"><ellipse cx="0" cy="0" rx="16" ry="11" fill="#fb923c" stroke="#9a3412" stroke-width="2.5"/><path d="M14 0 L28 -10 L28 10Z" fill="#f472b6" stroke="#9a3412" stroke-width="2.5"/><path d="M-4 -10 v20 M4 -9 v18" stroke="#fff" stroke-width="3"/><circle cx="-8" cy="-2" r="3" fill="#1f2937"/><circle cx="-7" cy="-3" r="1" fill="#fff"/><circle cx="-24" cy="-14" r="4" fill="none" stroke="#38bdf8" stroke-width="1.5"/></g>`;
+ return s+'</svg>';}
+function caydenSVG(eq,cls){eq=eq||{};const o=eq.outfit;
+ let s=`<svg class="hero cayden ${cls||'idle'}" viewBox="0 0 210 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cayden">${DEFS}${FDEFS}`;
+ if(eq.back==='aura')s+=`<ellipse cx="105" cy="150" rx="104" ry="128" fill="url(#g-aura)"/><path d="M24 120 l14 -8 l-6 16 l14 -8 M172 130 l14 -8 l-6 16 l14 -8" stroke="#facc15" stroke-width="4" fill="none" stroke-linejoin="round"/>`;
+ if(eq.back==='cape')s+=`<path d="M80 164 L34 248 Q105 262 176 248 L130 164Z" fill="#dc2626" stroke="#7f1d1d" stroke-width="3"/><path d="M46 222 h-30 M50 236 h-38 M164 222 h30 M160 236 h38" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/>`;
+ // legs + sneakers
+ const sh=eq.feet==='speed'?'#facc15':'#ef4444',shs=eq.feet==='speed'?'#a16207':'#7f1d1d';
+ s+=`<rect x="88" y="222" width="14" height="30" rx="6" fill="${CAY_SKIN}"/><rect x="108" y="222" width="14" height="30" rx="6" fill="${CAY_SKIN}"/>
+ <path d="M80 252 h26 a6 6 0 0 1 0 12 h-26z" fill="${sh}" stroke="${shs}" stroke-width="2"/><path d="M104 252 h26 a6 6 0 0 1 0 12 h-26z" fill="${sh}" stroke="${shs}" stroke-width="2"/><rect x="80" y="260" width="26" height="5" rx="2" fill="#fff"/><rect x="104" y="260" width="26" height="5" rx="2" fill="#fff"/>
+ <path d="M86 254 l8 0 M110 254 l8 0" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>`;
+ if(eq.feet==='speed')s+=`<path d="M70 254 h-14 M72 262 h-20 M138 254 h14 M136 262 h20" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/><path d="M93 252 l-3 6 h5 l-3 6 M117 252 l-3 6 h5 l-3 6" stroke="#2563eb" stroke-width="2" fill="none"/>`;
+ // arms
+ s+=`<path d="M78 170 Q56 190 52 210" stroke="${CAY_SKIN}" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M132 170 Q154 190 158 206" stroke="${CAY_SKIN}" stroke-width="14" stroke-linecap="round" fill="none"/><circle cx="52" cy="212" r="8.5" fill="${CAY_SKIN}"/><circle cx="158" cy="208" r="8.5" fill="${CAY_SKIN}"/>`;
+ // jersey + shorts
+ const jf=o==='allstar'?'#2563eb':o==='ultimate'?'url(#g-cay)':'#ef4444',jt=o==='allstar'?'#ef4444':'#1d4ed8',num=o==='allstar'?'★':o==='ultimate'?'★10':'10';
+ s+=`<rect x="98" y="146" width="14" height="18" fill="${CAY_SKIN}"/><path d="M72 166 Q105 154 138 166 L142 214 L68 214Z" fill="${jf}" stroke="#1e3a8a" stroke-width="3"/>
+ <path d="M72 166 L60 182 L74 190Z" fill="${jt}" stroke="#1e3a8a" stroke-width="2.5"/><path d="M138 166 L150 182 L136 190Z" fill="${jt}" stroke="#1e3a8a" stroke-width="2.5"/>
+ <path d="M92 160 L105 174 L118 160" stroke="#fff" stroke-width="5" fill="none" stroke-linejoin="round"/>
+ <text x="105" y="208" font-size="${num.length>2?18:22}" font-weight="900" text-anchor="middle" fill="${o==='ultimate'?'#facc15':'#fff'}" stroke="#1e3a8a" stroke-width="1.5" font-family="Arial,sans-serif">${num}</text>
+ <rect x="70" y="210" width="70" height="20" rx="6" fill="#1d4ed8"/><path d="M76 212 v16 M134 212 v16" stroke="#ef4444" stroke-width="4"/>`;
+ if(o==='ultimate')s+=sparkles([[80,180,4],[130,186,4],[88,212,3],[124,214,3]],'#facc15');
+ if(eq.neck==='whistle')s+=`<path d="M92 160 Q105 180 118 160" stroke="#facc15" stroke-width="2.5" fill="none"/><rect x="99" y="174" width="14" height="8" rx="4" fill="#9ca3af" stroke="#374151" stroke-width="2"/>`;
+ if(eq.neck==='medal')s+=`<path d="M92 160 L102 174 M118 160 L108 174" stroke="#2563eb" stroke-width="5"/><circle cx="105" cy="180" r="8.5" fill="url(#g-gold)" stroke="#a16207" stroke-width="2.5"/><text x="105" y="184.5" font-size="10" font-weight="900" text-anchor="middle" fill="#a16207">1</text>`;
+ // head
+ s+=`<circle cx="46" cy="102" r="10" fill="${CAY_SKIN}"/><circle cx="164" cy="102" r="10" fill="${CAY_SKIN}"/><circle cx="105" cy="98" r="58" fill="${CAY_SKIN}"/>`;
+ // short curly hair
+ s+=`<g fill="${CAY_HAIR}"><path d="M50 90 C46 52 76 38 105 38 C134 38 164 52 160 90 C152 72 136 66 105 68 C74 66 58 72 50 90Z"/>${curls(105,96,56,9.5,200,340,10)}${curls(105,86,44,8.5,215,325,14)}</g>`;
+ s+=`<path d="M76 80 Q86 75 96 80 M114 80 Q124 75 134 80" stroke="${CAY_HAIR}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+ s+=faceG(85,125,100,22,false);
+ // glasses
+ s+=`<g fill="#fff" fill-opacity=".18" stroke="#1e3a8a" stroke-width="4"><rect x="69" y="86" width="32" height="28" rx="10"/><rect x="109" y="86" width="32" height="28" rx="10"/></g><path d="M101 98 Q105 94 109 98 M69 96 L52 92 M141 96 L158 92" stroke="#1e3a8a" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M74 92 l8 -3 M114 92 l8 -3" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".8"/>`;
+ if(eq.head==='hband')s+=`<path d="M50 74 Q105 46 160 74 L158 86 Q105 60 52 86Z" fill="#ef4444" stroke="#7f1d1d" stroke-width="2.5"/><path d="M60 76 Q105 54 150 76" stroke="#fff" stroke-width="2.5" fill="none"/>`;
+ if(eq.head==='cap')s+=`<path d="M48 76 C48 30 162 30 162 76Z" fill="#2563eb" stroke="#1e3a8a" stroke-width="3"/><path d="M48 76 Q22 78 18 88 Q46 86 80 78Z" fill="#ef4444" stroke="#7f1d1d" stroke-width="2.5"/><circle cx="105" cy="38" r="5" fill="#ef4444"/><polygon points="${starPts(118,58,9,4)}" fill="#fff"/>`;
+ // hand items (left hand ~52,212)
+ if(eq.hand==='bball')s+=`<circle cx="40" cy="196" r="20" fill="#f97316" stroke="#7c2d12" stroke-width="2.5"/><path d="M20 196 h40 M40 176 v40 M26 182 Q40 196 26 210 M54 182 Q40 196 54 210" stroke="#7c2d12" stroke-width="2" fill="none"/><path d="M40 196 m-18 0 a18 18 0 0 1 18 -18" stroke="#2563eb" stroke-width="2" fill="none" opacity=".6"/>`;
+ if(eq.hand==='football')s+=`<g transform="rotate(-30 40 196)"><ellipse cx="40" cy="196" rx="24" ry="14" fill="#92400e" stroke="#451a03" stroke-width="2.5"/><path d="M28 196 h24" stroke="#fff" stroke-width="2.5"/><path d="M32 192 v8 M37 192 v8 M42 192 v8 M47 192 v8" stroke="#fff" stroke-width="2"/></g>`;
+ if(eq.hand==='trophy')s+=`<path d="M24 170 h32 v10 q0 18 -16 20 q-16 -2 -16 -20z" fill="url(#g-gold)" stroke="#a16207" stroke-width="2.5"/><path d="M24 174 q-10 0 -8 10 q2 6 10 6 M56 174 q10 0 8 10 q-2 6 -10 6" stroke="#a16207" stroke-width="3" fill="none"/><rect x="36" y="200" width="8" height="8" fill="#ca8a04"/><rect x="28" y="206" width="24" height="7" rx="2" fill="#1d4ed8"/>`;
+ return s+'</svg>';}
 const $=id=>document.getElementById(id);
 const rand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
 const pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -672,7 +906,7 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;',
 /* ---------- save (each hero has its own progress) ---------- */
 const SKEY='ttq-save-v2';
 function freshProfile(id){return {name:HEROES[id].name,stars:{},hist:{},rewards:[],eq:{},prologue:false};}
-function freshSave(){return {muted:false,narrator:true,hero:null,profiles:{emi:freshProfile('emi'),blu:freshProfile('blu'),sage:freshProfile('sage'),eshon:freshProfile('eshon')}};}
+function freshSave(){return {muted:false,narrator:true,hero:null,profiles:Object.fromEntries(Object.keys(HEROES).map(id=>[id,freshProfile(id)]))};}
 function loadSave(){const f=freshSave();try{const s=JSON.parse(localStorage.getItem(SKEY));if(s&&s.profiles){const o=Object.assign(f,s);Object.keys(HEROES).forEach(id=>{o.profiles[id]=Object.assign(freshProfile(id),s.profiles[id]||{});});if(o.hero&&!HEROES[o.hero])o.hero=null;return o;}}catch(e){}return f;}
 function persist(){try{localStorage.setItem(SKEY,JSON.stringify(save));}catch(e){}}
 let save=loadSave();
@@ -689,7 +923,7 @@ function totalStars(){return save.hero?ORDER.reduce((s,n)=>s+(P().stars[n]||0),0
 function updateStatus(){$('status').textContent='⭐ '+totalStars();$('muteBtn').textContent=save.muted?'🔇':'🔊';
  $('narrBtn').classList.toggle('off',!save.narrator);$('narrBtn').title=save.narrator?'Narrator voice: ON':'Narrator voice: OFF (captions only)';
  const cb=$('closetBtn');if(save.hero){cb.classList.remove('hidden');cb.textContent=H().closetE;cb.title=H().closet;$('topTitle').textContent=H().title;}else{cb.classList.add('hidden');$('topTitle').textContent='Times Table Quest';}
- document.body.className=save.hero?'theme-'+save.hero:'';const tc=document.querySelector('meta[name=theme-color]');if(tc)tc.setAttribute('content',{emi:'#a78bfa',sage:'#f472b6',blu:'#60a5fa',eshon:'#4ade80'}[save.hero]||'#f9a8d4');}
+ document.body.className=save.hero?'theme-'+save.hero:'';const tc=document.querySelector('meta[name=theme-color]');if(tc)tc.setAttribute('content',{emi:'#a78bfa',sage:'#f472b6',blu:'#60a5fa',eshon:'#4ade80',melrose:'#d946ef',cayden:'#ef4444'}[save.hero]||'#f9a8d4');}
 
 /* ---------- sound ---------- */
 let actx=null;
@@ -711,6 +945,10 @@ const SFX={
  chime:()=>{tone(1568,.3,'sine',.12);tone(2093,.4,'sine',.1,.08);},
  sing:()=>{[659,784,880,784,1046].forEach((f,i)=>singNote(f,.22,i*.15));},
  singNote:i=>singNote(PENTA[i%PENTA.length],.2,0),
+ splash:()=>{[1047,1319,1568,2093,1760].forEach((f,i)=>tone(f,.16,'sine',.11,i*.07));tone(523,.25,'triangle',.08,.05);},
+ bubble:i=>{tone(500+(i%7)*70,.06,'sine',.12);tone(900+(i%7)*90,.08,'sine',.08,.05);},
+ swish:()=>{[0,1,2,3,4].forEach(i=>tone(300+i*180,.05,'triangle',.08,i*.03));tone(196,.18,'square',.1,.2);tone(988,.2,'triangle',.14,.32);},
+ bounce:i=>{tone(140+(i%5)*20,.09,'square',.1);tone(260+(i%5)*30,.05,'triangle',.08,.06);},
  sketch:()=>{[0,1,2,3].forEach(i=>tone(900+rand(0,500),.05,'sawtooth',.05,i*.06));tone(1320,.12,'triangle',.16,.28);tone(1760,.18,'triangle',.14,.38);},
  scribble:i=>{tone(700+(i%7)*90,.05,'sawtooth',.05);tone(1046+(i%5)*60,.08,'triangle',.1,.05);},
  shield:()=>{tone(440,.2,'sine',.15);tone(660,.3,'sine',.15,.08);tone(880,.35,'sine',.12,.16);}
@@ -737,8 +975,8 @@ const cv=$('confetti'),cx=cv.getContext('2d');let parts=[],confRAF=0;
 function confetti(){cv.width=innerWidth;cv.height=innerHeight;const pal=(save.hero&&HS().conf)||COLORS;for(let i=0;i<180;i++)parts.push({x:innerWidth/2+rand(-100,100),y:innerHeight/3,vx:(Math.random()-.5)*16,vy:-Math.random()*14-4,s:rand(6,12),c:pick(pal),r:Math.random()*6,vr:(Math.random()-.5)*.4,life:180});if(!confRAF)confRAF=requestAnimationFrame(confStep);}
 function confStep(){cx.clearRect(0,0,cv.width,cv.height);parts.forEach(p=>{p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life--;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);cx.restore();});parts=parts.filter(p=>p.life>0&&p.y<cv.height+40);if(parts.length)confRAF=requestAnimationFrame(confStep);else{confRAF=0;cx.clearRect(0,0,cv.width,cv.height);}}
 function fxBurst(el,chars,n){if(!el)return;const r=el.getBoundingClientRect();n=n||8;for(let i=0;i<n;i++){const s=document.createElement('span');s.className='fx';s.textContent=pick(chars);s.style.left=(r.left+r.width/2-15)+'px';s.style.top=(r.top+r.height/3)+'px';s.style.setProperty('--dx',rand(-120,120)+'px');s.style.setProperty('--dy',rand(-160,-40)+'px');s.style.animationDelay=(i*0.04)+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),1500);}}
-function react(sel,cls){const e=document.querySelector(sel+' svg.hero');if(!e)return;e.classList.remove('idle','cheer','sad','dance','strut','sing','draw');void e.getBoundingClientRect();e.classList.add(cls);clearTimeout(e._t);e._t=setTimeout(()=>{e.classList.remove(cls);e.classList.add('idle');},1300);}
-function heroRight(sel){const h=H();fxBurst(document.querySelector(sel),h.fx,9);react(sel,HS().right);heroSfx();if(save.hero==='eshon')doodleFx(document.querySelector(sel));}
+function react(sel,cls){const e=document.querySelector(sel+' svg.hero');if(!e)return;e.classList.remove('idle','cheer','sad','dance','strut','sing','draw','flutter','dunk');void e.getBoundingClientRect();e.classList.add(cls);clearTimeout(e._t);e._t=setTimeout(()=>{e.classList.remove(cls);e.classList.add('idle');},1300);}
+function heroRight(sel){const h=H();fxBurst(document.querySelector(sel),h.fx,9);react(sel,HS().right);heroSfx();if(save.hero==='eshon')doodleFx(document.querySelector(sel));if(save.hero==='cayden')speedFx(document.querySelector(sel));if(save.hero==='melrose')bubbleFx(document.querySelector(sel));}
 /* Eshon's pencil draws a sparkly green line and a doodle buddy pops off the page */
 const DOODLE_BUDS=['squiggle','bloop','zigzag','fluff'];
 function doodleFx(el){try{if(!el)return;const r=el.getBoundingClientRect(),w=Math.min(260,innerWidth-20),x=Math.max(10,Math.min(innerWidth-w-10,r.left+r.width/2-w/2)),y=Math.max(10,r.top+r.height*.25);
@@ -746,6 +984,15 @@ function doodleFx(el){try{if(!el)return;const r=el.getBoundingClientRect(),w=Mat
  const pts=[];for(let i=0;i<=8;i++)pts.push((i*w/8).toFixed(0)+' '+(60+(i%2?-1:1)*rand(18,38)));
  d.innerHTML=`<svg width="${w}" height="120" style="position:absolute;left:0;top:0;overflow:visible"><path d="M${pts.join(' L')}" fill="none" stroke="#22c55e" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M${pts.join(' L')}" fill="none" stroke="#bbf7d0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="${w-14}" y="30" font-size="20">✨</text><text x="6" y="24" font-size="16">✨</text></svg><div class="bud" style="left:${(w/2-32).toFixed(0)}px;top:10px">${buddyFx(pick(DOODLE_BUDS))}</div>`;
  document.body.appendChild(d);setTimeout(()=>d.remove(),1500);}catch(e){}}
+/* v8: Cayden's anime speed lines + POW burst; Melrose's rising sparkle bubbles */
+function fxBox(el,w,h){const r=el.getBoundingClientRect();return {x:Math.max(6,Math.min(innerWidth-w-6,r.left+r.width/2-w/2)),y:Math.max(6,r.top+r.height*.15)};}
+function speedFx(el){try{if(!el)return;const w=Math.min(280,innerWidth-12),h=150,p=fxBox(el,w,h),d=document.createElement('div');d.className='speedfx';d.style.left=p.x+'px';d.style.top=p.y+'px';d.style.width=w+'px';d.style.height=h+'px';
+ let l='';for(let i=0;i<14;i++){const a=i/14*Math.PI*2,r1=34+rand(0,10),r2=r1+rand(30,60),cx=w/2,cy=h/2;l+=`<line x1="${(cx+r1*Math.cos(a)).toFixed(0)}" y1="${(cy+r1*Math.sin(a)*.7).toFixed(0)}" x2="${(cx+r2*Math.cos(a)).toFixed(0)}" y2="${(cy+r2*Math.sin(a)*.7).toFixed(0)}" stroke="${i%2?'#ef4444':'#2563eb'}" stroke-width="${rand(3,6)}" stroke-linecap="round"/>`;}
+ d.innerHTML=`<svg width="${w}" height="${h}" style="position:absolute;left:0;top:0;overflow:visible">${l}</svg><div class="powtxt">${pick(['POW!','SWISH!','ZOOM!','DUNK!','BOOM!'])}</div>`;
+ document.body.appendChild(d);setTimeout(()=>d.remove(),1100);}catch(e){}}
+function bubbleFx(el){try{if(!el)return;const w=Math.min(220,innerWidth-12),h=160,p=fxBox(el,w,h),d=document.createElement('div');d.className='bubblefx';d.style.left=p.x+'px';d.style.top=p.y+'px';d.style.width=w+'px';d.style.height=h+'px';
+ let b='';for(let i=0;i<9;i++)b+=`<span style="left:${rand(5,85)}%;animation-delay:${(i*.08).toFixed(2)}s;font-size:${rand(16,30)}px">${pick(['🫧','✨','💜','💖','🫧'])}</span>`;
+ d.innerHTML=b;document.body.appendChild(d);setTimeout(()=>d.remove(),1600);}catch(e){}}
 function heroWrong(sel){react(sel,'sad');}
 
 /* ---------- rendering helpers ---------- */
@@ -761,13 +1008,13 @@ const cheer=()=>pick(CHEERS);
 
 /* ---------- story scenes ---------- */
 let SC=null;
-function fillT(t,who){const sp=who==='hero'?save.hero:who==='sib'?sibId():HEROES[who]?who:null;t=String(t);if(sp&&sp!==save.hero)t=t.replace(/\{rel\}/g,relTo(sp,save.hero)).replace(/\{myrel\}/g,relTo(save.hero,sp)).replace(/\{me\}/g,nm(sp));t=t.replace(/\{rel\}/g,'friend').replace(/\{place\}/g,S?placeOf(S.n).name:'kingdom');return t.replace(/\{hero\}/g,nm(save.hero)).replace(/\{team\}/g,teamNames()).replace(/\{sib\}/g,nm(sibId())).replace(/\{title\}/g,H().title).replace(/\{n\}/g,S?S.n:'').replace(/\{boss\}/g,S?BOSSES[S.n][1]:'');}
+function fillT(t,who){const sp=who==='hero'?save.hero:who==='sib'?sibId():HEROES[who]?who:null;t=String(t);if(sp&&sp!==save.hero)t=t.replace(/\{rel\}/g,relTo(sp,save.hero)).replace(/\{myrel\}/g,relTo(save.hero,sp)).replace(/\{me\}/g,nm(sp));t=t.replace(/\{rel\}/g,'friend').replace(/\{place\}/g,S?placeOf(S.n).name:'kingdom');return t.replace(/\{hero\}/g,nm(save.hero)).replace(/\{team\}/g,teamNames()).replace(/\{sib\}/g,nm(sibId())).replace(/\{title\}/g,H().title).replace(/\{n\}/g,S?S.n:'').replace(/\{boss\}/g,S?bossOf(S.n)[1]:'');}
 const L=(who,text)=>({who,text:fillT(text,who)});
-const PROP_ICONS={fruit:['🍓','🍌','🍍','🍉','🍇','🍊','🍒'],flower:['🌸','🌷','🌻','🌺','🌼'],star:['⭐']};
+const PROP_ICONS={shell:['🐚','🦪','⭐','🫧'],ball:['🏀','🏈','⚽'],fruit:['🍓','🍌','🍍','🍉','🍇','🍊','🍒'],flower:['🌸','🌷','🌻','🌺','🌼'],star:['⭐']};
 function playScene(sc,done){stopSpeech();SC=Object.assign({i:0,woke:0},sc,{done});renderScene();showLine();}
 function renderScene(){const pl=SC.place,props=SC.props||pl.props;
  const spots=shuffle([[3,13],[17,24],[31,11],[45,25],[59,12],[73,25],[87,13],[10,36],[38,38],[80,38]]);
- const ph=props.map((t,i)=>{const [x,y]=spots[i%spots.length];const ic=t==='flower'?'🌱':t==='star'?'⭐':pick(PROP_ICONS.fruit);return `<span class="prop ${t}" data-kind="${t}" style="left:${x+rand(-1,1)}%;top:${y+rand(-1,1)}%" onclick="tapProp(this)">${ic}</span>`;}).join('');
+ const ph=props.map((t,i)=>{const [x,y]=spots[i%spots.length];const ic=t==='flower'?'🌱':t==='star'?'⭐':t==='shell'?'🐚':t==='ball'?pick(PROP_ICONS.ball):pick(PROP_ICONS.fruit);return `<span class="prop ${t}" data-kind="${t}" style="left:${x+rand(-1,1)}%;top:${y+rand(-1,1)}%" onclick="tapProp(this)">${ic}</span>`;}).join('');
  show(`<div class="scene" id="scene" style="background:${pl.bg}"><div class="scenetitle">${esc(SC.title)}</div><div class="props">${ph}</div>
  <div class="owlbox" id="c-owl">${owlSVG()}</div>
  <div class="cast"><div class="castm" id="c-hero">${heroSVG(save.hero,SC.pose||'idle')}</div><div class="castm side" id="c-sib">${heroSVG(sibId(),SC.pose||'idle')}</div>${(SC.extras||[]).map(x=>`<div class="castm side side2" id="c-x-${x}" data-who="${x}">${heroSVG(x,SC.pose||'idle')}</div>`).join('')}${SC.boss?`<div class="castm bossm" id="c-boss"><span class="bob" style="display:inline-block;width:100%">${bossFace(SC.boss)}</span></div>`:''}</div></div>
@@ -775,7 +1022,7 @@ function renderScene(){const pl=SC.place,props=SC.props||pl.props;
  <div class="brow"><button class="iconbtn" id="replayBtn" title="Hear it again" aria-label="Replay line" onclick="event.stopPropagation();replayLine()">🔁</button><span class="lineno"><span id="lineno"></span> <span class="wake" id="wake">Tap the scene! ✨ 0/${props.length}</span></span>
  <button class="btn green sm" id="contBtn" data-enter onclick="event.stopPropagation();nextLine()">Tap to continue ▶</button></div></div>`);
  if(SC.confetti)setTimeout(confetti,300);}
-function whoName(w){return w==='owl'?'🦉 Professor Hoot':w==='hero'?HSTYLE[save.hero].tag+' '+nm(save.hero):w==='sib'?HSTYLE[sibId()].tag+' '+nm(sibId()):HEROES[w]?HSTYLE[w].tag+' '+nm(w):'😈 '+(SC.boss?BOSSES[SC.boss][1]:'');}
+function whoName(w){return w==='owl'?'🦉 Professor Hoot':w==='hero'?HSTYLE[save.hero].tag+' '+nm(save.hero):w==='sib'?HSTYLE[sibId()].tag+' '+nm(sibId()):HEROES[w]?HSTYLE[w].tag+' '+nm(w):'😈 '+(SC.boss?bossOf(SC.boss)[1]:'');}
 function showLine(){const l=SC.lines[SC.i];$('who').textContent=whoName(l.who);const bt=$('btext');bt.textContent=l.text;bt.style.animation='none';void bt.offsetWidth;bt.style.animation='';
  $('lineno').textContent=(SC.i+1)+' / '+SC.lines.length;$('contBtn').textContent=SC.i===SC.lines.length-1?(SC.endLabel||"Let's go! ▶"):'Tap to continue ▶';
  document.querySelectorAll('.castm,.owlbox').forEach(e=>e.classList.remove('talk'));const m={owl:'c-owl',hero:'c-hero',sib:'c-sib',boss:'c-boss'}[l.who]||(HEROES[l.who]?'c-x-'+l.who:null);if(m&&$(m))$(m).classList.add('talk');
@@ -785,13 +1032,16 @@ function replayLine(){if(!SC)return;const l=SC.lines[SC.i];const bt=$('btext');b
 function tapProp(el){const k=el.dataset.kind;const first=!el.dataset.w;el.dataset.w='1';
  if(k==='flower'){const st=(+el.dataset.s||0)+1;el.dataset.s=st;el.textContent=st===1?'🌷':pick(PROP_ICONS.flower);el.classList.remove('bloom');void el.offsetWidth;el.classList.add('bloom');SFX.bloom();fxBurst(el,['🌸','✨','💖'],4);}
  else if(k==='fruit'){el.classList.add('awake');el.classList.remove('dance');void el.offsetWidth;el.classList.add('dance');[0,1,2].forEach(i=>tone(PENTA[rand(0,6)]/2,.12,'square',.08,i*.12));fxBurst(el,['🎵','🎶'],3);}
+ else if(k==='shell'){el.classList.add('lit');el.textContent=pick(['🦪','✨','🫧']);SFX.splash();fxBurst(el,['🫧','✨','💜'],4);}
+ else if(k==='ball'){el.classList.add('awake');el.classList.remove('dance');void el.offsetWidth;el.classList.add('dance');SFX.bounce(rand(0,6));fxBurst(el,['💥','⚡'],3);}
  else{el.classList.add('lit');el.textContent='🌟';SFX.chime();fxBurst(el,['✨','⭐'],4);}
  if(first&&SC){SC.woke++;const tot=document.querySelectorAll('.prop').length;$('wake').textContent=SC.woke>=tot?'All awake! 🎉':`✨ ${SC.woke}/${tot}`;if(SC.woke>=tot){SFX.win();react('#c-hero',HS().right);document.querySelectorAll('.castm.side').forEach(e=>react('#'+e.id,'cheer'));}}}
-function placeOf(n){return PLACES[ORDER.indexOf(n)];}
-function propWords(pl){const m={flower:'flowers',fruit:'fruits',star:'stars'};return [...new Set(pl.props)].map(k=>m[k]).join(' and ');}
+function placeOf(n){const i=ORDER.indexOf(n),hp=save&&save.hero&&HPLACES[save.hero];return (hp&&hp[i])||PLACES[i];}
+function propWords(pl){const m={flower:'flowers',fruit:'fruits',star:'stars',shell:'seashells',ball:'balls'};return [...new Set(pl.props)].map(k=>m[k]).join(' and ');}
 /* extra sidekicks (besides the main sidekick) who join a scene */
 function pickExtras(kind){const h=save.hero,fin=S&&S.n===12,o=SIBS[h].slice(1),r=Math.random;
  if(kind==='all'||(kind==='outro'&&fin))return o;
+ if(NEWH.includes(h)){if(kind==='boss')return fin?o.slice(0,1):[];if(fin)return o;return o.filter(()=>r()<.45);}
  if(kind==='boss'){if(h==='sage')return ['blu'];if(h==='eshon')return [pick(['emi','blu'])];return fin?['sage']:[];}
  const pSage=kind==='intro'?.35:.5,pEsh=kind==='intro'?.3:.4;
  if(h==='sage')return ['blu'].concat(r()<.4?['eshon']:[]);
@@ -813,7 +1063,7 @@ function introScene(){const i=ORDER.indexOf(S.n),pl=placeOf(S.n),id=save.hero,ex
 function midScene(){const pl=placeOf(S.n),fin=S.n===12,ex=pickExtras('boss');
  return {title:`${pl.e} ${pl.name} · Boss time!`,place:pl,boss:S.n,extras:ex,lines:addExtras([
   L('owl',fin?"The ground shakes... The MUDDLE MONSTER himself appears! This is the final showdown!":"Uh-oh! {boss}, a sneaky minion of the Muddle Monster, jumps out!"),
-  L('boss',fin?"I am the MUDDLE MONSTER! I scrambled EVERY table in the kingdom! Mwa-ha-ha!":pick(TAUNTS)),
+  L('boss',fin?"I am the MUDDLE MONSTER! I scrambled EVERY table in the kingdom! Mwa-ha-ha!":pick(HTAUNTS[save.hero]||TAUNTS)),
   L('sib',pick(SIDE[sibId()])),L('hero',pick(BRAVE[save.hero])),
   L('owl',`Get ${bossHP(S.n)} answers right to win${fin?', and watch out: he uses numbers from every chapter':''}. You have ${HEARTS} hearts. Use your ${H().power}! Go, {hero}!`)],SIDE,ex),endLabel:'⚔️ Fight!'};}
 function outroScene(reward){const pl=placeOf(S.n),fin=S.n===12,h=H(),ex=pickExtras('outro');const lines=addExtras([
@@ -865,8 +1115,8 @@ function aboutPickGrade(k){AB.grade=k;const pf=P();pf.age=AB.age;pf.grade=k;pers
 
 function mapScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SC=null;stopSpeech();const u=unlockedIndex(),all=u>=ORDER.length,pf=P();
  let h=`<div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>${esc(pf.name)}'s Kingdom Map</h2><div class="big" style="font-size:18px">Beat each chapter's boss to unlock the next one. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(mapScreen,true)">✏️ About me</button></div></div></div></div><div class="levels">`;
- ORDER.forEach((n,i)=>{const locked=i>u,st=pf.stars[n]||0,isNext=i===u,pl=PLACES[i];
-  h+=`<button class="lvl ${locked?'locked':''} ${st?'done':''} ${isNext?'next':''} ${n===12?'final':''}" data-level="${n}" ${locked?'disabled':''} onclick="openLevel(${n})">${isNext?'<span class="tag">PLAY!</span>':''}<div class="lch">Chapter ${i+1}</div><div class="lnum">×${n}</div><div class="lboss">${locked?'🔒':(n===12?monsterSVG():BOSSES[n][0])}</div><div class="lplace">${pl.e} ${pl.name}</div><div class="lstars">${starStr(st)}</div></button>`;});
+ ORDER.forEach((n,i)=>{const locked=i>u,st=pf.stars[n]||0,isNext=i===u,pl=placeOf(n);
+  h+=`<button class="lvl ${locked?'locked':''} ${st?'done':''} ${isNext?'next':''} ${n===12?'final':''}" data-level="${n}" ${locked?'disabled':''} onclick="openLevel(${n})">${isNext?'<span class="tag">PLAY!</span>':''}<div class="lch">Chapter ${i+1}</div><div class="lnum">×${n}</div><div class="lboss">${locked?'🔒':(n===12?monsterSVG():bossOf(n)[0])}</div><div class="lplace">${pl.e} ${pl.name}</div><div class="lstars">${starStr(st)}</div></button>`;});
  h+='</div>';
  if(all)h+=`<div class="card center"><div class="winheroes"><div class="w1">${heroSVG(save.hero,HS().win)}</div>${SIBS[save.hero].map((x,i)=>`<div class="w${i+2>3?4:i+2}">${heroSVG(x,'cheer')}</div>`).join('')}</div><h2>🏆 Times Table Champion!</h2><p class="big">The Number Kingdom is saved! Replay chapters to collect all ${ORDER.length*3} stars.</p></div>`;
  h+=`<div class="center" style="margin-top:18px"><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button><button class="btn gray sm" onclick="pickHero(save.hero)">✏️ Change name</button><button class="btn gray sm" onclick="resetProgress()">🗑️ Reset ${esc(pf.name)}</button></div>`;
@@ -900,7 +1150,7 @@ function initPad(){const cv=$('pad-c');if(!cv||!cv.getContext)return;const g=cv.
  const up=e=>{if(!down)return;down=false;last=null;padSave(cv);};
  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);cv.addEventListener('pointerleave',up);}
 function toggleItem(rid){const r=REWARDS[save.hero].find(x=>x.id===rid),pf=P();if(!r||!pf.rewards.includes(rid))return;if(pf.eq[r.slot]===rid)delete pf.eq[r.slot];else pf.eq[r.slot]=rid;persist();
- const y=window.scrollY;closetScreen();window.scrollTo(0,y);if(r.snd)playInstrument(r.snd);else if(save.hero==='emi')SFX.bloom();else if(save.hero==='sage')SFX.sing();else if(save.hero==='eshon')SFX.sketch();else SFX.chime();fxBurst($('ch'),H().fx,6);react('#ch',HS().win);}
+ const y=window.scrollY;closetScreen();window.scrollTo(0,y);if(r.snd)playInstrument(r.snd);else if(save.hero==='emi')SFX.bloom();else if(save.hero==='sage')SFX.sing();else if(save.hero==='eshon')SFX.sketch();else if(NEWH.includes(save.hero))heroSfx();else SFX.chime();fxBurst($('ch'),H().fx,6);react('#ch',HS().win);}
 function posePlay(){react('#ch',HS().win);const pf=P();const r=REWARDS.blu.find(x=>x.id===pf.eq.hand);if(save.hero==='blu')(r&&r.snd)?playInstrument(r.snd):SFX.melody();else heroSfx();fxBurst($('ch'),H().fx,6);}
 
 /* ---------- session (fresh random content per attempt) ---------- */
@@ -968,7 +1218,7 @@ function learnBuild(){S.built=0;S.locked=false;const n=S.n,k=S.learnK,h=H(),pl=p
  <div class="row"><button id="addbtn" class="btn purple" data-enter onclick="addRow()">${h.verb} ${n} ${th}</button>
  <button id="nextbtn" class="btn green hidden" data-enter onclick="learnTrick()">Next: a trick! ▶</button></div>
  <p style="color:#64748b">Tip: tap any block to make it jump! Counting by ${n}s is called <b>skip counting</b>.</p></div>`);}
-function addRow(){const n=S.n,k=S.learnK;if(S.built>=k)return;S.built++;if(save.hero==='blu')SFX.boop(S.built+2);else if(save.hero==='sage')SFX.singNote(S.built);else if(save.hero==='eshon')SFX.scribble(S.built);else SFX.note(S.built);
+function addRow(){const n=S.n,k=S.learnK;if(S.built>=k)return;S.built++;if(save.hero==='blu')SFX.boop(S.built+2);else if(save.hero==='sage')SFX.singNote(S.built);else if(save.hero==='eshon')SFX.scribble(S.built);else if(save.hero==='melrose')SFX.bubble(S.built);else if(save.hero==='cayden')SFX.bounce(S.built);else SFX.note(S.built);
  $('build').innerHTML=gridHTML(S.built,n,{labels:true,size:blockSize(k,n)});
  $('skip').textContent='Skip count: '+range(1,S.built).map(i=>i*n).join(', ');
  if(S.built===k){$('addbtn').classList.add('hidden');$('nextbtn').classList.remove('hidden');
@@ -1018,13 +1268,13 @@ function showHint(full){const h=$('hint');h.innerHTML='💡 '+hintHTML(S.cur,ful
 function practiceNext(){if(!S)return;if(S.pi>=S.practice.length-1){practiceDone();return;}S.pi++;renderPractice();}
 function practiceDone(){S.locked=false;S.cur=null;
  show(`${stageBar('practice')}<div class="card center"><div class="winheroes"><div class="w1" id="mh">${heroSVG(save.hero,'cheer')}</div><div class="w2">${heroSVG(sibId())}</div>${pickExtras('boss').map(x=>`<div class="w3">${heroSVG(x)}</div>`).join('')}</div><h2>Practice done!</h2><p class="big">You got <b>${S.pScore} out of ${S.practice.length}</b>. ${S.pScore>=4?'You are ready!':'Good try! Remember the tricks you learned!'}</p>
- <p class="big">But wait... something is coming... ${S.n===12?'🌀':BOSSES[S.n][0]}</p><button class="btn" data-enter onclick="playScene(midScene(),bossStart)">📖 Continue the story</button>
+ <p class="big">But wait... something is coming... ${S.n===12?'🌀':bossOf(S.n)[0]}</p><button class="btn" data-enter onclick="playScene(midScene(),bossStart)">📖 Continue the story</button>
  <button class="btn gray sm" onclick="learnBuild()">📚 Learn again</button></div>`);}
 
 /* ---------- BOSS ---------- */
 function bossStart(){S.hp=bossHP(S.n);S.hearts=HEARTS;S.bi=0;renderBoss();}
 function heartStr(){return '❤️'.repeat(S.hearts)+'🖤'.repeat(HEARTS-S.hearts);}
-function renderBoss(){const q=S.boss[S.bi],name=BOSSES[S.n][1],max=bossHP(S.n);inp='';S.cur=q;S.locked=false;
+function renderBoss(){const q=S.boss[S.bi],name=bossOf(S.n)[1],max=bossHP(S.n);inp='';S.cur=q;S.locked=false;
  show(`${stageBar('boss')}<div class="card" id="arena" style="position:relative"><div class="bossrow">
  <div class="bossside"><div id="bossE" class="bossE"><span class="bob">${bossFace(S.n)}</span></div><div class="bname">${name}</div>
  <div class="hpbar"><div class="hpfill" id="hpfill" style="width:${S.hp/max*100}%"></div></div><div style="font-weight:800">${S.hp}/${max} HP</div></div>
@@ -1041,14 +1291,14 @@ function renderBoss(){const q=S.boss[S.bi],name=BOSSES[S.n][1],max=bossHP(S.n);i
 function bossWin(){const n=S.n,stars=S.hearts,pf=P(),i=ORDER.indexOf(n);const prev=pf.stars[n]||0;pf.stars[n]=Math.max(prev,stars);
  const r=REWARDS[save.hero][i];let newR=null;if(r&&!pf.rewards.includes(r.id)){pf.rewards.push(r.id);newR=r;}persist();SFX.win();confetti();
  playScene(outroScene(newR),()=>winScreen(stars,newR));}
-function winScreen(stars,newR){const n=S.n,name=BOSSES[n][1],i=ORDER.indexOf(n),nxt=ORDER[i+1];confetti();
+function winScreen(stars,newR){const n=S.n,name=bossOf(n)[1],i=ORDER.indexOf(n),nxt=ORDER[i+1];confetti();
  show(`<div class="card center"><div class="winheroes"><div class="w1" id="wh">${heroSVG(save.hero,HS().win)}</div><div class="w2">${heroSVG(sibId(),'cheer')}</div>${pickExtras('boss').map(x=>`<div class="w3">${heroSVG(x,'cheer')}</div>`).join('')}</div><h1>You WIN!</h1>
  <div class="starsbig">${[0,1,2].map(j=>`<span class="${j<stars?'':'off'}" style="animation-delay:${.2+j*.25}s">★</span>`).join('')}</div>
  <p class="big">${esc(nm(save.hero))}, you beat <b>${name}</b>! You're a <b>×${n} master</b>!<br>${stars===3?'Perfect! Not a single heart lost! 🌟':'Play again to earn all 3 stars!'}</p>
  ${newR?`<div class="reward">New treasure: ${newR.e} ${newR.name}</div><br>`:''}
  ${nxt?`<button class="btn green" data-enter onclick="openLevel(${nxt})">Next: Chapter ${i+2} ▶</button>`:'<p class="big">🎉 You saved the whole Number Kingdom! 🎉</p>'}
  <button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn blue" ${nxt?'':'data-enter'} onclick="mapScreen()">🗺️ Map</button></div>`);
- if(save.hero==='blu')SFX.melody();else if(save.hero==='sage')SFX.sing();else if(save.hero==='eshon')SFX.sketch();}
+ if(save.hero==='blu')SFX.melody();else if(save.hero==='sage')SFX.sing();else if(save.hero==='eshon')SFX.sketch();else if(NEWH.includes(save.hero))heroSfx();}
 function bossLose(){SFX.lose();playScene(loseScene(),retryLevel);}
 function retryLevel(){const n=S.n;S=makeSession(n,S);playScene(introScene(),learnBuild);}
 
@@ -1061,7 +1311,7 @@ document.addEventListener('keydown',e=>{
  else if(e.key==='Backspace'&&pad){padDel();e.preventDefault();}
  else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(pad&&S&&!S.locked&&inp)padOK();else clickEnter();}
 });
-app.addEventListener('click',e=>{const b=e.target.closest('.blk');if(b&&!b.closest('.opt')){b.classList.remove('tap');void b.offsetWidth;b.classList.add('tap');if(save.hero==='blu')SFX.boop(rand(0,6));else if(save.hero==='sage')SFX.singNote(rand(0,6));else if(save.hero==='eshon')SFX.scribble(rand(0,6));else SFX.tap();}});
+app.addEventListener('click',e=>{const b=e.target.closest('.blk');if(b&&!b.closest('.opt')){b.classList.remove('tap');void b.offsetWidth;b.classList.add('tap');if(save.hero==='blu')SFX.boop(rand(0,6));else if(save.hero==='sage')SFX.singNote(rand(0,6));else if(save.hero==='eshon')SFX.scribble(rand(0,6));else if(save.hero==='melrose')SFX.bubble(rand(0,6));else if(save.hero==='cayden')SFX.bounce(rand(0,6));else SFX.tap();}});
 $('homeBtn').onclick=()=>{SFX.tap();save.hero?mapScreen():titleScreen();};
 $('closetBtn').onclick=()=>{SFX.tap();closetScreen();};
 $('muteBtn').onclick=()=>{save.muted=!save.muted;persist();updateStatus();if(!save.muted)SFX.tap();};
@@ -1071,7 +1321,7 @@ if(save.hero)mapScreen();else titleScreen();
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='7';
+const APP_VERSION='8';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
