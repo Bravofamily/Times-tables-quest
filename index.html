@@ -507,7 +507,7 @@ svg.hero{filter:drop-shadow(0 0 1.2px #0A1F44) drop-shadow(0 6px 6px #0A1F4433)}
  .stile .sbadge{position:absolute;right:56px;top:8px;font-size:11px}
 }
 @media (max-width:480px){.stile .sname{font-size:21px}.stile .sbadge{position:static;grid-column:1/-1;justify-self:start;margin-top:6px}}
-@media (min-width:900px){.subjects{grid-template-columns:repeat(5,1fr);gap:14px}.stile .se{font-size:46px}.stile .sname{font-size:22px}}
+@media (min-width:900px){.subjects{grid-template-columns:repeat(3,1fr);gap:14px}.stile .se{font-size:46px}.stile .sname{font-size:22px}}
 /* chapter maps */
 .lvl{color:var(--ink);background:#F8FAFC}
 .lvl .lnum{color:var(--royal)}
@@ -594,12 +594,12 @@ svg.hero{filter:drop-shadow(0 0 1.2px #0A1F44) drop-shadow(0 6px 6px #0A1F4433)}
 .hsec{font-family:var(--tfont);font-weight:800;color:#FFE08A;font-size:24px;margin:22px 4px 10px;letter-spacing:.5px;text-transform:uppercase;text-align:center}
 .hintro{color:#cbd5e1;text-align:center;font-size:16px;max-width:640px;margin:0 auto 12px;line-height:1.5}
 .dsk{display:none!important}
-.subjcards{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.subjcards{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
 .scard{font:inherit;text-align:center;color:var(--ink);background:var(--light);border:none;border-radius:22px;padding:14px 8px;cursor:pointer;box-shadow:0 6px 0 #06142e,0 12px 20px #0005;display:flex;flex-direction:column;align-items:center;gap:4px}
 .scard .so{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;color:#fff;font-family:var(--tfont);box-shadow:inset 0 -4px 0 #0003,0 4px 10px #0003}
 .scard b{font-family:var(--tfont);font-size:20px}.scard small{color:#334155;font-size:13px;line-height:1.3}
 .scard:hover{transform:translateY(-3px)}
-.realms{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.realms{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
 .realm{font:inherit;border:none;padding:0;border-radius:18px;overflow:hidden;cursor:pointer;background:#0A1F44;box-shadow:0 0 0 2px #ffffff22,0 10px 18px #0006;color:#fff;text-align:left}
 .realm svg{display:block;width:100%;height:auto}
 .realm span{display:block;padding:8px 10px;font-family:var(--tfont);font-weight:800;font-size:15px}
@@ -1713,7 +1713,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='12';
+const APP_VERSION='13';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -2174,6 +2174,258 @@ const REALM_OWL={add:"Welcome to Addition Meadow! Here we put numbers together, 
  mult:"Welcome to Times Table Castle! Twelve times tables are waiting, from ×1 to ×12.",
  div:"Welcome to the Division Docks! Here we share fairly, make equal groups, and learn long division.",
  frac:"Welcome to the Fraction Bakery! Here we cut treats into equal pieces and learn all about fractions."};
+/* ================= v13: long multiplication, mystery missing numbers, Muddle Tower (mixed math) ================= */
+/* snapshot of the v12 chapter titles (used by the v12 -> v13 save migration) */
+const V12_TITLES={add:ADD.map(c=>c.t),sub:SUB.map(c=>c.t),div:DIV.map(c=>c.t),frac:FR.map(c=>c.t)};
+const digs=n=>String(n).split('').reverse().map(Number);
+const PLV=['ones','tens','hundreds','thousands','ten-thousands'];
+/* ---------- long multiplication steps ---------- */
+/* column method: one row per multiplier digit (from the ones), carries above, placeholder zero, then add the rows */
+function lmBuild(a,b){const A=digs(a),B=digs(b),ans=a*b,two=B.length>1,st=[],rows=[];
+ B.forEach((m,r)=>{const tg='p'+r;
+  if(r>0)st.push({ph:'Z',want:0,r,tgt:[tg+':0'],hi:['b:'+r],put:[[tg+':0','0']],
+   ask:`0️⃣ <b>Placeholder zero:</b> now we multiply by the <b>${m}</b> in the tens place. What digit goes in the ones place of this row?`,
+   tell:`We are multiplying by ${m} tens now, so we write a <b>0</b> in the ones place to hold it. That's the placeholder zero!`});
+  let carry=0;
+  A.forEach((d,i)=>{const p=d*m,v=p+carry,last=i===A.length-1,col=i+r;
+   const hi=['a:'+i,'b:'+r];if(carry)hi.push(`c${r}:${col}`);
+   const writes=last?String(v).split('').reverse().map((ch,j)=>[tg+':'+(col+j),ch]):[[tg+':'+col,String(v%10)]],tgt=writes.map(w=>w[0]);
+   const wr=last?` Write <b>${v}</b> at the front of the row.`:v>=10?'':` Write <b>${v}</b> in the ${PLV[col]} place.`;
+   st.push({ph:'M',want:p,r,d,m,hi,tgt,put:carry?[]:writes,ask:`✖️ <b>Multiply:</b> ${d} × ${m} = ?`,tell:`✖️ ${d} × ${m} = <b>${p}</b>.`+(carry?'':wr)});
+   if(carry)st.push({ph:'A',want:v,r,p,carry,hi:[`c${r}:${col}`],tgt,put:writes,ask:`➕ <b>Add the carry:</b> ${p} + ${carry} = ?`,tell:`➕ Add the little carry: ${p} + ${carry} = <b>${v}</b>.`+wr});
+   if(!last&&v>=10){const c=Math.floor(v/10);st.push({ph:'C',want:c,r,v,hi:[tgt[0]],tgt:[`c${r}:${col+1}`],put:[[tgt[0],String(v%10)],[`c${r}:${col+1}`,String(c)]],
+     ask:`✏️ ${v} is too big for one box! The <b>${v%10}</b> stays in the ${PLV[col]} place. <b>Carry:</b> what goes in the little box above the next column?`,tell:`✏️ Write the <b>${v%10}</b> and carry the <b>${c}</b> up to the ${PLV[col+1]} column.`});carry=c;}
+   else carry=0;});
+  rows.push(a*m*Math.pow(10,r));});
+ if(two){const sd=String(ans).split('').reverse();st.push({ph:'S',want:ans,hi:['p0','p1'],tgt:sd.map((c,j)=>'s:'+j),put:sd.map((c,j)=>['s:'+j,c]),
+   ask:`➕ <b>Add the two rows:</b> ${rows[0]} + ${rows[1]} = ?`,tell:`➕ Add the rows: ${rows[0]} + ${rows[1]} = <b>${ans}</b>. Done!`});}
+ return {mode:'col',a,b,A,B,two,rows,steps:st,ans,W:Math.max(String(ans).length,String(a).length,String(b).length)+1};}
+/* area model: split the 2-digit number into tens and ones */
+function lmArea(a,b){const t=Math.floor(a/10)*10,o=a%10,p0=t*b,p1=o*b,ans=a*b;
+ return {mode:'area',a,b,parts:[t,o],prods:[p0,p1],ans,steps:[
+  {ph:'P',i:0,want:p0,ask:`🟦 <b>Box 1:</b> ${t} × ${b} = ?`,tell:`🟦 Box 1: ${t} × ${b}. Think ${t/10} × ${b} = ${t/10*b}, so ${t} × ${b} = <b>${p0}</b>.`},
+  {ph:'P',i:1,want:p1,ask:`🟨 <b>Box 2:</b> ${o} × ${b} = ?`,tell:`🟨 Box 2: ${o} × ${b} = <b>${p1}</b>.`},
+  {ph:'S',want:ans,ask:`➕ <b>Add the boxes:</b> ${p0} + ${p1} = ?`,tell:`➕ Add the two boxes: ${p0} + ${p1} = <b>${ans}</b>!`}]};}
+/* fill state after `done` steps */
+function lmFill(L,done){const f={};L.steps.slice(0,done).forEach(s=>(s.put||[]).forEach(([k,v])=>{f[k]=v;}));return f;}
+function lmGridHTML(L,done,cur,o){o=o||{};if(L.mode==='area')return lmAreaHTML(L,done,cur,o);
+ const W=L.W,f=lmFill(L,done),st=cur!=null?L.steps[cur]:null,tgt=new Set(st?st.tgt:[]),hi=new Set(st?st.hi:[]);
+ const GC=j=>W-j+1;let r=0,h='';const cell=(row,j,txt,cls)=>`<span class="lmc ${cls||''}" style="grid-row:${row};grid-column:${GC(j)}">${txt}</span>`;
+ const rowKeys=(tag,len)=>{let s='';for(let j=0;j<len;j++){const k=tag+':'+j,isT=tgt.has(k),isH=hi.has(k)||hi.has(tag);if(f[k]!=null||isT)s+=cell(r,j,isT&&!(o.show&&f[k]!=null)?'?':f[k],(isT?'tgt ':'')+(isH?'hi ':''));}return s;};
+ const carryRow=ri=>{r++;h+=`<span class="lmlab" style="grid-row:${r};grid-column:1">${L.two?(ri?'tens carry':'ones carry'):'carry'}</span>`;h+=rowKeys('c'+ri,W).replace(/class="lmc /g,'class="lmc lmcar ');};
+ if(L.two)carryRow(1);carryRow(0);
+ r++;L.A.forEach((d,i)=>{h+=cell(r,i,d,hi.has('a:'+i)?'hi':'');});
+ r++;h+=`<span class="lmc lmop" style="grid-row:${r};grid-column:1">×</span>`;L.B.forEach((d,i)=>{h+=cell(r,i,d,hi.has('b:'+i)?'hi':'');});
+ r++;h+=`<span class="lmline" style="grid-row:${r}"></span>`;
+ r++;h+=rowKeys('p0',W);
+ if(L.two){r++;h+=`<span class="lmc lmop" style="grid-row:${r};grid-column:1">+</span>`+rowKeys('p1',W);r++;h+=`<span class="lmline" style="grid-row:${r}"></span>`;r++;h+=rowKeys('s',W);}
+ return `<div class="lmwrap"><div class="lmg" role="img" aria-label="column multiplication of ${L.a} times ${L.b}" style="grid-template-columns:auto repeat(${W},var(--lmw))">${h}</div></div>`;}
+function lmAreaHTML(L,done,cur,o){const [t,on]=L.parts,b=L.b,f=i=>done>i?L.prods[i]:null,isC=i=>cur===i;
+ const w0=Math.round(220*Math.max(.55,t/(t+on))),w1=240-w0,X0=40,X1=X0+w0;
+ const box=(x,w,i,col)=>`<rect x="${x}" y="34" width="${w}" height="76" rx="6" fill="${col}" stroke="${isC(i)?'#F59E0B':'#1E3A8A'}" stroke-width="${isC(i)?5:2.5}"/><text x="${x+w/2}" y="${80}" text-anchor="middle" font-size="${o.small?20:24}" font-weight="800" fill="#1E3A8A" font-family="Baloo 2,Nunito,sans-serif">${f(i)!=null?f(i):isC(i)?'?':''}</text>`;
+ const lab=(x,y,s)=>`<text x="${x}" y="${y}" text-anchor="middle" font-size="20" font-weight="800" fill="#334155" font-family="Baloo 2,Nunito,sans-serif">${s}</text>`;
+ const p=i=>f(i)!=null?f(i):'?',sum=done>2?L.ans:'?';
+ return `<div class="lmarea"><svg class="hv" viewBox="0 0 300 120" style="max-width:340px" role="img" aria-label="area model for ${L.a} times ${L.b}">${lab(X0+w0/2,24,t)}${lab(X1+w1/2,24,on)}${lab(20,80,b)}${box(X0,w0,0,'#DBEAFE')}${box(X1,w1,1,'#FEF3C7')}</svg>
+ <div class="lmsum ${cur===2?'hi':''}">${p(0)} + ${p(1)} = ${sum}</div></div>`;}
+/* blank versions for hints (no values at all) */
+function lmBlank(L,cur){if(L.mode==='area')return lmAreaHTML(L,0,cur==null?null:Math.min(cur,1),{small:1});const k={steps:L.steps.map(s=>Object.assign({},s,{put:[]}))};return lmGridHTML(Object.assign({},L,k),0,cur);}
+/* ---------- question makers ---------- */
+function lmQ(a,b,mode,k,o){o=o||{};const L=mode==='area'?lmArea(a,b):lmBuild(a,b);
+ return Object.assign({input:'lm',L,text:`${a} × ${b} = ?`,ans:a*b,check:v=>v===a*b,m:{op:'lm',a,b,mode},sig:`lm:${a}x${b}`,lead:mode==='area'?'Use the area model! 🟦🟨':'Column method: fill each step ✏️',
+  explain:`${a} × ${b} = ${a*b}`,hint:mode==='area'?`Split ${a} into ${L.parts[0]} and ${L.parts[1]}. Multiply each part by ${b}, then add.`:`Start with the ones digit, carry when you make 10 or more.`},o);}
+function noZ(lo,hi){let v;do v=rand(lo,hi);while(String(v).includes('0'));return v;}
+function mulPad(a,b,k,o){o=o||{};const q=Qp(`${a} × ${b} = ?`,a*b,{m:{op:'mul',a,b},sig:`mul:${a}x${b}`,explain:`${a} × ${b} = ${a*b}`,lead:o.lead,vis:o.vis,hint:o.hint});return q;}
+function multStory(a,b,k){const it=itm(),H=nm(save.hero),T=tN();const q=mulPad(a,b,k);
+ q.text=pick([`${H} packs ${a} ${it.gs} with ${cnt(b,it)} ${it.e} in each. How many ${it.many} is that in all?`,`${T} sets out ${a} rows with ${b} ${it.many} ${it.e} in every row. How many ${it.many} altogether?`,`Each ${it.g1} holds ${cnt(b,it)} ${it.e}. How many ${it.many} fit in ${a} ${it.gs}?`]);
+ q.lead=STORY;q.story=true;q.sig+=':s';return q;}
+function x10Q(k){const lv=k==='p'?rand(0,1):k==='b'?rand(0,2):rand(1,2);let a,b;
+ if(lv===0){a=rand(2,12);b=pick([10,100]);}else if(lv===1){a=rand(2,9);b=rand(2,9)*10;}else{if(Math.random()<.5){a=rand(2,9);b=rand(2,9)*100;}else{a=rand(2,9)*10;b=rand(2,9)*10;}}
+ if(Math.random()<.5)[a,b]=[b,a];const q=mulPad(a,b,k,{vis:x10Vis(a,b)});q.m={op:'x10',a,b};q.lv=lv;
+ if(k==='a'||(k==='b'&&Math.random()<.25))return Object.assign(multStory(a,b,k),{m:{op:'x10',a,b},lv});
+ if(Math.random()<.25){const z=a*b;mcNum(q,[z/10,z*10,z+10,z-10].filter(v=>v===Math.round(v)));}
+ return q;}
+function zeros(n){return (String(n).match(/0+$/)||[''])[0].length;}
+function x10Vis(a,b){const ha=a/Math.pow(10,zeros(a)),hb=b/Math.pow(10,zeros(b)),z=zeros(a)+zeros(b);return `<div class="x10v"><span class="x10a">${ha}</span><span class="x10z">${'0'.repeat(zeros(a))}</span> × <span class="x10a">${hb}</span><span class="x10z">${'0'.repeat(zeros(b))}</span> <span class="x10t">→ ${z} zero${z===1?'':'s'} to put back</span></div>`;}
+/* ---------- Mystery Missing Numbers ---------- */
+const MSYM={'+':'+','-':'−','*':'×','/':'÷'};
+function missNums(op,lv){let a,b,c;
+ if(op==='+'){if(lv===0){c=rand(8,20);a=rand(1,c-1);}else if(lv===1){c=rand(30,99);a=rand(10,c-10);}else{c=rand(150,999);a=rand(100,c-20);}b=c-a;}
+ else if(op==='-'){if(lv===0){a=rand(8,20);b=rand(1,a-1);}else if(lv===1){a=rand(30,99);b=rand(10,a-10);}else{a=rand(150,999);b=rand(20,a-100);}c=a-b;}
+ else{let x,y;if(lv===0){x=rand(2,10);y=rand(2,10);}else if(lv===1){x=rand(2,12);y=pick([11,12,rand(6,12)]);}else{x=rand(13,30);y=rand(3,9);}
+  if(Math.random()<.5)[x,y]=[y,x];if(op==='*'){a=x;b=y;c=x*y;}else{a=x*y;b=x;c=y;}}
+ return {a,b,c};}
+function missQ(op,lv,k,o){o=o||{};const {a,b,c}=missNums(op,lv),rp=Math.random(),pos=rp<.15?2:rp<.575?0:1,flip=Math.random()<.2&&lv>0,s=MSYM[op];
+ const L=pos===0?'?':a,R=pos===1?'?':b,C=pos===2?'?':c,ans=pos===0?a:pos===1?b:c,eq=flip?`${C} = ${L} ${s} ${R}`:`${L} ${s} ${R} = ${C}`;
+ const q=Qp(eq,ans,{m:{op:'miss',o:op,a,b,c,pos,lv},lv,sig:`miss:${op}:${a}:${b}:${pos}`,lead:'Find the missing number! 🔍',explain:`${a} ${s} ${b} = ${c}, so the missing number is ${ans}.`,
+  hint:missTip(op,pos)});
+ if(lv<2&&(k==='p'||o.vis))q.vis=balHTML(`${L} ${s} ${R}`,String(C));
+ if(k==='a'||(k==='b'&&Math.random()<.3))missStory(q);
+ else if(Math.random()<(k==='b'?.2:.15))mcNum(q,[ans+1,ans-1,ans+2,c,a===ans?b:a,ans+10].filter(v=>v>=0));
+ return q;}
+function missTip(op,pos){if(pos===2)return op==='+'?'The ? is the total: put the two parts together.':op==='-'?'The ? is what is left: take the second number away from the first.':op==='*'?'The ? is the total: count in equal groups.':'The ? is how many in each group: share the first number equally.';return op==='+'?'Use the fact family: whole − part = missing part.':op==='-'?(pos===0?'The missing number is the whole: add the two numbers you can see.':'Use the fact family: whole − what is left = the missing part.'):op==='*'?'Use the opposite: divide the total by the number you know.':(pos===0?'The missing number is the whole: multiply the two numbers you can see.':'Use the fact family: whole ÷ answer = missing number.');}
+function missStory(q){const m=q.m,it=itm(),H=nm(save.hero),T=tN(),{a,b,c,pos,o}=m;let x;
+ if(pos===2)x=o==='+'?`${H} has ${cnt(a,it)} ${it.e}. ${T} brings ${b} more. How many ${it.many} are there now?`:o==='-'?`${H} had ${cnt(a,it)} ${it.e} and gave ${b} to ${T}. How many ${it.many} are left?`:o==='*'?`${H} has ${a} ${it.gs} with ${cnt(b,it)} ${it.e} in each. How many ${it.many} in all?`:`${H} shares ${cnt(a,it)} ${it.e} equally between ${b} friends. How many does each friend get?`;
+ else  if(o==='+')x=pos===0?`${H} had some ${it.many} ${it.e}. ${T} gave ${b} more. Now ${H} has ${c}. How many did ${H} have at the start?`:`${H} has ${cnt(a,it)} ${it.e}. After ${T} brings some more, there are ${c}. How many did ${T} bring?`;
+ else if(o==='-')x=pos===0?`${H} had some ${it.many} ${it.e} and gave ${b} away. Now ${c} are left. How many were there at the start?`:`${H} had ${cnt(a,it)} ${it.e} and gave some to ${T}. Now ${c} are left. How many did ${H} give away?`;
+ else if(o==='*')x=pos===0?`${H} filled some ${it.gs} with ${b} ${it.many} ${it.e} in each. That made ${c} in all. How many ${it.gs}?`:`${H} has ${a} ${it.gs} with the same number of ${it.many} ${it.e} in each. There are ${c} in all. How many in each ${it.g1}?`;
+ else x=pos===0?`${H} shared some ${it.many} ${it.e} equally between ${b} friends. Each friend got ${c}. How many ${it.many} were shared?`:`${H} shared ${a} ${it.many} ${it.e} equally. Each friend got ${c}. How many friends were there?`;
+ q.text=x;q.lead=STORY;q.story=true;q.sig+=':s';delete q.vis;return q;}
+/* balance scale (left side = right side) */
+function balHTML(left,right){const t=(x,y,s)=>`<text x="${x}" y="${y}" text-anchor="middle" font-size="${String(s).length>9?17:21}" font-weight="800" fill="#1E3A8A" font-family="Baloo 2,Nunito,sans-serif">${s}</text>`;
+ return `<svg class="hv bal" viewBox="0 0 320 130" style="max-width:320px" role="img" aria-label="balance scale: both sides are equal"><path d="M160 30v80M120 118h80" stroke="#7C2D12" stroke-width="6" stroke-linecap="round"/><path d="M40 34h240" stroke="#7C2D12" stroke-width="5" stroke-linecap="round"/><circle cx="160" cy="30" r="7" fill="#F59E0B"/>
+ <path d="M55 34l-25 40M55 34l25 40M265 34l-25 40M265 34l25 40" stroke="#94A3B8" stroke-width="2"/><path d="M14 74h82a41 14 0 0 1-82 0z" fill="#FDE68A" stroke="#B45309" stroke-width="2.5"/><path d="M224 74h82a41 14 0 0 1-82 0z" fill="#FDE68A" stroke="#B45309" stroke-width="2.5"/>${t(55,66,left)}${t(265,66,right)}<text x="160" y="22" text-anchor="middle" font-size="16" font-weight="800" fill="#047857">=</text></svg>`;}
+/* equal-groups bar: n boxes of size each (null = ?) under a whole */
+function hvEq(whole,n,each){const lab=v=>v==null?'?':v,N=n==null?3:Math.min(n,12),w=300/(n==null?4:N);let s=`<svg class="hv" viewBox="0 0 320 112" style="max-width:320px" role="img" aria-label="equal groups bar model"><rect x="10" y="8" width="300" height="38" rx="10" fill="#E0F2FE" stroke="#1E3A8A" stroke-width="2.5"/><text x="160" y="35" text-anchor="middle" font-size="20" font-weight="800" fill="#1E3A8A" font-family="Baloo 2,Nunito,sans-serif">${lab(whole)}</text>`;
+ for(let i=0;i<N;i++)s+=`<rect x="${10+i*w}" y="58" width="${w}" height="38" rx="6" fill="#FEF3C7" stroke="#B45309" stroke-width="2"/><text x="${10+i*w+w/2}" y="84" text-anchor="middle" font-size="${N>8?13:18}" font-weight="800" fill="#92400E" font-family="Baloo 2,Nunito,sans-serif">${lab(each)}</text>`;
+ if(n==null)s+=`<rect x="${10+N*w}" y="58" width="${w}" height="38" rx="6" fill="#fff" stroke="#B45309" stroke-width="2" stroke-dasharray="5 4"/><text x="${10+N*w+w/2}" y="84" text-anchor="middle" font-size="18" font-weight="800" fill="#92400E">…</text>`;
+ return s+`<text x="160" y="110" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">${n==null?'how many boxes? = ?':`${n} equal boxes`}</text></svg>`;}
+function missLearn(op){const lv=op==='+'||op==='-'?0:0,{a,b,c}=missNums(op,lv),s=MSYM[op];
+ if(op==='+')return [{t:`Mystery! <b>? + ${b} = ${c}</b>. The scale is balanced: both sides are the same.`,v:balHTML(`? + ${b}`,c)},{t:`${c} is the whole. ${b} is one part. The ? is the other part.`,v:hvBar(c,null,b)},{t:`Fact family: ${c} − ${b} = ${a}. So ? = <b>${a}</b>! Check: ${a} + ${b} = ${c} ✅`,v:balHTML(`${a} + ${b}`,c)}];
+ if(op==='-')return [{t:`Mystery! <b>${a} − ? = ${c}</b>. We took something away from ${a} and ${c} were left.`,v:balHTML(`${a} − ?`,c)},{t:`${a} is the whole. ${c} is what is left. The ? is the part we took away.`,v:hvBar(a,null,c)},{t:`Fact family: ${a} − ${c} = ${b}. So ? = <b>${b}</b>! And if the ? is first, like ? − ${b} = ${c}, add instead: ${c} + ${b} = ${a}.`,v:balHTML(`${a} − ${b}`,c)}];
+ if(op==='*')return [{t:`Mystery! <b>${a} × ? = ${c}</b>. ${a} groups, and ${c} in all. How many in each group?`,v:balHTML(`${a} × ?`,c)},{t:`Draw ${a} equal boxes that make ${c} altogether.`,v:hvEq(c,a,null)},{t:`Fact family: × and ÷ undo each other. ${c} ÷ ${a} = ${b}. So ? = <b>${b}</b>! Check: ${a} × ${b} = ${c} ✅`,v:balHTML(`${a} × ${b}`,c)}];
+ return [{t:`Mystery! <b>? ÷ ${b} = ${c}</b>. Something shared into ${b} groups gives ${c} in each.`,v:balHTML(`? ÷ ${b}`,c)},{t:`${b} boxes with ${c} in each. The ? is the whole bar.`,v:hvEq(null,b,c)},{t:`Fact family: ÷ and × undo each other. ${c} × ${b} = ${a}. So ? = <b>${a}</b>! And for ${a} ÷ ? = ${c}, divide: ${a} ÷ ${c} = ${b}.`,v:balHTML(`${a} ÷ ${b}`,c)}];}
+function missGen(op,k){const lv=k==='p'?rand(0,1):k==='a'?1:pick([0,1,1,2,2]);return missQ(op,lv,k);}
+function missCh(op,o){return Object.assign({t:'Mystery Missing Numbers',e:'🔍',skill:'finding mystery missing numbers',ramp:true,miss:op,
+ tip:op==='+'||op==='-'?'Fact families! If ? + 7 = 13, then 13 − 7 = ?. If ? − 9 = 15, then 15 + 9 = ?. Always check by putting your number back in.':'Use the opposite! If 8 × ? = 56, then 56 ÷ 8 = ?. If ? ÷ 6 = 7, then 7 × 6 = ?. Check by putting your number back in.',
+ learn(){return missLearn(op);},gen(k){return missGen(op,k);}},o);}
+const MISS_ADD=missCh('+',{place:{name:'Mystery Maze',e:'🧩',desc:'Hedges twist and turn, and some numbers are hiding behind the leaves!'},boss:['🦊','Fox of Fog']});
+const MISS_SUB=missCh('-',{place:{name:'Secret Crystal Vault',e:'🗝️',desc:'A locked vault where the crystals hide the numbers you need.'},boss:['🦂','Sneaky Scorpion']});
+const MISS_DIV=missCh('/',{place:{name:'Foggy Lighthouse',e:'🌫️',desc:'Fog rolls in from the sea and hides numbers on the signal flags.'},boss:['🦀','Captain Hidey-Crab']});
+const MISS_MULT=missCh('*',{place:{name:'Secret Passage',e:'🕯️',desc:'A hidden passage behind the bookshelf. Some numbers are missing from the castle maps!'},boss:['👻','Phantom Factor']});
+/* insert before each realm's final word-problem chapter */
+ADD.splice(ADD.length-1,0,MISS_ADD);SUB.splice(SUB.length-1,0,MISS_SUB);DIV.splice(DIV.length-1,0,MISS_DIV);
+/* ---------- Times Table Castle: long multiplication wing (chapters 13-19) ---------- */
+function lmLearnSteps(L){return L.steps.map(s=>s.tell);}
+const MLX=[
+ {t:'×10s and ×100s',e:'0️⃣',skill:'multiplying by 10s and 100s',place:{name:'Zero Hero Tower',e:'🔟',desc:'A tall tower where every floor adds a zero to the end!'},boss:['🦇','Baron Zeroth'],
+  tip:'Multiply the front digits, then put the zeros back on the end: 30 × 4 → 3 × 4 = 12 → 120.',
+  learn(){const a=rand(2,9),b=rand(3,9);return [{t:`Start with a fact you know: ${a} × ${b} = <b>${a*b}</b>.`,v:`<div class="eq">${a} × ${b} = ${a*b}</div>`},{t:`${a}0 is ${a} TENS. So ${a}0 × ${b} is ${a*b} tens = <b>${a*b*10}</b>.`,v:x10Vis(a*10,b)},{t:`${a}00 is ${a} HUNDREDS. ${a}00 × ${b} = <b>${a*b*100}</b>. Count the zeros and put them back!`,v:x10Vis(a*100,b)},{t:`Two tens numbers? ${a}0 × ${b}0: ${a} × ${b} = ${a*b}, then add both zeros: <b>${a*b*100}</b>.`,v:x10Vis(a*10,b*10)}];},
+  gen(k){return x10Q(k);}},
+ {t:'Area Model (2-digit × 1-digit)',e:'🟦',skill:'multiplying with the area model',lm:'area',place:{name:'Garden of Rectangles',e:'🌳',desc:'The castle gardeners plant flowers in big rectangle beds, split into tens and ones.'},boss:['🐌','Sir Split-Snail'],
+  tip:'Split the big number into tens and ones. Multiply each part, then add the parts together.',
+  learnLM(){return lmArea(noZ(12,49),rand(3,6));},
+  gen(k){const a=noZ(12,k==='b'?89:59),b=rand(2,k==='b'?9:6);if(k==='a')return multStory(a,b,k);if(Math.random()<(k==='b'?.45:.7))return lmQ(a,b,'area',k);
+   const q=mulPad(a,b,k,{vis:lmAreaHTML(lmArea(a,b),0,null,{small:1}),lead:'Split into tens and ones! 🟦🟨',hint:`Split ${a} into ${Math.floor(a/10)*10} and ${a%10}, multiply both, then add.`});return q;}},
+ {t:'Column Method with Carrying',e:'🧮',skill:'column multiplication with carrying',lm:'col',place:{name:'Carry-Over Courtyard',e:'⛲',desc:'Knights stack numbers in neat columns. When a column overflows, the extra climbs up!'},boss:['🦎','Carrygon'],
+  tip:'Start with the ones. If you make 10 or more, write the ones digit and carry the tens digit to the next column.',
+  learnLM(){let a,b;do{a=noZ(23,89);b=rand(3,9);}while((a%10)*b<10);return lmBuild(a,b);},
+  gen(k){let a,b;do{a=noZ(13,k==='b'?99:79);b=rand(3,9);}while((a%10)*b<10);if(k==='a')return multStory(a,b,k);if(Math.random()<(k==='b'?.5:.75))return lmQ(a,b,'col',k);
+   const q=mulPad(a,b,k,{vis:colH(a,b,'×'),lead:'Use the column method! 🧮',hint:'Multiply the ones first, carry, then multiply the tens and add the carry.'});if(Math.random()<.3)mcNum(q,[a*b+10,a*b-10,Math.floor(a/10)*10*b,a*b+b]);return q;}},
+ {t:'3-Digit × 1-Digit',e:'🏛️',skill:'multiplying three-digit numbers',lm:'col',place:{name:'Hundred Hall',e:'🏛️',desc:'The great hall has hundreds of candles, lined up in hundreds, tens and ones.'},boss:['🐻','Big Bear Hundredpaw'],
+  tip:'Same steps, one more column: ones, then tens, then hundreds. Carry every time a column makes 10 or more.',
+  learnLM(){return lmBuild(noZ(123,489),rand(3,6));},
+  gen(k){const a=noZ(112,k==='b'?899:599),b=rand(2,k==='b'?9:7);if(k==='a')return multStory(a,b,k);if(Math.random()<(k==='b'?.5:.75))return lmQ(a,b,'col',k);
+   const q=mulPad(a,b,k,{vis:colH(a,b,'×'),lead:'Hundreds, tens and ones! 🏛️',hint:'Ones first, then tens, then hundreds. Do not forget the carries!'});return q;}},
+ {t:'2-Digit × 2-Digit',e:'🖼️',skill:'two-digit times two-digit multiplication',lm:'col',place:{name:'Grand Gallery of Rows',e:'🖼️',desc:'Paintings hang in two long rows. Each row is a partial product!'},boss:['🐉','Double-Row Dragon'],
+  tip:'Row 1: multiply by the ones digit. Row 2: write a 0 placeholder, then multiply by the tens digit. Then add the two rows.',
+  learnLM(){return lmBuild(noZ(23,48),noZ(12,29));},
+  gen(k){const a=noZ(12,k==='b'?89:59),b=noZ(12,k==='b'?49:29);if(k==='a')return multStory(a,b,k);if(Math.random()<(k==='b'?.55:.8))return lmQ(a,b,'col',k);
+   const q=mulPad(a,b,k,{vis:colH(a,b,'×'),lead:'Two rows, then add! 🖼️',hint:'Multiply by the ones, then by the tens with a 0 placeholder, then add the rows.'});return q;}},
+ MISS_MULT,
+ {t:'Multiplication Word Problems',e:'📖',skill:'multiplication story problems',place:{name:'Royal Banquet Hall',e:'🍽️',desc:'The king is throwing a feast, and every table needs counting!'},boss:['🃏','Jester Jumble'],
+  tip:'Clue words: "each", "every", "rows of", "groups of" and "times as many" mean MULTIPLY. Pick the method that fits: ×10s, area model or columns.',
+  learn(){const a=noZ(13,39),b=rand(3,7),it=itm();return [{t:`Read the story: The banquet has ${a} tables. Each table has ${cnt(b,it)} ${it.e}. How many ${it.many} in all?`,v:`<div class="eq">${it.e}</div>`},{t:'Find the clue: "each table has" means equal groups. That\'s MULTIPLY!',v:`<div class="eq">${a} ✖️ ${b}</div>`},{t:`Use the area model: ${Math.floor(a/10)*10} × ${b} = ${Math.floor(a/10)*10*b} and ${a%10} × ${b} = ${a%10*b}.`,v:lmAreaHTML(lmArea(a,b),2,null,{small:1})},{t:`Add the parts: ${Math.floor(a/10)*10*b} + ${a%10*b} = <b>${a*b}</b> ${it.many}!`}];},
+  gen(k){const r=Math.random();let a,b;if(r<.25){a=rand(2,9)*10;b=rand(3,9);}else if(r<.6){a=noZ(13,89);b=rand(3,9);}else if(r<.8){a=noZ(112,499);b=rand(2,6);}else{a=noZ(12,39);b=noZ(12,25);}
+   if(k==='p'&&Math.random()<.3)return lmQ(noZ(13,59),rand(3,7),'col',k);return multStory(a,b,k);}}];
+SUBJ_BY.mult.ch=Array(12).fill(null).concat(MLX);
+/* ---------- Muddle Tower: mixed math ---------- */
+const OPN={'+':{s:'+',w:'Add',e:'➕'},'-':{s:'−',w:'Subtract',e:'➖'},'*':{s:'×',w:'Multiply',e:'✖️'},'/':{s:'÷',w:'Divide',e:'➗'}};
+const WOPS=['+','-','*','/'];
+const WHY={'+':'"more", "in all" and "altogether" mean put together: ADD.','-':'"left", "gave away" and "how many more" mean take away or compare: SUBTRACT.','*':'"each" and "groups of" with equal groups mean MULTIPLY.','/':'"share equally" and "split into" mean DIVIDE.'};
+function mixNums(op,lv){let a,b;
+ if(op==='+'){if(lv===0){a=rand(2,12);b=rand(2,20-a);}else{a=rand(12,69);b=rand(11,29);}return [a,b,a+b];}
+ if(op==='-'){if(lv===0){a=rand(8,20);b=rand(2,a-2);}else{a=rand(35,99);b=rand(11,a-10);}return [a,b,a-b];}
+ if(op==='*'){if(lv===0){a=rand(2,5);b=rand(2,Math.floor(20/a));}else{a=rand(12,24);b=rand(2,4);}return [a,b,a*b];}
+ if(lv===0){b=rand(2,5);const c=rand(2,Math.floor(20/b));return [b*c,b,c];}b=rand(2,9);const c=rand(3,Math.floor(99/b));return [b*c,b,c];}
+function mixFact(lv,k){const op=pick(WOPS),[a,b,c]=mixNums(op,lv),s=OPN[op].s;const q=Qp(`${a} ${s} ${b} = ?`,c,{m:{op:'mixf',o:op,a,b,lv},lv,sig:`mixf:${a}${op}${b}`,lead:`${OPN[op].e} Watch the sign!`,explain:`${a} ${s} ${b} = ${c}`,hint:`Look at the sign first: it says ${OPN[op].w.toLowerCase()}.`});
+ if(Math.random()<.2)mcNum(q,[c+1,c-1,op==='+'?a-b:a+b,op==='*'?a+b:a*b].filter(v=>v>=0&&v===Math.round(v)));return q;}
+function wopStory(op,lv){const it=itm(),H=nm(save.hero),T=tN(),[a,b,c]=mixNums(op,lv);let x;
+ if(op==='+')x=pick([`${H} has ${cnt(a,it)} ${it.e}. ${T} gives ${H} ${b} more. How many ${it.many} does ${H} have now?`,`${H} found ${cnt(a,it)} ${it.e} in the morning and ${b} more in the afternoon. How many ${it.many} altogether?`]);
+ else if(op==='-')x=pick([`${H} had ${cnt(a,it)} ${it.e} and gave ${b} to ${T}. How many ${it.many} are left?`,`${H} has ${cnt(a,it)} ${it.e}. ${T} has ${b}. How many more ${it.many} does ${H} have?`]);
+ else if(op==='*')x=pick([`There are ${a} ${it.gs} with ${cnt(b,it)} ${it.e} in each. How many ${it.many} in all?`,`${T} makes ${a} rows with ${b} ${it.many} ${it.e} in each row. How many ${it.many} is that?`]);
+ else x=pick([`${H} shares ${cnt(a,it)} ${it.e} equally between ${b} friends. How many ${it.many} does each friend get?`,`${T} puts ${cnt(a,it)} ${it.e} into ${it.gs} of ${b}. How many ${it.gs} are filled?`]);
+ return {op,a,b,c,text:x};}
+function wopQ(lv,k,o){o=o||{};const op=o.op||pick(WOPS),w=wopStory(op,lv),ai=WOPS.indexOf(op);
+ return {input:'wop',text:w.text,ans:w.c,check:v=>v===w.c,lead:STORY,story:true,lv,wop:{ai,why:WHY[op],lab:'🤔 Which operation do you need?'},m:{op:'wopst',o:op,a:w.a,b:w.b,lv},sig:`wop:${op}:${w.a}:${w.b}`,
+  explain:`${w.a} ${OPN[op].s} ${w.b} = ${w.c}`,hint:WHY[op]};}
+function storyPad(lv,k){const w=wopStory(pick(WOPS),lv);return Qp(w.text,w.c,{m:{op:'wopst',o:w.op,a:w.a,b:w.b,lv},lv,lead:STORY,story:true,sig:`st:${w.op}:${w.a}:${w.b}`,explain:`${w.a} ${OPN[w.op].s} ${w.b} = ${w.c}`,hint:WHY[w.op]});}
+/* order of operations */
+function oopQ(lv,k){let f,a,b,c,ans,text;const R=rand;
+ for(let t=0;t<50;t++){f=lv===0?pick(['(a+b)*c','(a-b)*c','a*(b+c)']):lv===1?pick(['a+b*c','a*b+c','a-b*c','(a+b)*c','a*b-c']):pick(['(a+b)/c','a/b+c','a+b/c','(a-b)*c','a*(b-c)','a*b-c+b']);
+  a=R(2,lv?12:9);b=R(2,lv?9:6);c=R(2,lv?9:5);
+  if(f==='(a+b)/c'){c=R(2,6);const s=c*R(2,6);a=R(1,s-1);b=s-a;}if(f==='a/b+c'){b=R(2,6);a=b*R(2,8);}if(f==='a+b/c'){c=R(2,6);b=c*R(2,8);}
+  if(f==='a*b-c*1')f='a*b-c';
+  const e=f.replace(/a/g,a).replace(/b/g,b).replace(/c/g,c);ans=Function(`return ${e}`)();if(ans>=0&&Number.isInteger(ans)&&ans<=200)break;
+  if(t===49){f='(a+b)*c';a=3;b=4;c=2;ans=14;}}
+ text=f.replace(/a/g,a).replace(/b/g,b).replace(/c/g,c).replace(/\*/g,' × ').replace(/\//g,' ÷ ').replace(/\+/g,' + ').replace(/-/g,' − ').replace(/\( /g,'(').replace(/ \)/g,')')+' = ?';
+ const first=/\(/.test(f)?f.match(/\(([^)]+)\)/)[1]:(f.match(/[a-c][*\/][a-c]/)||[f])[0];const fs=first.replace(/a/g,a).replace(/b/g,b).replace(/c/g,c).replace(/\*/g,' × ').replace(/\//g,' ÷ ').replace(/\+/g,' + ').replace(/-/g,' − ');
+ const q=Qp(text,ans,{m:{op:'oop',f,a,b,c,first:fs,br:/\(/.test(f)},lv,sig:`oop:${f}:${a}:${b}:${c}`,lead:/\(/.test(f)?'Brackets first! ( )':'× and ÷ before + and −!',explain:`Do ${fs} first. ${text.replace('?',ans)}`,hint:/\(/.test(f)?`Work out (${fs}) first.`:`Do ${fs} first, then the rest.`});
+ if(k!=='a'&&Math.random()<.2){const parts=[fs];const other=text.replace(' = ?','');
+  const wrongs=[];const L=text.replace(' = ?','').replace(/[()]/g,'');const toks=L.split(' ');for(let i=1;i<toks.length;i+=2){const p=`${toks[i-1]} ${toks[i]} ${toks[i+1]}`;if(p!==fs&&!wrongs.includes(p))wrongs.push(p);}
+  if(wrongs.length){const opts=shuffle(parts.concat(wrongs.slice(0,2)));return Qmc(`${other}: which part do you work out FIRST?`,opts.map(h=>({h})),opts.indexOf(fs),{m:{op:'oopmc',f,first:fs,br:/\(/.test(f)},lv,sig:`oopmc:${f}:${a}:${b}:${c}`,lead:'Order of operations 🧗',explain:`${/\(/.test(f)?'Brackets':'× and ÷'} come first: ${fs}.`});}}
+ return q;}
+/* two-step word problems */
+function multiQ(lv,k){const it=itm(),H=nm(save.hero),T=tN(),O=oN(),R=rand;let a,b,c,ans,text,s1,s2,op1;const t=pick([0,1,2,3,4]);
+ if(t===0){a=R(3,lv?8:5);b=R(3,lv?9:5);c=R(2,a*b-2);ans=a*b-c;op1='*';text=`${H} has ${a} ${it.gs} with ${cnt(b,it)} ${it.e} in each. ${H} gives ${c} to ${T}. How many ${it.many} are left?`;s1=`${a} × ${b}`;s2=`− ${c}`;}
+ else if(t===1){c=R(2,lv?6:4);const tot=c*R(2,lv?9:5);a=R(2,tot-2);b=tot-a;ans=tot/c;op1='+';text=`${H} has ${cnt(a,it)} ${it.e} and finds ${b} more. Then ${H} shares them equally between ${c} friends. How many does each friend get?`;s1=`${a} + ${b}`;s2=`÷ ${c}`;}
+ else if(t===2){a=R(2,lv?9:5);b=R(3,lv?9:6);c=R(2,lv?20:9);ans=a*b+c;op1='*';text=`${T} buys ${a} packs of ${cnt(b,it)} ${it.e}. ${O} adds ${c} more. How many ${it.many} now?`;s1=`${a} × ${b}`;s2=`+ ${c}`;}
+ else if(t===3){b=R(2,lv?6:4);a=b*R(2,lv?9:5);c=R(1,lv?9:5);ans=a/b+c;op1='/';text=`${H} shares ${cnt(a,it)} ${it.e} equally between ${b} ${it.gs}. Then ${T} puts ${c} more in each ${it.g1}. How many are in each ${it.g1} now?`;s1=`${a} ÷ ${b}`;s2=`+ ${c}`;}
+ else{a=R(lv?30:15,lv?90:40);b=R(5,Math.floor(a/2));c=R(2,a-b-1);ans=a-b-c;op1='-';text=`${H} had ${cnt(a,it)} ${it.e}. ${H} gave ${b} to ${T} and ${c} to ${O}. How many ${it.many} are left?`;s1=`${a} − ${b}`;s2=`− ${c}`;}
+ const q={input:'pad',text,ans,check:v=>v===ans,lead:'Two-step story! 📖📖',story:true,lv,m:{op:'two',t,a,b,c,s1,s2,o:op1},sig:`two:${t}:${a}:${b}:${c}`,explain:`Step 1: ${s1} = ${Function('return '+s1.replace('×','*').replace('÷','/').replace('−','-'))()}. Step 2: then ${s2}. Answer: ${ans}.`,hint:`First ${s1}, then ${s2}.`};
+ if(k!=='p'&&Math.random()<.4){q.input='wop';q.wop={ai:WOPS.indexOf(op1),why:`Step 1 is ${OPN[op1].w.toLowerCase()}: ${s1}.`,lab:'🤔 Which operation do you do FIRST?'};}
+ return q;}
+const MIX=[
+ {t:'Mixed Facts to 20',e:'🎲',skill:'mixing all four operations within 20',ramp:true,place:{name:'Muddle Tower Gate',e:'🚪',desc:'The gate of the tower is covered in signs that keep swapping places!'},boss:['🐒','Mix-Up Monkey'],
+  tip:'Read the sign FIRST: + put together, − take away, × equal groups, ÷ share equally.',
+  learn(){const s=[['+',6,7],['-',15,8],['*',3,4],['/',12,3]];return s.map(([o,a,b])=>{const c=o==='+'?a+b:o==='-'?a-b:o==='*'?a*b:a/b;return {t:`${OPN[o].e} <b>${a} ${OPN[o].s} ${b}</b>: the sign says ${OPN[o].w.toUpperCase()}. ${a} ${OPN[o].s} ${b} = <b>${c}</b>.`};}).concat([{t:'The Muddle Monster mixes the signs up, so always look at the sign before you start!',v:'<div class="eq">➕ ➖ ✖️ ➗</div>'}]);},
+  gen(k){if(k==='a')return Math.random()<.6?wopQ(0,k):storyPad(0,k);return mixFact(0,k);}},
+ {t:'Two-Digit Mix',e:'🎯',skill:'mixing operations with two-digit numbers',ramp:true,place:{name:'Spiral Stairs',e:'🌀',desc:'The stairs twist round and round, and every step has a bigger number.'},boss:['🦜','Parrot Paradox'],
+  tip:'Big numbers, same signs! Use columns for + and −, tens-and-ones for ×, and times facts for ÷.',
+  learn(){return [{t:'<b>45 + 28</b>: add the ones (5 + 8 = 13, carry 1), then the tens: <b>73</b>.',v:colH(45,28,'+',{top:carries([45,28]),ans:73})},{t:'<b>62 − 27</b>: not enough ones, so borrow a ten: <b>35</b>.'},{t:'<b>14 × 3</b>: 10 × 3 = 30 and 4 × 3 = 12, so <b>42</b>.'},{t:'<b>56 ÷ 7</b>: think 7 × ? = 56. 7 × 8 = 56, so <b>8</b>.'}];},
+  gen(k){if(k==='a')return Math.random()<.6?wopQ(1,k):storyPad(1,k);return mixFact(k==='p'?pick([0,1]):1,k);}},
+ {t:'Which Operation?',e:'🤔',skill:'choosing the right operation',ramp:true,place:{name:'Hall of Signs',e:'🪧',desc:'Every door has a story on it. Pick the right sign to open it!'},boss:['🦝','Sign-Swap Raccoon'],
+  tip:'Clue words! "in all / more" → ADD. "left / how many more" → SUBTRACT. "each / groups of" → MULTIPLY. "share equally" → DIVIDE.',
+  learn(){return [{t:'Every story hides a sign. Look for the clue words!',v:wopChart()},{t:`"There are 4 bags with 5 apples in <b>each</b>." Equal groups → ✖️ MULTIPLY: 4 × 5 = <b>20</b>.`},{t:`"12 cookies <b>shared equally</b> between 3 friends." → ➗ DIVIDE: 12 ÷ 3 = <b>4</b>.`},{t:`"9 balloons, 4 flew away. How many are <b>left</b>?" → ➖ SUBTRACT: 9 − 4 = <b>5</b>.`}];},
+  gen(k){return wopQ(k==='p'?0:k==='a'?1:pick([0,1]),k);}},
+ {t:'Missing-Number Mix',e:'🔍',skill:'missing numbers with every operation',ramp:true,place:{name:'Foggy Floor',e:'🌫️',desc:'Fog fills this floor of the tower, hiding numbers in every sum.'},boss:['👻','Blanky the Ghost'],
+  tip:'Use the opposite! Missing part in + → subtract. Missing whole in − → add. Missing factor → divide. Missing whole in ÷ → multiply.',
+  learn(){return [{t:'Every operation has an opposite. Plus and minus are a family. Times and divide are a family.',v:'<div class="eq">➕ ↔ ➖ &nbsp; ✖️ ↔ ➗</div>'},{t:'<b>? + 7 = 13</b> → 13 − 7 = <b>6</b>.',v:balHTML('? + 7',13)},{t:'<b>8 × ? = 56</b> → 56 ÷ 8 = <b>7</b>.',v:hvEq(56,8,null)},{t:'<b>? ÷ 6 = 7</b> → 7 × 6 = <b>42</b>. Always check by putting it back!'}];},
+  gen(k){const op=pick(WOPS),lv=k==='p'?rand(0,1):k==='a'?1:pick([0,1,1,2]);return missQ(op,lv,k);}},
+ {t:'Brackets First',e:'🧗',skill:'order of operations with brackets',ramp:true,place:{name:'Bracket Bridge',e:'🌉',desc:'A rope bridge held up by brackets. Cross it in the right order!'},boss:['🐊','Order Gator'],
+  tip:'1️⃣ Brackets ( ) first. 2️⃣ Then × and ÷. 3️⃣ Then + and −.',
+  learn(){return [{t:'When there is more than one sign, the ORDER matters!',v:oopChart()},{t:'<b>(3 + 4) × 2</b>: brackets first: 3 + 4 = 7. Then 7 × 2 = <b>14</b>.'},{t:'<b>3 + 4 × 2</b>: no brackets, so × first: 4 × 2 = 8. Then 3 + 8 = <b>11</b>.'},{t:'Same numbers, different answers! The brackets tell you what to do first.'}];},
+  gen(k){const lv=k==='p'?rand(0,1):k==='a'?1:pick([0,1,2,2]);return oopQ(lv,k);}},
+ {t:'Multi-Step Stories',e:'🪜',skill:'two-step word problems',ramp:true,place:{name:'Story Spire',e:'📚',desc:'The top of the tower is full of books, and every story has two steps!'},boss:['🐲','Two-Step Dragon'],
+  tip:'Two steps! Find the first answer, then use it for step two. Underline the numbers and the clue words.',
+  learn(){const H=nm(save.hero);return [{t:`Read: ${H} has 3 bags with 4 apples in each, then gives away 5. How many are left?`},{t:'Step 1: "3 bags with 4 in each" → 3 × 4 = <b>12</b>.',v:hvEq(null,3,4)},{t:'Step 2: "gives away 5" → 12 − 5 = <b>7</b>. Answer: 7 apples!',v:hvBar(12,null,5)}];},
+  gen(k){return multiQ(k==='p'?0:1,k);}},
+ {t:'Grand Final: The Muddle Monster',e:'🌀',skill:'everything mixed together',final:true,ramp:true,place:{name:'Top of Muddle Tower',e:'⚡',desc:'Lightning crackles at the very top of the tower. All six heroes are here!'},boss:['🌀','The Muddle Monster'],
+  tip:'Slow down, read the sign or the clue words, choose your method, then check your answer.',
+  learn(){return [{t:'This is it! Everything you learned in the tower, all mixed up.',v:'<div class="eq">➕ ➖ ✖️ ➗ ( ) ?</div>'},{t:'1. Read carefully. 2. Find the sign or the clue words. 3. Brackets first. 4. Check your answer makes sense.',v:oopChart()},{t:'All six heroes are with you. Let\'s unmuddle NumiRealm for good!'}];},
+  gen(k){const r=Math.random();if(r<.2)return mixFact(1,k);if(r<.4)return wopQ(1,k);if(r<.6)return missQ(pick(WOPS),pick([1,2]),k);if(r<.8)return oopQ(pick([1,2]),k);return multiQ(1,k);}}];
+function wopChart(){return `<div class="wopchart" role="img" aria-label="clue words for each operation">${WOPS.map(o=>`<div class="wc"><b>${OPN[o].e} ${OPN[o].w}</b><span>${{'+':'in all · more · altogether','-':'left · fewer · how many more','*':'each · groups of · rows of','/':'share equally · split · each get'}[o]}</span></div>`).join('')}</div>`;}
+function oopChart(){return `<div class="oopchart" role="img" aria-label="order of operations"><span>First: ( )</span><span>Next: × ÷</span><span>Last: + −</span></div>`;}
+SUBJ.push({id:'mix',name:'Mixed Math',op:'±',realm:'Muddle Tower',e:'🗼',col:'#0f766e',col2:'#99f6e4',bg:'linear-gradient(#99f6e4,#a5b4fc 55%,#f0abfc)',props:['star','shell','star','fruit','star','flower'],ch:MIX,grades:['2','3','4','5','6'],
+ lost:'every sign is jumbled, so nobody knows whether to add, take away, times or share',back:'every sign is back where it belongs',champ:'Mixed Math Masters'});
+SUBJ_BY.mix=SUBJ[SUBJ.length-1];
+if(!SUBJ_BY.mult.grades.includes('5'))SUBJ_BY.mult.grades.push('5');
+/* story dictionaries for the new realm (and the castle's new minions) */
+HSUB.mix={sage:["Mixed songs are the best songs: a bit of everything! 🎤","Plus, minus, times, divide: four voices, one choir! 🎶"],
+ emi:["A garden needs everything: planting, picking, sharing and rows! 🌸","I'll sort the muddled signs like sorting seeds! 🌷"],
+ blu:["Four signs, four drums: boom, tap, crash, ding! 🥁","Mix it up! Every beat is a different sign! ⭐"],
+ eshon:["I'll draw a comic where every panel uses a different sign! ✏️","Muddle Tower? I'll sketch a map to the top! 🖍️"],
+ melrose:["Every seashell has a sign on it. Let's sort them! 🐚✨","Fairy magic works best when the signs are in order! 🧚"],
+ cayden:["Game time! Every play needs a different move! 🏀","Coach says: read the play, then make your move! 🏈"]};
+TEAM_SUB.mix={emi:["Read the sign first, {rel}, like reading a seed packet! 🌷","Brackets are like a flower pot: do what's inside first, {rel}! 🌸"],
+ blu:["Listen for the clue words, {rel}, like listening for the beat! 🥁","Two steps, like a two-beat drum roll, {rel}! 👏"],
+ sage:["I'll sing the order song, {rel}: brackets, times, then plus! 🎤","Clue words are like song lyrics, {rel}: they tell you what to do! 🎶"],
+ eshon:["Draw it first, {rel}! A quick picture shows the sign! ✏️","I'll draw a bar for each step of the story, {rel}! 🖍️"],
+ melrose:["Fairy rule, {rel}: check your answer by putting it back! 🧚","The tide goes out and comes back, {rel}: every sign has an opposite! 🌊"],
+ cayden:["Read the play, {rel}: which move do we need? 🏀","Step one, step two, then score, {rel}! 🏈"]};
+STAUNTS.mix=["Plus is minus! Times is divide! Muddle, muddle, MUDDLE!","I swapped every sign in the tower. You'll never know which one to use!"];
+STAUNTS.mult=["Times tables are too small for me! I'll muddle the BIG numbers!","Carry? Placeholder? I'll scatter all your digits!"];
+SFINAL.mix="I am the MUDDLE MONSTER! I mixed up EVERY sign in NumiRealm! Six heroes? Ha! Let's see you unmuddle THIS!";
+REALM_OWL.mix="Welcome to Muddle Tower! Every floor mixes adding, taking away, times and sharing. Read each sign and clue word carefully!";
 /* ---------- v9: subject select, subject maps and the subject lesson / practice / apply / boss flow ---------- */
 let lastMap=null;
 function goMap(){if(!save.hero)return titleScreen();if(lastMap==='mult')return mapScreen();if(lastMap&&SUBJ_BY[lastMap]&&SUBJ_BY[lastMap].ch)return smapScreen(lastMap);subjectScreen();}
@@ -2187,7 +2439,7 @@ function nextReward(){const pf=P();return REWARDS[save.hero].find(r=>!pf.rewards
 function gradeBadge(sb,pf){if(!hasAbout(pf)||!sb.grades.includes(pf.grade))return '';const g=gradeOf(pf.grade);
  return /^\d$/.test(g[0])?`⭐ Recommended for ${g[1]} grade`:g[0]==='k'?'⭐ Recommended for Kindergarten':g[0]==='prek'?'⭐ Recommended for Pre-K':'⭐ A great place to start';}
 function subjectScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SS=null;SC=null;stopSpeech();lastMap=null;if(save.lastSubj){save.lastSubj=null;persist();}const pf=P();
- let h=`<h1 class="questh">Choose your quest</h1><div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>Where to, ${esc(pf.name)}?</h2><div class="big" style="font-size:18px">The Muddle Monster scrambled all five realms of NumiRealm! Pick one to explore. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(subjectScreen,true)">✏️ About me</button></div></div></div></div><div class="subjects" id="subjects">`;
+ let h=`<h1 class="questh">Choose your quest</h1><div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>Where to, ${esc(pf.name)}?</h2><div class="big" style="font-size:18px">The Muddle Monster scrambled all six realms of NumiRealm! Pick one to explore. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(subjectScreen,true)">✏️ About me</button></div></div></div></div><div class="subjects" id="subjects">`;
  SUBJ.forEach(sb=>{const N=sCount(sb.id),d=sDone(sb.id,pf),st=sStars(sb.id,pf),bd=gradeBadge(sb,pf);
   h+=`<button class="stile ${bd?'rec':''}" data-subject="${sb.id}" style="--sc:${sb.col};--sc2:${sb.col2}" onclick="openSubject('${sb.id}')"><div class="se">${sb.e}</div><div class="sop">${sb.op}</div><div class="sname">${sb.name}</div><div class="srealm">${sb.realm}</div>
   <div class="sbar"><i style="width:${Math.round(d/N*100)}%"></i></div><div class="sprog"><span>📖 ${d}/${N} chapters</span><span>⭐ ${st}/${N*3}</span></div>${bd?`<div class="sbadge">${bd}</div>`:''}</button>`;});
@@ -2518,6 +2770,73 @@ function hintFor(q,sid,tier,ld){let h=null;
  let txt=h?(tier>=2?(h.t2||''):h.t1):'';
  if(!h||!txt||!hintSafe(q,sid,txt,ld)){txt=ld?(tier>=2?hvDMSB(ld.ph)+'<div class="hvcap">Say the four steps out loud and point to the one you are on.</div>':'Which step are we on: divide, multiply, subtract, bring down? Say what that step means, then try it.'):tier>=2?'<div class="hvcap">Draw it! Make a quick picture or use your fingers, then check your answer is sensible.</div>':(GENERIC[sid]||GENERIC.add);return {html:txt,safe:false};}
  return {html:txt+(tier>=2?NOSPOIL:''),safe:true};}
+/* ---------- v13 hints: long multiplication, missing numbers, mixed math (never the answer) ---------- */
+const V13OPS=new Set(['lm','mul','x10','miss','mixf','wopst','oop','oopmc','two']);
+const isV13Q=q=>!!q&&((q.m&&V13OPS.has(q.m.op))||q.input==='lm'||q.input==='wop');
+const cap=s=>`<div class="hvcap">${s}</div>`;
+function v13Ctx(q,ctx){const o=ctx||{};const live=typeof SS!=='undefined'&&SS&&SS.cur===q;
+ return {lmStep:o.lmStep!=null?o.lmStep:live?(SS.lmStep||0):0,wph:o.wph!=null?o.wph:q.input==='wop'?(live?(SS.wph||'op'):'op'):null};}
+function opBar(op,a,b,unk){/* unk: which slot is unknown: 'res' | 0 | 1 */
+ if(op==='+')return unk==='res'?hvBar(null,a,b):hvBar(unk==='w'?null:a+b,unk===0?null:a,unk===1?null:b);
+ if(op==='-')return unk==='res'?hvBar(a,b,null):null;
+ if(op==='*'){const n=Math.min(a,b),e=Math.max(a,b);return hvEq(null,n,e);}
+ return hvEq(a,b,null);}
+function lmStepHint(q,k){const L=q.L,s=L.steps[Math.min(k,L.steps.length-1)];if(!s)return null;
+ if(L.mode==='area'){if(s.ph==='P'){const p=L.parts[s.i];return s.i===0?{t1:`Box 1 is ${p} × ${L.b}. ${p} is ${p/10} tens, so find ${p/10} × ${L.b} first, then make it tens by adding a zero.`,t2:lmBlank(L,0)+cap(`The blue box is ${p} wide and ${L.b} tall. What is its area?`)}:{t1:`Box 2 is just a times fact: ${p} × ${L.b}. Skip-count by ${L.b}.`,t2:lmBlank(L,1)+cap(`The yellow box is ${p} wide and ${L.b} tall.`)};}
+  return {t1:'Add the two boxes together. Add the tens first, then the ones.',t2:hvBar(null,L.prods[0],L.prods[1])+cap('The whole rectangle is both boxes together.')};}
+ if(s.ph==='M')return {t1:`Multiply only the two highlighted digits. Use a times fact you know, or skip-count by ${s.m}.`,t2:(s.d*s.m<=81?hvArray(s.d,s.m):'')+cap(`${s.d} rows of ${s.m}. How many dots in all?`)};
+ if(s.ph==='A')return {t1:'Add the little carry number to the product you just made. Count on from the bigger number.',t2:lmBlank(L,L.steps.indexOf(s))+cap('The carry sits in the little box above this column. Count on from your product.')};
+ if(s.ph==='C')return {t1:'Your number has two digits. The ones digit stays in this column. The tens digit climbs up to the next column as the carry.',t2:'<div class="pvchart" role="img" aria-label="tens and ones chart"><span><b>tens</b>?</span><span><b>ones</b>?</span></div>'+cap('The tens digit is the one that climbs up.')};
+ if(s.ph==='Z')return {t1:'In the second row you multiply by TENS, so every answer is ten times bigger. Which digit keeps the ones place empty?',t2:lmBlank(L,L.steps.indexOf(s))+cap('This row is for the tens digit. The ones place needs a placeholder.')};
+ return {t1:'Add the two rows column by column, starting with the ones. Carry if a column makes 10 or more.',t2:colH(L.rows[0],L.rows[1],'+')+cap('Line up the columns, then add from the right.')};}
+function v13Hint(q,sid,ctx){const m=q.m||{},c=v13Ctx(q,ctx);
+ if(q.input==='wop'&&c.wph==='op'){const two=m.op==='two';return {t1:two?'Which thing happens FIRST in the story? Find its clue words: in all / more → add; left / gave away → subtract; each / groups of → multiply; share equally → divide.':'Look for clue words: "in all", "more" → add; "left", "how many more" → subtract; "each", "groups of" → multiply; "share equally" → divide.',t2:wopChart()+cap('Find the clue words in the story, then match them to a sign.')};}
+ if(q.input==='lm')return lmStepHint(q,c.lmStep);
+ const op=m.op;
+ if(op==='x10'){const a=m.a,b=m.b,ha=a/Math.pow(10,zeros(a)),hb=b/Math.pow(10,zeros(b));return {t1:'Ignore the zeros for a moment. Multiply the front digits, then count the zeros in the question and put that many on the end.',t2:`<div class="hvchip">${a} × ${b} → ${ha} × ${hb} = ? → then add ${zeros(a)+zeros(b)} zero${zeros(a)+zeros(b)===1?'':'s'}</div>`+cap('Tens and hundreds are just bundles!')};}
+ if(op==='mul'){const a=m.a,b=m.b;
+  if(b>=10&&a>=10){const bo=b%10,bt=b-bo;return {t1:`Make two rows: first ${a} × ${bo}, then ${a} × ${bt} (start that row with a 0 placeholder). Then add the rows.`,t2:colH(a,b,'×')+cap('Row 1 for the ones digit, row 2 for the tens digit, then add.')};}
+  const big=Math.max(a,b),sm=Math.min(a,b);if(big<100){const t=Math.floor(big/10)*10,o=big%10;return {t1:`Split ${big} into ${t} and ${o}. Multiply each part by ${sm}, then add the two parts.`,t2:lmAreaHTML(lmArea(big,sm),0,null,{small:1})+cap('Find each box, then add the boxes.')};}
+  return {t1:`Use the column method: multiply ${sm} by the ones, then the tens, then the hundreds. Carry when a column makes 10 or more.`,t2:colH(big,sm,'×')+cap('Start on the right with the ones.')};}
+ if(op==='miss'){const {o,a,b,c:r,pos}=m;
+  if(pos===2)return o==='+'?{t1:`The ? is the WHOLE. Put the two parts together: start at the bigger part and count on.`,t2:hvBar(null,a,b)+cap('Two parts underneath. The ? is the whole bar.')}:o==='-'?{t1:`The ? is the part that is left. Start with the whole and take away the part you know.`,t2:hvBar(a,b,null)+cap('The whole is on top. The ? is the part left over.')}:o==='*'?{t1:`The ? is the total. Count in ${b}s, ${a} times, or use a fact you know.`,t2:hvEq(null,a,b)+cap(`${a} boxes with ${b} in each. The ? is the whole bar.`)}:{t1:`The ? is how many in each group. Ask: ${b} times what makes ${a}?`,t2:hvEq(a,b,null)+cap(`${a} shared into ${b} equal boxes.`)};
+  if(o==='+')return {t1:`Fact family! The total is ${r}. Take away the part you know to find the hiding part.`,t2:hvBar(r,pos===0?null:a,pos===1?null:b)+cap('Whole on top, parts underneath. The ? is the missing part.')};
+  if(o==='-')return pos===0?{t1:`The ? is the WHOLE. Put the two parts back together: add the number taken away and the number left.`,t2:hvBar(null,b,r)+cap('The ? is the whole bar.')}:{t1:`Fact family! Start with ${a}. Take away what is left to find what was taken.`,t2:hvBar(a,null,r)+cap('The whole is on top. One part is known.')};
+  if(o==='*'){const k=pos===0?b:a;return {t1:`Use the opposite! Divide the total, ${r}, by ${k}. Or ask: ${k} times what makes ${r}?`,t2:hvEq(r,k,null)+cap(`${r} split into ${k} equal boxes. What is in each box?`)};}
+  return pos===0?{t1:`The ? is the WHOLE. Use the opposite: multiply ${r} by ${b}.`,t2:hvEq(null,b,r)+cap(`${b} boxes with ${r} in each. The ? is the whole bar.`)}:{t1:`Use the fact family: ${a} ÷ ${r} gives the missing number. Or ask: ${r} times what makes ${a}?`,t2:hvEq(a,null,r)+cap(`How many boxes of ${r} fit into ${a}?`)};}
+ if(op==='mixf'||op==='wopst'){const {o,a,b}=m;const story=op==='wopst';
+  const t1=story&&q.input!=='wop'?'Find the two numbers and the clue words. Do you put together, take away, make equal groups or share?':o==='+'?'Start at the bigger number and count on. Or add the tens, then the ones.':o==='-'?`Count back from ${a}, or count up from ${b} to ${a}.`:o==='*'?`Equal groups! Skip-count by ${Math.max(a,b)}, ${Math.min(a,b)} times.`:`Think of a times fact: ${b} × ? = ${a}.`;
+  return {t1,t2:(opBar(o,a,b,'res')||'')+cap(o==='+'?'Two parts make the whole.':o==='-'?'Take a part away from the whole.':o==='*'?'Equal boxes make the whole.':'Share the whole into equal boxes.')};}
+ if(op==='oop'||op==='oopmc'){const t1=m.br?'Brackets first! Work out what is inside the ( ) before anything else.':'No brackets here, so do × and ÷ before + and −.';
+  if(op==='oopmc')return {t1,t2:oopChart()+cap('Check the rule from the top: brackets, then × ÷, then + −.')};
+  const ex=q.text.replace(' = ?','').replace(m.first,'▢').replace('(▢)','▢');return {t1,t2:oopChart()+`<div class="hvchip">${q.text.replace(' = ?','')} → ${ex.replace('▢','?')} = ?</div>`+cap('Work out the ? part first, then finish.')};}
+ if(op==='two')return {t1:'Two steps! Find the answer to the first part of the story, then use it in the second part.',t2:`<div class="twostep"><span>First: ${m.s1} = ?</span><span>Then: ? ${m.s2} = ?</span></div>`+cap('Use your first answer in the second step.')};
+ return null;}
+function v13Ans(q,ctx){const nums=[],htmls=[],c=v13Ctx(q,ctx),m=q.m||{};
+ if(q.input==='mc'){const o=q.opts[q.ans];if(o){const t=hNum(o.h).trim();if(/^\d+$/.test(t))nums.push(+t);else htmls.push(o.h);}}else nums.push(q.ans);
+ if(q.input==='lm'){const L=q.L;(L.rows||[]).forEach(x=>nums.push(x));(L.prods||[]).forEach(x=>nums.push(x));const s=L.steps[c.lmStep];if(s)nums.push(s.want);}
+ if(m.op==='two'){try{nums.push(Function('return '+m.s1.replace('×','*').replace('÷','/').replace('−','-'))());}catch(e){}}
+ if(m.op==='oop'&&m.first){try{nums.push(Function('return '+m.first.replace('×','*').replace('÷','/').replace('−','-'))());}catch(e){}}
+ return {nums,htmls};}
+function v13Safe(q,h,ctx){const c=v13Ctx(q,ctx),A=v13Ans(q,ctx);let base=(q.text||'')+' '+(q.lead||'');
+ if(q.input==='lm'){const s=q.L.steps[c.lmStep];if(s)base+=' '+s.ask.replace(/<[^>]+>/g,' ');}
+  const allow=new Set(hTokens(base));const ab=q.L||(q.m&&(q.m.op==='mul'||q.m.op==='x10')?q.m:{});
+ /* single digits of the two numbers in the question are fine to name ("4 tens") */
+ String(ab.a==null?'':ab.a).concat(String(ab.b==null?'':ab.b)).split('').forEach(d=>{if(/\d/.test(d))allow.add(+d);});
+ let askT=[];if(q.input==='lm'){const s=q.L.steps[c.lmStep];if(s){askT=hTokens(s.ask.replace(/<[^>]+>/g,' '));/* the current step's own value is never allowed unless the question already shows it */const onBoard=(q.L.parts||[]).includes(s.want);/* the area board itself shows the place-value parts */if(onBoard)askT.push(s.want);if(!askT.includes(s.want)&&!hTokens(q.text).includes(s.want))allow.delete(s.want);else allow.add(s.want);}}
+ if(/class="ansd"/.test(h))return false;
+ const toks=new Set(hTokens(h.replace(/<table class="colm">[\s\S]*?<\/table>/g,' ').replace(/<div class="lmg"[\s\S]*?<\/div>/g,' ')));
+ for(const x of A.nums)if(typeof x==='number'&&toks.has(x)&&!allow.has(x))return false;
+ if(q.input==='lm'){const s=q.L.steps[c.lmStep];if(s&&toks.has(s.want)&&!hTokens(q.text).includes(s.want)&&!askT.includes(s.want))return false;}
+ for(const s of A.htmls)if(s&&h.includes(s))return false;
+ return true;}
+const _hintFor12=hintFor,_hintAns12=hintAns;
+hintFor=function(q,sid,tier,ld){if(!isV13Q(q))return _hintFor12(q,sid,tier,ld);let h=null;try{h=v13Hint(q,sid,ld);}catch(e){h=null;}
+ let txt=h?(tier>=2?(h.t2||''):h.t1):'';
+ if(!h||!txt||!v13Safe(q,txt,ld)){txt=tier>=2?'<div class="hvcap">Draw it! Make a quick picture or use your fingers, then check your answer is sensible.</div>':(GENERIC[sid]||GENERIC.add);return {html:txt,safe:false};}
+ return {html:txt+(tier>=2?NOSPOIL:''),safe:true};};
+hintAns=function(q,sid,ld){return isV13Q(q)?v13Ans(q,ld):_hintAns12(q,sid,ld);};
+GENERIC.mix='Read the sign or the clue words first. Then pick your method and check your answer makes sense.';
 /* =====================================================================
    v11 NumiRealm redesign: home, navigation, progress, settings, profile,
    quick practice and the guide lanterns (limited, never-the-answer hints)
@@ -2620,7 +2939,7 @@ function titleScreen(){S=null;SS=null;SC=null;stopSpeech();stopConfetti();if(sav
  <div class="tiles mob" role="group" aria-label="Realm shortcuts"><button class="tile" type="button" onclick="SFX.tap();withHero(closetScreen)" aria-label="Rewards and treasures"><span class="ti" aria-hidden="true">🎁</span>Rewards</button><button class="tile" type="button" onclick="SFX.tap();withHero(subjectScreen)" aria-label="Realm map"><span class="ti" aria-hidden="true">🗺️</span>Map</button><button class="tile" type="button" onclick="SFX.tap();progressScreen()" aria-label="Your progress"><span class="ti" aria-hidden="true">📈</span>Progress</button><button class="tile" type="button" onclick="SFX.tap();withHero(profileScreen)" aria-label="Hero profile"><span class="ti" aria-hidden="true">👤</span>Profile</button><button class="tile" type="button" onclick="SFX.tap();settingsScreen()" aria-label="Settings"><span class="ti" aria-hidden="true">⚙️</span>Settings</button></div>
  <h2 class="hsec dsk">Choose your quest</h2><div class="subjcards dsk">${scards}</div>
  <h2 class="hsec">Explore the realm</h2><div class="realms">${realms}</div>
- <section class="herosec" id="heroes" aria-label="Choose your hero"><h2 class="hsec">Choose your hero</h2><div class="subtitle" style="text-align:center;color:#FFE08A">✨ The Muddle Monster ✨</div><p class="hintro">The Muddle Monster scrambled all the numbers! Adding, taking away, times tables, sharing and fractions. Pick your hero to save NumiRealm.</p><p class="hintro hidden" id="heroTip" role="status"><b>👇 Pick your hero first, then press Play!</b></p>
+ <section class="herosec" id="heroes" aria-label="Choose your hero"><h2 class="hsec">Choose your hero</h2><div class="subtitle" style="text-align:center;color:#FFE08A">✨ The Muddle Monster ✨</div><p class="hintro">The Muddle Monster scrambled all the numbers! Adding, taking away, times tables, sharing, fractions and mixed-up puzzles. Pick your hero to save NumiRealm.</p><p class="hintro hidden" id="heroTip" role="status"><b>👇 Pick your hero first, then press Play!</b></p>
  <div class="herocards">${HERO_ORDER.map(id=>{const h=HEROES[id],pf=save.profiles[id],st=allStars(pf);
  return `<button class="herocard ${id}" data-hero="${id}" onclick="pickHero('${id}')"><div class="hsv">${heroSVGeq(id,pf.eq,'idle')}</div><div class="hn">${esc(pf.name)}</div><div class="ht">${h.title}</div><div class="hl">${h.blurb}</div><div class="hl"><b>⭐ ${st}</b> stars</div>${hasAbout(pf)?`<div class="hl abmini">${aboutChip(pf)}</div>`:''}</button>`;}).join('')}</div></section></div>`,'home');
  app.classList.add('wide');}
@@ -2830,7 +3149,7 @@ const HERO12={
   stats:{Speed:10,Strategy:9,Teamwork:8,Creativity:7},fav:'mult',combo:'melrose',comboName:'Dunk & Splash',comboLine:'Cayden and his little sister Melrose: speed plus sparkles, the perfect play!'}
 };
 const MUDDLE={name:'The Muddle Monster',title:'Scrambler of Numbers',pers:'Grumpy, sneaky and VERY messy. Loves mixing numbers up.',
- story:'The Muddle Monster scrambled every number in NumiRealm: adding, taking away, times tables, sharing and fractions. Now the flowers can\'t bloom and the music has stopped!',
+ story:'The Muddle Monster scrambled every number in NumiRealm: adding, taking away, times tables, sharing, fractions and mixed-up puzzles. Now the flowers can\'t bloom and the music has stopped!',
  more:'It sends minions to guard each chapter, like Lady Lumpbug in Addition Meadow and Captain Pinch in Times Table Castle, and waits at the end of every realm as the final boss. Its big weakness? Kids who slow down, think carefully and work as a team.',
  powers:[{n:'Number Scramble',e:'🌀',d:'Jumbles digits so 12 looks like 21.'},{n:'Muddle Fog',e:'🌫️',d:'Makes problems look harder than they really are.'},{n:'Rush Trick',e:'⏩',d:'Tries to make you hurry and guess.'}],
  weak:'Careful thinking, hint lanterns, and teamwork. Every right answer shrinks it!'};
@@ -2904,7 +3223,7 @@ function realmMap(focus){stopConfetti();S=null;SS=null;SC=null;const id=vHero(),
   return `<section class="card rcard" data-realm="${sb.id}" style="--sc:${QCOL[sb.id]}"><div class="rtop"><div class="rart" aria-hidden="true">${realmArt(sb.id)}</div><div><h2><span class="rop" aria-hidden="true">${sb.op}</span> ${sb.realm}</h2><p class="rline">${REALM_LINE[sb.id]}</p>
   <div class="rmeta"><span>🎒 ${realmGrades(sb)}</span><span>⭐ ${st}/${N*3}</span><span>📖 ${pf?sDone(sb.id,pf):0}/${N} done</span></div></div></div>
   <div class="stones" role="group" aria-label="${sb.realm} chapters, easy to hard"><span class="sedge" aria-hidden="true">Easy</span>${stones}<span class="sedge" aria-hidden="true">Hard</span></div></section>`;}).join('');
- show(`<h1 class="questh">🗺️ Realm Map</h1><div class="card v12intro"><p class="big" style="font-size:17px">Five realms, each with chapters from <b>easy to hard</b>. Tap a stepping stone to see what it teaches.</p>${id?`<p class="vfor">Showing ${esc(pf.name)}'s stars</p>${vTabs('realms',id)}`:'<p class="vfor">No hero yet: you will pick one when you press Play.</p>'}
+ show(`<h1 class="questh">🗺️ Realm Map</h1><div class="card v12intro"><p class="big" style="font-size:17px">Six realms, each with chapters from <b>easy to hard</b>. Tap a stepping stone to see what it teaches.</p>${id?`<p class="vfor">Showing ${esc(pf.name)}'s stars</p>${vTabs('realms',id)}`:'<p class="vfor">No hero yet: you will pick one when you press Play.</p>'}
  <div class="legend" aria-hidden="true"><span class="stone done mini"><span class="sn">✓</span></span> done <span class="stone current mini"><span class="sn">1</span></span> play next <span class="stone locked mini"><span class="sn">🔒</span></span> locked</div></div>${realms}${backBtn()}`,'quest');
  if(focus&&SUBJ_BY[focus]){const r=document.querySelector(`[data-realm="${focus}"]`);if(r){r.scrollIntoView({block:'start'});const f=r.querySelector('.stone.current')||r.querySelector('.stone');if(f)try{f.focus({preventScroll:true});}catch(e){}}}}
 function exampleQ(sid,c){const keep=save.hero,keepSS=SS;try{if(!save.hero)save.hero=vHero()||'emi';
@@ -2978,10 +3297,10 @@ function drillDone(){drStop();if(!DR)return training();if(SS&&SS.lanP!=null)DR.l
  DR_LAST={items:d.items,mix:d.mix};DR=null;}
 let DR_LAST=null;
 /* ---------- REWARDS: Trophy Room ---------- */
-function badgesOf(id){const pf=save.profiles[id],st=allStars(pf),fin=SUBJ.map(sb=>({sb,got:chStars(sb.id,sCount(sb.id),pf)>0}));let three=0;SUBJ.forEach(sb=>{for(let c=1;c<=sCount(sb.id);c++)if(chStars(sb.id,c,pf)>=3)three++;});
- const any=SUBJ.some(sb=>sDone(sb.id,pf)>0),all5=SUBJ.every(sb=>sDone(sb.id,pf)>0);
+function badgesOf(id){const pf=save.profiles[id],st=allStars(pf),fin=SUBJ.map(sb=>({sb,got:chStars(sb.id,sb.id==='mult'?ORDER.length:sCount(sb.id),pf)>0}));let three=0;SUBJ.forEach(sb=>{for(let c=1;c<=sCount(sb.id);c++)if(chStars(sb.id,c,pf)>=3)three++;});
+ const any=SUBJ.some(sb=>sDone(sb.id,pf)>0),all5=SUBJ.filter(sb=>sDone(sb.id,pf)>0).length>=5;
  return [{e:'👣',n:'First Steps',got:any,how:'Beat any chapter boss'},{e:'🌟',n:'Star Collector',got:st>=25,how:`Earn 25 stars (${Math.min(st,25)}/25)`},{e:'💫',n:'Triple Star',got:three>=10,how:`Get 3 stars on 10 chapters (${Math.min(three,10)}/10)`},
-  {e:'🧭',n:'Realm Explorer',got:all5,how:'Beat a chapter in all 5 realms'},{e:'🏮',n:'Lantern Learner',got:hintOk(pf)>=5,how:`Solve 5 questions after a lantern clue (${Math.min(hintOk(pf),5)}/5)`},
+  {e:'🧭',n:'Realm Explorer',got:all5,how:'Beat a chapter in 5 different realms'},{e:'🏮',n:'Lantern Learner',got:hintOk(pf)>=5,how:`Solve 5 questions after a lantern clue (${Math.min(hintOk(pf),5)}/5)`},
   {e:'🎯',n:'Training Champ',got:(pf.drills||0)>=3,how:`Finish 3 Training Grounds rounds (${Math.min(pf.drills||0,3)}/3)`},{e:'🔥',n:'3-Day Streak',got:(pf.bestStreak||0)>=3,how:'Play 3 days in a row'}]
   .concat(fin.map(({sb,got})=>({e:sb.e,n:`${sb.realm} Hero`,got,how:`Beat the ${sb.realm} boss`})));}
 function rewardHow(id,i){const pf=save.profiles[id],list=REWARDS[id],r=list[i];if((pf.rewards||[]).includes(r.id))return '';const j=list.filter(x=>!(pf.rewards||[]).includes(x.id)).indexOf(r),n=ORDER[i];
@@ -2994,7 +3313,7 @@ function trophyRoom(){stopConfetti();S=null;SS=null;SC=null;const id=vHero()||HE
  <div class="center"><button class="btn pink" type="button" id="openCloset" onclick="playWith(closetScreen,'${id}')">${h.closetE} Open ${esc(pf.name)}'s ${h.closet}</button></div></div>${backBtn()}`,'home');}
 /* ---------- MAP: How NumiRealm Works ---------- */
 const GUIDE=[
- {id:'story',e:'📖',h:'The story',t:['The Muddle Monster scrambled every number in NumiRealm!','Professor Hoot the owl needs your help.','Pick a hero, team up with family, and save all five realms.']},
+ {id:'story',e:'📖',h:'The story',t:['The Muddle Monster scrambled every number in NumiRealm!','Professor Hoot the owl needs your help.','Pick a hero, team up with family, and save all six realms.']},
  {id:'flow',e:'🧭',h:'How a chapter works',t:['📚 Learn: see the idea with pictures.','🎯 Practice: try a few, then story problems.','👾 Boss: answer to beat the minion and unlock the next chapter!']},
  {id:'stars',e:'⭐',h:'Stars',t:['You start each boss with 3 hearts.','Hearts left at the end = stars won: 1, 2 or 3.','Replay any chapter to get all 3 stars.']},
  {id:'lan',e:'🏮',h:'Hint lanterns',t:['3 lanterns in practice, 1 in a boss fight.','First tap: a clue about how to think. Second tap: a picture clue.','Lanterns NEVER give the answer. Using them is smart!']},
@@ -3104,6 +3423,170 @@ function v12Home(){const set=(id,fn)=>{const b=$(id);if(b)b.setAttribute('onclic
 /* nav highlight for the new screens */
 {const _u=updateStatus;updateStatus=function(){_u();if(HUB==='heroes'){['navHeroes','bnHeroes'].forEach(i=>{const b=$(i);if(b){b.classList.add('on');b.setAttribute('aria-current','page');}});}};}
 window.TTQ_V12={go,goBack,get CUR(){return CUR;},get NAVST(){return NAVST;},get DR(){return DR;},weakList,badgesOf,practiceTip,HERO12,streakOf,uIdx,chStars};
+/* ---------- v13 styles: long multiplication grid, which-operation, charts, castle wing ---------- */
+(function(){const st=document.createElement('style');st.id='v13css';st.textContent=`
+.lmwrap{display:flex;justify-content:center;margin:10px 0;overflow-x:auto;max-width:100%}
+.lmg{--lmw:46px;display:grid;column-gap:4px;row-gap:4px;align-items:center;justify-items:center;font-family:var(--tfont);font-weight:800;background:#FFFBEB;border:3px solid #FCD34D;border-radius:18px;padding:10px 14px}
+.lmc{width:var(--lmw);height:48px;display:flex;align-items:center;justify-content:center;font-size:32px;color:#1E3A8A;border-radius:10px}
+.lmc.lmcar{height:30px;font-size:20px;color:#B45309}
+.lmc.lmop{width:auto;padding:0 6px;color:#7C3AED;font-size:30px}
+.lmc.hi{background:#DBEAFE;box-shadow:0 0 0 3px #3B82F6}
+.lmc.tgt{background:#FEF3C7;box-shadow:0 0 0 3px #F59E0B;color:#B45309;animation:lmpulse 1.2s ease-in-out infinite}
+.lmc.lmcar.tgt{width:34px}
+@keyframes lmpulse{50%{box-shadow:0 0 0 5px #F59E0B88}}
+@media (prefers-reduced-motion:reduce){.lmc.tgt{animation:none}}
+.lmlab{font-size:11px;font-weight:700;color:#92400E;line-height:1.05;text-align:right;max-width:52px;justify-self:end}
+.lmline{grid-column:1/-1;height:4px;width:100%;background:#1E3A8A;border-radius:2px}
+.lmarea{display:flex;flex-direction:column;align-items:center;margin:8px 0}
+.lmarea svg{width:100%}
+.lmsum{font-family:var(--tfont);font-weight:800;font-size:24px;color:#1E3A8A;background:#F1F5F9;border-radius:12px;padding:4px 14px;margin-top:4px}
+.lmsum.hi{background:#FEF3C7;box-shadow:0 0 0 3px #F59E0B}
+.lmstep{display:inline-block;font-size:13px;font-weight:800;background:#E0E7FF;color:#3730A3;border-radius:999px;padding:2px 10px;margin-right:4px;vertical-align:middle}
+.hintbox .lmg{--lmw:34px;padding:6px 8px}.hintbox .lmc{height:36px;font-size:24px}.hintbox .lmc.lmcar{height:22px;font-size:15px}
+.wopq{text-align:center;font-family:var(--tfont);font-weight:800;font-size:21px;margin:10px 0 4px;color:#0F766E}
+.wopts .wopt{display:flex;align-items:center;justify-content:center;gap:10px;min-height:64px}
+.wopt .wsym{font-size:34px;font-weight:900;width:46px;height:46px;border-radius:50%;background:#CCFBF1;color:#0F766E;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+.wopt .wlab{font-size:19px;font-weight:800}
+.wopdone{text-align:center;font-weight:800;font-size:19px;color:#0F766E;margin:6px 0}
+.wopdone .wsym{display:inline-flex;width:34px;height:34px;border-radius:50%;background:#CCFBF1;align-items:center;justify-content:center;font-size:24px}
+.wopwhy{text-align:center}
+.wopchart{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;max-width:440px;margin:6px auto}
+.wopchart .wc{background:#F0FDFA;border:2px solid #5EEAD4;border-radius:12px;padding:6px 8px;text-align:left;font-size:14px;color:#134E4A}
+.wopchart .wc b{display:block;font-size:15px}
+.oopchart{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:6px 0}
+.oopchart span{background:#ECFEFF;border:2px solid #22D3EE;border-radius:999px;padding:4px 12px;font-weight:800;font-size:16px;color:#155E75}
+.hvchip,.twostep span{display:inline-block;background:#F1F5F9;border-radius:12px;padding:6px 12px;font-weight:800;font-size:18px;color:#1E3A8A;margin:4px}
+.twostep{display:flex;flex-direction:column;align-items:center}
+.pvchart{display:flex;justify-content:center;gap:8px;margin:6px 0}.pvchart span{display:flex;flex-direction:column;align-items:center;background:#FEF3C7;border-radius:10px;padding:4px 14px;font-size:24px;font-weight:900;color:#B45309}.pvchart b{font-size:13px;color:#92400E}
+.x10v{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;font-family:var(--tfont);font-weight:800;font-size:22px;color:#1E3A8A}
+.x10v .x10a{background:#DBEAFE;border-radius:10px;padding:2px 10px}.x10v .x10z{background:#FEF3C7;color:#B45309;border-radius:10px;padding:2px 8px}.x10v .x10t{font-size:15px;color:#334155;flex-basis:100%;text-align:center}
+.bal{max-width:340px;width:100%}
+.lmwing{margin-top:18px;border:3px solid #F97316}
+.lmwing h2{margin:0 0 4px}
+.wingl .lvl .lnum.wn{font-size:30px}
+.lvl .lwt{font-size:14px;font-weight:800;line-height:1.15;min-height:32px;padding:0 4px}
+@media (min-width:900px) and (max-width:1099px){.realms,.subjcards{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:380px){.lmg{--lmw:36px;padding:8px}.lmc{height:40px;font-size:26px}.lmc.lmcar{height:24px;font-size:16px}.lmlab{font-size:10px;max-width:40px}.wopt .wlab{font-size:16px}.wopt .wsym{width:38px;height:38px;font-size:28px}}
+`;document.head.appendChild(st);})();
+/* ================= v13 engine: long multiplication input, which-operation input, castle wing, Muddle Tower, migration ================= */
+MLX.forEach(ch=>{if(ch.lm&&!ch.learn)ch.learn=()=>[];});
+SUBJ_BY.mix.ch.forEach(ch=>{if(!ch.learn)ch.learn=()=>[];});
+/* ---- counts / stars for the castle's new chapters 13-19 (tables 1-12 keep their old pf.stars) ---- */
+const _sCount12=sCount,_sStars12=sStars,_sDone12=sDone,_sUnl12=sUnlocked,_chStars12=chStars,_chInfo12=chInfo;
+const MULT_N=()=>ORDER.length+MLX.length;
+const mxStars=pf=>{const o=pf&&pf.subj&&pf.subj.mult;return (o&&o.stars)||{};};
+sCount=function(sid){return sid==='mult'?MULT_N():_sCount12(sid);};
+sStars=function(sid,pf){pf=pf||P();const v=_sStars12(sid,pf);if(sid!=='mult')return v;const s=mxStars(pf);let x=0;for(let c=13;c<=MULT_N();c++)x+=s[c]||0;return v+x;};
+sDone=function(sid,pf){pf=pf||P();const v=_sDone12(sid,pf);if(sid!=='mult')return v;const s=mxStars(pf);let x=0;for(let c=13;c<=MULT_N();c++)if(s[c])x++;return v+x;};
+chStars=function(sid,c,pf){if(sid==='mult'&&c>ORDER.length){if(!pf)return 0;return mxStars(pf)[c]||0;}return _chStars12(sid,c,pf);};
+sUnlocked=function(sid){return sid==='mult'?uIdx('mult',P()):_sUnl12(sid);};
+chInfo=function(sid,c){if(sid==='mult'&&c>ORDER.length){const ch=MLX[c-ORDER.length-1];if(!ch)return _chInfo12(sid,c);return {c,t:ch.t,e:ch.e,skill:ch.skill,tip:ch.tip,boss:ch.boss,place:ch.place,final:false};}return _chInfo12(sid,c);};
+const _chName12=chName;chName=function(sid,c){if(sid==='mult'&&c>ORDER.length){const ch=MLX[c-ORDER.length-1];return ch?`Ch.${c} · ${ch.t}`:`Ch.${c}`;}return _chName12(sid,c);};
+const _exampleQ12=exampleQ;exampleQ=function(sid,c){if(sid!=='mult'||c<=ORDER.length)return _exampleQ12(sid,c);const keep=save.hero,keepSS=SS;
+ try{if(!save.hero)save.hero=vHero()||'emi';const ch=MLX[c-ORDER.length-1];SS={sid,c,ch,sb:SUBJ_BY.mult,attempt:1,team:SIBS[save.hero][0]};const q=ch.gen('p');return {text:q.text,lead:q.lead||'Example',vis:q.input==='lm'?lmGridHTML(q.L,0,null):(q.vis||'')};}catch(e){return null;}finally{save.hero=keep;SS=keepSS;}};
+const _playChapter12=playChapter;playChapter=function(sid,c){if(sid!=='mult'||c<=ORDER.length)return _playChapter12(sid,c);SFX.tap();const id=vHero();
+ playWith(()=>{const pf=P();if(c>uIdx(sid,pf)+1)return chapterDetail(sid,c);save.lastSubj=sid;pf.lastSubj=sid;lastMap=sid;persist();openChapter('mult',c);},id);};
+function openWing(c){if(!save.hero)return titleScreen();if(c>uIdx('mult',P())+1)return;openChapter('mult',c);}
+const _drillQ12=drillQ;drillQ=function(it){if(it.sid==='mult'&&it.c>ORDER.length){const ch=MLX[it.c-ORDER.length-1];if(SS&&!SS.ch)SS.ch=ch;let q=null;const want=it.sigs&&it.sigs.length&&Math.random()<.6?new Set(it.sigs):null;
+  for(let i=0;i<60;i++){const g=ch.gen(want&&i<40?(i%2?'b':'p'):(i%3===2?'a':'p'));if(want&&i<40){if(want.has(String(g.sig))){q=g;break;}continue;}if(DR&&DR.used.has(g.sig)&&i<50)continue;q=g;break;}return q||ch.gen('p');}
+ return _drillQ12(it);};
+const _hintChapter12=hintChapter;hintChapter=function(c){if(c.o&&c.o===SS&&SS&&SS.c)return SS.c;return _hintChapter12(c);};
+const _hintKey12=hintKey;hintKey=function(c){const q=c.o&&c.o.cur;if(q&&q.input==='lm')return 'lm'+(c.o.lmStep||0);if(q&&q.input==='wop')return 'wop'+(c.o.wph||'op');return _hintKey12(c);};
+const _qp12=quickPractice;quickPractice=function(sid){if(sid==='mult'){const u=uIdx('mult',P());if(u>=ORDER.length&&Math.random()<.5){SFX.tap();stopSpeech();S=null;makeSS('mult',rand(ORDER.length+1,Math.min(MULT_N(),u+1)));SS.quick=true;sPracticeStart();return;}}return _qp12(sid);};
+/* ---- sessions: ramp, long-multiplication learn ---- */
+const _makeSS12=makeSS;makeSS=function(sid,c,prev){_makeSS12(sid,c,prev);const ch=SS&&SS.ch;if(!ch)return SS;
+ const byLv=a=>a.map((q,i)=>[q,i]).sort((x,y)=>((x[0].lv||0)-(y[0].lv||0))||x[1]-y[1]).map(x=>x[0]);
+ /* guided-column chapters always include at least one guided column question */
+ if(ch.lm){const need=(arr,k)=>{if(!arr||!arr.length||arr.some(q=>q.input==='lm'))return;for(let t=0;t<60;t++){const q=ch.gen(k);if(q&&q.input==='lm'){arr[arr.length-1]=q;return;}}};need(SS.practice,'p');need(SS.boss,'b');}
+ if(ch.ramp){SS.practice=byLv(SS.practice);if(SS.boss)SS.boss=byLv(SS.boss);}
+ if(ch.lm)SS.LM=ch.learnLM();return SS;};
+const _sLearn12=sLearn;sLearn=function(){if(SS&&SS.ch&&SS.ch.lm){SS.cur=null;return sLearnLM();}return _sLearn12();};
+function lmIntro(L){return L.mode==='area'?`Let's find <b>${L.a} × ${L.b}</b> with an area model. Split ${L.a} into <b>${L.parts[0]}</b> and <b>${L.parts[1]}</b>, find each box, then add the boxes.`:
+ L.two?`Let's find <b>${L.a} × ${L.b}</b> with the column method. Row 1 multiplies by the ones digit. Row 2 multiplies by the tens digit, so it starts with a 0. Then we add the rows.`:`Let's find <b>${L.a} × ${L.b}</b> with the column method. Start with the ones, then the tens${L.A.length>2?', then the hundreds':''}. When a column makes 10 or more, the tens digit climbs up as a carry.`;}
+function sLearnLM(){const L=SS.LM;SS.lmi=0;
+ show(`${sStageBar('learn')}<div class="card" id="learnCard">${sLearnHead()}
+ <div class="lstep"><div class="lsb"><div class="lst">${lmIntro(L)}</div></div></div>
+ <div id="lmbox">${lmGridHTML(L,0,null)}</div><div class="ldsay" id="lmsay">Tap “Show me” to do one step at a time.</div><div id="ltip" class="tipbox hidden"></div>
+ <div class="row"><button class="btn purple" id="showBtn" data-enter onclick="sLearnLMNext()">✨ Show me</button><button class="btn green hidden" id="nextbtn" data-enter onclick="sPracticeStart()">Start Practice 🎯</button></div></div>`);
+ speak(stripH(lmIntro(L)),'owl');}
+function sLearnLMNext(){if(!SS||!SS.LM)return;const L=SS.LM,n=L.steps.length;SS.lmi++;SFX.tap();
+ if(SS.lmi<=n){const s=L.steps[SS.lmi-1];$('lmbox').innerHTML=lmGridHTML(L,SS.lmi,SS.lmi-1,{show:1});const t=`<b>Step ${SS.lmi} of ${n}:</b> ${s.tell}`;$('lmsay').innerHTML=t;speak(stripH(s.tell),'owl');if(SS.lmi===n)$('showBtn').textContent='🎉 See the answer';}
+ else if(SS.lmi===n+1){$('lmbox').innerHTML=lmGridHTML(L,n,null);const t=`So <b>${L.a} × ${L.b} = ${L.ans}</b>! 🎉`;$('lmsay').innerHTML=t;speak(stripH(t),'owl');$('showBtn').textContent='💡 Show me the trick';}
+ else{const t=$('ltip');t.innerHTML=`<b>💡 Easy trick:</b> ${SS.ch.tip}`;t.classList.remove('hidden');speak('Easy trick! '+stripH(SS.ch.tip),'owl');SFX.good();$('showBtn').classList.add('hidden');$('nextbtn').classList.remove('hidden');}}
+/* ---- inputs ---- */
+function wopInner(q){if(SS.wph==='op')return `<div class="wopq" id="wopq">${q.wop.lab}</div><div class="opts sopts wopts" id="sopts" role="group" aria-label="${stripH(q.wop.lab)}">${WOPS.map((o,i)=>`<button class="opt wopt" type="button" data-i="${i}" onclick="wopPick(${i},this)" aria-label="${OPN[o].w}"><span class="wsym" aria-hidden="true">${OPN[o].s}</span><span class="wlab">${OPN[o].w}</span></button>`).join('')}</div>`;
+ const o=WOPS[q.wop.ai];return `<div class="wopdone" id="wopdone"><span class="wsym" aria-hidden="true">${OPN[o].s}</span> ${q.m&&q.m.op==='two'?'First step':'You'} ${OPN[o].w.toLowerCase()}! Now solve it.</div><div class="center"><div class="ansbox" id="sans">?</div></div>${sPadHTML()}`;}
+const _sInputHTML12=sInputHTML;sInputHTML=function(q){
+ if(q.input==='lm')return `<div id="lmbox"></div><div class="ldask lmask" id="lmask" aria-live="polite"></div><div class="center"><div class="ansbox" id="sans">?</div></div>${sPadHTML()}`;
+ if(q.input==='wop')return `<div id="wopbox">${wopInner(q)}</div>`;
+ return _sInputHTML12(q);};
+const _sInpReset12=sInpReset;sInpReset=function(q){_sInpReset12(q);SS.lmq=null;SS.lmStep=0;SS.lmTry=0;SS.lmErr=0;SS.lmRev=false;SS.wph='op';SS.wopErr=0;};
+const _sRenderInp12=sRenderInp;sRenderInp=function(){const q=SS&&SS.cur;if(q&&q.input==='lm'&&SS.lmq!==q)return lmInit();return _sRenderInp12();};
+const _sPad12=sPad;sPad=function(d){if(SS&&SS.cur&&SS.cur.input==='wop'&&SS.wph==='op')return;return _sPad12(d);};
+const _sOK12=sOK;sOK=function(){if(!SS||!SS.cur||SS.locked)return;const q=SS.cur;
+ if(q.input==='lm')return lmAnswer();
+ if(q.input==='wop'){if(SS.wph==='op')return;if(SS.vals[0]===''){const e=$('sans');if(e){e.classList.remove('shake');void e.offsetWidth;e.classList.add('shake');}return;}
+  const v=parseInt(SS.vals[0],10),ok=!!q.check(v);SS.locked=true;const a=$('sans');if(a)a.classList.add(ok?'ok':'no');SS.onAnswer(ok,SS.wopErr);return;}
+ return _sOK12();};
+const _subjKey12=subjKey;subjKey=function(e){if(SS&&SS.cur&&!SC&&SS.cur.input==='wop'&&SS.wph==='op'){if(/^[1-4]$/.test(e.key)&&!SS.locked){const o=document.querySelectorAll('#sopts .opt')[parseInt(e.key,10)-1];if(o){o.click();e.preventDefault();return true;}}return false;}return _subjKey12(e);};
+function wopPick(i,el){if(!SS||!SS.cur||SS.locked||SS.wph!=='op')return;const q=SS.cur,ok=i===q.wop.ai,o=WOPS[q.wop.ai];SS.locked=true;
+ el.classList.add(ok?'right':'wrong');if(!ok){SS.wopErr++;SFX.bad();const r=document.querySelector(`#sopts .opt[data-i="${q.wop.ai}"]`);if(r)r.classList.add('right');$('wopq').insertAdjacentHTML('afterend',`<div class="ldfix wopwhy">It's <b>${OPN[o].w.toLowerCase()}</b>. ${q.wop.why}</div>`);speak(`It's ${OPN[o].w}. ${stripH(q.wop.why)}`,'owl');}
+ else{SFX.good();speak(`Yes! ${OPN[o].w}. Now solve it!`,'owl');}
+ setTimeout(()=>{if(!SS||SS.cur!==q)return;SS.locked=false;SS.wph='num';SS.vals=[''];$('wopbox').innerHTML=wopInner(q);_sRenderInp12();refreshLan();},ok?800:2600);}
+/* long multiplication: the kid fills each partial product, carry and sum */
+function lmInit(){const q=SS.cur;SS.lmq=q;SS.lmStep=0;SS.lmTry=0;SS.lmErr=0;SS.lmRev=false;lmShow(true);}
+function lmShow(first){setTimeout(refreshLan,0);const q=SS.cur,L=q.L,i=SS.lmStep,box=$('lmbox'),ask=$('lmask');if(!box||!ask)return;
+ if(i>=L.steps.length){box.innerHTML=lmGridHTML(L,L.steps.length,null);ask.innerHTML=`🎉 ${L.a} × ${L.b} = <b>${q.ans}</b>`;const a=$('sans');if(a){a.textContent=q.ans;a.classList.add('ok');}return;}
+ const s=L.steps[i];SS.vals=[''];box.innerHTML=lmGridHTML(L,i,i);ask.innerHTML=`<span class="lmstep">Step ${i+1} of ${L.steps.length}</span> ${s.ask}`;const a=$('sans');if(a)a.classList.remove('ok','no','shake');_sRenderInp12();
+ if(first)setTimeout(()=>{if(SS&&SS.cur===q&&SS.lmStep===0)speak(stripH(q.text)+'. '+stripH(s.ask),'owl');},60);else speak(stripH(s.ask),'owl');}
+function lmTry(L,s){return s.ph==='M'?`Use your times facts: skip-count by ${s.m}, ${s.d} times.`:s.ph==='A'?'Count on the little carry number from your product.':s.ph==='C'?'The carry is the TENS digit of the number you just made.':s.ph==='Z'?'This row multiplies by tens, so the ones place needs a placeholder.':s.ph==='P'?'Do the times fact first, then make it tens.':'Add the columns from the right, carrying when you make 10 or more.';}
+function lmAnswer(){const q=SS.cur,L=q.L,s=L.steps[SS.lmStep];if(!s||SS.vals[0]==='')return;const v=parseInt(SS.vals[0],10);
+ const fin=()=>{if(!SS||SS.cur!==q)return;lmShow();if(SS.lmStep>=L.steps.length){SS.locked=true;SS.onAnswer(SS.inBoss?!SS.lmRev:true,SS.lmErr);}};
+ if(v===s.want){SFX.good();SS.lmTry=0;const a=$('sans');if(a)a.classList.add('ok');SS.lmStep++;SS.locked=true;setTimeout(()=>{if(SS&&SS.cur===q){SS.locked=false;fin();}},450);return;}
+ SS.lmTry++;SS.lmErr++;SFX.bad();const a=$('sans');if(a){a.classList.remove('shake');void a.offsetWidth;a.classList.add('shake','no');}const ask=$('lmask');
+ if(SS.lmTry>=2){if(ask)ask.innerHTML+=`<div class="ldfix">It's <b>${s.want}</b>. ${s.tell}</div>`;SS.lmRev=true;SS.vals=[String(s.want)];_sRenderInp12();SS.lmTry=0;SS.lmStep++;SS.locked=true;setTimeout(()=>{if(SS&&SS.cur===q){SS.locked=false;fin();}},2000);}
+ else{if(ask)ask.innerHTML=ask.innerHTML.replace(/<div class="ldtry">.*<\/div>/,'')+`<div class="ldtry">Try again! ${lmTry(L,s)}</div>`;speak('Try again! '+lmTry(L,s),'owl');setTimeout(()=>{if(!SS||SS.cur!==q)return;SS.vals=[''];if(a)a.classList.remove('no');_sRenderInp12();},700);}}
+/* ---- scenes: the grand final brings all six heroes ---- */
+const _sExtras12=sExtras;sExtras=function(all){if(SS&&SS.sid==='mix'&&SS.ch&&SS.ch.final){const h=save.hero,s=sibId();return HERO_ORDER.filter(x=>x!==h&&x!==s);}return _sExtras12(all);};
+/* ---- castle map: the Long Multiplication Wing ---- */
+const _mapScreen12=SCR.mapScreen;
+SCR.mapScreen=function(){const r=_mapScreen12.apply(this,arguments);try{if(!save.hero)return r;const pf=P(),u=uIdx('mult',pf),open=u>=ORDER.length,lv=document.querySelector('#app .levels');if(!lv)return r;
+ let h=`<div class="card lmwing" id="lmWing"><h2>✖️ Long Multiplication Wing</h2><p class="big" style="font-size:17px">${open?'The wing is open! Multiply big numbers with area models and the column method.':'🔒 Beat all 12 times-table chapters to open the wing. Then multiply big numbers!'}</p></div><div class="levels wingl">`;
+ MLX.forEach((ch,i)=>{const c=ORDER.length+1+i,st=chStars('mult',c,pf),locked=c>u+1,isNext=c===u+1;
+  h+=`<button class="lvl ${locked?'locked':''} ${st?'done':''} ${isNext?'next':''}" type="button" data-level="c${c}" ${locked?'disabled':''} onclick="openWing(${c})" aria-label="Chapter ${c}: ${esc(ch.t)}${locked?', locked':''}">${isNext?'<span class="tag">PLAY!</span>':''}<div class="lch">Chapter ${c}</div><div class="lnum wn" aria-hidden="true">${ch.e}</div><div class="lwt">${esc(ch.t)}</div><div class="lboss">${locked?'🔒':ch.boss[0]}</div><div class="lplace">${ch.place.e} ${esc(ch.place.name)}</div><div class="lstars">${starStr(st)}</div></button>`;});
+ lv.insertAdjacentHTML('afterend',h+'</div>');}catch(e){}return r;};
+mapScreen=track('mapScreen',SCR.mapScreen);
+const _smap12=SCR.smapScreen;SCR.smapScreen=function(sid){if(sid==='mult')return SCR.mapScreen();return _smap12.apply(this,arguments);};
+smapScreen=track('smapScreen',SCR.smapScreen);
+/* ---- realm look ---- */
+QCOL.mix='#0F766E';
+const _realmArt12=realmArt;realmArt=function(k){if(k!=='mix')return _realmArt12(k);
+ const sym=(x,y,c,col)=>`<circle cx="${x}" cy="${y}" r="13" fill="${col}" stroke="#fff" stroke-width="2.5"/><text x="${x}" y="${y+6}" text-anchor="middle" font-size="17" font-weight="800" fill="#fff" font-family="Baloo 2,Nunito,sans-serif">${c}</text>`;
+ return `<svg viewBox="0 0 200 110" aria-hidden="true"><defs><linearGradient id="ramix" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5EEAD4"/><stop offset="1" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="110" fill="url(#ramix)"/><path d="M0 96Q100 82 200 96V110H0Z" fill="#14B8A6"/>
+ <g stroke="#134E4A" stroke-width="2.5"><path d="M78 100l6-62h32l6 62z" fill="#E2E8F0"/><path d="M84 38l2-8h28l2 8z" fill="#CBD5E1"/><path d="M84 30l16-24 16 24z" fill="#0F766E"/><path d="M93 100V84a7 7 0 0 1 14 0v16z" fill="#7C2D12"/></g>
+ <rect x="94" y="48" width="12" height="12" rx="6" fill="#FFD166"/><path d="M80 72q20 -8 40 0" stroke="#0F766E" stroke-width="3" fill="none"/>${sym(30,30,'+','#10B981')}${sym(62,18,'−','#EF4444')}${sym(140,18,'×','#F97316')}${sym(172,30,'÷','#2563EB')}</svg>`;};
+REALM_LINE.mix='A wobbly tower where the Muddle Monster swaps the signs, so you must spot which operation each puzzle needs.';
+REALM_LINE.mult='A tall castle with twelve towers, one for every times table, plus a wing for long multiplication.';
+DRILL_WHY.mix='so you can spot the right operation fast';
+REALM_OWL.mult=REALM_OWL.mult.replace(/\.$/,'')+', then a whole wing for long multiplication.';
+/* ---- badges ---- */
+function mysteryChs(){return [['add',SUBJ_BY.add.ch.indexOf(MISS_ADD)+1],['sub',SUBJ_BY.sub.ch.indexOf(MISS_SUB)+1],['mult',SUBJ_BY.mult.ch.indexOf(MISS_MULT)+1],['div',SUBJ_BY.div.ch.indexOf(MISS_DIV)+1]];}
+const _badgesOf12=badgesOf;badgesOf=function(id){const pf=save.profiles[id],L=_badgesOf12(id),k=mysteryChs().filter(([s,c])=>chStars(s,c,pf)>0).length,mx=sDone('mix',pf),lmC=ORDER.length+5;
+ const add=[{e:'✖️',n:'Long Multiplier',got:chStars('mult',lmC,pf)>0,how:`Beat the ${MLX[4].boss[1]} in Times Table Castle (Chapter ${lmC})`},
+  {e:'🔍',n:'Mystery Solver',got:k>=4,how:`Beat the Mystery Missing Numbers chapter in 4 realms (${k}/4)`},
+  {e:'🔀',n:'Mixed Math Whiz',got:mx>=3,how:`Beat 3 Muddle Tower chapters (${Math.min(mx,3)}/3)`}];
+ const at=L.length-SUBJ.length;return L.slice(0,at).concat(add,L.slice(at));};
+/* ---- save migration v12 -> v13: chapters re-indexed by title so stars stay on the same chapters ---- */
+function v13Map(sid){const old=V12_TITLES[sid];if(!old)return null;const now=SUBJ_BY[sid].ch.map(c=>c&&c.t);const m={};let moved=false;
+ old.forEach((t,i)=>{const j=now.indexOf(t);m[i+1]=j>=0?j+1:i+1;if(m[i+1]!==i+1)moved=true;});return moved?m:null;}
+function v13MigratePf(pf){Object.keys(V12_TITLES).forEach(sid=>{const m=v13Map(sid);if(!m)return;const rk=obj=>{if(!obj||typeof obj!=='object')return obj;const o={};Object.keys(obj).forEach(k=>{const n=m[+k];o[n!=null&&/^\d+$/.test(k)?n:k]=obj[k];});return o;};
+  const o=pf.subj&&pf.subj[sid];if(o){if(o.stars)o.stars=rk(o.stars);if(o.hist)o.hist=rk(o.hist);}
+  if(pf.weak&&typeof pf.weak==='object'){const w={};Object.keys(pf.weak).forEach(k=>{const p=k.split(':');w[p[0]===sid&&m[+p[1]]?`${sid}:${m[+p[1]]}`:k]=pf.weak[k];});pf.weak=w;}
+  if(pf.hintLog&&pf.hintLog[sid]&&pf.hintLog[sid].ch)pf.hintLog[sid].ch=rk(pf.hintLog[sid].ch);});}
+function v13Migrate(sv){if(!sv||!sv.profiles||sv.chv>=13)return false;Object.values(sv.profiles).forEach(pf=>{if(pf)v13MigratePf(pf);});sv.chv=13;return true;}
+(function(){let raw=null;try{raw=JSON.parse(localStorage.getItem(SKEY)||'null');}catch(e){}
+ if(raw&&raw.profiles){if(!(raw.chv>=13)){save.chv=undefined;v13Migrate(save);persist();}}else save.chv=13;})();
+const _freshSave12=freshSave;freshSave=function(){const s=_freshSave12();s.chv=13;return s;};
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
 </script>
