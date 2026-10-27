@@ -262,6 +262,24 @@ svg.hero.draw{animation:draw .5s ease-in-out 3}
 .sw.on{box-shadow:0 0 0 4px #1f2937;transform:scale(1.12)}
 .sw.lockd{opacity:.3;cursor:not-allowed}
 @media (max-width:560px){.winheroes .w3,.winheroes .w4{width:68px}.winheroes{gap:4px}.sw{width:34px;height:34px}}
+
+/* About Me */
+.about .abhero{width:130px;margin:0 auto}
+.about .abtag{display:inline-block;background:var(--hcl,#f5f3ff);color:var(--hc2,#6d28d9);border:3px solid var(--hc,#8b5cf6);border-radius:999px;padding:4px 16px;font-weight:900;font-size:18px}
+.about .abq{font-size:30px;margin:10px 0 14px}
+.abgrid{display:grid;gap:12px;max-width:640px;margin:0 auto 12px}
+.abgrid.ages{grid-template-columns:repeat(6,1fr)}
+.abgrid.grades{grid-template-columns:repeat(3,1fr)}
+.abbtn{font:inherit;font-weight:900;font-size:34px;min-height:78px;border:none;border-radius:20px;background:var(--hc,#8b5cf6);color:#fff;box-shadow:0 6px 0 var(--hc2,#6d28d9);cursor:pointer;padding:6px;transition:transform .08s}
+.abgrid.grades .abbtn{font-size:22px}
+.abbtn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--hc2,#6d28d9)}
+.abbtn.on{outline:5px solid #facc15;outline-offset:2px}
+.abchip{display:inline-block;background:var(--hcl,#f5f3ff);color:var(--hc2,#6d28d9);border:2px solid var(--hc,#8b5cf6);border-radius:999px;padding:3px 12px;font-weight:800;font-size:15px}
+.abchip.big{font-size:22px;padding:6px 18px;margin:4px 0 10px}
+.abmap{margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.abedit{font:inherit;font-weight:800;font-size:14px;border:2px solid var(--hc,#8b5cf6);background:#fff;color:var(--hc2,#6d28d9);border-radius:999px;padding:3px 12px;cursor:pointer;min-height:32px}
+.herocard .abmini{font-weight:800;color:#64748b;font-size:14px}
+@media (max-width:560px){.abgrid.ages{grid-template-columns:repeat(4,1fr)}.abgrid.grades{grid-template-columns:repeat(2,1fr)}.abbtn{font-size:28px;min-height:64px}.about .abq{font-size:24px}.about .abhero{width:100px}}
 </style>
 </head>
 <body>
@@ -812,23 +830,48 @@ function loseScene(){const pl=placeOf(S.n),ex=pickExtras('boss');return {title:`
 function titleScreen(){S=null;SC=null;stopSpeech();save.hero=null;persist();
  show(`<div class="card center"><h1>Times Table Quest</h1><p class="big" style="margin:4px">The Muddle Monster scrambled the times tables! Pick your hero to save the Number Kingdom.</p></div>
  <div class="herocards">${HERO_ORDER.map(id=>{const h=HEROES[id],pf=save.profiles[id],st=ORDER.reduce((s,n)=>s+(pf.stars[n]||0),0);
- return `<button class="herocard ${id}" data-hero="${id}" onclick="pickHero('${id}')"><div class="hsv">${heroSVGeq(id,pf.eq,'idle')}</div><div class="hn">${esc(pf.name)}</div><div class="ht">${h.title}</div><div class="hl">${h.blurb}</div><div class="hl"><b>⭐ ${st}</b> stars</div></button>`;}).join('')}</div>`);}
+ return `<button class="herocard ${id}" data-hero="${id}" onclick="pickHero('${id}')"><div class="hsv">${heroSVGeq(id,pf.eq,'idle')}</div><div class="hn">${esc(pf.name)}</div><div class="ht">${h.title}</div><div class="hl">${h.blurb}</div><div class="hl"><b>⭐ ${st}</b> stars</div>${hasAbout(pf)?`<div class="hl abmini">${aboutChip(pf)}</div>`:''}</button>`;}).join('')}</div>`);}
 function pickHero(id){save.hero=id;persist();SFX.good();const pf=P(),h=H();
  show(`<div class="card center"><div style="width:180px;margin:0 auto" id="selHero">${heroSVG(id,'cheer')}</div><h2>${h.title}</h2>
  <p class="big">What's your hero name? (optional)</p><input class="nm" id="nm" maxlength="14" value="${esc(pf.name)}" autocomplete="off"><br>
  <button class="btn green" data-enter onclick="startAdventure()">▶ Start the adventure!</button><button class="btn gray sm" onclick="titleScreen()">↩ Pick another hero</button></div>`);
  fxBurst($('selHero'),h.fx,10);heroSfx();}
 function startAdventure(){const v=$('nm')?$('nm').value.trim().slice(0,14):'';P().name=v||H().name;persist();
- if(!P().prologue)playScene(prologueScene(),()=>{P().prologue=true;persist();mapScreen();});else mapScreen();}
+ const go=()=>{if(!P().prologue)playScene(prologueScene(),()=>{P().prologue=true;persist();mapScreen();});else mapScreen();};
+ if(!hasAbout(P()))aboutScreen(go);else go();}
+
+/* ---------- About Me (age + grade, per hero; display only, no effect on difficulty) ---------- */
+const AGES=[1,2,3,4,5,6,7,8,9,10,11,12];
+const GRADES=[['none','Not in school yet','not in school yet'],['prek','Pre-K','in Pre-K'],['k','Kindergarten','in Kindergarten'],['1','1st','in 1st grade'],['2','2nd','in 2nd grade'],['3','3rd','in 3rd grade'],['4','4th','in 4th grade'],['5','5th','in 5th grade'],['6','6th','in 6th grade']];
+function gradeOf(k){return GRADES.find(g=>g[0]===k)||null;}
+function hasAbout(pf){return pf&&AGES.includes(pf.age)&&!!gradeOf(pf.grade);}
+function aboutChip(pf){if(!hasAbout(pf))return '';const g=gradeOf(pf.grade);return `🎂 ${pf.age} · 🎒 ${/^\d$/.test(g[0])?g[1]+' grade':g[1]}`;}
+let AB=null;
+function aboutScreen(then,editing){stopSpeech();const pf=P();AB={then:then||mapScreen,editing:!!editing,age:hasAbout(pf)?pf.age:null,grade:hasAbout(pf)?pf.grade:null};aboutAge();}
+function aboutHead(q){return `<div class="card center about"><div class="abhero" id="abHero">${heroSVG(save.hero,'idle')}</div><div class="abtag">⭐ About Me ⭐</div><h2 class="abq">${q}</h2>`;}
+function aboutAge(){const pf=P(),q=`How old are you, ${esc(pf.name)}?`;
+ show(aboutHead(q)+`<div class="abgrid ages">${AGES.map(a=>`<button class="abbtn ${AB.age===a?'on':''}" data-age="${a}" onclick="aboutPickAge(${a})">${a}</button>`).join('')}</div>
+ ${AB.editing?`<button class="btn gray sm" onclick="AB.then()">↩ Back</button>`:''}</div>`);
+ speak(`How old are you, ${pf.name}? Tap your age.`,'owl');}
+function aboutPickAge(a){AB.age=a;SFX.tap();react('#abHero','cheer');setTimeout(aboutGrade,250);}
+function aboutGrade(){const q='What grade are you in?';
+ show(aboutHead(q)+`<div class="abgrid grades">${GRADES.map(g=>`<button class="abbtn ${AB.grade===g[0]?'on':''}" data-grade="${g[0]}" onclick="aboutPickGrade('${g[0]}')">${g[1]}</button>`).join('')}</div>
+ <button class="btn gray sm" onclick="aboutAge()">↩ Change age</button></div>`);
+ speak('What grade are you in? Tap your grade.','owl');}
+function aboutPickGrade(k){AB.grade=k;const pf=P();pf.age=AB.age;pf.grade=k;persist();SFX.good();
+ const g=gradeOf(k),msg=`Nice to meet you, ${pf.name}! You're ${pf.age} and ${g[2]}!`;
+ show(aboutHead(esc(msg))+`<div class="abchip big">${aboutChip(pf)}</div><button class="btn green" id="abGo" onclick="AB.then()">${AB.editing?'✔ All done!':"▶ Let's go!"}</button></div>`);
+ react('#abHero','cheer');fxBurst($('abHero'),H().fx,10);heroSfx();speak(msg,'owl');}
+
 function mapScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SC=null;stopSpeech();const u=unlockedIndex(),all=u>=ORDER.length,pf=P();
- let h=`<div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>${esc(pf.name)}'s Kingdom Map</h2><div class="big" style="font-size:18px">Beat each chapter's boss to unlock the next one. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div></div></div></div><div class="levels">`;
+ let h=`<div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>${esc(pf.name)}'s Kingdom Map</h2><div class="big" style="font-size:18px">Beat each chapter's boss to unlock the next one. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(mapScreen,true)">✏️ About me</button></div></div></div></div><div class="levels">`;
  ORDER.forEach((n,i)=>{const locked=i>u,st=pf.stars[n]||0,isNext=i===u,pl=PLACES[i];
   h+=`<button class="lvl ${locked?'locked':''} ${st?'done':''} ${isNext?'next':''} ${n===12?'final':''}" data-level="${n}" ${locked?'disabled':''} onclick="openLevel(${n})">${isNext?'<span class="tag">PLAY!</span>':''}<div class="lch">Chapter ${i+1}</div><div class="lnum">×${n}</div><div class="lboss">${locked?'🔒':(n===12?monsterSVG():BOSSES[n][0])}</div><div class="lplace">${pl.e} ${pl.name}</div><div class="lstars">${starStr(st)}</div></button>`;});
  h+='</div>';
  if(all)h+=`<div class="card center"><div class="winheroes"><div class="w1">${heroSVG(save.hero,HS().win)}</div>${SIBS[save.hero].map((x,i)=>`<div class="w${i+2>3?4:i+2}">${heroSVG(x,'cheer')}</div>`).join('')}</div><h2>🏆 Times Table Champion!</h2><p class="big">The Number Kingdom is saved! Replay chapters to collect all ${ORDER.length*3} stars.</p></div>`;
  h+=`<div class="center" style="margin-top:18px"><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button><button class="btn gray sm" onclick="pickHero(save.hero)">✏️ Change name</button><button class="btn gray sm" onclick="resetProgress()">🗑️ Reset ${esc(pf.name)}</button></div>`;
  show(h);}
-function resetProgress(){if(!confirm('Reset all of '+P().name+"'s stars, chapters and treasures? This cannot be undone."))return;const id=save.hero,nmv=P().name;save.profiles[id]=freshProfile(id);save.profiles[id].name=nmv;persist();mapScreen();}
+function resetProgress(){if(!confirm('Reset all of '+P().name+"'s stars, chapters and treasures? This cannot be undone."))return;const id=save.hero,nmv=P().name;const ag=P().age,gr=P().grade;save.profiles[id]=freshProfile(id);save.profiles[id].name=nmv;if(ag!=null)save.profiles[id].age=ag;if(gr!=null)save.profiles[id].grade=gr;persist();mapScreen();}
 
 /* ---------- closet / music box ---------- */
 function closetScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SC=null;stopSpeech();const id=save.hero,pf=P(),h=H(),list=REWARDS[id];
@@ -1028,7 +1071,7 @@ if(save.hero)mapScreen();else titleScreen();
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='6';
+const APP_VERSION='7';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
