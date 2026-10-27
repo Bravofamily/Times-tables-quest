@@ -5,8 +5,11 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#f9a8d4">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0A1F44">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap">
 <title>NumiRealm: The Muddle Monster</title>
 <meta name="application-name" content="NumiRealm">
 <meta name="apple-mobile-web-app-title" content="NumiRealm">
@@ -422,18 +425,281 @@ svg.hero.dunk{animation:dunk .7s cubic-bezier(.3,1.4,.5,1) 2}
  .colm,.ld{font-size:28px}.fbox{min-width:62px;font-size:30px}.spad button{height:52px;font-size:26px}
  .slh .minihero{width:56px}.tmsay{font-size:15px}.fbar{width:240px}
 }
+/* =====================================================================
+   v11 NumiRealm redesign: Deep Realm theme, Baloo 2 + Poppins, glossy pills
+   ===================================================================== */
+:root{--deep:#0A1F44;--royal:#1E3A8A;--sky:#00C2FF;--purple:#8B5CF6;--gold:#F59E0B;--green:#10B981;--red:#EF4444;--light:#F1F5F9;--ink:#0A1F44;
+ --tfont:"Baloo 2","Baloo 2 Fallback","Nunito","Varela Round",ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold",system-ui,sans-serif;
+ --bfont:"Poppins","Nunito","Varela Round",ui-rounded,"Segoe UI",system-ui,-apple-system,sans-serif}
+html{scroll-padding-top:76px;scroll-padding-bottom:96px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{overflow-x:hidden}
+body,body[class*=theme-]{font-family:var(--bfont);color:var(--light);background-color:var(--deep);
+ background-image:radial-gradient(1.5px 1.5px at 12% 18%,#fff9 50%,transparent 51%),radial-gradient(1.5px 1.5px at 72% 9%,#fff8 50%,transparent 51%),radial-gradient(2px 2px at 88% 34%,#fff7 50%,transparent 51%),radial-gradient(1.5px 1.5px at 33% 62%,#fff6 50%,transparent 51%),radial-gradient(1.5px 1.5px at 56% 82%,#fff6 50%,transparent 51%),
+ radial-gradient(60% 45% at 85% 0%,#8B5CF655,transparent 70%),radial-gradient(55% 40% at 0% 30%,#00C2FF33,transparent 70%),radial-gradient(70% 50% at 50% 110%,#1E3A8Acc,transparent 70%),linear-gradient(180deg,#0A1F44 0%,#10265a 55%,#0A1F44 100%);
+ background-attachment:fixed;background-size:auto}
+body[class*=theme-]{background-image:radial-gradient(1.5px 1.5px at 12% 18%,#fff9 50%,transparent 51%),radial-gradient(1.5px 1.5px at 72% 9%,#fff8 50%,transparent 51%),radial-gradient(2px 2px at 88% 34%,#fff7 50%,transparent 51%),radial-gradient(1.5px 1.5px at 33% 62%,#fff6 50%,transparent 51%),
+ radial-gradient(60% 45% at 85% 0%,color-mix(in srgb,var(--hc) 40%,transparent),transparent 70%),radial-gradient(55% 40% at 0% 30%,#00C2FF2e,transparent 70%),radial-gradient(70% 50% at 50% 110%,#1E3A8Acc,transparent 70%),linear-gradient(180deg,#0A1F44 0%,#10265a 55%,#0A1F44 100%)}
+h1,h2,h3,.btn,.title,.hn,.sname,.lnum,.lch,.qtext,.opt,.pad button,.bname,.pname,.pill,.tag,.navl,.bn,.logo,.qeq{font-family:var(--tfont)}
+h1{color:var(--royal);text-shadow:none;letter-spacing:.5px;line-height:1.1}
+h2{color:var(--royal);line-height:1.15}
+body[class*=theme-] h2{color:var(--royal)}
+.card{background:var(--light);color:var(--ink);border-radius:26px;box-shadow:0 0 0 3px #ffffff14,0 8px 0 #06142e,0 18px 40px #0007}
+.card .big,.card p{color:#1e293b}
+/* top bar */
+#top,body[class*=theme-] #top{background:linear-gradient(180deg,#0d2654,#0A1F44);border-bottom:3px solid var(--hc,var(--sky));box-shadow:0 4px 18px #0008;gap:6px;padding:8px 10px;padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}
+#top .title,body[class*=theme-] #top .title{color:var(--light);font-weight:800;font-size:20px}
+body:not([class*=theme-]) #top .title{background:linear-gradient(180deg,#FFE08A 0%,#F59E0B 45%,#00C2FF 100%);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px;text-transform:uppercase}
+#status{background:#ffffff14;color:#FFE08A;border:2px solid #F59E0B88}
+.iconbtn{background:#ffffff14;color:var(--light);box-shadow:inset 0 -3px 0 #0005,0 0 0 2px #ffffff22;min-width:44px;min-height:44px}
+.iconbtn:hover{background:#ffffff26}
+.navl{display:none}
+.toplogo{display:none}
+@media (min-width:900px){
+ .navl{display:inline-flex;align-items:center;justify-content:center;font:inherit;font-family:var(--tfont);font-weight:800;font-size:16px;color:#cbd5e1;background:none;border:none;border-radius:999px;padding:6px 12px;min-height:44px;cursor:pointer;flex:none}
+ .navl:hover{color:#fff;background:#ffffff1a}.navl.on{color:var(--deep);background:linear-gradient(180deg,#FFD166,#F59E0B)}
+ #navProfile{display:inline-flex}
+ .toplogo{display:inline-flex;align-items:center;flex:none}
+ .toplogo svg{width:30px;height:30px}
+ #top .title{flex:1 1 60px;min-width:0}
+}
+@media (min-width:900px) and (max-width:1150px){.navl{padding:6px 8px;font-size:15px}#top .title{font-size:17px}}
+/* buttons: glossy 3D pills */
+.btn{position:relative;overflow:hidden;font-family:var(--tfont);font-weight:800;border-radius:999px;padding:12px 28px;background:linear-gradient(180deg,#FFD166 0%,#F59E0B 55%,#E08A00 100%);color:var(--deep);box-shadow:0 5px 0 #B45309,0 10px 18px #0004;text-shadow:0 1px 0 #ffffff55;min-height:56px;letter-spacing:.3px}
+.btn::after{content:"";position:absolute;left:10%;right:10%;top:4px;height:38%;border-radius:999px;background:linear-gradient(180deg,#ffffff70,#ffffff00);pointer-events:none}
+.btn:active{box-shadow:0 2px 0 #B45309}
+.btn.green,body[class*=theme-] .btn.green{background:linear-gradient(180deg,#10B981 0%,#059669 50%,#047857 100%);color:#fff;box-shadow:0 5px 0 #065F46,0 10px 18px #0004;text-shadow:0 1px 1px #0006}
+.btn.blue,body[class*=theme-] .btn.blue{background:linear-gradient(180deg,#3B5FD0 0%,#1E3A8A 60%,#172F72 100%);color:#fff;box-shadow:0 5px 0 #0F1F4D,0 10px 18px #0004;text-shadow:0 1px 1px #0006}
+.btn.purple,body[class*=theme-] .btn.purple{background:linear-gradient(180deg,#A78BFA 0%,#7C3AED 55%,#6D28D9 100%);color:#fff;box-shadow:0 5px 0 #4C1D95,0 10px 18px #0004;text-shadow:0 1px 1px #0006}
+.btn.pink,body[class*=theme-] .btn.pink{background:linear-gradient(180deg,color-mix(in srgb,var(--hc,#db2777) 80%,#fff),var(--hc2,#be185d));color:#fff;box-shadow:0 5px 0 color-mix(in srgb,var(--hc2,#9d174d) 70%,#000),0 10px 18px #0004;text-shadow:0 1px 1px #0006}
+.btn.gray{background:linear-gradient(180deg,#64748B,#475569);color:#fff;box-shadow:0 5px 0 #334155,0 10px 18px #0003}
+.btn.red{background:linear-gradient(180deg,#F87171,#DC2626);color:#fff;box-shadow:0 5px 0 #991B1B}
+.btn.sm{min-height:48px;padding:8px 18px}
+.btn[disabled]{filter:grayscale(.8);opacity:.6;cursor:not-allowed}
+:focus{outline:none}
+:focus-visible,.btn:focus-visible,.opt:focus-visible,.stile:focus-visible,.lvl:focus-visible,.herocard:focus-visible,.iconbtn:focus-visible,.pad button:focus-visible{outline:4px solid var(--sky)!important;outline-offset:3px!important;box-shadow:0 0 0 7px #0A1F44aa}
+/* hero cards */
+.herocard{color:var(--ink);border-radius:26px}
+.herocard .hl{color:#334155}
+svg.hero{filter:drop-shadow(0 0 1.2px #0A1F44) drop-shadow(0 6px 6px #0A1F4433)}
+.bossE svg,.lboss svg,.monster{filter:drop-shadow(0 0 1.2px #1e1b4b) drop-shadow(0 6px 8px #0003)}
+/* subjects: Choose Your Quest */
+.stile[data-subject=add]{--sc:#10B981!important;--sc2:#D1FAE5!important}
+.stile[data-subject=sub]{--sc:#EF4444!important;--sc2:#FEE2E2!important}
+.stile[data-subject=mult]{--sc:#F97316!important;--sc2:#FFEDD5!important}
+.stile[data-subject=div]{--sc:#2563EB!important;--sc2:#DBEAFE!important}
+.stile[data-subject=frac]{--sc:#8B5CF6!important;--sc2:#EDE9FE!important}
+.stile{color:var(--ink);background:linear-gradient(160deg,#fff 0%,var(--sc2) 100%)}
+.stile .sname{color:color-mix(in srgb,var(--sc) 70%,#000)}
+.stile .srealm,.stile .sprog{color:#334155}
+.questh{font-family:var(--tfont);text-align:center;font-size:30px;font-weight:800;margin:6px 0 10px;color:#FFE08A;text-shadow:0 2px 0 #0008;letter-spacing:.5px;text-transform:uppercase}
+@media (max-width:899px){
+ .subjects{display:flex;flex-direction:column;gap:12px;max-width:520px;margin:0 auto}
+ .stile{display:grid;grid-template-columns:52px 1fr auto;grid-template-areas:"op name e" "op realm e" "bar bar bar" "prog prog prog";align-items:center;text-align:left;gap:0 12px;border-radius:24px;padding:12px 16px;background:linear-gradient(180deg,color-mix(in srgb,var(--sc) 85%,#fff) 0%,var(--sc) 60%,color-mix(in srgb,var(--sc) 80%,#000) 100%);box-shadow:0 5px 0 color-mix(in srgb,var(--sc) 60%,#000),0 10px 18px #0005;color:#fff;position:relative;overflow:hidden}
+ .stile{min-height:140px;align-content:center}
+ .stile::after{content:"";position:absolute;left:6%;right:6%;top:3px;height:30%;border-radius:999px;background:linear-gradient(180deg,#ffffff55,#fff0);pointer-events:none}
+ .stile .sop{position:static;grid-area:op;text-align:center;width:48px;height:48px;line-height:46px;font-size:30px;background:#ffffffee;color:color-mix(in srgb,var(--sc) 75%,#000);box-shadow:inset 0 -3px 0 #0002}
+ .stile .se{grid-area:e;font-size:34px}
+ .stile .sname{grid-area:name;color:#fff;font-size:24px;text-shadow:0 1px 2px #0007}
+ .stile .srealm{grid-area:realm;color:#fff;margin:0;font-size:14px;text-shadow:0 1px 2px #0007}
+ .stile .sbar{grid-area:bar;margin-top:8px;background:#0003}
+ .stile .sbar i{background:#fff}
+ .stile .sprog{grid-area:prog;color:#fff;font-size:13px;flex-direction:row;justify-content:space-between;text-shadow:0 1px 2px #0007}
+ .stile .sbadge{position:absolute;right:56px;top:8px;font-size:11px}
+}
+@media (max-width:480px){.stile .sname{font-size:21px}.stile .sbadge{position:static;grid-column:1/-1;justify-self:start;margin-top:6px}}
+@media (min-width:900px){.subjects{grid-template-columns:repeat(5,1fr);gap:14px}.stile .se{font-size:46px}.stile .sname{font-size:22px}}
+/* chapter maps */
+.lvl{color:var(--ink);background:#F8FAFC}
+.lvl .lnum{color:var(--royal)}
+.lvl.done{background:#FEF3C7}
+/* gameplay on parchment */
+.stagebar{background:#0A1F44cc;border:2px solid #ffffff22;border-radius:999px;padding:6px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.stagebar .pill{font-weight:800}
+.stagebar .pill.lv{background:linear-gradient(180deg,#FFD166,#F59E0B);color:var(--deep)}
+.card:has(> .qcard),.card:has(#q),.card#qbox,.card:has(.sq){background:#FBF3DC;background-image:radial-gradient(120% 80% at 50% 0%,#fffaf0 0%,transparent 60%),radial-gradient(90% 60% at 100% 100%,#f1dfb3 0%,transparent 70%);border:3px solid #C89B5B;box-shadow:inset 0 0 0 4px #fff6,inset 0 0 30px #c89b5b44,0 8px 0 #7c5a2c,0 18px 40px #0007}
+.qtext{color:var(--ink)}
+.opts .opt,.opt{background:linear-gradient(180deg,#3B5FD0 0%,#1E3A8A 70%);color:#fff;box-shadow:0 5px 0 #0F1F4D,0 8px 14px #0003;border-radius:20px;min-height:76px}
+.opt .blk,.opt svg{filter:none}
+.arrs .opt,.opt:has(svg),.opt:has(.fbar),.opt:has(.frac),.opt:has(.pz){background:#fff;color:var(--ink);box-shadow:0 5px 0 #1E3A8A,0 8px 14px #0002}
+.opt.right{background:#D1FAE5!important;color:#065F46!important;box-shadow:0 5px 0 #10B981!important}
+.opt.wrong{background:#FEE2E2!important;color:#991B1B!important;box-shadow:0 5px 0 #EF4444!important}
+.pad button{background:#fff;color:var(--royal);box-shadow:0 4px 0 #93A5D6;border-radius:16px;min-height:52px}
+.pad .ok{background:linear-gradient(180deg,#10B981,#047857);color:#fff;box-shadow:0 4px 0 #065F46}
+.pad .del{background:#FDE68A;color:#78350F;box-shadow:0 4px 0 #D97706}
+.fb.good{color:#047857}.fb.bad{color:#B91C1C}
+.hint{background:#FFFBEB;color:#78350F;border-color:#F59E0B}
+/* guide lanterns */
+.hintrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.lanbtn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-family:var(--tfont);font-weight:800;font-size:17px;min-height:48px;padding:6px 14px 6px 8px;border-radius:999px;border:2px solid #F59E0B;background:linear-gradient(180deg,#1E3A8A,#0A1F44);color:#FFE08A;cursor:pointer;box-shadow:0 4px 0 #06142e,0 0 16px #F59E0B55}
+.lanbtn[disabled]{opacity:.55;cursor:not-allowed;box-shadow:0 4px 0 #06142e;filter:grayscale(.5)}
+.lanbtn .lanl{display:inline-flex;gap:2px}
+.lan{width:22px;height:28px;flex:none}
+.lan.lit .glow{animation:lanGlow 1.8s ease-in-out infinite}
+.lan.out{opacity:.35;filter:grayscale(1)}
+@keyframes lanGlow{0%,100%{opacity:.75}50%{opacity:1}}
+.hintbox{margin-top:12px;border-radius:20px;padding:12px 14px;background:linear-gradient(180deg,#0A1F44,#1E3A8A);color:#F1F5F9;border:2px solid #F59E0B;box-shadow:0 0 22px #F59E0B44;text-align:center;font-size:19px;font-weight:600;line-height:1.4}
+.hintbox .ht{display:flex;gap:10px;align-items:flex-start;text-align:left}
+.hintbox .ht .lan{width:28px;height:36px;margin-top:2px}
+.hintbox .tier{font-family:var(--tfont);font-weight:800;color:#FFE08A;font-size:15px;letter-spacing:.5px;text-transform:uppercase}
+.hintbox .vis{margin-top:10px;background:#F8FAFC;color:var(--ink);border-radius:16px;padding:10px;overflow-x:auto}
+.hintbox .vis .hvcap{color:#334155}
+.hv{display:block;margin:4px auto;max-width:100%;height:auto}
+.hvrow{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
+.hvplus{font-size:28px;color:var(--royal)}
+.hvcap{font-size:15px;font-weight:700;color:#334155;margin-top:6px}
+.hvg{display:flex;flex-direction:column;align-items:center;gap:8px}
+.hvpool{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:300px}
+.hvpool i{width:14px;height:14px;border-radius:50%;background:#F59E0B;box-shadow:inset 0 -2px 0 #B45309}
+.hvgs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.hvgr{width:54px;height:54px;border-radius:50%;border:3px dashed #8B5CF6;background:#EDE9FE}
+.hvbars{display:flex;flex-direction:column;gap:8px;align-items:center}
+.hvbars .fbar{max-width:100%}
+.hvdmsb{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;align-items:center;font-weight:800;font-size:14px}
+.hvdmsb span{background:#E2E8F0;color:#334155;border-radius:999px;padding:4px 10px}
+.hvdmsb span.on{background:#7C3AED;color:#fff}
+.hvdmsb b{color:#64748B}
+.hvbox{display:inline-flex;flex-wrap:wrap;gap:3px;width:96px;padding:6px;border:3px solid #1E3A8A;border-radius:10px;background:#DBEAFE;align-items:center}
+.hvbox i{width:12px;height:12px;border-radius:3px;background:#1E3A8A}
+.hvbox.part{border-style:dashed}.hvbox em{font-style:normal;font-weight:900;color:#B45309}
+.hvtri{display:inline-flex;flex-direction:column;align-items:center;justify-content:flex-end;width:170px;height:130px;clip-path:polygon(50% 0,100% 100%,0 100%);background:linear-gradient(#EDE9FE,#C4B5FD);padding-bottom:12px;font-weight:800;color:var(--ink)}
+.hvtri b{font-size:22px}
+.hvlad{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;font-weight:800;font-size:20px}
+.hvlad b{color:#7C3AED}
+.hvfr{display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:700}
+.hvfr .hvl{width:120px;height:4px;background:var(--ink);border-radius:2px}
+.lanpips{font-family:var(--tfont);font-weight:800;color:#FFE08A}
+/* home */
+.home{max-width:1180px;margin:0 auto}
+.hhero{position:relative;border-radius:28px;overflow:hidden;box-shadow:0 0 0 3px #ffffff1a,0 18px 40px #0008;background:#1E3A8A;isolation:isolate}
+.hhero .scene{display:block;width:100%;height:auto;aspect-ratio:4/3}
+.hhero .chars{position:absolute;left:0;right:0;bottom:4%;display:flex;justify-content:center;align-items:flex-end;gap:0;pointer-events:none}
+.hhero .chars .c{width:26%;max-width:190px}
+.hhero .chars .c.m{width:24%;max-width:170px;margin-left:-3%}
+.hhero .chars .c:nth-child(2){width:30%;max-width:220px;margin:0 -4%;z-index:2}
+.hhero .hlogo{position:absolute;left:0;right:0;top:3%;text-align:center}
+.logo{margin:0;font-weight:800;line-height:.95;font-size:clamp(40px,12vw,92px);letter-spacing:1px;text-transform:uppercase;display:inline-block;white-space:nowrap;padding-top:.5em;
+ background:linear-gradient(180deg,#FFF3B0 0%,#FFD166 30%,#F59E0B 55%,#3BA7FF 78%,#00C2FF 100%);background-origin:content-box;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:0;filter:drop-shadow(1.5px 0 0 #0A1F44) drop-shadow(-1.5px 0 0 #0A1F44) drop-shadow(0 1.5px 0 #0A1F44) drop-shadow(0 -1.5px 0 #0A1F44) drop-shadow(0 4px 0 #0A1F44)}
+.logo .li{position:relative;display:inline-block}
+.logo .li::after{content:"";position:absolute;left:50%;top:-.52em;width:.46em;height:.46em;transform:translateX(-50%);background:var(--cmp) center/contain no-repeat}
+.banner{display:inline-block;position:relative;margin-top:6px;padding:7px 26px;font-family:var(--tfont);font-weight:800;font-size:clamp(12px,3.4vw,22px);letter-spacing:1px;color:#FFF7E0;text-shadow:0 2px 0 #3b1f0a;background:linear-gradient(180deg,#A0662F 0%,#7A4A1F 50%,#5C3514 100%);border:3px solid #3b1f0a;border-radius:10px;box-shadow:inset 0 2px 0 #ffffff33,0 6px 12px #0007}
+.banner::before,.banner::after{content:"";position:absolute;top:50%;width:18px;height:70%;background:#5C3514;border:3px solid #3b1f0a;transform:translateY(-50%) skewY(20deg);z-index:-1}
+.banner::before{left:-14px}.banner::after{right:-14px;transform:translateY(-50%) skewY(-20deg)}
+.hplay{display:flex;flex-direction:column;align-items:center;gap:4px;margin:16px auto 6px;max-width:420px}
+.hplay .btn{width:100%;margin:5px 0;font-size:26px;letter-spacing:1.5px;text-transform:uppercase}
+.hplay .btn.play{font-size:32px;min-height:66px}
+.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:520px;margin:14px auto}
+.tile{font:inherit;font-family:var(--tfont);font-weight:800;font-size:13px;color:var(--light);background:linear-gradient(180deg,#1E3A8A,#132a66);border:2px solid #ffffff22;border-radius:18px;min-height:72px;padding:8px 2px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 4px 0 #06142e}
+.tile .ti{font-size:26px;line-height:1}
+.tile:hover{border-color:var(--sky)}
+.hsec{font-family:var(--tfont);font-weight:800;color:#FFE08A;font-size:24px;margin:22px 4px 10px;letter-spacing:.5px;text-transform:uppercase;text-align:center}
+.hintro{color:#cbd5e1;text-align:center;font-size:16px;max-width:640px;margin:0 auto 12px;line-height:1.5}
+.dsk{display:none!important}
+.subjcards{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.scard{font:inherit;text-align:center;color:var(--ink);background:var(--light);border:none;border-radius:22px;padding:14px 8px;cursor:pointer;box-shadow:0 6px 0 #06142e,0 12px 20px #0005;display:flex;flex-direction:column;align-items:center;gap:4px}
+.scard .so{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;color:#fff;font-family:var(--tfont);box-shadow:inset 0 -4px 0 #0003,0 4px 10px #0003}
+.scard b{font-family:var(--tfont);font-size:20px}.scard small{color:#334155;font-size:13px;line-height:1.3}
+.scard:hover{transform:translateY(-3px)}
+.realms{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.realm{font:inherit;border:none;padding:0;border-radius:18px;overflow:hidden;cursor:pointer;background:#0A1F44;box-shadow:0 0 0 2px #ffffff22,0 10px 18px #0006;color:#fff;text-align:left}
+.realm svg{display:block;width:100%;height:auto}
+.realm span{display:block;padding:8px 10px;font-family:var(--tfont);font-weight:800;font-size:15px}
+.realm:hover{box-shadow:0 0 0 3px var(--sky),0 10px 18px #0006}
+.herosec .herocards{max-width:1000px}
+@media (min-width:900px){
+ h2.dsk{display:block!important}.subjcards.dsk{display:grid!important}.mob{display:none!important}
+ .hhero .scene{aspect-ratio:auto;height:500px;object-fit:cover}
+ .hhero .hlogo{top:auto;bottom:auto;left:5%;right:auto;top:50%;transform:translateY(-50%);text-align:left;max-width:54%}
+ .hhero .chars{left:auto;right:2%;width:46%;bottom:3%}
+ .hhero .chars .c{max-width:210px}.hhero .chars .c:nth-child(2){max-width:240px}
+ .logo{font-size:clamp(60px,7vw,104px)}
+ .hhero .hplay{margin:18px 0 0;align-items:flex-start;max-width:340px}
+ .hhero .hplay .btn{width:auto;padding:12px 44px}
+ #app.wide{max-width:1180px}
+}
+@media (max-width:899px){.hhero .hplay{display:none}}
+@media (max-width:899px) and (min-width:600px){.realms{grid-template-columns:repeat(3,1fr)}.subjcards{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:420px){.tiles{gap:6px}.tile{font-size:11px;min-height:66px;border-radius:14px}.tile .ti{font-size:22px}.hplay .btn{font-size:22px}.hplay .btn.play{font-size:28px}}
+/* bottom tab bar (mobile hub screens) */
+#bnav{display:none}
+@media (max-width:899px){
+ body.hub #bnav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:25;background:linear-gradient(180deg,#132a66,#0A1F44);border-top:2px solid #ffffff22;padding:4px 4px calc(4px + env(safe-area-inset-bottom));box-shadow:0 -6px 18px #0007}
+ body.hub #app{padding-bottom:96px}
+ #bnav button{font:inherit;font-family:var(--tfont);font-weight:800;font-size:11px;color:#cbd5e1;background:none;border:none;border-radius:14px;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer}
+ #bnav button .ti{font-size:22px;line-height:1}
+ #bnav button.on{color:var(--deep);background:linear-gradient(180deg,#FFD166,#F59E0B)}
+}
+/* progress, settings, profile */
+.pgtabs{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
+.pgtab{font:inherit;font-weight:700;display:flex;align-items:center;gap:6px;flex:none;border:2px solid #CBD5E1;background:#fff;color:var(--ink);border-radius:999px;padding:4px 12px 4px 4px;min-height:48px;cursor:pointer}
+.pgtab .pgav{width:38px;height:38px;border-radius:50%;overflow:hidden;background:#E0E7FF}
+.pgtab .pgav svg{width:48px;height:auto;margin:-2px 0 0 -5px}
+.pgtab.on{border-color:var(--royal);background:#DBEAFE}
+.lvbadge{width:132px;height:146px;margin:6px auto;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.lvbadge svg{position:absolute;inset:0;width:100%;height:100%}
+.lvbadge b,.lvbadge small{position:relative;font-family:var(--tfont);color:var(--deep);line-height:1}
+.lvbadge small{font-size:16px;font-weight:800;margin-top:14px}.lvbadge b{font-size:52px;font-weight:800}
+.xpbar,.pbar{height:16px;border-radius:999px;background:#E2E8F0;overflow:hidden;box-shadow:inset 0 2px 3px #0002}
+.xpbar i,.pbar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#F59E0B,#FFD166)}
+.prow{display:grid;grid-template-columns:40px 1fr auto;gap:4px 10px;align-items:center;padding:10px 0;border-bottom:1px solid #E2E8F0}
+.prow:last-child{border-bottom:none}
+.prow .po{grid-row:1/3;width:40px;height:40px;border-radius:50%;color:#fff;font-weight:900;font-size:24px;display:flex;align-items:center;justify-content:center;font-family:var(--tfont)}
+.prow .pn{font-weight:800;color:var(--ink)}.prow .pv{font-weight:800;color:#334155;font-size:15px;text-align:right}
+.prow .pbar{grid-column:2/4}
+.prow .ph{grid-column:2/4;font-size:14px;color:#475569}
+.pstat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;margin:10px 0}
+.pstat div{background:#fff;border-radius:16px;padding:8px;border:2px solid #E2E8F0}
+.pstat b{display:block;font-family:var(--tfont);font-size:26px;color:var(--royal)}.pstat span{font-size:13px;color:#475569;font-weight:600}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #E2E8F0}
+.setrow:last-child{border-bottom:none}
+.setrow label,.setrow .sl{font-weight:700;color:var(--ink)}
+.setrow small{display:block;font-weight:500;color:#475569}
+.tog{position:relative;width:64px;height:36px;flex:none;border-radius:999px;border:none;background:#CBD5E1;cursor:pointer;padding:0;box-shadow:inset 0 2px 4px #0003}
+.tog::after{content:"";position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 2px 4px #0004;transition:left .15s}
+.tog[aria-checked=true]{background:#10B981}.tog[aria-checked=true]::after{left:32px}
+.tog{min-height:44px;height:44px;width:72px}.tog::after{top:6px;left:6px;width:32px;height:32px}.tog[aria-checked=true]::after{left:34px}
+.verlab{color:#64748B;font-size:13px;text-align:center;margin-top:8px}
+.qp{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+/* text size + calm motion */
+body.bigtext #app{zoom:1.15}
+@supports not (zoom:1){body.bigtext #app{font-size:115%}}
+body.calm *,body.calm *::before,body.calm *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+@media (max-width:360px){#top{gap:4px;padding-left:6px;padding-right:6px}#status{font-size:15px;padding:6px 7px}.iconbtn{width:44px}}
+.fsym{animation:fsym 5s ease-in-out infinite}
+@keyframes fsym{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.wfl{animation:wfl 1.2s linear infinite}@keyframes wfl{from{transform:translateY(-14px)}to{transform:translateY(14px)}}
+@media (min-width:900px){#navProfile.navl{background:#ffffff14;padding:0;width:44px;height:44px;border-radius:14px;font-size:21px;box-shadow:inset 0 -3px 0 #0005,0 0 0 2px #ffffff22}#navProfile.navl.on{background:linear-gradient(180deg,#FFD166,#F59E0B)}}
+@media (max-width:599px){.realms{display:flex;overflow-x:auto;gap:10px;padding:4px 2px 10px;scroll-snap-type:x mandatory}.realm{flex:0 0 150px;scroll-snap-align:start}}
+@media (max-width:380px){.arrs{grid-template-columns:repeat(3,minmax(0,1fr))}.arrs .opt{min-width:0;padding:4px}.arrs .gridwrap{zoom:.8}}
 </style>
 </head>
 <body>
 <div id="top">
  <button class="iconbtn" id="homeBtn" title="Map" aria-label="Map">🗺️</button>
+ <span class="toplogo" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#0A1F44" stroke="#F59E0B" stroke-width="3"/><path d="M20 4l4 16-4 16-4-16z" fill="#FFD166"/><path d="M4 20l16-4 16 4-16 4z" fill="#00C2FF"/><circle cx="20" cy="20" r="3" fill="#fff"/></svg></span>
  <div class="title" id="topTitle">NumiRealm</div>
+ <nav class="navlinks" aria-label="Main" style="display:contents">
+  <button class="navl" id="navHome" type="button">Home</button>
+  <button class="navl" id="navPlay" type="button">Play</button>
+  <button class="navl" id="navLevels" type="button">Levels</button>
+  <button class="navl" id="navPractice" type="button">Practice</button>
+  <button class="navl" id="navProgress" type="button">Progress</button>
+  <button class="navl" id="navSettings" type="button">Settings</button>
+ </nav>
  <div id="status">⭐ 0</div>
  <button class="iconbtn hidden" id="closetBtn" title="Rewards" aria-label="Rewards">🎀</button>
  <button class="iconbtn" id="narrBtn" title="Narrator voice on/off" aria-label="Narrator">🦉</button>
  <button class="iconbtn" id="muteBtn" title="Sound" aria-label="Sound">🔊</button>
+ <button class="iconbtn navl" id="navProfile" type="button" title="Profile" aria-label="Profile">👤</button>
 </div>
 <div id="app"></div>
+<nav id="bnav" aria-label="Realm menu">
+ <button type="button" id="bnHome"><span class="ti" aria-hidden="true">🏰</span>Home</button>
+ <button type="button" id="bnQuest"><span class="ti" aria-hidden="true">🧭</span>Quests</button>
+ <button type="button" id="bnPractice"><span class="ti" aria-hidden="true">🎯</span>Practice</button>
+ <button type="button" id="bnProgress"><span class="ti" aria-hidden="true">📈</span>Progress</button>
+ <button type="button" id="bnSettings"><span class="ti" aria-hidden="true">⚙️</span>Settings</button>
+</nav>
 <canvas id="confetti"></canvas>
 <script>
 "use strict";
@@ -754,7 +1020,7 @@ const SKIN='#8d5524',EMI_SKIN='#c98d63',SKIN_L='#a0643a',HAIR='#2b1a10';
 function starPts(cx,cy,R,r){let p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r:R;p.push((cx+rr*Math.cos(a)).toFixed(1)+','+(cy+rr*Math.sin(a)).toFixed(1));}return p.join(' ');}
 function curls(cx,cy,R,r,a0,a1,step){let h='';for(let a=a0;a<=a1;a+=step){const t=a*Math.PI/180;h+=`<circle cx="${(cx+R*Math.cos(t)).toFixed(1)}" cy="${(cy+R*Math.sin(t)).toFixed(1)}" r="${r}"/>`;}return h;}
 const DEFS=`<defs><linearGradient id="g-rbw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f87171"/><stop offset=".25" stop-color="#fbbf24"/><stop offset=".5" stop-color="#4ade80"/><stop offset=".75" stop-color="#60a5fa"/><stop offset="1" stop-color="#a78bfa"/></linearGradient><linearGradient id="g-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef08a"/><stop offset="1" stop-color="#f59e0b"/></linearGradient><linearGradient id="g-pink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#db2777"/></linearGradient><linearGradient id="g-lav" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ddd6fe"/><stop offset=".45" stop-color="#a78bfa"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>`;
-function face(xl,xr,ey,mouthW){return `<g class="eyes"><ellipse cx="${xl}" cy="${ey}" rx="7" ry="9" fill="#1f130b"/><ellipse cx="${xr}" cy="${ey}" rx="7" ry="9" fill="#1f130b"/><circle cx="${xl+2.5}" cy="${ey-3.5}" r="2.8" fill="#fff"/><circle cx="${xr+2.5}" cy="${ey-3.5}" r="2.8" fill="#fff"/></g>
+function face(xl,xr,ey,mouthW){return `<g class="eyes">${[xl,xr].map(x=>`<ellipse cx="${x}" cy="${ey}" rx="9.5" ry="11" fill="#fff" stroke="#1f130b" stroke-width="1.6"/><circle cx="${x+.6}" cy="${ey+1.2}" r="7.2" fill="#4a2a12"/><circle cx="${x+.6}" cy="${ey+1.2}" r="4" fill="#160b04"/><circle cx="${x+3.4}" cy="${ey-2}" r="2.8" fill="#fff"/><circle cx="${x-2}" cy="${ey+4.7}" r="1.3" fill="#fff" opacity=".85"/>`).join('')}</g>
  <ellipse cx="${xl-14}" cy="${ey+20}" rx="9" ry="6" fill="#f472b6" opacity=".45"/><ellipse cx="${xr+14}" cy="${ey+20}" rx="9" ry="6" fill="#f472b6" opacity=".45"/>
  <path d="M${100-mouthW} ${ey+20} Q100 ${ey+50} ${100+mouthW} ${ey+20} Q100 ${ey+27} ${100-mouthW} ${ey+20}Z" fill="#7f1d1d"/>
  <path d="M${100-mouthW+4} ${ey+22} Q100 ${ey+28} ${100+mouthW-4} ${ey+22} L${100+mouthW-6} ${ey+26} Q100 ${ey+31} ${100-mouthW+6} ${ey+26}Z" fill="#fff"/>
@@ -932,7 +1198,7 @@ function buddyFx(t){return `<svg viewBox="140 186 64 78" xmlns="http://www.w3.or
 const MEL_SKIN='#c99a6e',CAY_SKIN='#c18c5d',MEL_HAIR='#4a2a14',CAY_HAIR='#3b2210';
 const FDEFS=`<defs><linearGradient id="g-mel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset=".5" stop-color="#e879f9"/><stop offset="1" stop-color="#9333ea"/></linearGradient><linearGradient id="g-tail" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e879f9"/><stop offset=".55" stop-color="#a855f7"/><stop offset="1" stop-color="#22d3ee"/></linearGradient><linearGradient id="g-cay" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ef4444"/><stop offset=".5" stop-color="#ef4444"/><stop offset=".5" stop-color="#2563eb"/><stop offset="1" stop-color="#2563eb"/></linearGradient><radialGradient id="g-aura"><stop offset=".55" stop-color="#facc15" stop-opacity=".0"/><stop offset=".8" stop-color="#60a5fa" stop-opacity=".55"/><stop offset="1" stop-color="#ef4444" stop-opacity="0"/></radialGradient></defs>`;
 /* cartoon face with green eyes */
-function faceG(xl,xr,ey,mouthW,lash){const eye=x=>`<ellipse cx="${x}" cy="${ey}" rx="8" ry="9.5" fill="#fff" stroke="#1f2937" stroke-width="1.5"/><circle cx="${x}" cy="${ey+1}" r="6.2" fill="#22a05a"/><circle cx="${x}" cy="${ey+1}" r="3.4" fill="#0b2a17"/><circle cx="${x+2.4}" cy="${ey-2}" r="2.2" fill="#fff"/>`;
+function faceG(xl,xr,ey,mouthW,lash){const eye=x=>`<ellipse cx="${x}" cy="${ey}" rx="9" ry="10.5" fill="#fff" stroke="#1f2937" stroke-width="1.6"/><circle cx="${x}" cy="${ey+1}" r="6.8" fill="#22a05a"/><circle cx="${x}" cy="${ey+1}" r="3.6" fill="#0b2a17"/><circle cx="${x+2.6}" cy="${ey-2.2}" r="2.4" fill="#fff"/><circle cx="${x-2.2}" cy="${ey+4}" r="1.1" fill="#fff" opacity=".85"/>`;
  const l=lash?`<path d="M${xl-8} ${ey-6} l-5 -4 M${xl-5} ${ey-9} l-3 -5 M${xr+8} ${ey-6} l5 -4 M${xr+5} ${ey-9} l3 -5" stroke="#1f2937" stroke-width="2" stroke-linecap="round"/>`:'';
  return `<g class="eyes">${eye(xl)}${eye(xr)}${l}</g>
  <ellipse cx="${xl-13}" cy="${ey+19}" rx="8" ry="5.5" fill="#f472b6" opacity=".45"/><ellipse cx="${xr+13}" cy="${ey+19}" rx="8" ry="5.5" fill="#f472b6" opacity=".45"/>
@@ -1044,7 +1310,11 @@ function totalStars(){return save.hero?allStars(P()):0;}
 function updateStatus(){$('status').textContent='⭐ '+totalStars();$('muteBtn').textContent=save.muted?'🔇':'🔊';
  $('narrBtn').classList.toggle('off',!save.narrator);$('narrBtn').title=save.narrator?'Narrator voice: ON':'Narrator voice: OFF (captions only)';
  const cb=$('closetBtn');if(save.hero){cb.classList.remove('hidden');cb.textContent=H().closetE;cb.title=H().closet;$('topTitle').textContent=H().title;}else{cb.classList.add('hidden');$('topTitle').textContent='NumiRealm';}
- document.body.className=save.hero?'theme-'+save.hero:'';const tc=document.querySelector('meta[name=theme-color]');if(tc)tc.setAttribute('content',{emi:'#a78bfa',sage:'#f472b6',blu:'#60a5fa',eshon:'#4ade80',melrose:'#d946ef',cayden:'#ef4444'}[save.hero]||'#f9a8d4');}
+ document.body.className=save.hero?'theme-'+save.hero:'';const tc=document.querySelector('meta[name=theme-color]');if(tc)tc.setAttribute('content','#0A1F44');
+ /* v11: hub screens get the bottom tab bar; nav highlights; text size + calm motion settings */
+ const bc=document.body.classList;if(HUB)bc.add('hub');if(save.bigText)bc.add('bigtext');if(save.calm)bc.add('calm');
+ const navOn={home:['navHome','bnHome'],quest:['navLevels','bnQuest'],practice:['navPractice','bnPractice'],progress:['navProgress','bnProgress'],settings:['navSettings','bnSettings'],profile:['navProfile']};
+ document.querySelectorAll('.navl,#bnav button').forEach(b=>{b.classList.remove('on');b.removeAttribute('aria-current');});(navOn[HUB]||[]).forEach(i=>{const b=$(i);if(b){b.classList.add('on');b.setAttribute('aria-current','page');}});}
 
 /* ---------- sound ---------- */
 let actx=null;
@@ -1118,7 +1388,8 @@ function heroWrong(sel){react(sel,'sad');}
 
 /* ---------- rendering helpers ---------- */
 const app=$('app');
-function show(html){app.innerHTML=html;window.scrollTo(0,0);updateStatus();}
+let HUB='';
+function show(html,hub){HUB=hub||'';app.innerHTML=html;window.scrollTo(0,0);updateStatus();}
 function blockSize(rows,cols){const W=Math.min(innerWidth,900)-130;let s=Math.floor(W/cols)-3;s=Math.min(s,Math.floor(380/rows)-3,40);return Math.max(8,s);}
 function gridHTML(rows,cols,o){o=o||{};const s=o.size||blockSize(rows,cols);const h0=save.hero?H():null;const pal=h0?h0.palette:COLORS;const icons=(o.icons!==false&&h0&&s>=20)?h0.icons:null;
  let h=`<div class="gridwrap" style="--s:${s}px">`;for(let r=0;r<rows;r++){h+='<div class="grow"><div class="blks">';for(let c=0;c<cols;c++)h+=`<span class="blk" style="background:${pal[r%pal.length]};animation-delay:${o.anim===false?0:c*0.03}s${o.anim===false?';animation:none':''}">${icons?'<i>'+icons[r%icons.length]+'</i>':''}</span>`;h+='</div>';if(o.labels){const lbl=(o.hideLast&&r===rows-1)?'?':(r+1)*cols;h+=`<span class="sc" style="animation-delay:${cols*0.03}s">${lbl}</span>`;}h+='</div>';}return h+'</div>';}
@@ -1198,11 +1469,8 @@ function loseScene(){const pl=placeOf(S.n),ex=pickExtras('boss');return {title:`
  L('owl',"The Muddle Monster shuffled the numbers. Let's train again from the start with new ones!")],LOSE_SIB,ex),endLabel:'🔁 Train again'};}
 
 /* ---------- title / hero select / map ---------- */
-function titleScreen(){S=null;SC=null;stopSpeech();save.hero=null;persist();
- show(`<div class="card center"><h1>NumiRealm</h1><div class="subtitle">✨ The Muddle Monster ✨</div><p class="big" style="margin:4px">The Muddle Monster scrambled all the numbers! Adding, taking away, times tables, sharing and fractions. Pick your hero to save NumiRealm.</p></div>
- <div class="herocards">${HERO_ORDER.map(id=>{const h=HEROES[id],pf=save.profiles[id],st=allStars(pf);
- return `<button class="herocard ${id}" data-hero="${id}" onclick="pickHero('${id}')"><div class="hsv">${heroSVGeq(id,pf.eq,'idle')}</div><div class="hn">${esc(pf.name)}</div><div class="ht">${h.title}</div><div class="hl">${h.blurb}</div><div class="hl"><b>⭐ ${st}</b> stars</div>${hasAbout(pf)?`<div class="hl abmini">${aboutChip(pf)}</div>`:''}</button>`;}).join('')}</div>`);}
-function pickHero(id){save.hero=id;persist();SFX.good();const pf=P(),h=H();
+/* titleScreen (the NumiRealm home) lives in 5f-v11-ui.js */
+function pickHero(id){save.hero=id;save.lastHero=id;persist();SFX.good();const pf=P(),h=H();
  show(`<div class="card center"><div style="width:180px;margin:0 auto" id="selHero">${heroSVG(id,'cheer')}</div><h2>${h.title}</h2>
  <p class="big">What's your hero name? (optional)</p><input class="nm" id="nm" maxlength="14" value="${esc(pf.name)}" autocomplete="off"><br>
  <button class="btn green" data-enter onclick="startAdventure()">▶ Start the adventure!</button><button class="btn gray sm" onclick="titleScreen()">↩ Pick another hero</button></div>`);
@@ -1241,7 +1509,7 @@ function mapScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SS
  h+='</div>';
  if(all)h+=`<div class="card center"><div class="winheroes"><div class="w1">${heroSVG(save.hero,HS().win)}</div>${SIBS[save.hero].map((x,i)=>`<div class="w${i+2>3?4:i+2}">${heroSVG(x,'cheer')}</div>`).join('')}</div><h2>🏆 Times Table Champion!</h2><p class="big">Times Table Castle is saved! Replay chapters to collect all ${ORDER.length*3} stars.</p></div>`;
  h+=`<div class="center" style="margin-top:18px"><button class="btn blue" onclick="subjectScreen()">↩ Subjects</button><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button></div>`;
- show(h);}
+ show(h,'quest');}
 function resetProgress(){if(!confirm('Reset all of '+P().name+"'s stars, chapters and treasures? This cannot be undone."))return;const id=save.hero,nmv=P().name;const ag=P().age,gr=P().grade;save.profiles[id]=freshProfile(id);save.profiles[id].name=nmv;if(ag!=null)save.profiles[id].age=ag;if(gr!=null)save.profiles[id].grade=gr;persist();subjectScreen();}
 
 /* ---------- closet / music box ---------- */
@@ -1370,11 +1638,11 @@ function doFlip(){const g=document.querySelector('#fliparea .gridwrap');SFX.note
  setTimeout(()=>{if(!S||!$('fliparea'))return;S.flipped=!S.flipped;renderFlip();SFX.good();$('nextbtn').classList.remove('hidden');$('flipbtn').textContent='🔄 Flip back';},450);}
 
 /* ---------- PRACTICE ---------- */
-function practiceStart(){S.pi=0;S.pScore=0;S.pRes=[];renderPractice();}
+function practiceStart(){if(S.lanP==null)S.lanP=HINT_MAX.practice;S.inBoss=false;S.pi=0;S.pScore=0;S.pRes=[];renderPractice();}
 function dots(res,total){let h='<div class="dots">';for(let i=0;i<total;i++)h+=`<span class="dot ${res[i]===true?'g':res[i]===false?'r':i===res.length?'c':''}"></span>`;return h+'</div>';}
 function renderPractice(){const q=S.practice[S.pi];inp='';S.cur=q;S.locked=false;
  show(`${stageBar('practice')}<div class="card"><div class="row between"><div class="row"><div class="minihero" id="mh">${heroSVG(save.hero)}</div><h2>🎯 Practice ${S.pi+1}/${S.practice.length}</h2></div>
- <button class="btn blue sm" id="hintBtn" onclick="showHint()">💡 Hint</button></div>${dots(S.pRes,S.practice.length)}
+ ${lanHTML()}</div><div id="hintbox" class="hintbox hidden" aria-live="polite"></div>${dots(S.pRes,S.practice.length)}
  ${qHTML(q)}<div id="hint" class="hint hidden"></div><div id="fb" class="fb"></div>
  <div class="row"><button id="nextbtn" class="btn green hidden" data-enter onclick="practiceNext()">Next ▶</button></div></div>`);
  S.onAnswer=ok=>{S.locked=true;S.pRes.push(ok);
@@ -1387,20 +1655,20 @@ function hintHTML(q,full){const T=TRICKS[q.n];
  return `<div>Trick: ${T.s(q.k).slice(0,-1).join(' ➜ ')||T.d}</div>`+gridHTML(rows,cols,{labels:true,hideLast:!full});}
 function showHint(full){const h=$('hint');h.innerHTML='💡 '+hintHTML(S.cur,full);h.classList.remove('hidden');if(!full)SFX.tap();}
 function practiceNext(){if(!S)return;if(S.pi>=S.practice.length-1){practiceDone();return;}S.pi++;renderPractice();}
-function practiceDone(){S.locked=false;S.cur=null;
+function practiceDone(){S.locked=false;S.cur=null;if(S.quick)return quickDone('mult',S.pScore,S.practice.length);
  show(`${stageBar('practice')}<div class="card center"><div class="winheroes"><div class="w1" id="mh">${heroSVG(save.hero,'cheer')}</div><div class="w2">${heroSVG(sibId())}</div>${pickExtras('boss').map(x=>`<div class="w3">${heroSVG(x)}</div>`).join('')}</div><h2>Practice done!</h2><p class="big">You got <b>${S.pScore} out of ${S.practice.length}</b>. ${S.pScore>=4?'You are ready!':'Good try! Remember the tricks you learned!'}</p>
  <p class="big">But wait... something is coming... ${S.n===12?'🌀':bossOf(S.n)[0]}</p><button class="btn" data-enter onclick="playScene(midScene(),bossStart)">📖 Continue the story</button>
  <button class="btn gray sm" onclick="learnBuild()">📚 Learn again</button></div>`);}
 
 /* ---------- BOSS ---------- */
-function bossStart(){S.hp=bossHP(S.n);S.hearts=HEARTS;S.bi=0;renderBoss();}
+function bossStart(){S.lanB=HINT_MAX.boss;S.inBoss=true;S.hp=bossHP(S.n);S.hearts=HEARTS;S.bi=0;renderBoss();}
 function heartStr(){return '❤️'.repeat(S.hearts)+'🖤'.repeat(HEARTS-S.hearts);}
 function renderBoss(){const q=S.boss[S.bi],name=bossOf(S.n)[1],max=bossHP(S.n);inp='';S.cur=q;S.locked=false;
  show(`${stageBar('boss')}<div class="card" id="arena" style="position:relative"><div class="bossrow">
  <div class="bossside"><div id="bossE" class="bossE"><span class="bob">${bossFace(S.n)}</span></div><div class="bname">${name}</div>
  <div class="hpbar"><div class="hpfill" id="hpfill" style="width:${S.hp/max*100}%"></div></div><div style="font-weight:800">${S.hp}/${max} HP</div></div>
  <div class="player"><div class="pv" id="pv">${heroSVG(save.hero)}</div><div class="pname">${esc(nm(save.hero))}</div><div class="hearts" id="hearts">${heartStr()}</div></div></div></div>
- <div class="card" id="qbox">${qHTML(q)}<div id="fb" class="fb"></div></div>`);
+ <div class="card" id="qbox"><div class="hintrow">${lanHTML()}</div><div id="hintbox" class="hintbox hidden" aria-live="polite"></div>${qHTML(q)}<div id="fb" class="fb"></div></div>`);
  S.onAnswer=ok=>{S.locked=true;
   if(ok){S.hp--;SFX.hit();heroRight('#pv');const b=$('bossE');b.classList.remove('hit');void b.offsetWidth;b.classList.add('hit');$('hpfill').style.width=(S.hp/max*100)+'%';
    const p=document.createElement('div');p.className='pow';p.textContent=HS().pow;p.style.left='20%';p.style.top='10px';$('arena').appendChild(p);
@@ -1426,6 +1694,7 @@ function retryLevel(){const n=S.n;S=makeSession(n,S);playScene(introScene(),lear
 /* ---------- global input ---------- */
 function clickEnter(){const b=[...document.querySelectorAll('[data-enter]')].filter(x=>!x.classList.contains('hidden')&&x.offsetParent!==null);if(b.length)b[b.length-1].click();}
 document.addEventListener('keydown',e=>{
+ if((e.key==='Enter'||e.key===' ')&&e.target&&e.target.closest&&e.target.closest('button,a,[role=button],[role=switch],select,summary')&&!e.target.closest('#pad,#spad,.pad')){let fv=false;try{fv=e.target.matches(':focus-visible');}catch(x){}if(fv)return;}
  if(subjKey(e))return;
  if(e.target&&e.target.tagName==='INPUT'){if(e.key==='Enter'){e.preventDefault();clickEnter();}return;}
  const pad=$('pad');
@@ -1442,11 +1711,11 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='10';
+const APP_VERSION='11';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
- ['titleScreen','mapScreen','closetScreen','winScreen','subjectScreen','smapScreen','sWinScreen'].forEach(wrap);
+ ['titleScreen','mapScreen','closetScreen','winScreen','subjectScreen','smapScreen','sWinScreen','progressScreen','settingsScreen','practiceHub','profileScreen','quickDone'].forEach(wrap);
  // anything else that replaces the screen (scenes, lessons, bosses) counts as "in progress"
  const _show=window.show;window.show=function(){safe=depth>0;return _show.apply(this,arguments);};
  function go(){if(!pending)return;const v=pending,k='ttq-reloaded-'+v;
@@ -1916,13 +2185,13 @@ function nextReward(){const pf=P();return REWARDS[save.hero].find(r=>!pf.rewards
 function gradeBadge(sb,pf){if(!hasAbout(pf)||!sb.grades.includes(pf.grade))return '';const g=gradeOf(pf.grade);
  return /^\d$/.test(g[0])?`⭐ Recommended for ${g[1]} grade`:g[0]==='k'?'⭐ Recommended for Kindergarten':g[0]==='prek'?'⭐ Recommended for Pre-K':'⭐ A great place to start';}
 function subjectScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SS=null;SC=null;stopSpeech();lastMap=null;if(save.lastSubj){save.lastSubj=null;persist();}const pf=P();
- let h=`<div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>Where to, ${esc(pf.name)}?</h2><div class="big" style="font-size:18px">The Muddle Monster scrambled all five realms of NumiRealm! Pick one to explore. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(subjectScreen,true)">✏️ About me</button></div></div></div></div><div class="subjects" id="subjects">`;
+ let h=`<h1 class="questh">Choose your quest</h1><div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>Where to, ${esc(pf.name)}?</h2><div class="big" style="font-size:18px">The Muddle Monster scrambled all five realms of NumiRealm! Pick one to explore. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(subjectScreen,true)">✏️ About me</button></div></div></div></div><div class="subjects" id="subjects">`;
  SUBJ.forEach(sb=>{const N=sCount(sb.id),d=sDone(sb.id,pf),st=sStars(sb.id,pf),bd=gradeBadge(sb,pf);
   h+=`<button class="stile ${bd?'rec':''}" data-subject="${sb.id}" style="--sc:${sb.col};--sc2:${sb.col2}" onclick="openSubject('${sb.id}')"><div class="se">${sb.e}</div><div class="sop">${sb.op}</div><div class="sname">${sb.name}</div><div class="srealm">${sb.realm}</div>
   <div class="sbar"><i style="width:${Math.round(d/N*100)}%"></i></div><div class="sprog"><span>📖 ${d}/${N} chapters</span><span>⭐ ${st}/${N*3}</span></div>${bd?`<div class="sbadge">${bd}</div>`:''}</button>`;});
  h+=`</div><div class="center" style="margin-top:18px"><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button><button class="btn gray sm" onclick="pickHero(save.hero)">✏️ Change name</button><button class="btn gray sm" onclick="resetProgress()">🗑️ Reset ${esc(pf.name)}</button></div>`;
- show(h);}
-function openSubject(sid){SFX.tap();save.lastSubj=sid;const o=SP(sid);if(sid==='mult'&&sStars('mult')>0)o.intro=true;persist();
+ show(h,'quest');}
+function openSubject(sid){SFX.tap();save.lastSubj=sid;P().lastSubj=sid;const o=SP(sid);if(sid==='mult'&&sStars('mult')>0)o.intro=true;persist();
  const go=()=>sid==='mult'?mapScreen():smapScreen(sid);
  if(!o.intro)playScene(realmScene(sid),()=>{SP(sid).intro=true;persist();go();});else go();}
 const Lt=(who,text)=>{const l=L(who,text);l.text=l.text.charAt(0).toUpperCase()+l.text.slice(1);return l;};
@@ -1938,7 +2207,7 @@ function smapScreen(sid){if(!save.hero)return titleScreen();const sb=SUBJ_BY[sid
  h+='</div>';
  if(all)h+=`<div class="card center"><div class="winheroes"><div class="w1">${heroSVG(save.hero,HS().win)}</div>${SIBS[save.hero].map((x,i)=>`<div class="w${i+2>3?4:i+2}">${heroSVG(x,'cheer')}</div>`).join('')}</div><h2>🏆 ${sb.champ}!</h2><p class="big">${sb.realm} is saved: ${sb.back}! Replay chapters to collect all ${N*3} stars.</p></div>`;
  h+=`<div class="center" style="margin-top:18px"><button class="btn blue" onclick="subjectScreen()">↩ Subjects</button><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button></div>`;
- show(h);}
+ show(h,'quest');}
 /* ---------- session ---------- */
 function bossHPs(c,ch){return ch.final?8:c<=3?5:c<=7?6:7;}
 function makeSS(sid,c,prev){const sb=SUBJ_BY[sid],ch=sb.ch[c-1],o=SP(sid),h=save.hero,attempt=prev?prev.attempt+1:1,team=SIBS[h][((c-1)+(attempt-1))%SIBS[h].length];
@@ -1950,7 +2219,7 @@ function makeSS(sid,c,prev){const sb=SUBJ_BY[sid],ch=sb.ch[c-1],o=SP(sid),h=save
  o.hist[c]=SS.boss.map(q=>q.sig);persist();
  if(ch.ld)SS.L=ch.learnLD();else SS.steps=ch.learn();
  return SS;}
-function openChapter(sid,c){SFX.tap();save.lastSubj=sid;persist();makeSS(sid,c);playScene(sIntroScene(),sLearn);}
+function openChapter(sid,c){SFX.tap();save.lastSubj=sid;P().lastSubj=sid;persist();makeSS(sid,c);playScene(sIntroScene(),sLearn);}
 function sPlace(){const ch=SS.ch,sb=SS.sb;return {bg:sb.bg,props:sb.props,name:ch.place.name,e:ch.place.e};}
 function sExtras(all){const h=save.hero,T=SS.team,s=sibId();if(all)return SIBS[h].slice(1);return T!==s?[T]:[];}
 function sBossBits(){const ch=SS.ch;return {boss:true,bossFace:ch.final?monsterSVG():`<span style="font-size:1em">${ch.boss[0]}</span>`,bossName:ch.boss[1]};}
@@ -2031,7 +2300,7 @@ function sOK(){if(!SS||!SS.cur||SS.locked)return;const q=SS.cur;
 function sPick(i,el){if(!SS||!SS.cur||SS.locked)return;const q=SS.cur,ok=!!q.check(i);SS.locked=true;el.classList.add(ok?'right':'wrong');if(!ok){const r=document.querySelector(`#sopts .opt[data-i="${q.ans}"]`);if(r)r.classList.add('right');}SS.onAnswer(ok);}
 /* long division: the kid fills in each Divide / Multiply / Subtract / Bring-down step */
 function ldInit(){const q=SS.cur,L=q.L;SS.ldseq=ldSeq(L);SS.ldStep=0;SS.ldTry=0;SS.ldErr=0;ldShow();}
-function ldShow(){const q=SS.cur,L=q.L,seq=SS.ldseq,i=SS.ldStep;
+function ldShow(){setTimeout(refreshLan,0);const q=SS.cur,L=q.L,seq=SS.ldseq,i=SS.ldStep;
  if(i>=seq.length){$('ldbox').innerHTML=ldHTML(L,{k:L.steps.length,ph:'end'},null);$('ldmsb').innerHTML=dmsbBar('');$('ldask').innerHTML=ldDone(L);$('sans').classList.add('hidden');$('bringBtn').classList.add('hidden');return;}
  const [k,ph]=seq[i],s=L.steps[k];SS.ldPh=ph;SS.vals=[''];
  $('ldbox').innerHTML=ldHTML(L,{k,ph},{k,ph});$('ldmsb').innerHTML=dmsbBar(ph);
@@ -2046,10 +2315,10 @@ function ldAnswer(){const q=SS.cur,L=q.L,seq=SS.ldseq,[k,ph]=seq[SS.ldStep],s=L.
   if(SS.ldTry>=2){$('ldask').innerHTML+=`<div class="ldfix">It's <b>${want}</b>. ${ldSay(L,k,ph)}</div>`;SS.vals=[String(want)];sRenderInp();SS.ldTry=0;SS.ldStep++;setTimeout(()=>{if(!SS||SS.cur!==q)return;ldShow();if(SS.ldStep>=seq.length){SS.locked=true;SS.onAnswer(true,SS.ldErr);}},1800);}
   else{$('ldask').innerHTML=$('ldask').innerHTML.replace(/<div class="ldtry">.*<\/div>/,'')+`<div class="ldtry">Try again! ${ph==='D'?`Think: ${L.d} × ? is close to ${s.cur} without going over.`:ph==='M'?`Skip-count by ${L.d}, ${s.q} times.`:'Count back carefully.'}</div>`;setTimeout(()=>{if(!SS||SS.cur!==q)return;SS.vals=[''];a.classList.remove('no');sRenderInp();},700);}}}
 /* ---------- practice + apply ---------- */
-function sPracticeStart(){SS.list=SS.practice.concat(SS.apply);SS.pi=0;SS.pScore=0;SS.pRes=[];sRenderQ();}
+function sPracticeStart(){if(SS.lanP==null)SS.lanP=HINT_MAX.practice;SS.inBoss=false;SS.list=SS.practice.concat(SS.apply);SS.pi=0;SS.pScore=0;SS.pRes=[];sRenderQ();}
 function sRenderQ(){const q=SS.list[SS.pi],isApply=SS.pi>=SS.practice.length;SS.cur=q;SS.locked=false;sInpReset(q);
  show(`${sStageBar(isApply?'apply':'practice')}<div class="card"><div class="row between"><div class="row"><div class="minihero" id="mh">${heroSVG(save.hero)}</div>${isApply?`<div class="minihero" id="mt">${heroSVG(SS.team)}</div>`:''}<h2>${isApply?`🌍 Apply it! ${SS.pi-SS.practice.length+1}/${SS.apply.length}`:`🎯 Practice ${SS.pi+1}/${SS.practice.length}`}</h2></div>
- ${q.input!=='ld'?'<button class="btn blue sm" id="hintBtn" onclick="sHint()">💡 Hint</button>':''}</div>${dots(SS.pRes,SS.list.length)}
+ ${lanHTML()}</div><div id="hintbox" class="hintbox hidden" aria-live="polite"></div>${dots(SS.pRes,SS.list.length)}
  ${sQHTML(q)}<div id="hint" class="hint hidden"></div><div id="fb" class="fb"></div><div class="row"><button id="nextbtn" class="btn green hidden" data-enter onclick="sPracticeNext()">Next ▶</button></div></div>`);
  if(q.input==='ld')ldInit();else sRenderInp();
  speak(stripH(q.text),'owl');
@@ -2058,19 +2327,19 @@ function sRenderQ(){const q=SS.list[SS.pi],isApply=SS.pi>=SS.practice.length;SS.
   else{SFX.bad();heroWrong('#mh');$('fb').className='fb bad';$('fb').innerHTML='Not quite! '+q.explain+' 💪';sHint(true);$('nextbtn').classList.remove('hidden');}};}
 function sHint(full){if(!SS||!SS.cur)return;const h=$('hint');if(!h)return;h.innerHTML='💡 '+(SS.cur.hint||'Take it one step at a time!');h.classList.remove('hidden');if(!full)SFX.tap();}
 function sPracticeNext(){if(!SS)return;if(SS.pi>=SS.list.length-1){sPracticeDone();return;}SS.pi++;sRenderQ();}
-function sPracticeDone(){SS.locked=false;SS.cur=null;const ch=SS.ch,tot=SS.list.length;
+function sPracticeDone(){SS.locked=false;SS.cur=null;if(SS.quick)return quickDone(SS.sid,SS.pScore,SS.list.length);const ch=SS.ch,tot=SS.list.length;
  show(`${sStageBar('apply')}<div class="card center"><div class="winheroes"><div class="w1" id="mh">${heroSVG(save.hero,'cheer')}</div><div class="w2">${heroSVG(SS.team,'cheer')}</div></div><h2>Practice done!</h2><p class="big">You got <b>${SS.pScore} out of ${tot}</b>. ${SS.pScore>=tot-1?'You are ready!':'Good try! Remember the trick you learned!'}</p>
  <p class="big">But wait… something is coming… ${ch.final?'🌀':ch.boss[0]}</p><button class="btn" data-enter onclick="playScene(sMidScene(),sBossStart)">📖 Continue the story</button>
  <button class="btn gray sm" onclick="sLearn()">📚 Learn again</button></div>`);}
 /* ---------- boss ---------- */
-function sBossStart(){SS.hp=SS.max;SS.hearts=HEARTS;SS.bi=0;sRenderBoss();}
+function sBossStart(){SS.lanB=HINT_MAX.boss;SS.inBoss=true;SS.hp=SS.max;SS.hearts=HEARTS;SS.bi=0;sRenderBoss();}
 function sHeartStr(){return '❤️'.repeat(SS.hearts)+'🖤'.repeat(HEARTS-SS.hearts);}
 function sRenderBoss(){const q=SS.boss[SS.bi%SS.boss.length],ch=SS.ch,max=SS.max;SS.cur=q;SS.locked=false;sInpReset(q);
  show(`${sStageBar('boss')}<div class="card" id="arena" style="position:relative"><div class="bossrow">
  <div class="bossside"><div id="bossE" class="bossE"><span class="bob">${ch.final?monsterSVG():ch.boss[0]}</span></div><div class="bname">${esc(ch.boss[1])}</div>
  <div class="hpbar"><div class="hpfill" id="hpfill" style="width:${SS.hp/max*100}%"></div></div><div style="font-weight:800" id="hptxt">${SS.hp}/${max} HP</div></div>
  <div class="player"><div class="pv" id="pv">${heroSVG(save.hero)}</div><div class="pname">${esc(nm(save.hero))}</div><div class="hearts" id="hearts">${sHeartStr()}</div></div></div></div>
- <div class="card" id="qbox">${sQHTML(q)}<div id="fb" class="fb"></div></div>`);
+ <div class="card" id="qbox"><div class="hintrow">${lanHTML()}</div><div id="hintbox" class="hintbox hidden" aria-live="polite"></div>${sQHTML(q)}<div id="fb" class="fb"></div></div>`);
  if(q.input==='ld')ldInit();else sRenderInp();speak(stripH(q.text),'owl');
  SS.onAnswer=ok=>{SS.locked=true;
   if(ok){SS.hp--;SFX.hit();heroRight('#pv');const b=$('bossE');b.classList.remove('hit');void b.offsetWidth;b.classList.add('hit');$('hpfill').style.width=(SS.hp/max*100)+'%';$('hptxt').textContent=`${SS.hp}/${max} HP`;
@@ -2102,6 +2371,307 @@ function subjKey(e){if(!SS||!SS.cur||SC)return false;if(e.target&&e.target.tagNa
  if(e.key==='Enter'||e.key===' '){e.preventDefault();if(!SS.locked)sOK();else clickEnter();return true;}
  return false;}
 window.TTQ_SUBJ={SUBJ,CHAP:{add:ADD,sub:SUB,div:DIV,frac:FR},ldSteps,borrowInfo,carries,gcd,lcm,SP,allStars,sStars,sDone,makeSS,get SS(){return SS;},get lastMap(){return lastMap;}};
+/* ---------- start ---------- */
+/* boot moved to the end of 5f-v11-ui.js */
+/* =====================================================================
+   v11: GUIDE LANTERNS (limited, method-only hints)
+   Tier 1 = a strategy reminder. Tier 2 = a picture model with no result.
+   Hints never show the answer, never remove choices and never change the question.
+   ===================================================================== */
+const HINT_MAX={practice:3,boss:1};
+const hNum=s=>String(s).replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/gi,' ');
+const hTokens=s=>(hNum(s).match(/\d+/g)||[]).map(Number);
+/* --- picture models (no final answers) --- */
+function hvLine(from,hops,o){o=o||{};let cur=from;const pts=[from];hops.forEach(h=>{cur+=h;pts.push(cur);});const lo=Math.min(...pts),hi=Math.max(...pts),span=Math.max(1,hi-lo);
+ const W=Math.min(600,Math.max(260,span*30+60)),sp=(W-60)/span,X=v=>30+(v-lo)*sp;let s=`<svg class="hv nline" viewBox="0 0 ${W} 110" style="max-width:${W}px" role="img" aria-label="number line model">`;
+ s+=`<line x1="12" y1="80" x2="${W-12}" y2="80" stroke="#334155" stroke-width="3" stroke-linecap="round"/>`;
+ if(span<=40)for(let v=lo;v<=hi;v++)s+=`<line x1="${X(v)}" y1="73" x2="${X(v)}" y2="87" stroke="#475569" stroke-width="2"/>`;
+ let c=from;hops.forEach((h,k)=>{const x1=X(c),x2=X(c+h),mx=(x1+x2)/2,hg=Math.min(48,12+Math.abs(x2-x1)*.4);
+  s+=`<path d="M${x1} 74 Q${mx} ${74-hg} ${x2} 74" fill="none" stroke="${h<0?'#EF4444':'#10B981'}" stroke-width="3"${o.dashLast&&k===hops.length-1?' stroke-dasharray="6 5"':''}/>`;
+  if(o.hopLab)s+=`<text x="${mx}" y="${Math.max(12,70-hg)}" text-anchor="middle" font-size="14" font-weight="800" fill="${h<0?'#B91C1C':'#047857'}">${o.hopLab(h,k)}</text>`;c+=h;});
+ s+=`<circle cx="${X(from)}" cy="80" r="8" fill="#8B5CF6"/><text x="${X(from)}" y="106" text-anchor="middle" font-size="16" font-weight="800" fill="#0A1F44">${from}</text>`;
+ (o.marks||[]).forEach(v=>{s+=`<text x="${X(v)}" y="106" text-anchor="middle" font-size="16" font-weight="800" fill="#0A1F44">${v}</text>`;});
+ if(hops.length&&o.endQ!==false)s+=`<circle cx="${X(cur)}" cy="80" r="11" fill="#F59E0B" stroke="#fff" stroke-width="2"/><text x="${X(cur)}" y="85" text-anchor="middle" font-size="15" font-weight="900" fill="#0A1F44">?</text>`;
+ return s+'</svg>';}
+/* skip-count line 0..total: two labelled jumps then "keep going" */
+function hvSkip(total,step){const W=Math.min(600,Math.max(280,total*8+60)),X=v=>30+v*(W-60)/total;let s=`<svg class="hv nline" viewBox="0 0 ${W} 110" style="max-width:${W}px" role="img" aria-label="skip counting model">`;
+ s+=`<line x1="12" y1="80" x2="${W-12}" y2="80" stroke="#334155" stroke-width="3" stroke-linecap="round"/>`;
+ const n=Math.min(2,Math.floor(total/step)-1);for(let k=0;k<n;k++){const x1=X(k*step),x2=X((k+1)*step),mx=(x1+x2)/2;s+=`<path d="M${x1} 74 Q${mx} 34 ${x2} 74" fill="none" stroke="#10B981" stroke-width="3"/><text x="${mx}" y="30" text-anchor="middle" font-size="14" font-weight="800" fill="#047857">+${step}</text>`;}
+ const xs=X(Math.max(0,n)*step),xe=X(total);s+=`<path d="M${xs} 74 Q${(xs+xe)/2} 30 ${xe} 74" fill="none" stroke="#94A3B8" stroke-width="3" stroke-dasharray="5 6"/><text x="${(xs+xe)/2}" y="30" text-anchor="middle" font-size="15" font-weight="800" fill="#475569">keep jumping…</text>`;
+ s+=`<circle cx="${X(0)}" cy="80" r="7" fill="#8B5CF6"/><text x="${X(0)}" y="106" text-anchor="middle" font-size="16" font-weight="800" fill="#0A1F44">0</text><circle cx="${xe}" cy="80" r="7" fill="#F59E0B"/><text x="${xe}" y="106" text-anchor="middle" font-size="16" font-weight="800" fill="#0A1F44">${total}</text>`;
+ return s+'</svg>';}
+/* block array; the first `split` columns in one colour (no numbers) */
+function hvArray(r,c,split){const cs=Math.max(9,Math.min(22,Math.floor(260/Math.max(r,c)))),g=2,W=c*(cs+g)+(split&&split<c?8:0)+4,Hh=r*(cs+g)+4;let s=`<svg class="hv" viewBox="0 0 ${W} ${Hh}" width="${W}" style="max-width:100%" role="img" aria-label="block array model">`;
+ for(let i=0;i<r;i++)for(let j=0;j<c;j++){const x=2+j*(cs+g)+(split&&j>=split?8:0);s+=`<rect x="${x}" y="${2+i*(cs+g)}" width="${cs}" height="${cs}" rx="${cs/4}" fill="${split&&j>=split?'#F59E0B':'#00C2FF'}" stroke="#0A1F44" stroke-opacity=".35"/>`;}
+ return s+'</svg>';}
+/* part-whole bar: labels may be numbers that are already in the question or '?' */
+function hvBar(whole,a,b){const lab=v=>v==null?'?':v;return `<svg class="hv" viewBox="0 0 320 112" style="max-width:320px" role="img" aria-label="part-whole bar model"><rect x="10" y="8" width="300" height="38" rx="10" fill="#E0F2FE" stroke="#1E3A8A" stroke-width="2.5"/><text x="160" y="34" text-anchor="middle" font-size="18" font-weight="800" fill="#0A1F44">${lab(whole)}</text>
+ <rect x="10" y="62" width="150" height="38" rx="10" fill="#EDE9FE" stroke="#8B5CF6" stroke-width="2.5"/><text x="85" y="88" text-anchor="middle" font-size="18" font-weight="800" fill="#0A1F44">${lab(a)}</text><rect x="164" y="62" width="146" height="38" rx="10" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="${b==null?'6 4':'0'}"/><text x="237" y="88" text-anchor="middle" font-size="18" font-weight="800" fill="#0A1F44">${lab(b)}</text></svg>`;}
+/* empty sharing circles plus a pool to deal out */
+function hvGroups(g,pool,lab){let s='<div class="hvg"><div class="hvpool" aria-label="items to share">';for(let i=0;i<pool;i++)s+='<i></i>';s+='</div><div class="hvgs">';for(let i=0;i<g;i++)s+=`<span class="hvgr"></span>`;return s+`</div><div class="hvcap">${lab||'Deal them out one at a time, round and round.'}</div></div>`;}
+function hvBars(list){return `<div class="hvbars">${list.map(([n,d,cap])=>`<div class="hvb">${fbar(n,d,{w:220})}${cap?`<div class="hvcap">${cap}</div>`:''}</div>`).join('')}</div>`;}
+function hvDMSB(ph){const st=[['D','Divide','➗'],['M','Multiply','✖️'],['S','Subtract','➖'],['B','Bring down','⬇️']];return `<div class="hvdmsb" role="img" aria-label="divide, multiply, subtract, bring down cycle">${st.map(([k,l,e],i)=>`<span class="${k===ph?'on':''}">${e} ${l}</span>${i<3?'<b aria-hidden="true">→</b>':'<b aria-hidden="true">↺</b>'}`).join('')}</div>`;}
+const NOSPOIL='<div class="hvcap">Use the picture to work it out. The answer is yours to find! 🔎</div>';
+/* --- multiplication hints --- */
+function multHint(q){const a=q.a,b=q.b,n=q.n,k=q.k;
+ if(q.type==='missing')return {t1:`Skip count by ${n}s until you reach ${q.p}. Count how many jumps you made.`,t2:hvSkip(q.p,n)+'<div class="hvcap">Count the jumps all the way to the end.</div>'};
+ if(q.type==='array'){const used=(q.opts||[]).concat([[a,b],[b,a]]);const ex=[[2,3],[3,2],[2,4],[4,3],[3,5],[2,5],[4,2],[5,3]].find(([r,c])=>!used.some(o=>(o[0]===r&&o[1]===c)||(o[0]===c&&o[1]===r)))||[1,1];
+  return {t1:`Rows go across ➡️ and columns go down ⬇️. Look for ${a} rows with ${b} blocks in each row.`,t2:`<div class="hvrow">${hvArray(ex[0],ex[1])}</div><div class="hvcap">Example (not one of your choices): ${ex[0]} rows with ${ex[1]} in each row. Count the rows first, then the blocks in one row.</div>`,ex};}
+ const lo=Math.min(a,b),hi=Math.max(a,b),f=(lo===1||lo===2||lo===10||lo===5||lo===9||lo===4||lo===11)?lo:(hi<=12&&[2,10,5,9,4,11].includes(hi)?hi:null);
+ let t1;const other=f===a?b:a;
+ if(f===1)t1=`Anything times 1 stays the same number.`;
+ else if(f===2)t1=`Times 2 is a double: add ${other} to itself.`;
+ else if(f===10)t1=`Times 10: write ${other}, then put a zero in the ones place.`;
+ else if(f===5)t1=`Times 5 is half of times 10. Find ${other} × 10 first, then halve it.`;
+ else if(f===9)t1=`Times 9 is times 10 take away one group. Do ${other} × 10, then take away one ${other}.`;
+ else if(f===4)t1=`Times 4 is double, then double again. Double ${other}, then double that.`;
+ else if(f===11)t1=`Times 11: do ${other} × 10, then add one more ${other}.`;
+ else if(hi===12)t1=`Split it up: think of ${lo} × 12 as ${lo} × 10 plus ${lo} × 2.`;
+ else if(hi>5&&hi<=12)t1=`Split it up: think of ${lo} × ${hi} as ${lo} × 5 plus ${lo} × ${hi-5}.`;
+ else t1=`Think of ${a} × ${b} as ${a} × ${b-1} plus one more ${a}.`;
+ if(q.type==='story')t1=`Find the groups first: how many groups, and how many in each? Then multiply. `+t1;
+ const sp=hi===12?10:hi>5?5:hi>1?hi-1:0;const r=lo,c=hi;
+ return {t1,t2:`<div class="hvrow">${hvArray(r,c,sp)}</div><div class="hvcap">${r} rows of ${c}. ${sp?'Work out the blue part, then the gold part, then put them together.':'Count the rows of blocks.'}</div>`};}
+/* --- subject hints --- */
+function addHint(m){const t=m.terms,s=t.reduce((x,y)=>x+y,0);
+ if(t.length>2)return {t1:'Look for two numbers that make a 10 (or a friendly ten) and add those first. Then add the rest.',t2:colH(t,null,'+',{hi:0})+'<div class="hvcap">Line up the places. Start with the ones column (highlighted).</div>'};
+ const [x,y]=t,big=Math.max(x,y),sm=Math.min(x,y);
+ if(s<=20){let t1;if(x===y)t1=`It's a double! Use your doubles facts: ${x} and ${x}.`;else if(Math.abs(x-y)===1)t1=`Near double! Double the smaller number, ${sm}, then add one more.`;
+  else if(big<10&&s>10)t1=`Make a 10 first: how many does ${big} need to reach 10? Take that from ${sm}, then add what is left.`;else t1=`Start at the bigger number, ${big}, and count on ${sm} more.`;
+  return {t1,t2:hvLine(big,Array(sm).fill(1))+'<div class="hvcap">Start at the purple dot and make one hop for each number you add.</div>'};}
+ if(sm%10===0&&sm>0)return {t1:`Count on by tens from ${big}: each ten makes the tens digit go up by one.`,t2:`<div class="hvrow">${base10(big,{lab:false})}<b class="hvplus">+</b>${base10(sm,{lab:false})}</div><div class="hvcap">Add the rods (tens) together. The ones stay the same.</div>`};
+ const carry=(x%10)+(y%10)>=10,three=big>=100;
+ return {t1:(three?'Line up ones, tens and hundreds. ':'')+'Add the ones first, then the tens'+(three?', then the hundreds':'')+'.'+(carry?' If a column makes 10 or more, trade 10 ones for 1 ten and carry it.':''),
+  t2:colH([x,y],null,'+',{hi:0})+(big<100?`<div class="hvrow">${base10(x,{lab:false})}<b class="hvplus">+</b>${base10(y,{lab:false})}</div>`:'')+'<div class="hvcap">Start with the ones column. Cubes are ones, rods are tens.</div>'};}
+function subHint(m,q){const a=m.a,b=m.b;const txt=hNum(q.text);
+ if(/,\s*so\s/.test(txt))return {t1:'Use the fact family: the addition fact uses the same three numbers. Find the missing part.',t2:hvBar(a,b,null)+'<div class="hvcap">The whole is on top. Take away the part you know.</div>'};
+ if(a<=20){let t1;if(b<=3)t1=`Start at ${a} and count back ${b}.`;else if(a-b<=4&&b>4)t1=`The numbers are close together. Count UP from ${b} to ${a} instead.`;else if(a>10&&b<10&&a-b<10)t1=`Take away to get down to 10 first, then take away the rest.`;else t1=`Start at ${a} and count back ${b} hops.`;
+  return {t1,t2:hvLine(a,Array(b).fill(-1))+'<div class="hvcap">Start at the purple dot and hop back once for each one you take away.</div>'};}
+ if(b%10===0)return {t1:`Count back by tens from ${a}. Only the tens digit changes.`,t2:(a<100?base10(a,{lab:false}):'')+`<div class="hvcap">Take away the tens rods one at a time.</div>`};
+ const borrow=(a%10)<(b%10);
+ return {t1:'Start with the ones column.'+(borrow?' The top ones digit is smaller, so borrow: trade 1 ten for 10 ones.':' Subtract the ones, then the tens.')+(a>=100?' Then do the hundreds. Across a zero? Borrow from the next place that has something.':''),
+  t2:colH(a,b,'−',{hi:0})+(a<100?base10(a,{lab:false,brk:borrow}):'')+'<div class="hvcap">Start with the ones (highlighted).</div>'};}
+function eqnHint(m,q){/* x + ? = r */const x=m.x,r=m.r;return {t1:`Think: what goes with ${x} to make ${r}? Count up from ${x} to ${r}.`,t2:hvBar(r,x,null)+'<div class="hvcap">The whole is on top. One part is known. What fills the gap?</div>'};}
+function eqn2Hint(m){const {l,o,r,res}=m;
+ if(o==='+')return {t1:`Use the fact family: whole take away the part you know gives the missing part.`,t2:hvBar(res,l==null?r:l,null)};
+ if(l==null)return {t1:`Think backwards: something was taken away. Put it back! Add what was taken away to what was left.`,t2:hvBar(null,res,r)+'<div class="hvcap">The start is the whole: both parts together.</div>'};
+ return {t1:`How much was taken away? Count up from ${res} to ${l}.`,t2:hvBar(l,res,null)};}
+function divHint(m,q){const n=m.n,txt=hNum(q.text);const dIn=hTokens(q.text).includes(m.d),d=m.d,D=dIn?d:'the number of groups';
+ if(/rows/.test(txt))return {t1:`Count the rows: each row has ${d}. Or think: ${d} × what = ${n}?`,t2:hvSkip(n,d)};
+ if(/[Ss]hare|share/.test(txt)&&n<=40)return {t1:`Share fairly: give one to each ${dIn?'group':'friend'}, again and again, until none are left. Or use a times fact: ${D} × what = ${n}?`,t2:hvGroups(d,n)};
+ if(/×/.test(txt)&&/\?/.test(txt)&&!/÷/.test(txt))return {t1:`Skip count by ${d}s until you reach ${n}. How many jumps?`,t2:hvSkip(n,d)};
+ if(/,\s*so\s/.test(txt))return {t1:'Division is times tables backwards. Look at the times fact first: it uses the same three numbers.',t2:`<div class="hvtri" role="img" aria-label="fact family triangle"><b>${n}</b><span>× and ÷ family</span></div>`};
+ if(n>=50&&n<1000&&d<10&&n/d>=10)return {t1:`Split ${n} into friendly parts you can share by ${d} (like a big tens part and the rest). Divide each part, then add.`,t2:(n<100?base10(n,{lab:false}):'')+hvGroups(d,0,`Share the tens first, then the ones, into ${d} groups.`)};
+ if([2,5,10].includes(d))return {t1:`Skip count by ${d}s until you reach ${n}, and count your jumps.`,t2:hvSkip(n,d)};
+ return {t1:`Think of the times fact: ${d} × what = ${n}? Use a fact you know, then step up or down.`,t2:n<=40?hvGroups(d,n):hvSkip(n,d)};}
+function divrHint(m,q){const n=m.n,d=m.d,dIn=hTokens(q.text).includes(d);return {t1:dIn?`Find the biggest ${d}s fact that fits into ${n} without going over. What's left over is the remainder (it must be smaller than ${d}).`:`Count how many friends are sharing. Deal the ${n} out one each, round and round. Stop when there aren't enough for everyone to get one more: those are left over.`,
+ t2:(n<=40?hvGroups(d,n,`Deal them into the groups. Anything that can't go round fairly is left over.`):hvSkip(n,d)+`<div class="hvcap">Jump by ${d}s, but stop before you go past ${n}.</div>`)};}
+function divwHint(m,ceil){const n=m.n,d=m.d;return {t1:`First divide: how many full boxes of ${d}? Then think about the leftovers: ${ceil?'do they still need a box of their own?':'a box that isn\'t full doesn\'t count!'}`,
+ t2:`<div class="hvrow"><span class="hvbox full" aria-label="a full box">${'<i></i>'.repeat(Math.min(d,12))}</span><span class="hvbox part" aria-label="a box that is not full"><i></i><i></i><em>?</em></span></div><div class="hvcap">A full box holds ${d}. What happens to a box that is only part full?</div>`};}
+function ldHint(L,ph,s){const d=L.d;
+ if(ph==='D')return {t1:`Which step are we on? <b>Divide</b>: how many ${d}s fit into ${s.cur} without going over?`,t2:hvDMSB('D')+hvSkip(Math.max(s.cur,d),d)+`<div class="hvcap">Jump by ${d}s and stop before you pass ${s.cur}.</div>`};
+ if(ph==='M')return {t1:`Which step are we on? <b>Multiply</b>: multiply the number you just wrote on top by ${d}.`,t2:hvDMSB('M')+'<div class="hvcap">Top digit × divisor. Write it under the number you divided.</div>'};
+ if(ph==='S')return {t1:`Which step are we on? <b>Subtract</b>: take the number you just multiplied away from the number above it.`,t2:hvDMSB('S')+'<div class="hvcap">Line up the digits and subtract. The answer must be smaller than the divisor.</div>'};
+ return {t1:`Which step are we on? <b>Bring down</b> the next digit and write it next to what's left.`,t2:hvDMSB('B')+'<div class="hvcap">Then start again with Divide.</div>'};}
+function pickEx(avoid){for(const [n,d] of [[2,5],[3,5],[1,4],[3,4],[2,3],[1,3],[5,6],[3,8],[1,6],[4,7],[2,9],[7,10],[5,12],[1,5]])if(!avoid.includes(n)&&!avoid.includes(d))return [n,d];return null;}
+function frHint(m,q,avoid){const op=m.op,txt=hNum(q.text);
+ if(op==='frname'){if(/dot/.test(txt)){const ex=pickEx(avoid);return {t1:'Count the equal jumps from 0 to 1: that is the bottom number. Then count jumps from 0 to the dot: that is the top number.',t2:ex?fline(ex[1],ex[0])+`<div class="hvcap">Example: ${ex[1]} jumps make 1 whole and the dot is ${ex[0]} jumps along, so it shows ${frH(ex[0],ex[1])}.</div>`:''};}
+  const ex=pickEx(avoid);return {t1:'Bottom number = how many EQUAL parts the whole is cut into. Top number = how many of those parts are shaded.',t2:ex?hvBars([[ex[0],ex[1],`Example: ${ex[1]} equal parts, ${ex[0]} shaded, so this is ${frH(ex[0],ex[1])}.`]]):''};}
+ if(op==='frpart')return {t1:'The numerator is the number on top. The denominator is down at the bottom (D for Down!).',t2:'<div class="hvfr" role="img" aria-label="a fraction: numerator on top, denominator on the bottom"><span>▲ top = numerator (parts we have)</span><span class="hvl"></span><span>▼ bottom = denominator (equal parts in one whole)</span></div>'};
+ if(op==='frcmp'){const [a1,a2]=m.a,[b1,b2]=m.b;const big=m.want==='big';
+  if(a2===b2)return {t1:`The bottoms match, so the pieces are the same size. Compare the tops: more pieces means ${big?'more':'less is fewer'}.`.replace('less is fewer','fewer pieces means less'),t2:hvBars([[0,a2,''],[0,b2,'']])+'<div class="hvcap">Same-size pieces. Shade each fraction in your head and compare.</div>'};
+  if(a1===b1)return {t1:`The tops match. Look at the bottoms: cutting into MORE pieces makes each piece SMALLER.`,t2:hvBars([[0,a2,''],[0,b2,'']])+'<div class="hvcap">Which bar has the bigger pieces?</div>'};
+  return {t1:'Make the bottoms match first, then compare the tops. Or picture both fractions as bars of the same size.',t2:hvBars([[0,a2,''],[0,b2,'']])+'<div class="hvcap">Both bars are the same size. Think about how much of each one would be shaded.</div>'};}
+ if(op==='freq'){const {n,d,N,D}=m;return D!=null?{t1:`Whatever you do to the bottom, do the same to the top. What was ${d} multiplied by to make ${D}?`,t2:hvBars([[n,d,''],[0,D,'Shade the same amount on this bar.']])}:{t1:`Whatever you do to the top, do the same to the bottom. What was ${n} multiplied by to make ${N}?`,t2:hvBars([[n,d,'']])+'<div class="hvcap">An equal fraction covers exactly the same amount of the bar.</div>'};}
+ if(op==='freqmc')return {t1:'Equal fractions: the top and the bottom are both multiplied by the SAME number. Check each choice.',t2:hvBars([[m.n,m.d,'An equal fraction covers exactly this much of the bar.']])};
+ if(op==='frsimp')return {t1:`Find a number that divides both ${m.N} and ${m.D} evenly. Divide the top and bottom by it. Keep going until no number works.`,t2:`<div class="hvlad" role="img" aria-label="simplifying steps"><span>${frH(m.N,m.D)}</span><b>÷ ?</b><span>${frH('?','?')}</span><b>÷ ?</b><span>simplest</span></div><div class="hvcap">Start testing with the smallest numbers that could divide both.</div>`};
+ if(op==='fradd'||op==='frsub'){const [a,d]=m.a,[b]=m.b,add=op==='fradd';return {t1:`The bottoms match, so the bottom stays ${d}. Just ${add?'add':'subtract'} the tops.`,t2:hvBars([[a,d,add?`Start with this much, then shade ${b} more pieces.`:`Start with this much, then take away ${b} pieces.`]])};}
+ if(op==='fraddu'){const [,d1]=m.a,[,d2]=m.b;return {t1:`Make the bottoms match first: find a number that both ${d1} and ${d2} go into. Change both fractions, then add the tops.`,t2:hvBars([[0,d1,''],[0,d2,'']])+'<div class="hvcap">Cut both bars into the same number of pieces.</div>'};}
+ if(op==='toimp'){const {w,n,d}=m;return {t1:`Each whole has ${d} pieces. Count the pieces in all ${w} wholes, then add the ${n} extra.`,t2:hvBars([...Array(Math.min(w,4)).fill(0).map(()=>[d,d,'']),[n,d,'']])+(w>4?'<div class="hvcap">…and more wholes.</div>':'')};}
+ if(op==='tomixed'){const {N,d}=m;return {t1:`How many whole groups of ${d} fit into ${N}? That is the whole number. The pieces left over go on top.`,t2:hvSkip(N,d)};}
+ if(op==='frof'){const {n,d,N}=m;return {t1:`Split ${N} into ${d} equal groups first. Then take ${n} of those groups.`,t2:N<=48?hvGroups(d,N):hvBars([[0,d,`Think of all ${N} as this whole bar, cut into ${d} equal groups.`]])};}
+ return null;}
+const GENERIC={add:'Start with the biggest number and count on, or add the ones first.',sub:'Start at the top number and count back, or start with the ones column.',div:'Think of a times fact you know, or share fairly into equal groups.',frac:'Bottom number = equal parts in one whole. Top number = how many parts.',mult:'Use a times fact you already know and add or take away one group.'};
+/* answer tokens for the spoiler guard */
+function hintAns(q,sid,ld){const nums=[],htmls=[];
+ if(ld){nums.push(ld.want);return {nums,htmls};}
+ if(sid==='mult'){if(q.input==='arr')htmls.push('ROWS'+q.a+'x'+q.b);else nums.push(q.ans);return {nums,htmls};}
+ if(q.input==='mc'){const o=q.opts[q.ans];if(o){const t=hNum(o.h).trim();if(/^\d+$/.test(t))nums.push(+t);else{htmls.push(o.h);hTokens(o.h).forEach(x=>nums.push({soft:x}));}}}
+ else if(Array.isArray(q.ans))q.ans.forEach(x=>nums.push(x));else nums.push(q.ans);
+ return {nums,htmls};}
+function hintSafe(q,sid,h,ld){const A=hintAns(q,sid,ld),allow=new Set(hTokens((q.text||'')+' '+(q.lead||'')));
+ if(ld){[ld.L.d,ld.s.cur,ld.s.q,ld.s.m,ld.s.r].forEach(x=>{if(x!=null&&ld.want!==x)allow.add(x);});}
+ if(/class="ansd"/.test(h))return false;/* column sums are drawn with an empty answer row; their digits are the question's own digits */
+ const toks=new Set(hTokens(h.replace(/<table class="colm">[\s\S]*?<\/table>/g,' ')));if(sid==='frac'){allow.add(0);allow.add(1);}
+ for(const x of A.nums){if(typeof x==='object')continue;if(typeof x==='number'&&toks.has(x)&&!allow.has(x))return false;}
+ for(const s of A.htmls)if(s&&h.includes(s))return false;
+ return true;}
+/* public: hint for a question at a tier (1 or 2). ld = {L,ph,s,want} for the current long-division step */
+function hintFor(q,sid,tier,ld){let h=null;
+ try{if(ld)h=ldHint(ld.L,ld.ph,ld.s);else if(sid==='mult')h=multHint(q);else if(q.m){const m=q.m,op=m.op;
+  if(op==='add')h=addHint(m);else if(op==='eqn')h=eqnHint(m,q);else if(op==='mcpair')h={t1:'For each pair, start at the bigger number and count on. Which pair lands exactly on 10?',t2:frames(0)+'<div class="hvcap">10 spots in a ten-frame. A pair that makes 10 fills every spot, with none left over.</div>'};
+  else if(op==='sub')h=subHint(m,q);else if(op==='eqn2')h=eqn2Hint(m);else if(op==='mcfact')h={t1:'A fact family uses the SAME three numbers. The biggest number is the whole: it comes first when you take away or divide.',t2:'<div class="hvtri" role="img" aria-label="fact family triangle"><b>whole</b><span>part · part</span></div>'};
+  else if(op==='div')h=divHint(m,q);else if(op==='divr')h=divrHint(m,q);else if(op==='divceil'||op==='divfloor')h=divwHint(m,op==='divceil');
+  else{const avoid=hintAns(q,sid).nums.map(x=>typeof x==='object'?x.soft:x);h=frHint(m,q,avoid);}}}catch(e){h=null;}
+ let txt=h?(tier>=2?(h.t2||''):h.t1):'';
+ if(!h||!txt||!hintSafe(q,sid,txt,ld)){txt=ld?(tier>=2?hvDMSB(ld.ph)+'<div class="hvcap">Say the four steps out loud and point to the one you are on.</div>':'Which step are we on: divide, multiply, subtract, bring down? Say what that step means, then try it.'):tier>=2?'<div class="hvcap">Draw it! Make a quick picture or use your fingers, then check your answer is sensible.</div>':(GENERIC[sid]||GENERIC.add);return {html:txt,safe:false};}
+ return {html:txt+(tier>=2?NOSPOIL:''),safe:true};}
+/* =====================================================================
+   v11 NumiRealm redesign: home, navigation, progress, settings, profile,
+   quick practice and the guide lanterns (limited, never-the-answer hints)
+   ===================================================================== */
+const RM=()=>window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches||!!save.calm;
+/* ---------- guide lanterns ---------- */
+function lanSVG(lit){return `<svg class="lan ${lit?'lit':'out'}" viewBox="0 0 22 28" aria-hidden="true"><path d="M8 4h6M11 0v4" stroke="#B45309" stroke-width="2" fill="none" stroke-linecap="round"/><rect x="4" y="4" width="14" height="3.2" rx="1.6" fill="#B45309"/><path d="M5 7.2h12l-1.6 14.6H6.6z" fill="${lit?'#FFD166':'#64748B'}" stroke="#7C2D12" stroke-width="1.4" stroke-linejoin="round"/>${lit?'<ellipse class="glow" cx="11" cy="14.5" rx="3.8" ry="5.6" fill="#FFF7D6"/>':''}<path d="M8 7.5v14M14 7.5v14" stroke="#7C2D12" stroke-width=".9" opacity=".6"/><rect x="5" y="21.8" width="12" height="3.2" rx="1.6" fill="#B45309"/></svg>`;}
+function hintCtx(){if(SS&&SS.cur)return {o:SS,sid:SS.sid,boss:!!SS.inBoss};if(S&&S.cur)return {o:S,sid:'mult',boss:!!S.inBoss};return null;}
+function lanLeft(c){return Math.max(0,(c.boss?c.o.lanB:c.o.lanP)||0);}
+function lanMax(c){return c.boss?HINT_MAX.boss:HINT_MAX.practice;}
+function hintKey(c){const q=c.o.cur;return q&&q.input==='ld'&&c.o.ldseq?c.o.ldStep:-1;}
+function hintTier(c){const o=c.o;return o.hq===o.cur&&o.hk===hintKey(c)?(o.hTier||0):0;}
+function lanLabel(c){const n=lanLeft(c),t=hintTier(c);return t>=2?'Guide lantern: you have seen both clues for this one':n<=0?'No guide lanterns left this round':`Use a guide lantern hint, ${n} left`;}
+function lanHTML(){const c=hintCtx();if(!c)return '';const n=lanLeft(c),off=n<=0||hintTier(c)>=2;
+ return `<button type="button" class="lanbtn" id="hintBtn" onclick="useHint()" ${off?'disabled':''} aria-label="${lanLabel(c)}" title="Guide lantern: a clue that helps you think, never the answer"><span class="lanl" aria-hidden="true">${Array.from({length:lanMax(c)},(_,i)=>lanSVG(i<n)).join('')}</span><span>Hint</span></button>`;}
+function refreshLan(){const c=hintCtx(),b=$('hintBtn');if(!c||!b)return;const o=c.o;
+ if(o.hq===o.cur&&o.hk!==hintKey(c)){o.hk=null;const hb=$('hintbox');if(hb){hb.classList.add('hidden');hb.innerHTML='';}}
+ const n=lanLeft(c);b.disabled=n<=0||hintTier(c)>=2;b.setAttribute('aria-label',lanLabel(c));b.querySelector('.lanl').innerHTML=Array.from({length:lanMax(c)},(_,i)=>lanSVG(i<n)).join('');}
+function hintChapter(c){return c.sid==='mult'?ORDER.indexOf(c.o.n)+1:c.o.c;}
+function hintLog(c,first){const pf=P();if(!pf.hintLog||typeof pf.hintLog!=='object')pf.hintLog={};const r=pf.hintLog[c.sid]||(pf.hintLog[c.sid]={used:0,qs:0,ok:0,ch:{}});
+ r.used++;if(first)r.qs++;const k=String(hintChapter(c));r.ch[k]=(r.ch[k]||0)+1;r.last=Date.now();
+ if(!pf.hintTotal)pf.hintTotal=0;pf.hintTotal++;persist();return r;}
+function useHint(){const c=hintCtx();if(!c)return;const o=c.o,q=o.cur;if(o.locked)return;
+ const key=hintKey(c);let first=false;if(o.hq!==q||o.hk!==key){if(o.hq!==q)first=true;o.hq=q;o.hk=key;o.hTier=0;}
+ if(o.hTier>=2||lanLeft(c)<=0){refreshLan();return;}
+ if(c.boss)o.lanB--;else o.lanP--;
+ const tier=c.boss?2:o.hTier+1;o.hTier=tier;
+ let ld=null;if(key>=0){const st=o.ldseq[o.ldStep];if(st){const s=q.L.steps[st[0]],ph=st[1];ld={L:q.L,ph,s,want:ph==='D'?s.q:ph==='M'?s.m:ph==='S'?s.r:null};}}
+ const h1=hintFor(q,c.sid,1,ld),h2=tier>=2?hintFor(q,c.sid,2,ld):null;
+ const box=$('hintbox');if(box){box.innerHTML=`<div class="ht">${lanSVG(true)}<div><div class="tier">${tier>=2?'Guide lantern · picture clue':'Guide lantern · think about it'}</div><div class="h1">${h1.html}</div></div></div>${h2?`<div class="vis">${h2.html}</div>`:''}`;box.classList.remove('hidden');try{box.scrollIntoView({block:'nearest',behavior:RM()?'auto':'smooth'});}catch(e){}}
+ const r=hintLog(c,o.hCounted!==q);o.hCounted=q;
+ if(o.hWrap!==q&&typeof o.onAnswer==='function'){o.hWrap=q;const f=o.onAnswer;o.onAnswer=function(ok){if(ok&&o.cur===q){r.ok=(r.ok||0)+1;persist();}return f.apply(this,arguments);};}
+ SFX.tap();speak(stripH(c.boss?h1.html+' '+h2.html:tier>=2?h2.html:h1.html),'owl');
+ refreshLan();const b=$('hintBtn');if(b&&b.disabled&&document.activeElement===b)b.blur();}
+/* ---------- art ---------- */
+const COMPASS=`<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="#0A1F44" stroke="#FFD166" stroke-width="3"/><path d="M20 3l4.5 17L20 37l-4.5-17z" fill="#FFD166" stroke="#B45309" stroke-width="1"/><path d="M3 20l17-4.5L37 20l-17 4.5z" fill="#00C2FF" stroke="#0369A1" stroke-width="1"/><circle cx="20" cy="20" r="3.2" fill="#fff"/></svg>`;
+document.documentElement.style.setProperty('--cmp','url("data:image/svg+xml,'+encodeURIComponent(COMPASS.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '))+'")');
+function fsym(x,y,ch,col,r,d){return `<g class="fsym" style="animation-delay:${d}s"><circle cx="${x}" cy="${y}" r="${r+10}" fill="${col}" opacity=".22"/><circle cx="${x}" cy="${y}" r="${r}" fill="${col}" stroke="#fff" stroke-width="3"/><text x="${x}" y="${y+r*.38}" text-anchor="middle" font-size="${r*1.15}" font-weight="800" fill="#fff" font-family="Baloo 2,Nunito,sans-serif">${ch}</text></g>`;}
+function homeScene(){let st='';[[60,40],[160,90],[250,30],[340,70],[460,40],[560,95],[690,35],[780,80],[880,30],[960,95],[1060,50],[1150,25],[120,160],[1100,150],[420,120],[800,140]].forEach(([x,y],i)=>{st+=`<circle cx="${x}" cy="${y}" r="${i%3?1.6:2.6}" fill="#fff" opacity="${i%2?.7:.95}"/>`;});
+ const tree=(x,y,s)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-4" y="0" width="8" height="22" rx="3" fill="#7C2D12"/><circle cx="0" cy="-8" r="20" fill="#059669"/><circle cx="-10" cy="-2" r="13" fill="#10B981"/><circle cx="9" cy="-14" r="10" fill="#34D399" opacity=".8"/></g>`;
+ const wf=(x,w)=>`<rect x="${x}" y="196" width="${w}" height="214" fill="url(#hwf)"/><g class="wfl" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".75"><path d="M${x+8} 205v60M${x+w-10} 240v70M${x+w/2} 290v80M${x+10} 330v50"/></g><ellipse cx="${x+w/2}" cy="412" rx="${w}" ry="12" fill="#BAE6FD" opacity=".9"/>`;
+ return `<svg class="scene" viewBox="0 0 1200 560" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The castle of NumiRealm between two waterfalls, under a glowing sky full of floating math symbols">
+<defs><linearGradient id="hsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0A1F44"/><stop offset=".42" stop-color="#2E2A86"/><stop offset=".72" stop-color="#7C5CE6"/><stop offset="1" stop-color="#F0A8D8"/></linearGradient>
+<radialGradient id="hglow" cx=".5" cy=".46" r=".42"><stop offset="0" stop-color="#FFF1BF" stop-opacity=".95"/><stop offset=".35" stop-color="#F59E0B" stop-opacity=".38"/><stop offset="1" stop-color="#F59E0B" stop-opacity="0"/></radialGradient>
+<linearGradient id="hwf" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E0F7FF"/><stop offset=".4" stop-color="#7DD3FC"/><stop offset="1" stop-color="#00C2FF"/></linearGradient>
+<linearGradient id="hhill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34D399"/><stop offset="1" stop-color="#047857"/></linearGradient>
+<linearGradient id="hhill2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#10B981"/><stop offset="1" stop-color="#064E3B"/></linearGradient>
+<linearGradient id="hstone" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C7D2FE"/><stop offset=".5" stop-color="#EEF2FF"/><stop offset="1" stop-color="#A5B4FC"/></linearGradient>
+<linearGradient id="hcliff" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4338CA"/><stop offset="1" stop-color="#1E1B4B"/></linearGradient></defs>
+<rect width="1200" height="560" fill="url(#hsky)"/>${st}<rect width="1200" height="560" fill="url(#hglow)"/>
+<path d="M0 340L110 262 210 318 330 236 450 306 560 250 640 300 760 232 880 300 990 246 1100 306 1200 270V560H0Z" fill="#4C1D95" opacity=".6"/>
+<path d="M150 200Q220 186 300 206L330 420H120Z" fill="url(#hcliff)"/><path d="M150 200Q220 186 300 206L296 218Q220 200 152 214Z" fill="#10B981"/>
+<path d="M1050 196Q980 182 900 204L870 420H1080Z" fill="url(#hcliff)"/><path d="M1050 196Q980 182 900 204L904 216Q980 198 1048 210Z" fill="#10B981"/>
+${wf(262,40)}${wf(902,40)}
+<g stroke="#312E81" stroke-width="4" stroke-linejoin="round">
+<rect x="520" y="250" width="160" height="160" fill="url(#hstone)"/><path d="M520 250v-14h20v14h20v-14h20v14h20v-14h20v14h20v-14h20v14h20v-14h20v14" fill="url(#hstone)"/>
+<rect x="470" y="214" width="56" height="196" fill="url(#hstone)"/><path d="M462 218L498 138 534 218Z" fill="#1E3A8A"/>
+<rect x="674" y="214" width="56" height="196" fill="url(#hstone)"/><path d="M666 218L702 138 738 218Z" fill="#1E3A8A"/>
+<rect x="568" y="160" width="64" height="96" fill="url(#hstone)"/><path d="M558 166L600 70 642 166Z" fill="#8B5CF6"/>
+<path d="M574 410v-62a26 26 0 0 1 52 0v62Z" fill="#7C2D12"/></g>
+<g fill="#FFD166"><rect x="486" y="250" width="22" height="30" rx="11"/><rect x="690" y="250" width="22" height="30" rx="11"/><rect x="588" y="190" width="24" height="34" rx="12"/><rect x="540" y="290" width="18" height="26" rx="9"/><rect x="642" y="290" width="18" height="26" rx="9"/></g>
+<g stroke="#7C2D12" stroke-width="3"><path d="M498 138v-30M702 138v-30M600 70v-34"/></g><g fill="#F59E0B" stroke="#B45309" stroke-width="2"><path d="M498 108l26 8-26 8z"/><path d="M702 108l26 8-26 8z"/><path d="M600 36l30 9-30 9z"/></g>
+<path d="M0 430Q300 360 600 412T1200 404V560H0Z" fill="url(#hhill)"/>
+<path d="M520 560Q580 480 590 412H612Q624 480 690 560Z" fill="#FDE68A" opacity=".9"/>
+${tree(90,410,1.2)}${tree(380,402,.9)}${tree(820,400,.95)}${tree(1130,414,1.15)}
+<path d="M0 492Q330 450 600 488T1200 480V560H0Z" fill="url(#hhill2)"/>
+<g fill="#FDE047">${[[140,500],[260,520],[460,505],[760,512],[960,500],[1080,525]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="5"/><circle cx="${x+14}" cy="${y+8}" r="4" fill="#F9A8D4"/>`).join('')}</g>
+${fsym(250,110,'+','#10B981',26,0)}${fsym(400,64,'−','#EF4444',22,.8)}${fsym(800,70,'×','#F59E0B',24,1.6)}${fsym(950,120,'÷','#2563EB',26,.4)}${fsym(1080,60,'½','#8B5CF6',20,1.2)}${fsym(130,60,'=','#00C2FF',18,2)}
+</svg>`;}
+function realmArt(k){const W=(i,b)=>`<svg viewBox="0 0 200 110" aria-hidden="true"><defs><linearGradient id="ra${k}" x1="0" y1="0" x2="0" y2="1">${i}</linearGradient></defs><rect width="200" height="110" fill="url(#ra${k})"/>${b}</svg>`;
+ const sym=(x,y,c,col)=>`<circle cx="${x}" cy="${y}" r="15" fill="${col}" stroke="#fff" stroke-width="2.5"/><text x="${x}" y="${y+7}" text-anchor="middle" font-size="20" font-weight="800" fill="#fff" font-family="Baloo 2,Nunito,sans-serif">${c}</text>`;
+ if(k==='add')return W('<stop offset="0" stop-color="#7DD3FC"/><stop offset="1" stop-color="#FEF9C3"/>',`<circle cx="160" cy="26" r="14" fill="#FDE047"/><path d="M0 80Q60 50 120 74T200 66V110H0Z" fill="#34D399"/><path d="M0 96Q80 78 200 92V110H0Z" fill="#059669"/>${[[30,86],[70,94],[110,84],[150,96]].map(([x,y])=>`<path d="M${x} ${y}v-12" stroke="#047857" stroke-width="2"/><circle cx="${x}" cy="${y-14}" r="5" fill="#F9A8D4"/><circle cx="${x}" cy="${y-14}" r="2" fill="#FDE047"/>`).join('')}${sym(40,30,'+','#10B981')}`);
+ if(k==='sub')return W('<stop offset="0" stop-color="#312E81"/><stop offset="1" stop-color="#1E1B4B"/>',`<path d="M30 110Q30 30 100 26T170 110Z" fill="#0F0A2E"/><path d="M50 110l12-34 12 34zM118 110l14-44 14 44zM88 110l8-22 8 22z" fill="#67E8F9" opacity=".9"/><path d="M62 76l6 14M132 66l6 18" stroke="#fff" stroke-width="2" opacity=".7"/><path d="M0 110V0h40Q20 50 30 110zM200 110V0h-40q20 50 10 110z" fill="#4338CA"/>${sym(160,26,'−','#EF4444')}`);
+ if(k==='mult')return W('<stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#F9A8D4"/>',`<path d="M0 92Q100 70 200 92V110H0Z" fill="#10B981"/><g stroke="#312E81" stroke-width="2.5"><rect x="70" y="46" width="60" height="50" fill="#E0E7FF"/><rect x="56" y="34" width="20" height="62" fill="#E0E7FF"/><rect x="124" y="34" width="20" height="62" fill="#E0E7FF"/><path d="M52 36l14-24 14 24zM120 36l14-24 14 24z" fill="#1E3A8A"/><path d="M90 96V78a10 10 0 0 1 20 0v18z" fill="#7C2D12"/></g><rect x="62" y="48" width="8" height="12" rx="4" fill="#FFD166"/><rect x="130" y="48" width="8" height="12" rx="4" fill="#FFD166"/>${sym(30,28,'×','#F97316')}`);
+ if(k==='div')return W('<stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#FDE68A"/>',`<path d="M0 74h200v36H0z" fill="#0284C7"/><path d="M0 80q25 -6 50 0t50 0 50 0 50 0" stroke="#BAE6FD" stroke-width="3" fill="none"/><path d="M110 72h86v8h-86z" fill="#92400E"/><path d="M120 80v24M150 80v24M184 80v24" stroke="#78350F" stroke-width="5"/><path d="M30 70h60l-10 14H40z" fill="#B45309"/><path d="M58 70V30l26 34z" fill="#fff"/><path d="M58 30v40" stroke="#78350F" stroke-width="3"/>${sym(170,28,'÷','#2563EB')}`);
+ return W('<stop offset="0" stop-color="#FBCFE8"/><stop offset="1" stop-color="#FEF3C7"/>',`<rect x="40" y="40" width="120" height="70" fill="#FFF7ED" stroke="#9D174D" stroke-width="2.5"/><path d="M32 42l68-30 68 30z" fill="#EC4899" stroke="#9D174D" stroke-width="2.5"/><path d="M40 52h120" stroke="#F9A8D4" stroke-width="8" stroke-dasharray="12 8"/><rect x="88" y="72" width="24" height="38" fill="#9D174D"/><circle cx="62" cy="84" r="12" fill="#FDE68A" stroke="#B45309" stroke-width="2"/><path d="M62 72v24M50 84h24" stroke="#B45309" stroke-width="2"/><circle cx="138" cy="84" r="12" fill="#FDE68A" stroke="#B45309" stroke-width="2"/><path d="M138 84V72M138 84l10 7M138 84l-10 7" stroke="#B45309" stroke-width="2"/>${sym(30,24,'½','#8B5CF6')}`);}
+const QCOL={add:'#10B981',sub:'#EF4444',mult:'#F97316',div:'#2563EB',frac:'#8B5CF6'};
+function shieldSVG(){return `<svg viewBox="0 0 132 146" aria-hidden="true"><defs><linearGradient id="shg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3B0"/><stop offset=".45" stop-color="#FFD166"/><stop offset="1" stop-color="#D97706"/></linearGradient></defs><path d="M66 6L122 24V70C122 106 96 128 66 140C36 128 10 106 10 70V24Z" fill="url(#shg)" stroke="#1E3A8A" stroke-width="7" stroke-linejoin="round"/><path d="M66 18L110 32V70C110 98 90 116 66 126C42 116 22 98 22 70V32Z" fill="none" stroke="#fff" stroke-width="2" opacity=".6"/><path d="M66 8l5 10 11 1-8 7 2 11-10-6-10 6 2-11-8-7 11-1z" fill="#00C2FF" stroke="#0A1F44" stroke-width="1.5"/></svg>`;}
+/* ---------- helpers ---------- */
+function withHero(fn){if(save.hero)return fn();const id=save.lastHero;
+ if(id&&HEROES[id]){save.hero=id;persist();if(!hasAbout(P()))return aboutScreen(fn);if(!P().prologue)return playScene(prologueScene(),()=>{P().prologue=true;persist();fn();});return fn();}
+ heroPrompt();}
+function heroPrompt(){if(!$('heroes'))titleScreen();const h=$('heroes'),t=$('heroTip');if(t)t.classList.remove('hidden');if(h)h.scrollIntoView({behavior:RM()?'auto':'smooth',block:'start'});const f=document.querySelector('#heroes .herocard');if(f)try{f.focus({preventScroll:true});}catch(e){}}
+function playNow(){SFX.tap();withHero(()=>{const ls=P().lastSubj||save.lastSubj;if(ls&&SUBJ_BY[ls])openSubject(ls);else subjectScreen();});}
+function chName(sid,c){if(sid==='mult'){const n=ORDER[c-1];return n?`Ch.${c} · ×${n} table`:`Ch.${c}`;}const ch=SUBJ_BY[sid]&&SUBJ_BY[sid].ch[c-1];return ch?`Ch.${c} · ${ch.t}`:`Ch.${c}`;}
+/* ---------- home (splash + hero select) ---------- */
+function titleScreen(){S=null;SS=null;SC=null;stopSpeech();stopConfetti();if(save.hero)save.lastHero=save.hero;save.hero=null;persist();
+ const lh=save.lastHero&&HEROES[save.lastHero]?save.lastHero:null,main=lh||'emi',team=(SIBS[main]||[]).slice(0,2);
+ const pf0=lh?save.profiles[lh]:null;
+ const chars=`<div class="chars" aria-hidden="true"><div class="c">${heroSVGeq(team[0]||'blu',save.profiles[team[0]||'blu'].eq||{},'idle')}</div><div class="c">${heroSVGeq(main,save.profiles[main].eq||{},'cheer')}</div><div class="c">${heroSVGeq(team[1]||'sage',save.profiles[team[1]||'sage'].eq||{},'idle')}</div></div>`;
+ const scards=SUBJ.map(sb=>{const st=pf0?sStars(sb.id,pf0):0,N=sCount(sb.id);return `<button class="scard" type="button" data-qsubj="${sb.id}" onclick="SFX.tap();withHero(()=>openSubject('${sb.id}'))"><span class="so" style="background:${QCOL[sb.id]}" aria-hidden="true">${sb.op}</span><b>${sb.name}</b><small>${sb.realm}${pf0?`<br>⭐ ${st}/${N*3}`:''}</small></button>`;}).join('');
+ const realms=SUBJ.map(sb=>`<button class="realm" type="button" onclick="SFX.tap();withHero(()=>openSubject('${sb.id}'))" aria-label="Explore ${sb.realm}">${realmArt(sb.id)}<span>${sb.realm}</span></button>`).join('');
+ show(`<div class="home">
+ <section class="hhero" aria-label="Welcome to NumiRealm">${homeScene()}
+  <div class="hlogo"><h1 class="logo" aria-label="NumiRealm">Num<span class="li">i</span>Realm</h1><div><span class="banner">Enter the realm. Master the math.</span></div>
+   <div class="hplay"><button class="btn play" type="button" id="playNowD" onclick="playNow()">▶ Play now</button></div></div>
+  ${chars}
+ </section>
+ <div class="hplay mob"><button class="btn play" type="button" id="playBtn" onclick="playNow()">▶ Play</button><button class="btn blue" type="button" id="levelsBtn" onclick="SFX.tap();withHero(subjectScreen)">🧭 Levels</button><button class="btn purple" type="button" id="practiceBtn" onclick="SFX.tap();withHero(practiceHub)">🎯 Practice</button></div>
+ <div class="tiles mob" role="group" aria-label="Realm shortcuts"><button class="tile" type="button" onclick="SFX.tap();withHero(closetScreen)" aria-label="Rewards and treasures"><span class="ti" aria-hidden="true">🎁</span>Rewards</button><button class="tile" type="button" onclick="SFX.tap();withHero(subjectScreen)" aria-label="Realm map"><span class="ti" aria-hidden="true">🗺️</span>Map</button><button class="tile" type="button" onclick="SFX.tap();progressScreen()" aria-label="Your progress"><span class="ti" aria-hidden="true">📈</span>Progress</button><button class="tile" type="button" onclick="SFX.tap();withHero(profileScreen)" aria-label="Hero profile"><span class="ti" aria-hidden="true">👤</span>Profile</button><button class="tile" type="button" onclick="SFX.tap();settingsScreen()" aria-label="Settings"><span class="ti" aria-hidden="true">⚙️</span>Settings</button></div>
+ <h2 class="hsec dsk">Choose your quest</h2><div class="subjcards dsk">${scards}</div>
+ <h2 class="hsec">Explore the realm</h2><div class="realms">${realms}</div>
+ <section class="herosec" id="heroes" aria-label="Choose your hero"><h2 class="hsec">Choose your hero</h2><div class="subtitle" style="text-align:center;color:#FFE08A">✨ The Muddle Monster ✨</div><p class="hintro">The Muddle Monster scrambled all the numbers! Adding, taking away, times tables, sharing and fractions. Pick your hero to save NumiRealm.</p><p class="hintro hidden" id="heroTip" role="status"><b>👇 Pick your hero first, then press Play!</b></p>
+ <div class="herocards">${HERO_ORDER.map(id=>{const h=HEROES[id],pf=save.profiles[id],st=allStars(pf);
+ return `<button class="herocard ${id}" data-hero="${id}" onclick="pickHero('${id}')"><div class="hsv">${heroSVGeq(id,pf.eq,'idle')}</div><div class="hn">${esc(pf.name)}</div><div class="ht">${h.title}</div><div class="hl">${h.blurb}</div><div class="hl"><b>⭐ ${st}</b> stars</div>${hasAbout(pf)?`<div class="hl abmini">${aboutChip(pf)}</div>`:''}</button>`;}).join('')}</div></section></div>`,'home');
+ app.classList.add('wide');}
+/* ---------- progress ---------- */
+function progressScreen(id){stopConfetti();S=null;SS=null;SC=null;stopSpeech();
+ id=id&&HEROES[id]?id:(save.hero||save.lastHero||HERO_ORDER[0]);const pf=save.profiles[id],st=allStars(pf),lv=1+Math.floor(st/5),into=st%5;
+ const tabs=HERO_ORDER.map(h=>`<button type="button" class="pgtab ${h===id?'on':''}" aria-pressed="${h===id}" onclick="progressScreen('${h}')"><span class="pgav" aria-hidden="true">${heroSVGeq(h,save.profiles[h].eq||{},'idle')}</span>${esc(save.profiles[h].name)}</button>`).join('');
+ const log=pf.hintLog||{};let chDone=0,hUsed=0,hQs=0,hOk=0;const need=[];
+ const rows=SUBJ.map(sb=>{const N=sCount(sb.id),d=sDone(sb.id,pf),s=sStars(sb.id,pf),r=log[sb.id]||{};chDone+=d;hUsed+=r.used||0;hQs+=r.qs||0;hOk+=r.ok||0;
+  Object.entries(r.ch||{}).forEach(([c,n])=>need.push({sid:sb.id,c:+c,n}));
+  return `<div class="prow" data-psubj="${sb.id}"><span class="po" style="background:${QCOL[sb.id]}" aria-hidden="true">${sb.op}</span><span class="pn">${sb.name}</span><span class="pv">${d}/${N} chapters</span><div class="pbar" role="progressbar" aria-label="${sb.name} chapters" aria-valuemin="0" aria-valuemax="${N}" aria-valuenow="${d}"><i style="width:${Math.round(d/N*100)}%;background:linear-gradient(90deg,${QCOL[sb.id]},color-mix(in srgb,${QCOL[sb.id]} 55%,#fff))"></i></div><div class="ph">⭐ ${s}/${N*3} stars · 🏮 ${r.used||0} lantern${(r.used||0)===1?'':'s'} used</div></div>`;}).join('');
+ need.sort((a,b)=>b.n-a.n);
+ const sup=need.filter(x=>x.n>=2).slice(0,4);
+ show(`<h1 class="questh">Your progress</h1><div class="card"><div class="pgtabs" role="group" aria-label="Choose a hero">${tabs}</div>
+ <div class="center"><div class="lvbadge" role="img" aria-label="Level ${lv}">${shieldSVG()}<small>LEVEL</small><b>${lv}</b></div>
+ <div style="max-width:360px;margin:0 auto"><div class="xpbar" role="progressbar" aria-label="Stars to the next level" aria-valuemin="0" aria-valuemax="5" aria-valuenow="${into}"><i style="width:${into/5*100}%"></i></div><div style="font-weight:700;color:#334155;margin-top:4px">${5-into} more ⭐ to Level ${lv+1}</div></div></div>
+ <div class="pstat"><div><b>${st}</b><span>stars</span></div><div><b>${chDone}</b><span>chapters</span></div><div><b>${(pf.rewards||[]).length}/12</b><span>treasures</span></div></div>
+ <h2>📚 Subjects</h2>${rows}</div>
+ <div class="card" id="lanStats"><h2>🏮 Guide lanterns</h2><p class="big" style="font-size:17px">Lanterns give a clue about <b>how</b> to think, never the answer. Using them is smart!</p>
+ <div class="pstat"><div><b id="hUsed">${hUsed}</b><span>lanterns used</span></div><div><b>${hQs}</b><span>questions helped</span></div><div><b>${hOk}</b><span>solved after a clue</span></div></div>
+ ${sup.length?`<h3 style="margin:8px 0 4px">🌱 Chapters to practise again</h3><ul style="margin:0;padding-left:20px;line-height:1.7">${sup.map(x=>`<li>${SUBJ_BY[x.sid].e} ${esc(chName(x.sid,x.c))}: ${x.n} lanterns</li>`).join('')}</ul>`:`<p style="color:#475569;margin:4px 0 0">${hUsed?'No chapter needed lots of clues. Great thinking!':'No lanterns used yet.'}</p>`}</div>
+ <div class="center"><button class="btn blue" type="button" onclick="SFX.tap();save.hero?subjectScreen():titleScreen()">↩ Back</button></div>`,'progress');}
+/* ---------- settings ---------- */
+function setTog(k){if(k==='sound')save.muted=!save.muted;else save[k]=!save[k];persist();if(k==='narrator'&&!save.narrator)stopSpeech();if(!save.muted)SFX.tap();settingsScreen();const b=$('tg-'+k);if(b)b.focus();}
+function settingsScreen(){stopSpeech();const tg=(k,on,l,d)=>`<div class="setrow"><span class="sl" id="tl-${k}">${l}<small>${d}</small></span><button type="button" class="tog" id="tg-${k}" role="switch" aria-checked="${on}" aria-labelledby="tl-${k}" onclick="setTog('${k}')"></button></div>`;
+ const hid=save.hero||save.lastHero,hn=hid?esc(save.profiles[hid].name):'';
+ show(`<h1 class="questh">Settings</h1><div class="card"><h2>🔊 Sound and help</h2>
+ ${tg('sound',!save.muted,'Sound effects','Boops, cheers and music')}${tg('narrator',!!save.narrator,'Narrator voice','The owl reads the story, questions and lantern clues out loud')}
+ ${tg('bigText',!!save.bigText,'Bigger text','Makes words and buttons larger')}${tg('calm',!!save.calm,'Calm motion','Fewer moving and bouncing things')}</div>
+ <div class="card"><h2>🦸 Hero</h2>${hid?`<p class="big" style="font-size:17px">Playing as <b>${hn}</b>.</p><div class="center"><button class="btn purple sm" type="button" onclick="SFX.tap();withHero(()=>aboutScreen(settingsScreen,true))">✏️ About me</button><button class="btn gray sm" type="button" onclick="SFX.tap();titleScreen();heroPrompt()">🔄 Choose a hero</button><button class="btn gray sm" type="button" onclick="withHero(()=>{resetProgress();})">🗑️ Reset ${hn}</button></div>`:`<p class="big" style="font-size:17px">No hero picked yet.</p><div class="center"><button class="btn sm" type="button" onclick="titleScreen();heroPrompt()">🦸 Pick a hero</button></div>`}
+ <div class="verlab">NumiRealm v${APP_VERSION} · progress is saved on this device</div></div>
+ <div class="center"><button class="btn blue" type="button" onclick="SFX.tap();save.hero?subjectScreen():titleScreen()">↩ Back</button></div>`,'settings');}
+/* ---------- profile ---------- */
+function profileScreen(){if(!save.hero)return withHero(profileScreen);stopConfetti();S=null;SS=null;SC=null;stopSpeech();const pf=P(),h=H();
+ show(`<h1 class="questh">Hero profile</h1><div class="card center"><div style="width:170px;margin:0 auto" id="selHero">${heroSVG(save.hero,'cheer')}</div><h2>${esc(pf.name)}</h2><div class="ht" style="font-weight:800">${h.title}</div>
+ ${hasAbout(pf)?`<p><span class="abchip" id="abChip">${aboutChip(pf)}</span></p>`:''}<p class="big" style="font-size:17px">⭐ ${allStars(pf)} stars · ${h.closetE} ${(pf.rewards||[]).length}/12 treasures</p>
+ <div class="center"><button class="btn pink sm" type="button" onclick="closetScreen()">${h.closetE} ${h.closet}</button><button class="btn purple sm" type="button" onclick="aboutScreen(profileScreen,true)">✏️ About me</button><button class="btn gray sm" type="button" onclick="pickHero(save.hero)">✏️ Rename</button><button class="btn gray sm" type="button" onclick="titleScreen();heroPrompt()">🔄 Other hero</button></div></div>`,'profile');}
+/* ---------- quick practice ---------- */
+function practiceHub(){if(!save.hero)return withHero(practiceHub);stopConfetti();S=null;SS=null;SC=null;stopSpeech();const pf=P();
+ show(`<h1 class="questh">Quick practice</h1><div class="card"><h2>🎯 Warm up, ${esc(pf.name)}!</h2><p class="big" style="font-size:17px">A short round from a chapter you have already unlocked. You get <b>3 guide lanterns</b>, and there are no stars to win or lose. Just practice!</p>
+ <div class="qp">${SUBJ.map(sb=>`<button class="scard" type="button" data-quick="${sb.id}" onclick="quickPractice('${sb.id}')"><span class="so" style="background:${QCOL[sb.id]}" aria-hidden="true">${sb.op}</span><b>${sb.name}</b><small>${sb.realm}</small></button>`).join('')}</div></div>`,'practice');}
+function quickPractice(sid){SFX.tap();stopSpeech();
+ if(sid==='mult'){const u=Math.min(unlockedIndex(),ORDER.length-1),n=ORDER[rand(0,u)];SS=null;S=makeSession(n,null);S.quick=true;practiceStart();return;}
+ const N=sCount(sid),u=Math.min(sUnlocked(sid),N-1);S=null;makeSS(sid,rand(1,u+1));SS.quick=true;sPracticeStart();}
+function quickDone(sid,sc,tot){const lp=(SS||S||{}).lanP;S=null;SS=null;SC=null;SFX.win&&SFX.win();
+ show(`<div class="card center"><div class="winheroes"><div class="w1" id="mh">${heroSVG(save.hero,'cheer')}</div></div><h2>Practice round done!</h2><p class="big">You got <b>${sc} out of ${tot}</b>. ${sc>=tot-1?'Super sharp!':'Every try makes your brain stronger!'}</p><p class="big" style="font-size:17px">🏮 Lanterns left: ${lp==null?HINT_MAX.practice:lp}/${HINT_MAX.practice}</p>
+ <button class="btn" type="button" data-enter onclick="quickPractice('${sid}')">🔁 Another round</button><button class="btn purple sm" type="button" onclick="practiceHub()">🎯 Other subject</button><button class="btn blue sm" type="button" onclick="subjectScreen()">🧭 Quests</button></div>`,'practice');}
+/* ---------- navigation ---------- */
+[['navHome',()=>titleScreen()],['bnHome',()=>titleScreen()],['navPlay',()=>playNow()],['navLevels',()=>withHero(subjectScreen)],['bnQuest',()=>withHero(subjectScreen)],['navPractice',()=>withHero(practiceHub)],['bnPractice',()=>withHero(practiceHub)],
+ ['navProgress',()=>progressScreen()],['bnProgress',()=>progressScreen()],['navSettings',()=>settingsScreen()],['bnSettings',()=>settingsScreen()],['navProfile',()=>withHero(profileScreen)]].forEach(([id,f])=>{const b=$(id);if(b)b.onclick=()=>{SFX.tap();f();};});
+/* wide layout only on home */
+{const _o=new MutationObserver(()=>{if(!document.querySelector('#app > .home'))app.classList.remove('wide');});_o.observe(app,{childList:true});}
+window.TTQ_V11={HINT_MAX,hintFor,hintCtx,useHint,lanLeft:()=>{const c=hintCtx();return c?lanLeft(c):null;}};
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
 </script>
