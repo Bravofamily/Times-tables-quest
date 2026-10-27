@@ -622,7 +622,7 @@ svg.hero{filter:drop-shadow(0 0 1.2px #0A1F44) drop-shadow(0 6px 6px #0A1F4433)}
 /* bottom tab bar (mobile hub screens) */
 #bnav{display:none}
 @media (max-width:899px){
- body.hub #bnav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:25;background:linear-gradient(180deg,#132a66,#0A1F44);border-top:2px solid #ffffff22;padding:4px 4px calc(4px + env(safe-area-inset-bottom));box-shadow:0 -6px 18px #0007}
+ body.hub #bnav{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;left:0;right:0;bottom:0;z-index:25;background:linear-gradient(180deg,#132a66,#0A1F44);border-top:2px solid #ffffff22;padding:4px 4px calc(4px + env(safe-area-inset-bottom));box-shadow:0 -6px 18px #0007}
  body.hub #app{padding-bottom:96px}
  #bnav button{font:inherit;font-family:var(--tfont);font-weight:800;font-size:11px;color:#cbd5e1;background:none;border:none;border-radius:14px;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer}
  #bnav button .ti{font-size:22px;line-height:1}
@@ -683,6 +683,7 @@ body.calm *,body.calm *::before,body.calm *::after{animation-duration:.001ms!imp
   <button class="navl" id="navPlay" type="button">Play</button>
   <button class="navl" id="navLevels" type="button">Levels</button>
   <button class="navl" id="navPractice" type="button">Practice</button>
+  <button class="navl" id="navHeroes" type="button">Heroes</button>
   <button class="navl" id="navProgress" type="button">Progress</button>
   <button class="navl" id="navSettings" type="button">Settings</button>
  </nav>
@@ -697,6 +698,7 @@ body.calm *,body.calm *::before,body.calm *::after{animation-duration:.001ms!imp
  <button type="button" id="bnHome"><span class="ti" aria-hidden="true">🏰</span>Home</button>
  <button type="button" id="bnQuest"><span class="ti" aria-hidden="true">🧭</span>Quests</button>
  <button type="button" id="bnPractice"><span class="ti" aria-hidden="true">🎯</span>Practice</button>
+ <button type="button" id="bnHeroes"><span class="ti" aria-hidden="true">🦸</span>Heroes</button>
  <button type="button" id="bnProgress"><span class="ti" aria-hidden="true">📈</span>Progress</button>
  <button type="button" id="bnSettings"><span class="ti" aria-hidden="true">⚙️</span>Settings</button>
 </nav>
@@ -1711,7 +1713,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='11';
+const APP_VERSION='12';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -1727,7 +1729,7 @@ const APP_VERSION='11';
    const v=j&&j.version!=null?String(j.version):null;
    if(v&&v!==APP_VERSION){pending=v;if(force||safe)go();}
   }).catch(()=>{}).finally(()=>{checking=false;});}
- window.TTQ_VERSION={get app(){return APP_VERSION;},get pending(){return pending;},get safe(){return safe;},check};
+ window.TTQ_VERSION={get app(){return APP_VERSION;},get pending(){return pending;},get safe(){return safe;},check,safeNow(){safe=true;if(pending)setTimeout(go,400);}};
  check(true); // launch: nothing in progress yet
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check(false);});
  window.addEventListener('pageshow',ev=>{if(ev.persisted)check(false);});
@@ -2672,6 +2674,436 @@ function quickDone(sid,sc,tot){const lp=(SS||S||{}).lanP;S=null;SS=null;SC=null;
 /* wide layout only on home */
 {const _o=new MutationObserver(()=>{if(!document.querySelector('#app > .home'))app.classList.remove('wide');});_o.observe(app,{childList:true});}
 window.TTQ_V11={HINT_MAX,hintFor,hintCtx,useHint,lanLeft:()=>{const c=hintCtx();return c?lanLeft(c):null;}};
+/* ---------- v12 styles (same palette, fonts and pill buttons as v11) ---------- */
+(function(){const st=document.createElement('style');st.id='v12css';st.textContent=`
+.v12back{margin-top:6px}
+.v12tback{font:inherit;font-family:var(--tfont);font-weight:800;font-size:16px;min-height:44px;min-width:44px;padding:6px 16px;border-radius:999px;border:2px solid #1E3A8A;background:#fff;color:#1E3A8A;cursor:pointer;margin:0 0 8px}
+.hpage>.v12tback{background:#ffffffee}
+.vfor{font-weight:800;margin:10px 0 2px;color:#334155}
+.v12intro h2.h3,.h3{font-size:18px;margin:10px 0 6px}
+.legend{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-weight:700;font-size:14px;color:#334155;margin-top:6px}
+.rcard{border-top:6px solid var(--sc)}
+.rtop{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:center}
+.rart{width:96px;height:72px;border-radius:16px;overflow:hidden}.rart svg{width:100%;height:100%;display:block}
+.rcard h2{margin:0;font-size:22px}.rop{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--sc);color:#fff;font-size:18px}
+.rline{margin:4px 0 6px;font-size:15px;color:#1e293b}
+.rmeta{display:flex;flex-wrap:wrap;gap:6px}.rmeta span{background:#fff;border:1px solid #CBD5E1;border-radius:999px;padding:3px 10px;font-size:13px;font-weight:700}
+.stones{display:flex;flex-wrap:wrap;align-items:center;gap:6px 0;margin-top:12px;padding:6px 2px}
+.sedge{font-size:12px;font-weight:800;color:#475569;text-transform:uppercase;padding:0 6px}
+.sline{display:inline-block;width:10px;height:4px;background:repeating-linear-gradient(90deg,#94A3B8 0 4px,transparent 4px 7px)}
+.stone{position:relative;font:inherit;width:54px;min-height:58px;border-radius:20px;border:3px solid #CBD5E1;background:#E2E8F0;color:#334155;cursor:pointer;display:grid;place-items:center;padding:2px 0;line-height:1.1}
+.stone .sn{font-family:var(--tfont);font-weight:800;font-size:18px}.stone .ss{font-size:10px;letter-spacing:-1px;color:#B45309;white-space:nowrap}
+.stone.done{background:#D1FAE5;border-color:#059669;color:#065F46}
+.stone.current{background:#FEF3C7;border-color:#F59E0B;color:#7C2D12;box-shadow:0 0 0 4px #F59E0B55;animation:v12pulse 1.6s ease-in-out infinite}
+.stone.locked{background:#E2E8F0;border-color:#CBD5E1;color:#475569}.stone.locked .ss{filter:grayscale(1);opacity:.7}
+.stone .snow{position:absolute;top:-10px;right:-6px;background:#F59E0B;color:#fff;border-radius:50%;width:20px;height:20px;font-size:10px;display:grid;place-items:center}
+.stone.mini{width:30px;min-height:30px;border-radius:10px;cursor:default;animation:none}.stone.mini .sn{font-size:13px}
+@keyframes v12pulse{50%{box-shadow:0 0 0 8px #F59E0B33}}
+.chd{border-top:6px solid var(--sc)}.chdhead h2{margin:4px 0;font-size:26px}.chdn{font-weight:800;color:#475569;font-size:14px}
+.chdstate{display:inline-block;margin-top:4px;border-radius:999px;padding:4px 12px;font-weight:800;background:#E2E8F0;color:#334155}.chdstate.done{background:#D1FAE5;color:#065F46}.chdstate.current{background:#FEF3C7;color:#7C2D12}
+.chdgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:12px 0}
+.chdbox{background:#fff;border-radius:18px;padding:12px;border:1px solid #E2E8F0;min-width:0}.chdbox h3{margin:0 0 6px;font-size:17px}.chdbox p{margin:4px 0}
+.chdbox .tip{background:#FEF9C3;border-radius:12px;padding:8px;color:#422006}.chdbox .qeq{font-size:24px;font-weight:800;overflow-wrap:anywhere}.chdbox .qvis{max-width:100%;overflow:hidden}.chdbox .qvis svg{max-width:100%;height:auto}
+.flow{margin:0;padding-left:22px;font-weight:700}.flow li{margin:3px 0}.small{font-size:14px;color:#334155}
+.mpills,.rtabs{display:flex;flex-wrap:wrap;gap:8px}
+.mpill,.rtab{font:inherit;font-weight:800;min-height:48px;min-width:64px;padding:6px 16px;border-radius:999px;border:2px solid #CBD5E1;background:#fff;color:#0A1F44;cursor:pointer}
+.mpill.on{background:#1E3A8A;border-color:#1E3A8A;color:#fff}.rtab.on{background:var(--sc);border-color:var(--sc);color:#fff;text-shadow:0 1px 1px #0007}
+.rtab[data-trealm=add].on{background:#047857;border-color:#047857}.rtab[data-trealm=mult].on{background:#C2410C;border-color:#C2410C}.rtab[data-trealm=sub].on{background:#B91C1C;border-color:#B91C1C}
+.drills{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:8px}
+.drill{font:inherit;text-align:left;display:grid;gap:4px;background:#fff;border:2px solid #E2E8F0;border-left:6px solid var(--sc);border-radius:18px;padding:10px 12px;min-height:44px;cursor:pointer;color:#0A1F44}
+.drill:hover{border-color:var(--sc)}.drill .de{font-size:26px}.drill b{font-family:var(--tfont);font-size:17px}.drill small{font-size:13px;color:#334155}
+.dtag{justify-self:start;font-size:12px;font-weight:800;border-radius:999px;padding:2px 8px;background:#E0E7FF;color:#1E3A8A}.dtag.done{background:#D1FAE5;color:#065F46}.dtag.now{background:#FEF3C7;color:#7C2D12}
+.nwcard{border-top:6px solid #10B981}.nwlist{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px}
+.nwlist li{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#fff;border-radius:14px;padding:8px 10px;font-weight:700}.nwlist small{color:#475569;font-weight:600}
+.po{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#fff;font-weight:800;flex:none}
+.drillcard{border-top:6px solid var(--sc)}.drhead{flex-wrap:wrap;gap:8px}.drlab{font-weight:800;font-size:15px}.drsc{font-weight:700;color:#334155;font-size:14px}
+.drtime{font-family:var(--tfont);font-weight:800;font-size:18px;background:#1E3A8A;color:#fff;border-radius:999px;padding:6px 12px;min-height:44px;display:inline-flex;align-items:center}.drtime.up{background:#B91C1C}
+.drnote{text-align:center;font-weight:800;color:#B45309;min-height:4px}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.troph{background:#fff;border-radius:18px;padding:10px;text-align:center;display:grid;gap:3px;border:2px solid #E2E8F0}
+.troph .te{font-size:34px;line-height:1.1}.troph b{font-size:15px}.troph small{font-size:12.5px;color:#334155}
+.troph.got{border-color:#F59E0B;background:linear-gradient(180deg,#FFFBEB,#fff)}.troph.lock .te{opacity:.75}
+.trhead{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center}.trhero svg{width:90px;height:auto}.trhead h2{margin:0}
+.ghead{display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center}.gowl svg{width:100px;height:auto}.ghead h2{margin:0 0 4px}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 14px}
+.gsec h2{margin:0;font-size:20px}.gsec ul{margin:8px 0;padding-left:20px}.gsec li{margin:5px 0;font-size:16px}
+.spk{font:inherit;font-size:20px;min-width:44px;min-height:44px;border-radius:50%;border:2px solid #1E3A8A;background:#fff;cursor:pointer}
+.gtwrap{overflow-x:auto}.gtab{width:100%;border-collapse:collapse;font-size:14.5px;min-width:0}.gtab th,.gtab td{border-bottom:1px solid #CBD5E1;padding:8px 6px;text-align:left;vertical-align:top}.gtab td small{color:#475569}
+.pcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0 14px}
+.pctop{display:grid;grid-template-columns:80px 1fr;gap:10px;align-items:center}.pcav svg{width:80px;height:auto}.pctop h2{margin:0;font-size:22px}.pcard .ht{font-weight:700;color:#475569}
+.acttag{font-size:12px;background:#10B981;color:#fff;border-radius:999px;padding:2px 8px;vertical-align:middle}
+.pcl{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0}.pcl div{background:#fff;border-radius:12px;padding:6px 8px}.pcl dt{font-size:12.5px;color:#475569;font-weight:700}.pcl dd{margin:0;font-weight:800}
+.hall{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (min-width:700px){.hall{grid-template-columns:repeat(3,1fr)}}@media (min-width:1100px){.hall{grid-template-columns:repeat(4,1fr)}}
+.hallcard{position:relative;overflow:hidden;font:inherit;display:grid;justify-items:center;gap:2px;text-align:center;padding:10px 8px 12px;border-radius:24px;border:3px solid #fff;cursor:pointer;color:#0A1F44;
+ background:linear-gradient(160deg,color-mix(in srgb,var(--c1) 22%,#fff),color-mix(in srgb,var(--c2) 30%,#fff));box-shadow:0 6px 0 color-mix(in srgb,var(--c1) 60%,#000),0 12px 26px #0006;animation:v12in .5s cubic-bezier(.2,1.4,.4,1) both;animation-delay:var(--d)}
+.hallcard:hover{transform:translateY(-3px)}.hallcard .hpic{position:relative;width:min(130px,100%)}.hallcard .hpic svg{width:100%;height:auto;display:block}
+.hallcard b{font-family:var(--tfont);font-size:22px;line-height:1.1}.hallcard small{font-weight:700;font-size:13px;color:#1e293b}.hallcard .hage{font-size:12.5px;font-weight:800;background:#ffffffcc;border-radius:999px;padding:2px 8px;margin-top:3px;color:#0A1F44}
+.hglow{position:absolute;inset:-30%;background:radial-gradient(circle at 50% 35%,#fff9 0,transparent 45%);animation:v12glow 3s ease-in-out infinite}
+.hallcard.villain{--c1:#4C1D95;--c2:#1E293B;background:linear-gradient(160deg,#312E81,#0F172A);color:#fff;border-color:#A78BFA}.hallcard.villain small{color:#E9D5FF}.hallcard.villain .hage{background:#ffffff22;color:#fff}
+@keyframes v12in{from{opacity:0;transform:scale(.7) translateY(20px)}to{opacity:1;transform:none}}
+@keyframes v12glow{50%{opacity:.4}}
+@keyframes v12tw{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1.1)}}
+@keyframes v12bob{50%{transform:translateY(-6px)}}
+@keyframes v12bar{from{width:0}}
+.hpage .hphero{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;background:linear-gradient(160deg,color-mix(in srgb,var(--c1) 25%,#fff),color-mix(in srgb,var(--c2) 22%,#fff) 60%,#fff);border:3px solid var(--c1)}
+@media (min-width:700px){.hpage .hphero{grid-template-columns:300px 1fr;align-items:center}}
+.hpport{position:relative;display:grid;place-items:center;min-height:220px}.hpsvg{position:relative;width:min(240px,70vw);animation:v12in .6s cubic-bezier(.2,1.4,.4,1) both,v12bob 3s ease-in-out .6s infinite}.hpsvg svg{width:100%;height:auto;display:block}
+.hpglow{position:absolute;width:86%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c1) 55%,#fff) 0,color-mix(in srgb,var(--c2) 30%,transparent) 50%,transparent 70%);animation:v12glow 2.6s ease-in-out infinite}
+.spark i{position:absolute;left:var(--x);top:var(--y);font-style:normal;font-size:20px;animation:v12tw 2.2s ease-in-out infinite;animation-delay:var(--d)}
+.hpname{font-family:var(--tfont);font-size:44px;line-height:1;margin:0;color:#0A1F44}.hptitle{font-family:var(--tfont);font-size:22px;font-weight:800;color:color-mix(in srgb,var(--c1) 50%,#000)}
+.hpnick{font-weight:800;font-style:italic;color:#334155}.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.chips span{background:#fff;border-radius:999px;padding:4px 10px;font-weight:800;font-size:14px;border:2px solid var(--c1)}
+.cols{display:flex;flex-wrap:wrap;gap:10px;font-weight:700;font-size:14px}.col{display:inline-flex;align-items:center;gap:5px}.col i{width:20px;height:20px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #0004}
+.hpers{font-size:17px;margin:8px 0 4px}.hlook,.hloves{margin:4px 0;font-size:15px;color:#1e293b}.hpbtns{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:6px}
+.more summary{cursor:pointer;font-weight:800;color:#1E3A8A;min-height:44px;display:flex;align-items:center;list-style-position:inside}.more p{font-size:16px}
+.powers{display:grid;gap:10px}@media (min-width:760px){.powers{grid-template-columns:repeat(3,1fr)}}
+.power{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:start;background:#fff;border-radius:18px;padding:10px;border:2px solid color-mix(in srgb,var(--c1,#8B5CF6) 45%,#fff);animation:v12in .5s ease both;animation-delay:var(--d,0s)}
+.power .pe{font-size:34px;width:52px;height:52px;display:grid;place-items:center;border-radius:16px;background:color-mix(in srgb,var(--c1,#8B5CF6) 18%,#fff)}
+.power b{font-family:var(--tfont);font-size:19px}.pmath{display:inline-block;font-weight:800;font-size:13px;background:#E0E7FF;color:#1E3A8A;border-radius:999px;padding:2px 8px;margin:2px 0}.power p{margin:4px 0;font-size:15px}.power small{color:#475569;font-weight:700}
+.stats{display:grid;gap:8px}.stat{display:grid;grid-template-columns:96px 1fr 28px;gap:8px;align-items:center;font-weight:800}
+.sbarv{height:16px;border-radius:999px;background:#E2E8F0;overflow:hidden}.sbarv i{display:block;height:100%;width:var(--w);border-radius:999px;animation:v12bar 1s ease-out both}
+.hp2{display:grid;gap:0 14px}@media (min-width:700px){.hp2{grid-template-columns:1fr 1fr}}
+.combo{display:flex;align-items:center;gap:8px}.combo .cav{width:72px}.combo .cav svg{width:100%;height:auto}.combo b{font-size:28px}
+.catch{text-align:center;background:linear-gradient(135deg,color-mix(in srgb,var(--c1,#8B5CF6) 20%,#fff),color-mix(in srgb,var(--c3,#F59E0B) 15%,#fff))}.cphrase{font-family:var(--tfont);font-size:24px;font-weight:800;margin:4px 0}
+.hpage.villain .hphero{background:linear-gradient(160deg,#EDE9FE,#fff);border-color:#6D28D9}.hpage.villain{--c1:#6D28D9;--c2:#334155;--c3:#A78BFA}
+.hall.still .hallcard,.hall.still .hglow,.hpage.still .hpsvg,.hpage.still .hpglow,.hpage.still .power,.hpage.still .sbarv i{animation:none!important}.hpage.still .spark{display:none}
+@media (prefers-reduced-motion:reduce){.hallcard,.hglow,.hpsvg,.hpglow,.power,.sbarv i,.stone.current{animation:none!important}.spark{display:none}}
+body.calm .spark{display:none}body.calm .stone.current{animation:none}
+.vsel{font:inherit;font-weight:700;min-height:48px;max-width:58%;border-radius:14px;border:2px solid #CBD5E1;padding:4px 8px;background:#fff;color:#0A1F44}
+.rsel{display:flex;flex-wrap:wrap;gap:8px}.confirm{background:#FEF2F2;border:3px solid #DC2626;border-radius:18px;padding:12px}.confirm h3{margin:0 0 4px;color:#991B1B}.okmsg{background:#D1FAE5;color:#065F46;border-radius:12px;padding:8px 10px;font-weight:800}
+.tipcard{border-top:6px solid #8B5CF6}.tipcard h2{margin:0 0 6px;font-size:19px}
+.tiles{grid-template-columns:repeat(6,1fr);max-width:640px}
+@media (max-width:520px){.tiles{grid-template-columns:repeat(3,1fr);max-width:400px}}
+@media (min-width:900px){.tiles{max-width:760px}.tile{min-height:84px;font-size:15px}}
+@media (max-width:420px){.rtop{grid-template-columns:72px 1fr}.rart{width:72px;height:56px}.hpname{font-size:36px}.stat{grid-template-columns:84px 1fr 24px}.ghead{grid-template-columns:72px 1fr}.gowl svg{width:72px}.vsel{max-width:52%}}
+@media (max-width:360px){.stone{width:46px}.sedge{display:none}.hallcard b{font-size:19px}.chips span{font-size:13px}.pcl{grid-template-columns:1fr}.mpill,.rtab{padding:6px 12px}}
+`;document.head.appendChild(st);})();
+/* ---------- v12: Heroes Hall data (built only from the text descriptions; designs unchanged) ---------- */
+const HERO12={
+ emi:{nick:'The Fashionista Who Loves Hard',age:6,cols:[['Purple','#8B5CF6'],['Lilac','#C4B5FD'],['Violet','#6D28D9']],look:'Lighter skin, a wavy chin-length bob and round blue glasses.',
+  loves:['fashion','flowers','gardening','modeling','Barbies'],pers:'Kind, stylish and full of love. Emi always notices when a friend needs a hug.',
+  origin:'When the Muddle Monster froze the Flower Garden, Emi pushed up her glasses and promised every little bud: "My Bloom Power will help you grow!"',
+  more:'Emi is Blú\'s big sister. Her secret? Flowers planted in neat, equal rows are just times tables in disguise! Every chapter she wins adds a treasure to her Closet, from the Flower Crown all the way to the Bloom Star Gala Gown.',
+  powers:[{n:'Petal Power',e:'🌸',math:'Times tables & arrays',d:'Plants flowers in equal rows, so 3 rows of 4 bloom into 12!',love:'gardening'},
+   {n:'Bloom Power',e:'🌼',math:'Adding & making 10',d:'Two little flower beds join up to make one big bouquet.',love:'flowers'},
+   {n:'Runway Strut',e:'💃',math:'Skip counting',d:'Struts down the runway counting 2, 4, 6, 8 in style!',love:'fashion & modeling'}],
+  stats:{Speed:6,Strategy:7,Teamwork:9,Creativity:10},fav:'add',combo:'blu',comboName:'Bloom & Beat',comboLine:'Emi plants the flowers and her little brother Blú plays the music that makes them dance!'},
+ blu:{nick:'The Littlest Protector',age:1,cols:[['Blue','#3B82F6'],['Sky blue','#60A5FA'],['Deep blue','#1D4ED8']],look:'',realName:'Khílo',
+  loves:['music','sounds','making people smile','protecting everyone','dancing fruits and stars'],pers:'Tiny, brave and giggly. Blú protects his family and loves to make everyone smile.',
+  origin:'When the Muddle Monster made NumiRealm go quiet, little Blú raised his star shield and said: "I\'ll protect everyone and bring back the music!"',
+  more:'His first name is Khílo, but everyone calls him Blú. He is Emi\'s little brother and the youngest hero in NumiRealm. He fills his Music Box with instruments and star badges, and his dancing fruits help everyone count.',
+  powers:[{n:'Star Blast',e:'⭐',math:'Counting & adding',d:'Blasts stars into little groups so you can count them all up.',love:'dancing stars'},
+   {n:'Star Shield',e:'🛡️',math:'Checking your answer',d:'Guards you from silly slips: look again before you tap!',love:'being a protector'},
+   {n:'Bongo Beat',e:'🥁',math:'Skip counting patterns',d:'Every drum beat is a count: 5, 10, 15, 20!',love:'music & sounds'}],
+  stats:{Speed:7,Strategy:5,Teamwork:10,Creativity:8},fav:'mult',combo:'emi',comboName:'Beat & Bloom',comboLine:'Blú keeps the beat while his big sister Emi makes the whole garden bloom!'},
+ sage:{nick:'The Superstar Singer',age:7,cols:[['Pink','#EC4899'],['Rose','#F472B6'],['Bubblegum','#F9A8D4']],look:'',
+  loves:['singing','dolls'],pers:'Bright, brave and full of music. Sage turns every hard moment into a happy song.',
+  origin:'When the Muddle Monster stole the music, Sage grabbed her mic and sang: "My singing voice will bring the music back to all of NumiRealm!"',
+  more:'Sage is cousin to Emi, Blú and Eshon. She knows that songs help you remember, so she sings her times tables and number facts until they stick. Her Doll House fills up with dolls and outfits as she wins.',
+  powers:[{n:'Song Power',e:'🎤',math:'Times-table songs',d:'Sings the tables so they get stuck in your head, in a good way!',love:'singing'},
+   {n:'Echo Count',e:'🎶',math:'Counting back & taking away',d:'Her voice echoes back through the caves: 10, 9, 8, 7…',love:'singing'},
+   {n:'Doll Squad',e:'🪆',math:'Sharing fairly',d:'Shares dolls into equal groups so every friend gets the same.',love:'dolls'}],
+  stats:{Speed:6,Strategy:7,Teamwork:9,Creativity:9},fav:'sub',combo:'emi',comboName:'Song & Bloom',comboLine:'Cousins Sage and Emi: one sings, one makes flowers bloom, and the meadow cheers!'},
+ eshon:{nick:'The Character Inventor',age:6,cols:[['Green','#22C55E'],['Leaf green','#16A34A'],['Mint','#86EFAC']],look:'Small locs.',
+  loves:['drawing','inventing his own characters'],pers:'Creative, clever and always sketching. Eshon invents brand-new characters for every problem.',
+  origin:'When the Muddle Monster smudged all the colours, Eshon picked up his pencil: "I\'ll draw the colours back into NumiRealm!"',
+  more:'Eshon is cousin to Sage, Emi and Blú. His drawings come to life, so he draws doodle buddies to help him think. Drawing a quick picture is one of the best ways to solve a math problem, and Eshon does it every time.',
+  powers:[{n:'Doodle Power',e:'✏️',math:'Arrays & pictures',d:'Draws rows of shapes so you can SEE the times table.',love:'drawing'},
+   {n:'Doodle Buddies',e:'🖍️',math:'Fractions & equal parts',d:'Draws a buddy for each equal slice: halves, thirds, fourths!',love:'inventing characters'},
+   {n:'Brave Plan',e:'📝',math:'Story problems',d:'Sketches a plan: what do we know, and what do we need to find?',love:'drawing'}],
+  stats:{Speed:5,Strategy:9,Teamwork:7,Creativity:10},fav:'frac',combo:'sage',comboName:'Sketch & Song',comboLine:'Cousins Eshon and Sage: he draws the plan and she sings everyone into action!'},
+ melrose:{nick:'Melrose the Mermaid Fairy',age:8,cols:[['Pink','#EC4899'],['Purple','#A855F7'],['Orchid','#D946EF']],look:'Tan skin, green eyes and curly hair.',
+  loves:['fairies','dress up','mermaids'],pers:'Sparkly, caring and full of imagination. Melrose has fairy wings AND a mermaid tail!',
+  origin:'When the Muddle Monster muddied the seas, Melrose spread her wings and flicked her tail: "My Sparkle Splash will wash the muddles away!"',
+  more:'Melrose is Cayden\'s little sister and cousin to Emi, Blú, Sage and Eshon. She loves to dress up, so her Dress-Up Closet fills with wings, tails and crowns. Mermaids share their treasure fairly, and that is what division is all about.',
+  powers:[{n:'Sparkle Splash',e:'✨',math:'Dividing & sharing fairly',d:'Splashes treasure into equal piles so every mermaid gets the same.',love:'mermaids'},
+   {n:'Shell Rows',e:'🐚',math:'Times tables',d:'Lines up seashells on the sand in rows: 4 rows of 3 is 12!',love:'mermaids'},
+   {n:'Fairy Flutter',e:'🧚',math:'Fractions',d:'Flutters over a cake and slices it into fair, equal pieces.',love:'fairies & dress up'}],
+  stats:{Speed:7,Strategy:8,Teamwork:9,Creativity:9},fav:'div',combo:'cayden',comboName:'Splash & Dunk',comboLine:'Melrose and her big brother Cayden: sparkles plus speed equals an unstoppable team!'},
+ cayden:{nick:'Cayden the Slam Dunk Hero',age:10,cols:[['Red','#EF4444'],['Blue','#2563EB'],['Navy','#1E3A8A']],look:'Tan skin, green eyes, short curly hair and glasses.',
+  loves:['football','basketball','anime'],pers:'Fast, focused and a great coach. Cayden is the big brother who never gives up.',
+  origin:'When the Muddle Monster silenced the cheering, Cayden laced up and said: "I\'m fast like an anime hero and I never miss a dunk!"',
+  more:'Cayden is Melrose\'s big brother and cousin to Emi, Blú, Sage and Eshon. He practises like a champion, and his Sports Locker fills with gear as he wins. In long division he runs the same play every time: Divide, Multiply, Subtract, Bring down.',
+  powers:[{n:'Slam Dunk Power',e:'💥',math:'Fast times facts',d:'Dunks times facts so fast they leave speed lines!',love:'basketball'},
+   {n:'Speed Lines',e:'⚡',math:'Mental math',d:'Zooms through adding and taking away in his head, anime-style.',love:'anime'},
+   {n:'Playbook',e:'🏈',math:'Long division steps',d:'Runs the play: Divide, Multiply, Subtract, Bring down. Touchdown!',love:'football'}],
+  stats:{Speed:10,Strategy:9,Teamwork:8,Creativity:7},fav:'mult',combo:'melrose',comboName:'Dunk & Splash',comboLine:'Cayden and his little sister Melrose: speed plus sparkles, the perfect play!'}
+};
+const MUDDLE={name:'The Muddle Monster',title:'Scrambler of Numbers',pers:'Grumpy, sneaky and VERY messy. Loves mixing numbers up.',
+ story:'The Muddle Monster scrambled every number in NumiRealm: adding, taking away, times tables, sharing and fractions. Now the flowers can\'t bloom and the music has stopped!',
+ more:'It sends minions to guard each chapter, like Lady Lumpbug in Addition Meadow and Captain Pinch in Times Table Castle, and waits at the end of every realm as the final boss. Its big weakness? Kids who slow down, think carefully and work as a team.',
+ powers:[{n:'Number Scramble',e:'🌀',d:'Jumbles digits so 12 looks like 21.'},{n:'Muddle Fog',e:'🌫️',d:'Makes problems look harder than they really are.'},{n:'Rush Trick',e:'⏩',d:'Tries to make you hurry and guess.'}],
+ weak:'Careful thinking, hint lanterns, and teamwork. Every right answer shrinks it!'};
+const REALM_LINE={add:'Sunny meadows where flowers bloom every time numbers join together.',sub:'Glittering crystal caves where taking away lights up the dark.',
+ mult:'A tall castle with twelve towers, one for every times table.',div:'A busy harbour where boats share their cargo fairly so everyone can sail.',frac:'A sweet-smelling bakery where every cake and pie is cut into fair pieces.'};
+const DRILL_WHY={add:'so adding feels quick and easy',sub:'so taking away feels quick and easy',mult:'so times facts pop straight into your head',div:'so sharing and grouping make sense',frac:'so fair pieces and parts make sense'};
+/* ---------- v12: every home button opens its own screen ---------- */
+/* navigation stack + browser back */
+let NAVST=[],CUR=null,REG=false,POPSKIP=0,PEND=null;const V12={view:null,mins:3,tRealm:null,ask:null,msg:''};
+const SCR={};
+function v12Safe(){try{TTQ_VERSION.safeNow();}catch(e){}}
+function track(name,fn){return function(...a){const was=REG;if(!was)CUR={n:name,a};REG=true;try{return fn.apply(this,a);}finally{REG=was;if(!was)v12Safe();}};}
+{const _show=show;show=function(h,hub){if(!REG)CUR=null;return _show(h,hub);};}
+function runScr(p){REG=true;CUR=p;try{SCR[p.n](...p.a);}finally{REG=false;v12Safe();}}
+function go(name,...a){stopSpeech();if(CUR&&!(CUR.n===name&&JSON.stringify(CUR.a)===JSON.stringify(a))){NAVST.push(CUR);if(NAVST.length>40)NAVST.shift();try{history.pushState({v12:NAVST.length},'');}catch(e){}}
+ runScr({n:name,a});}
+function goBack(){SFX.tap();stopSpeech();const p=NAVST.pop();if(p){POPSKIP++;try{history.back();}catch(e){POPSKIP--;}runScr(p);}else{save.hero?subjectScreen():titleScreen();}}
+window.addEventListener('popstate',()=>{if(POPSKIP>0){POPSKIP--;return;}stopSpeech();const p=NAVST.pop();if(p)runScr(p);else titleScreen();});
+const backBtn=(lbl)=>`<div class="center v12back"><button class="btn blue" type="button" id="backBtn" onclick="goBack()" aria-label="Back">↩ ${lbl||'Back'}</button></div>`;
+const topBack=()=>`<button class="v12tback" type="button" onclick="goBack()" aria-label="Back">↩ Back</button>`;
+/* which hero's data a screen shows: the active hero, else the last one played */
+function vHero(){const v=V12.view;if(save.hero)return save.hero;if(v&&HEROES[v])return v;return save.lastHero&&HEROES[save.lastHero]?save.lastHero:null;}
+function vTabs(scr,id,label){return `<div class="pgtabs" role="group" aria-label="${label||'Choose a hero'}">${HERO_ORDER.map(h=>`<button type="button" class="pgtab ${h===id?'on':''}" aria-pressed="${h===id}" data-vhero="${h}" onclick="vPick('${h}','${scr}')"><span class="pgav" aria-hidden="true">${heroSVGeq(h,save.profiles[h].eq||{},'idle')}</span>${esc(save.profiles[h].name)}</button>`).join('')}</div>`;}
+function vPick(h,scr){SFX.tap();if(save.hero&&save.hero!==h){save.lastHero=save.hero;save.hero=null;persist();}V12.view=h;runScr({n:scr,a:CUR&&CUR.n===scr?CUR.a:[]});}
+/* start playing: only now ask for a hero (skipped when one is already active) */
+function playWith(fn,id){stopSpeech();if(id&&HEROES[id]&&save.hero!==id){save.hero=null;save.lastHero=id;persist();}
+ if(save.hero||(save.lastHero&&HEROES[save.lastHero]))return withHero(fn);PEND=fn;go('pick');}
+function heroPickScreen(){stopConfetti();S=null;SS=null;SC=null;
+ show(`<h1 class="questh">Who is playing?</h1><div class="card"><p class="big" style="font-size:17px;text-align:center">Pick your hero to start. You can switch any time.</p><div class="herocards" id="heroes">${HERO_ORDER.map(id=>{const h=HEROES[id],pf=save.profiles[id];
+ return `<button class="herocard ${id}" data-hero="${id}" onclick="pickHero('${id}')"><div class="hsv">${heroSVGeq(id,pf.eq||{},'idle')}</div><div class="hn">${esc(pf.name)}</div><div class="ht">${h.title}</div><div class="hl"><b>⭐ ${allStars(pf)}</b> stars</div></button>`;}).join('')}</div></div>${backBtn()}`,'home');}
+startAdventure=function(){const v=$('nm')?$('nm').value.trim().slice(0,14):'';P().name=v||H().name;persist();
+ const dest=()=>{const f=PEND;PEND=null;if(f)f();else subjectScreen();};
+ const goOn=()=>{if(!P().prologue)playScene(prologueScene(),()=>{P().prologue=true;persist();dest();});else dest();};
+ if(!hasAbout(P()))aboutScreen(goOn);else goOn();};
+/* ---------- progress helpers that work for any hero (no active hero needed) ---------- */
+function chInfo(sid,c){if(sid==='mult'){const n=ORDER[c-1],tr=TRICKS[n]||{},pl=PLACES[c-1]||{};return {c,t:`×${n} Table`,e:tr.e||'✖️',skill:`the ×${n} times table`,tip:tr.d||`Skip count by ${n}s to find the answers.`,boss:BOSSES[n]||['🌀','the Muddle Monster'],place:pl,final:c===ORDER.length};}
+ const ch=SUBJ_BY[sid].ch[c-1];return {c,t:ch.t,e:ch.e,skill:ch.skill,tip:ch.tip,boss:ch.final?['🌀','the Muddle Monster']:(ch.boss||['👾','a minion']),place:ch.place||{},final:!!ch.final};}
+function chStars(sid,c,pf){if(!pf)return 0;if(sid==='mult')return (pf.stars||{})[ORDER[c-1]]||0;const o=pf.subj&&pf.subj[sid];return (o&&o.stars&&o.stars[c])||0;}
+function uIdx(sid,pf){const N=sCount(sid);let i=0;while(i<N&&chStars(sid,i+1,pf))i++;return i;}
+function gradeAges(g){return {none:'4',prek:'4–5',k:'5–6','1':'6–7','2':'7–8','3':'8–9','4':'9–10','5':'10–11','6':'11–12'}[g]||'';}
+function gradeShort(g){return {none:'Pre-school',prek:'Pre-K',k:'K','1':'1st','2':'2nd','3':'3rd','4':'4th','5':'5th','6':'6th'}[g]||g;}
+function realmGrades(sb){const g=sb.grades;return `${gradeShort(g[0])}–${gradeShort(g[g.length-1])} grade`.replace('Pre-school–','Pre-school to ');}
+function realmAges(sb){const a=gradeAges(sb.grades[0]).split('–')[0],b=gradeAges(sb.grades[sb.grades.length-1]).split('–').pop();return `ages ${a}–${b}`;}
+function hintUsed(pf){return Object.values((pf&&pf.hintLog)||{}).reduce((s,r)=>s+((r&&r.used)||0),0);}
+function hintOk(pf){return Object.values((pf&&pf.hintLog)||{}).reduce((s,r)=>s+((r&&r.ok)||0),0);}
+function dayKey(t){const d=new Date(t||Date.now());return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function streakOf(pf){const ds=new Set((pf&&pf.days)||[]);if(!ds.size)return 0;let d=new Date();if(!ds.has(dayKey(d))){d.setDate(d.getDate()-1);if(!ds.has(dayKey(d)))return 0;}let n=0;while(ds.has(dayKey(d))){n++;d.setDate(d.getDate()-1);}return n;}
+function favRealm(id){const pf=save.profiles[id];let best=null,bs=0;SUBJ.forEach(sb=>{const s=sStars(sb.id,pf);if(s>bs){bs=s;best=sb.id;}});if(!best&&pf.lastSubj&&SUBJ_BY[pf.lastSubj])best=pf.lastSubj;return best;}
+/* ---------- needs-work log: questions the hero missed or used a lantern on ---------- */
+function weakOf(pf){if(!pf.weak||typeof pf.weak!=='object')pf.weak={};return pf.weak;}
+function qSig(sid,q){if(!q)return null;if(sid==='mult')return q.n!=null&&q.k!=null?`m${q.n}x${q.k}`:null;return q.sig!=null?String(q.sig):null;}
+function noteWeak(sid,c,q,kind){if(!save.hero||!sid||!c)return;const pf=P(),W=weakOf(pf),key=sid+':'+c,w=W[key]||(W[key]={m:0,h:0,ok:0,sigs:[]});
+ if(kind==='m')w.m++;else if(kind==='h')w.h++;const s=qSig(sid,q);if(s&&!w.sigs.includes(s)){w.sigs.push(s);if(w.sigs.length>6)w.sigs.shift();}w.t=Date.now();persist();}
+function noteDay(){if(!save.hero)return;const pf=P();if(!Array.isArray(pf.days))pf.days=[];const k=dayKey();if(!pf.days.includes(k)){pf.days.push(k);if(pf.days.length>120)pf.days.shift();}const s=streakOf(pf);if(s>(pf.bestStreak||0))pf.bestStreak=s;}
+function noteAns(sid,c,q,ok,errs){if(!save.hero)return;noteDay();if(!ok||(errs||0)>=2)noteWeak(sid,c,q,'m');
+ else if(DR&&DR.mix){const W=weakOf(P()),w=W[sid+':'+c];if(w){w.ok=(w.ok||0)+1;if(w.ok>=2){w.ok=0;if(w.m>0)w.m--;else if(w.h>0)w.h--;const s=qSig(sid,q);if(s)w.sigs=w.sigs.filter(x=>x!==s);if(w.m+w.h<=0){delete W[sid+':'+c];DR.cleared=(DR.cleared||0)+1;}}}}persist();}
+function weakList(pf){return Object.entries(weakOf(pf)).map(([k,w])=>{const [sid,c]=k.split(':');return {sid,c:+c,m:w.m||0,h:w.h||0,sigs:w.sigs||[],score:(w.m||0)*2+(w.h||0)};}).filter(x=>SUBJ_BY[x.sid]&&x.c>=1&&x.c<=sCount(x.sid)&&x.score>0).sort((a,b)=>b.score-a.score);}
+function hookAns(o,sid,c){if(!o||typeof o.onAnswer!=='function'||!o.cur||o.v12w===o.cur)return;o.v12w=o.cur;const q=o.cur,f=o.onAnswer;
+ o.onAnswer=function(ok,errs){if(o.cur===q){try{noteAns(sid,typeof c==='function'?c(q):c,q,ok,errs);}catch(e){}}return f.apply(this,arguments);};}
+{const wrap=(name,get)=>{const f=window[name]||eval(name);return function(){const r=f.apply(this,arguments);try{get();}catch(e){}return r;};};
+ sRenderQ=wrap('sRenderQ',()=>{if(SS&&!SS.drill)hookAns(SS,SS.sid,SS.c);});
+ sRenderBoss=wrap('sRenderBoss',()=>{if(SS)hookAns(SS,SS.sid,SS.c);});
+ renderPractice=wrap('renderPractice',()=>{if(S)hookAns(S,'mult',q=>ORDER.indexOf(q.n)+1||ORDER.indexOf(S.n)+1);});
+ renderBoss=wrap('renderBoss',()=>{if(S)hookAns(S,'mult',q=>ORDER.indexOf(q.n)+1||ORDER.indexOf(S.n)+1);});}
+{const _hl=hintLog;hintLog=function(c,first){const r=_hl(c,first);try{if(first){const q=c.o.cur,ch=c.sid==='mult'?(ORDER.indexOf(q&&q.n)+1||hintChapter(c)):hintChapter(c);noteWeak(c.sid,ch,q,'h');}}catch(e){}return r;};}
+/* ---------- LEVELS: the Realm Map ---------- */
+function realmMap(focus){stopConfetti();S=null;SS=null;SC=null;const id=vHero(),pf=id?save.profiles[id]:null;
+ const realms=SUBJ.map(sb=>{const N=sCount(sb.id),u=uIdx(sb.id,pf),st=pf?sStars(sb.id,pf):0;
+  const stones=range(1,N).map(c=>{const ci=chInfo(sb.id,c),s=chStars(sb.id,c,pf),state=s?'done':c===u+1?'current':'locked';
+   return `<button type="button" class="stone ${state}" data-stone="${sb.id}-${c}" onclick="go('chapter','${sb.id}',${c})" aria-label="Chapter ${c}: ${esc(ci.t)}, ${state==='done'?'done, '+s+' star'+(s===1?'':'s'):state==='current'?'play next':'locked'}"><span class="sn">${state==='locked'?'🔒':state==='done'?'✓':c}</span>${state==='current'?'<span class="snow" aria-hidden="true">▶</span>':''}<span class="ss" aria-hidden="true">${state==='done'?'★'.repeat(s)+'☆'.repeat(3-s):ci.e}</span></button>`;}).join('<i class="sline" aria-hidden="true"></i>');
+  return `<section class="card rcard" data-realm="${sb.id}" style="--sc:${QCOL[sb.id]}"><div class="rtop"><div class="rart" aria-hidden="true">${realmArt(sb.id)}</div><div><h2><span class="rop" aria-hidden="true">${sb.op}</span> ${sb.realm}</h2><p class="rline">${REALM_LINE[sb.id]}</p>
+  <div class="rmeta"><span>🎒 ${realmGrades(sb)}</span><span>⭐ ${st}/${N*3}</span><span>📖 ${pf?sDone(sb.id,pf):0}/${N} done</span></div></div></div>
+  <div class="stones" role="group" aria-label="${sb.realm} chapters, easy to hard"><span class="sedge" aria-hidden="true">Easy</span>${stones}<span class="sedge" aria-hidden="true">Hard</span></div></section>`;}).join('');
+ show(`<h1 class="questh">🗺️ Realm Map</h1><div class="card v12intro"><p class="big" style="font-size:17px">Five realms, each with chapters from <b>easy to hard</b>. Tap a stepping stone to see what it teaches.</p>${id?`<p class="vfor">Showing ${esc(pf.name)}'s stars</p>${vTabs('realms',id)}`:'<p class="vfor">No hero yet: you will pick one when you press Play.</p>'}
+ <div class="legend" aria-hidden="true"><span class="stone done mini"><span class="sn">✓</span></span> done <span class="stone current mini"><span class="sn">1</span></span> play next <span class="stone locked mini"><span class="sn">🔒</span></span> locked</div></div>${realms}${backBtn()}`,'quest');
+ if(focus&&SUBJ_BY[focus]){const r=document.querySelector(`[data-realm="${focus}"]`);if(r){r.scrollIntoView({block:'start'});const f=r.querySelector('.stone.current')||r.querySelector('.stone');if(f)try{f.focus({preventScroll:true});}catch(e){}}}}
+function exampleQ(sid,c){const keep=save.hero,keepSS=SS;try{if(!save.hero)save.hero=vHero()||'emi';
+ if(sid==='mult'){const n=ORDER[c-1],k=rand(2,9);return {text:`${n} × ${k} = ?`,lead:'Example'};}
+ const ch=SUBJ_BY[sid].ch[c-1];SS={sid,c,ch,sb:SUBJ_BY[sid],attempt:1,team:SIBS[save.hero][0]};const q=ch.gen('p');return {text:q.text,lead:q.lead||'Example',vis:q.vis||''};}
+ catch(e){return null;}finally{save.hero=keep;SS=keepSS;}}
+function chapterDetail(sid,c){stopConfetti();S=null;SS=null;SC=null;const sb=SUBJ_BY[sid];if(!sb)return realmMap();const id=vHero(),pf=id?save.profiles[id]:null,ci=chInfo(sid,c),N=sCount(sid),u=uIdx(sid,pf),s=chStars(sid,c,pf);
+ const state=s?'done':c===u+1?'current':c<=u+1?'open':'locked',ex=exampleQ(sid,c),hn=id?esc(save.profiles[id].name):'';
+ show(`<h1 class="questh">${sb.e} ${sb.realm}</h1><div class="card chd" style="--sc:${QCOL[sid]}" data-chd="${sid}-${c}">${topBack()}
+ <div class="chdhead"><span class="chdn">Chapter ${c} of ${N}</span><h2>${ci.e} ${esc(ci.t)}</h2><div class="chdstate ${state}">${state==='done'?`✓ Done · ${'★'.repeat(s)}${'☆'.repeat(3-s)}`:state==='current'?'▶ Play next':state==='locked'?`🔒 Locked: beat Chapter ${u+1} first`:'Open'}</div></div>
+ <div class="chdgrid"><div class="chdbox"><h3>🧠 What you'll learn</h3><p>${esc(ci.skill.charAt(0).toUpperCase()+ci.skill.slice(1))}.</p><p class="tip">💡 ${ci.tip}</p></div>
+ <div class="chdbox ex"><h3>✏️ Example</h3>${ex?`<div class="qcard sq"><div class="qeq">${ex.text}</div>${ex.vis?`<div class="qvis">${ex.vis}</div>`:''}</div><p class="small">You'll solve ones like this in the chapter.</p>`:`<p>${ci.tip}</p>`}</div>
+ <div class="chdbox"><h3>🧭 How it goes</h3><ol class="flow"><li>📚 Learn</li><li>🎯 Practice</li><li>👾 Boss: ${ci.boss[0]} ${esc(ci.boss[1])}</li></ol>${ci.place&&ci.place.name?`<p class="small">${ci.place.e||''} ${esc(ci.place.name)}</p>`:''}</div></div>
+ <div class="center">${state==='locked'?`<button class="btn" type="button" id="playCh" onclick="go('chapter','${sid}',${u+1})">▶ See Chapter ${u+1} instead</button>`:`<button class="btn play" type="button" id="playCh" data-enter onclick="playChapter('${sid}',${c})">▶ Play this chapter${hn?` as ${hn}`:''}</button>`}
+ <button class="btn purple sm" type="button" onclick="go('training',null,'${sid}')">🎯 Practise this skill</button></div></div>${backBtn('Realm Map')}`,'quest');
+ speak(`Chapter ${c}: ${stripH(ci.t)}. You will learn ${ci.skill}.`,'owl');}
+function playChapter(sid,c){SFX.tap();const id=vHero();playWith(()=>{const pf=P();if(c>uIdx(sid,pf)+1)return chapterDetail(sid,c);save.lastSubj=sid;pf.lastSubj=sid;lastMap=sid;SP(sid).intro=true;persist();
+ if(sid==='mult')openLevel(ORDER[c-1]);else openChapter(sid,c);},id);}
+/* ---------- PRACTICE: Training Grounds (timed drills + needs-work mix) ---------- */
+let DR=null,DRT=0;
+function training(_x,realm){stopConfetti();S=null;SS=null;SC=null;drStop();if(realm&&SUBJ_BY[realm])V12.tRealm=realm;const id=vHero(),pf=id?save.profiles[id]:null,tr=V12.tRealm&&SUBJ_BY[V12.tRealm]?V12.tRealm:'add',sb=SUBJ_BY[tr];
+ if(save.drillMins&&[1,3,5].includes(save.drillMins))V12.mins=save.drillMins;
+ const wl=pf?weakList(pf):[],N=sCount(tr),u=pf?uIdx(tr,pf):0;
+ const mins=[1,3,5].map(m=>`<button type="button" class="mpill ${V12.mins===m?'on':''}" aria-pressed="${V12.mins===m}" data-mins="${m}" onclick="setMins(${m})">${m} min</button>`).join('');
+ const rtabs=SUBJ.map(x=>`<button type="button" class="rtab ${x.id===tr?'on':''}" aria-pressed="${x.id===tr}" data-trealm="${x.id}" style="--sc:${QCOL[x.id]}" onclick="SFX.tap();V12.tRealm='${x.id}';runScr({n:'training',a:[]})"><span aria-hidden="true">${x.op}</span> ${x.name}</button>`).join('');
+ const cards=range(1,N).map(c=>{const ci=chInfo(tr,c),st=c<=u?'done':c===u+1?'now':'new';
+  return `<button type="button" class="drill" data-drill="${tr}-${c}" style="--sc:${QCOL[tr]}" onclick="drillStart([{sid:'${tr}',c:${c}}],false)"><span class="de" aria-hidden="true">${ci.e}</span><b>${esc(ci.t)}</b><small>Builds ${esc(ci.skill)}, ${DRILL_WHY[tr]}.</small><span class="dtag ${st}">${st==='done'?'✓ Chapter done':st==='now'?'▶ Current chapter':'✨ New skill'}</span></button>`;}).join('');
+ show(`<h1 class="questh">🎯 Training Grounds</h1><div class="card v12intro"><p class="big" style="font-size:17px">Pick one skill and train for a few minutes. <b>3 hint lanterns</b> per round. No stars to lose: just get stronger!</p>
+ ${id?`<p class="vfor">Training as ${esc(pf.name)}</p>${vTabs('training',id)}`:''}
+ <h2 class="h3">⏱️ Round length</h2><div class="mpills" role="group" aria-label="Round length">${mins}</div></div>
+ <div class="card nwcard" id="needsWork"><h2>🌱 Needs-work mix</h2>${wl.length?`<p>Questions ${esc(pf.name)} missed or needed a lantern for. Get each one right twice to clear it!</p><ul class="nwlist">${wl.slice(0,6).map(w=>`<li data-weak="${w.sid}-${w.c}"><span class="po" style="background:${QCOL[w.sid]}" aria-hidden="true">${SUBJ_BY[w.sid].op}</span>${esc(chName(w.sid,w.c))}<small>${w.m?`❌ ${w.m} missed`:''}${w.m&&w.h?' · ':''}${w.h?`🏮 ${w.h} lantern${w.h===1?'':'s'}`:''}</small></li>`).join('')}</ul><div class="center"><button class="btn green" type="button" id="mixBtn" onclick="drillMix()">▶ Start needs-work mix</button></div>`
+  :`<p id="nwEmpty">${pf?`Nothing tricky yet for ${esc(pf.name)}! When a question is missed or needs a lantern, it lands here for extra practice.`:'Play a chapter and any tricky questions will land here for extra practice.'}</p>`}</div>
+ <div class="card"><h2>🏋️ Skill drills</h2><div class="rtabs" role="group" aria-label="Choose a realm">${rtabs}</div><p class="rline">${sb.realm}: ${REALM_LINE[tr]}</p><div class="drills" id="drills">${cards}</div></div>${backBtn()}`,'practice');}
+function setMins(m){SFX.tap();V12.mins=m;save.drillMins=m;persist();document.querySelectorAll('.mpill').forEach(b=>{const on=+b.dataset.mins===m;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});}
+function drillMix(){const id=vHero();playWith(()=>{const wl=weakList(P()).slice(0,8);if(!wl.length)return go('training');drillGo(wl.map(w=>({sid:w.sid,c:w.c,sigs:w.sigs,wt:w.score})),true);},id);}
+function drillStart(items,mix){SFX.tap();const id=vHero();playWith(()=>drillGo(items,mix),id);}
+function drillGo(items,mix){drStop();DR={items,mix:!!mix,mins:V12.mins,end:Date.now()+V12.mins*60000,score:0,total:0,lan:HINT_MAX.practice,used:new Set(),cleared:0,over:false};
+ DRT=setInterval(drTick,500);drillNext();}
+function drStop(){if(DRT){clearInterval(DRT);DRT=0;}}
+function drLeft(){return DR?Math.max(0,Math.ceil((DR.end-Date.now())/1000)):0;}
+function drTick(){const t=$('drTime');if(!DR||!t){drStop();if(DR&&!t&&!(SS&&SS.drill))DR=null;return;}if(DR.over)return;const s=drLeft();t.textContent=`⏱️ ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+ if(s<=0&&!DR.over){DR.over=true;t.classList.add('up');t.textContent="⏰ Time's up!";if(!SS||!SS.cur||SS.locked)drillDone();else{const f=$('drNote');if(f)f.textContent='Last question: finish this one!';}}}
+function multDrillQ(n,k){const pool=(HCTX[save.hero]||[]).concat(CTX);const type=pick(['fill','fill','missing','story']);const q=makeQ(type,n,k,pick(pool));
+ return Object.assign(q,{sig:`m${n}x${k}`,check:v=>v===q.ans,explain:explain(q),input:'pad'});}
+function drillQ(it){const sid=it.sid,c=it.c;let q=null;
+ if(sid==='mult'){const n=ORDER[c-1];let k=rand(1,12);if(it.sigs&&it.sigs.length&&Math.random()<.6){const m=/x(\d+)$/.exec(pick(it.sigs));if(m)k=+m[1];}return multDrillQ(n,k);}
+ const ch=SUBJ_BY[sid].ch[c-1],want=it.sigs&&it.sigs.length&&Math.random()<.6?new Set(it.sigs):null;
+ for(let i=0;i<60;i++){const k=i%3===2?'a':'p';const g=ch.gen(want&&i<40?(i%2?'b':'p'):k);if(want&&i<40){if(want.has(String(g.sig))){q=g;break;}continue;}if(DR.used.has(g.sig)&&i<50)continue;q=g;break;}
+ return q||ch.gen('p');}
+function drillNext(){if(!DR)return;if(SS&&SS.drill&&SS.lanP!=null)DR.lan=SS.lanP;if(DR.over||drLeft()<=0){DR.over=true;return drillDone();}
+ let it;if(DR.mix){const tot=DR.items.reduce((s,x)=>s+(x.wt||1),0);let r=Math.random()*tot;it=DR.items.find(x=>(r-=(x.wt||1))<0)||DR.items[0];}else it=DR.items[0];
+ const keepSS=SS;SS={sid:it.sid,c:it.c,ch:it.sid==='mult'?null:SUBJ_BY[it.sid].ch[it.c-1],sb:SUBJ_BY[it.sid],attempt:1,team:SIBS[save.hero][0]};let q;
+ try{q=drillQ(it);}catch(e){SS=keepSS;q=null;}if(!q){DR.items=DR.items.filter(x=>x!==it);if(!DR.items.length)return drillDone();return drillNext();}
+ DR.used.add(q.sig);const n=it.sid==='mult'?ORDER[it.c-1]:null;
+ Object.assign(SS,{drill:true,quick:true,n,lanP:DR.lan,inBoss:false,practice:[q],apply:[],list:[q],pi:0,pScore:0,pRes:[],hearts:HEARTS});
+ drRender(q,it);}
+function drRender(q,it){SS.cur=q;SS.locked=false;sInpReset(q);const sb=SUBJ_BY[it.sid],s=drLeft();
+ show(`<div class="card drillcard" style="--sc:${QCOL[it.sid]}"><div class="row between drhead"><div class="row"><div class="minihero" id="mh">${heroSVG(save.hero)}</div><div><div class="drlab">${DR.mix?'🌱 Needs-work mix':'🎯 Drill'} · ${sb.op} ${esc(chName(it.sid,it.c))}</div><div class="drsc" id="drScore">✅ ${DR.score} right of ${DR.total}</div></div></div>
+ <div class="row"><span class="drtime" id="drTime" role="timer" aria-live="off">⏱️ ${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}</span>${lanHTML()}</div></div>
+ <div id="hintbox" class="hintbox hidden" aria-live="polite"></div><div id="drNote" class="drnote" aria-live="polite"></div>
+ ${sQHTML(q)}<div id="hint" class="hint hidden"></div><div id="fb" class="fb" aria-live="polite"></div><div class="row center"><button id="nextbtn" class="btn green hidden" type="button" data-enter onclick="drillNext()">Next ▶</button><button class="btn gray sm" type="button" id="drEnd" onclick="DR.over=true;drillDone()">⏹ End round</button></div></div>`,'practice');
+ if(q.input==='ld')ldInit();else sRenderInp();speak(stripH(q.text),'owl');
+ SS.onAnswer=(ok,errs)=>{SS.locked=true;SS.pRes.push(ok);DR.total++;if(ok)DR.score++;noteAns(it.sid,it.c,q,ok,errs);const sc=$('drScore');if(sc)sc.textContent=`✅ ${DR.score} right of ${DR.total}`;
+  if(ok){heroRight('#mh');$('fb').className='fb good';$('fb').textContent='🎉 '+cheer();setTimeout(()=>{if(SS&&SS.cur===q&&DR)drillNext();},q.input==='ld'?2000:900);}
+  else{SFX.bad();heroWrong('#mh');$('fb').className='fb bad';$('fb').innerHTML='Not quite! '+(q.explain||'')+' 💪';$('nextbtn').classList.remove('hidden');}};}
+function drillDone(){drStop();if(!DR)return training();if(SS&&SS.lanP!=null)DR.lan=SS.lanP;const d=DR,pf=P();SS=null;S=null;pf.drills=(pf.drills||0)+1;noteDay();persist();SFX.win&&SFX.win();
+ const left=save.hero?weakList(pf).length:0;
+ show(`<div class="card center" id="drDone"><div class="winheroes"><div class="w1" id="mh">${heroSVG(save.hero,'cheer')}</div></div><h2>${d.over?"⏰ Time's up!":'Round done!'}</h2><p class="big">You got <b>${d.score} right</b> out of ${d.total}.</p>
+ <p class="big" style="font-size:17px">🏮 Lanterns left: ${d.lan}/${HINT_MAX.practice}${d.mix?` · 🌱 Cleared: ${d.cleared} · Still to practise: ${left}`:''}</p><p>${d.total&&d.score/d.total>=.8?'Super sharp! Your brain is getting faster.':'Every try makes your brain stronger!'}</p>
+ <button class="btn" type="button" data-enter id="drAgain" onclick="drillGo(DR_LAST.items,DR_LAST.mix)">🔁 Go again</button><button class="btn purple sm" type="button" onclick="go('training')">🎯 Training Grounds</button><button class="btn blue sm" type="button" onclick="titleScreen()">🏠 Home</button></div>`,'practice');
+ DR_LAST={items:d.items,mix:d.mix};DR=null;}
+let DR_LAST=null;
+/* ---------- REWARDS: Trophy Room ---------- */
+function badgesOf(id){const pf=save.profiles[id],st=allStars(pf),fin=SUBJ.map(sb=>({sb,got:chStars(sb.id,sCount(sb.id),pf)>0}));let three=0;SUBJ.forEach(sb=>{for(let c=1;c<=sCount(sb.id);c++)if(chStars(sb.id,c,pf)>=3)three++;});
+ const any=SUBJ.some(sb=>sDone(sb.id,pf)>0),all5=SUBJ.every(sb=>sDone(sb.id,pf)>0);
+ return [{e:'👣',n:'First Steps',got:any,how:'Beat any chapter boss'},{e:'🌟',n:'Star Collector',got:st>=25,how:`Earn 25 stars (${Math.min(st,25)}/25)`},{e:'💫',n:'Triple Star',got:three>=10,how:`Get 3 stars on 10 chapters (${Math.min(three,10)}/10)`},
+  {e:'🧭',n:'Realm Explorer',got:all5,how:'Beat a chapter in all 5 realms'},{e:'🏮',n:'Lantern Learner',got:hintOk(pf)>=5,how:`Solve 5 questions after a lantern clue (${Math.min(hintOk(pf),5)}/5)`},
+  {e:'🎯',n:'Training Champ',got:(pf.drills||0)>=3,how:`Finish 3 Training Grounds rounds (${Math.min(pf.drills||0,3)}/3)`},{e:'🔥',n:'3-Day Streak',got:(pf.bestStreak||0)>=3,how:'Play 3 days in a row'}]
+  .concat(fin.map(({sb,got})=>({e:sb.e,n:`${sb.realm} Hero`,got,how:`Beat the ${sb.realm} boss`})));}
+function rewardHow(id,i){const pf=save.profiles[id],list=REWARDS[id],r=list[i];if((pf.rewards||[]).includes(r.id))return '';const j=list.filter(x=>!(pf.rewards||[]).includes(x.id)).indexOf(r),n=ORDER[i];
+ const k=j+1,multOpen=!chStars('mult',i+1,pf);return `Win ${k} more new chapter${k===1?'':'s'} in any realm${multOpen?`, or beat the ×${n} boss in Times Table Castle`:''}`;}
+function trophyRoom(){stopConfetti();S=null;SS=null;SC=null;const id=vHero()||HERO_ORDER[0],pf=save.profiles[id],h=HEROES[id],bs=badgesOf(id),got=bs.filter(b=>b.got).length,rw=REWARDS[id],have=rw.filter(r=>(pf.rewards||[]).includes(r.id)).length;
+ const slot=s=>({head:'Head',outfit:'Outfit',hand:'Hand',back:'Back',neck:'Neck',feet:'Feet',badge:'Badge'}[s]||String(s||'').replace(/^./,x=>x.toUpperCase()));
+ show(`<h1 class="questh">🏆 Trophy Room</h1><div class="card v12intro">${vTabs('trophies',id)}<div class="trhead"><div class="trhero" aria-hidden="true">${heroSVG(id,'cheer')}</div><div><h2>${esc(pf.name)}'s trophies</h2><p class="big" style="font-size:17px">🏅 ${got}/${bs.length} badges · ${h.closetE} ${have}/${rw.length} ${h.closet} items · ⭐ ${allStars(pf)} stars</p></div></div></div>
+ <div class="card"><h2>🏅 Badges</h2><div class="tgrid" id="badges">${bs.map(b=>`<div class="troph ${b.got?'got':'lock'}" data-badge="${esc(b.n)}"><span class="te" aria-hidden="true">${b.got?b.e:'🔒'}</span><b>${esc(b.n)}</b><small>${b.got?'Earned!':esc(b.how)}</small></div>`).join('')}</div></div>
+ <div class="card"><h2>${h.closetE} ${h.closet}: outfits & gear</h2><div class="tgrid" id="items">${rw.map((r,i)=>{const g=(pf.rewards||[]).includes(r.id);return `<div class="troph ${g?'got':'lock'}" data-item="${r.id}"><span class="te" aria-hidden="true">${g?r.e:'🔒'}</span><b>${esc(r.name)}</b><small>${g?`Unlocked · ${slot(r.slot)}`:esc(rewardHow(id,i))}</small></div>`;}).join('')}</div>
+ <div class="center"><button class="btn pink" type="button" id="openCloset" onclick="playWith(closetScreen,'${id}')">${h.closetE} Open ${esc(pf.name)}'s ${h.closet}</button></div></div>${backBtn()}`,'home');}
+/* ---------- MAP: How NumiRealm Works ---------- */
+const GUIDE=[
+ {id:'story',e:'📖',h:'The story',t:['The Muddle Monster scrambled every number in NumiRealm!','Professor Hoot the owl needs your help.','Pick a hero, team up with family, and save all five realms.']},
+ {id:'flow',e:'🧭',h:'How a chapter works',t:['📚 Learn: see the idea with pictures.','🎯 Practice: try a few, then story problems.','👾 Boss: answer to beat the minion and unlock the next chapter!']},
+ {id:'stars',e:'⭐',h:'Stars',t:['You start each boss with 3 hearts.','Hearts left at the end = stars won: 1, 2 or 3.','Replay any chapter to get all 3 stars.']},
+ {id:'lan',e:'🏮',h:'Hint lanterns',t:['3 lanterns in practice, 1 in a boss fight.','First tap: a clue about how to think. Second tap: a picture clue.','Lanterns NEVER give the answer. Using them is smart!']},
+ {id:'more',e:'🎁',h:'Treasures and training',t:['Each new chapter you win unlocks a treasure for your hero.','Training Grounds lets you drill one skill for 1, 3 or 5 minutes.','Missed questions go to your Needs-work mix.']}];
+function guideScreen(){stopConfetti();S=null;SS=null;SC=null;
+ const rows=SUBJ.map(sb=>`<tr data-grealm="${sb.id}"><th scope="row"><span class="po" style="background:${QCOL[sb.id]}" aria-hidden="true">${sb.op}</span> ${sb.realm}</th><td>${realmGrades(sb)}<br><small>${realmAges(sb)}</small></td><td>${esc(REALM_OWL[sb.id].replace(/^Welcome to [^!]+! /,''))}</td></tr>`).join('');
+ show(`<h1 class="questh">📜 How NumiRealm Works</h1><div class="card ghead"><div class="gowl" aria-hidden="true">${owlSVG()}</div><div><h2>Hoo-hoo! I'm Professor Hoot.</h2><p class="big" style="font-size:17px">Here is everything you need to know. Tap the speaker and I'll read it to you!</p><button class="btn blue sm" type="button" id="readAll" onclick="guideRead()" aria-label="Read the whole guide out loud">🔊 Read it to me</button></div></div>
+ <div class="ggrid">${GUIDE.map(g=>`<section class="card gsec" data-guide="${g.id}"><div class="row between"><h2><span aria-hidden="true">${g.e}</span> ${g.h}</h2><button type="button" class="spk" onclick="guideRead('${g.id}')" aria-label="Read ${g.h} out loud">🔊</button></div><ul>${g.t.map(x=>`<li>${x}</li>`).join('')}</ul>${g.id==='story'?`<button class="btn gray sm" type="button" onclick="go('villain')">🌀 Meet the Muddle Monster</button>`:''}</section>`).join('')}</div>
+ <div class="card gsec" data-guide="realms"><div class="row between"><h2><span aria-hidden="true">🗺️</span> What each realm teaches</h2><button type="button" class="spk" onclick="guideRead('realms')" aria-label="Read what each realm teaches out loud">🔊</button></div><p>For ages 4 to 14. Younger kids start in Addition Meadow; big kids aged 12–14 use the later chapters and Training Grounds to review and get faster.</p>
+ <div class="gtwrap"><table class="gtab"><thead><tr><th scope="col">Realm</th><th scope="col">Grades</th><th scope="col">What you learn</th></tr></thead><tbody>${rows}</tbody></table></div></div>
+ <div class="center"><button class="btn" type="button" onclick="go('realms')">🗺️ Open the Realm Map</button></div>${backBtn()}`,'home');}
+function guideRead(id){SFX.tap();const say=g=>g.h+'. '+g.t.join(' ');let t;
+ if(id==='realms')t='What each realm teaches. '+SUBJ.map(sb=>`${sb.realm}, ${realmGrades(sb)}: ${REALM_OWL[sb.id].replace(/^Welcome to [^!]+! /,'')}`).join(' ');
+ else if(id){const g=GUIDE.find(x=>x.id===id);t=g?say(g):'';}else t=GUIDE.map(say).join(' ');
+ if(!save.narrator){V12.msg='Turn on the narrator voice in Settings to hear this.';const b=$('readAll');if(b)b.textContent='🔇 Narrator is off (see Settings)';return;}speak(t,'owl');}
+/* ---------- PROFILE: hero cards ---------- */
+function heroCards(){stopConfetti();S=null;SS=null;SC=null;const act=vHero();const ids=act?[act].concat(HERO_ORDER.filter(x=>x!==act)):HERO_ORDER;
+ show(`<h1 class="questh">👤 Hero Profiles</h1><div class="pcards">${ids.map(id=>{const pf=save.profiles[id],h=HEROES[id],fr=favRealm(id),g=gradeOf(pf.grade);
+  return `<section class="card pcard ${id}" data-pcard="${id}"><div class="pctop"><div class="pcav" aria-hidden="true">${heroSVG(id,'idle')}</div><div><h2>${esc(pf.name)}${id===act?' <span class="acttag">Playing</span>':''}</h2><div class="ht">${h.title}</div></div></div>
+  <dl class="pcl"><div><dt>🎂 Age</dt><dd>${AGES.includes(pf.age)?pf.age:'Not set'}</dd></div><div><dt>🎒 Grade</dt><dd>${g?(/^\d$/.test(g[0])?g[1]+' grade':g[1]):'Not set'}</dd></div>
+  <div><dt>💖 Favourite realm</dt><dd>${fr?SUBJ_BY[fr].e+' '+SUBJ_BY[fr].realm:'Not picked yet'}</dd></div><div><dt>⭐ Total stars</dt><dd>${allStars(pf)}</dd></div>
+  <div><dt>🔥 Streak</dt><dd>${streakOf(pf)} day${streakOf(pf)===1?'':'s'}</dd></div><div><dt>🏮 Lanterns used</dt><dd>${hintUsed(pf)}</dd></div></dl>
+  <div class="center"><button class="btn purple sm" type="button" data-editabout="${id}" onclick="editAbout('${id}')" aria-label="Edit About Me for ${esc(pf.name)}">✏️ Edit About Me</button><button class="btn gray sm" type="button" onclick="go('hero','${id}')">🦸 Hero page</button></div></section>`;}).join('')}</div>${backBtn()}`,'profile');}
+function editAbout(id){SFX.tap();save.hero=id;save.lastHero=id;persist();aboutScreen(()=>{runScr({n:'profile',a:[]});},true);}
+/* ---------- HEROES HALL ---------- */
+function heroesHall(){stopConfetti();S=null;SS=null;SC=null;const still=RM()?' still':'';
+ show(`<h1 class="questh">🦸 Heroes Hall</h1><div class="card v12intro hallintro"><p class="big" style="font-size:18px">Meet the family who will save NumiRealm! Tap a hero to see their <b>superpowers</b>.</p></div>
+ <div class="hall${still}" id="hall">${HERO_ORDER.map((id,i)=>{const h=HEROES[id],d=HERO12[id];return `<button type="button" class="hallcard ${id}" data-hall="${id}" style="--d:${i*.08}s;--c1:${d.cols[0][1]};--c2:${d.cols[1][1]}" onclick="go('hero','${id}')" aria-label="${esc(h.name)}, ${esc(h.title)}, age ${d.age}"><span class="hglow" aria-hidden="true"></span><span class="hpic" aria-hidden="true">${heroSVGeq(id,{},'idle')}</span><b>${h.name}</b><small>${h.title}</small><span class="hage">Age ${d.age} · ${d.powers[0].e} ${d.powers[0].n}</span></button>`;}).join('')}
+ <button type="button" class="hallcard villain" data-hall="muddle" style="--d:${HERO_ORDER.length*.08}s" onclick="go('villain')" aria-label="The Muddle Monster, the villain"><span class="hpic" aria-hidden="true">${monsterSVG()}</span><b>The Muddle Monster</b><small>The villain</small><span class="hage">🌀 Scrambler of Numbers</span></button></div>${backBtn()}`,'heroes');
+ SFX.chime&&SFX.chime();}
+function statBars(st,col){return Object.entries(st).map(([k,v])=>`<div class="stat"><span>${k}</span><div class="sbarv" role="progressbar" aria-label="${k}" aria-valuemin="0" aria-valuemax="10" aria-valuenow="${v}"><i style="--w:${v*10}%;background:${col}"></i></div><b>${v}</b></div>`).join('');}
+function heroBio(id){const h=HEROES[id],d=HERO12[id];return `${h.title}. ${d.nick!==h.title?d.nick+'. ':''}Age ${d.age}. ${d.pers} ${d.origin} Superpowers: ${d.powers.map(p=>p.n+': '+p.d).join(' ')} Catchphrase: ${BRAVE[id][0]}`;}
+function heroPage(id){if(!HERO12[id])return heroesHall();stopConfetti();S=null;SS=null;SC=null;const h=HEROES[id],d=HERO12[id],pf=save.profiles[id],fr=SUBJ_BY[d.fav],mate=d.combo,still=RM()?' still':'',i=HERO_ORDER.indexOf(id);
+ const prev=HERO_ORDER[(i+HERO_ORDER.length-1)%HERO_ORDER.length],next=HERO_ORDER[(i+1)%HERO_ORDER.length],rel=relTo(id,mate),relW=rel==='cousin'?'cousin':rel;
+ const sp=Array.from({length:8},(_,k)=>`<i style="--x:${[8,86,18,74,4,92,40,62][k]}%;--y:${[12,8,70,78,40,44,2,92][k]}%;--d:${k*.35}s">${['✨','⭐','💫','✨','🌟','✨','⭐','💫'][k]}</i>`).join('');
+ show(`<div class="hpage ${id}${still}" data-hpage="${id}" style="--c1:${d.cols[0][1]};--c2:${d.cols[1][1]};--c3:${d.cols[2][1]}">${topBack()}
+ <div class="card hphero"><div class="hpport"><span class="hpglow" aria-hidden="true"></span><span class="spark" aria-hidden="true">${sp}</span><div class="hpsvg" id="hpSvg" role="img" aria-label="${esc(h.name)}">${heroSVG(id,'cheer')}</div></div>
+ <div class="hpinfo"><h1 class="hpname">${h.name}</h1><div class="hptitle">${h.title}</div>${d.nick!==h.title?`<div class="hpnick">“${d.nick}”</div>`:''}
+ <div class="chips"><span>🎂 Age ${d.age}</span>${d.realName?`<span>Real name: ${d.realName}</span>`:''}${pf.name!==h.name?`<span>Player name: ${esc(pf.name)}</span>`:''}</div>
+ <div class="cols" aria-label="Colours">${d.cols.map(c=>`<span class="col"><i style="background:${c[1]}" aria-hidden="true"></i>${c[0]}</span>`).join('')}</div>
+ <p class="hpers">${d.pers}</p>${d.look?`<p class="hlook">👀 ${d.look}</p>`:''}<p class="hloves">💖 Loves: ${d.loves.join(', ')}</p>
+ <div class="hpbtns"><button class="btn play" type="button" id="playAs" data-enter onclick="playAs('${id}')">▶ Play as ${h.name}</button><button class="btn blue sm" type="button" id="readBio" onclick="readBio('${id}')" aria-label="Read ${h.name}'s story out loud">🔊 Read my story</button></div></div></div>
+ <div class="card"><h2>📖 Origin story</h2><p class="big" style="font-size:17px">${d.origin}</p><details class="more"><summary>Read more</summary><p>${d.more}</p></details></div>
+ <div class="card"><h2>⚡ Superpowers</h2><div class="powers">${d.powers.map((p,k)=>`<div class="power" style="--d:${k*.12}s"><span class="pe" aria-hidden="true">${p.e}</span><div><b>${p.n}</b><div class="pmath">🧮 ${p.math}</div><p>${p.d}</p><small>Because ${h.name} loves ${p.love}</small></div></div>`).join('')}</div></div>
+ <div class="card"><h2>📊 Power stats</h2><div class="stats">${statBars(d.stats,`linear-gradient(90deg,${d.cols[0][1]},${d.cols[1][1]})`)}</div></div>
+ <div class="hp2"><div class="card"><h2>💖 Favourite realm</h2><p class="big" style="font-size:18px"><span aria-hidden="true">${fr.e}</span> <b>${fr.realm}</b></p><p>${REALM_LINE[fr.id]}</p><button class="btn gray sm" type="button" onclick="go('realms')">🗺️ See the map</button></div>
+ <div class="card"><h2>🤝 Best team combo</h2><div class="combo"><span class="cav" aria-hidden="true">${heroSVGeq(id,{},'idle')}</span><b aria-hidden="true">+</b><span class="cav" aria-hidden="true">${heroSVGeq(mate,{},'idle')}</span></div><p><b>${d.comboName}</b>: ${h.name} + ${HEROES[mate].name} (${HEROES[mate].name} is ${h.name}'s ${relW}).</p><p>${d.comboLine}</p><button class="btn gray sm" type="button" onclick="go('hero','${mate}')">Meet ${HEROES[mate].name}</button></div></div>
+ <div class="card catch"><h2>📣 Catchphrase</h2><p class="cphrase">“${BRAVE[id][0]}”</p></div>
+ <div class="row center hpnav"><button class="btn gray sm" type="button" onclick="runScr({n:'hero',a:['${prev}']})" aria-label="Previous hero: ${HEROES[prev].name}">◀ ${HEROES[prev].name}</button><button class="btn gray sm" type="button" onclick="runScr({n:'hero',a:['${next}']})" aria-label="Next hero: ${HEROES[next].name}">${HEROES[next].name} ▶</button></div>${backBtn('Heroes Hall')}</div>`,'heroes');
+ try{SFX[HSTYLE[id].sfx]();}catch(e){}if(!RM())fxBurst($('hpSvg'),h.fx,10);speak(heroBio(id),'owl');}
+function readBio(id){SFX.tap();if(!save.narrator){const b=$('readBio');if(b)b.textContent='🔇 Narrator off (Settings)';return;}speak(heroBio(id),'owl');}
+function playAs(id){SFX.tap();playWith(()=>{const ls=P().lastSubj;if(ls&&SUBJ_BY[ls])openSubject(ls);else subjectScreen();},id);}
+function villainPage(){stopConfetti();S=null;SS=null;SC=null;const m=MUDDLE,still=RM()?' still':'';
+ show(`<div class="hpage villain${still}" data-hpage="muddle">${topBack()}<div class="card hphero vill"><div class="hpport"><span class="hpglow" aria-hidden="true"></span><div class="hpsvg">${monsterSVG()}</div></div><div class="hpinfo"><h1 class="hpname">${m.name}</h1><div class="hptitle">${m.title}</div><p class="hpers">${m.pers}</p><button class="btn blue sm" type="button" id="readBio" onclick="speak(MUDDLE.story+' Weakness: '+MUDDLE.weak,'owl')" aria-label="Read about the Muddle Monster">🔊 Read it to me</button></div></div>
+ <div class="card"><h2>📖 The story</h2><p class="big" style="font-size:17px">${m.story}</p><details class="more"><summary>Read more</summary><p>${m.more}</p></details></div>
+ <div class="card"><h2>🌀 Sneaky tricks</h2><div class="powers">${m.powers.map(p=>`<div class="power"><span class="pe" aria-hidden="true">${p.e}</span><div><b>${p.n}</b><p>${p.d}</p></div></div>`).join('')}</div></div>
+ <div class="card catch"><h2>🛡️ Weakness</h2><p class="cphrase">${m.weak}</p></div>${backBtn()}</div>`,'heroes');SFX.roar&&SFX.roar();}
+/* ---------- SETTINGS (sound, narrator, voice, reduced motion, reset one hero with a confirm step) ---------- */
+function enVoices(){try{return hasTTS()?(speechSynthesis.getVoices()||[]).filter(v=>/^en/i.test(v.lang||'')):[];}catch(e){return [];}}
+{const _pv=pickVoice;pickVoice=function(){_pv();try{if(save.voiceName){const v=enVoices().find(v=>v.name===save.voiceName);if(v)VOICE=v;}}catch(e){}};pickVoice();try{if(hasTTS()&&speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',()=>{pickVoice();if($('voiceSel')===null&&CUR&&CUR.n==='settings'&&$('noVoices'))runScr(CUR);});}catch(e){}}
+function setVoice(v){save.voiceName=v||null;persist();pickVoice();if(!save.voiceName)VOICE=null,pickVoice();speak('Hoo-hoo! This is my voice.','owl');}
+setTog=function(k){if(k==='sound')save.muted=!save.muted;else save[k]=!save[k];persist();if(k==='narrator'&&!save.narrator)stopSpeech();if(!save.muted)SFX.tap();runScr({n:'settings',a:[]});const b=$('tg-'+k);if(b)b.focus();};
+function settingsV12(){stopSpeech();const tg=(k,on,l,d)=>`<div class="setrow"><span class="sl" id="tl-${k}">${l}<small>${d}</small></span><button type="button" class="tog" id="tg-${k}" role="switch" aria-checked="${on}" aria-labelledby="tl-${k}" onclick="setTog('${k}')"></button></div>`;
+ const vs=enVoices(),ask=V12.ask,msg=V12.msg;V12.msg='';
+ const voice=!hasTTS()?`<p class="small" id="noVoices">This browser has no read-aloud voices.</p>`:vs.length?`<div class="setrow"><label class="sl" for="voiceSel">Narrator voice choice<small>Pick the voice that reads to you</small></label><select id="voiceSel" class="vsel" onchange="setVoice(this.value)"><option value="">Automatic</option>${vs.map(v=>`<option value="${esc(v.name)}" ${save.voiceName===v.name?'selected':''}>${esc(v.name)}</option>`).join('')}</select></div><div class="center"><button class="btn gray sm" type="button" onclick="speak('Hoo-hoo! This is my voice.','owl')">🔊 Test voice</button></div>`:`<p class="small" id="noVoices">Voices are still loading, or this device has only one voice.</p>`;
+ show(`<h1 class="questh">⚙️ Settings</h1><div class="card"><h2>🔊 Sound and voice</h2>
+ ${tg('sound',!save.muted,'Sound effects','Boops, cheers and music')}${tg('narrator',!!save.narrator,'Narrator voice','The owl reads the story, questions and lantern clues out loud')}${voice}</div>
+ <div class="card"><h2>👀 Comfort</h2>${tg('calm',!!save.calm,'Reduced motion','Fewer moving, bouncing and sparkly things')}${tg('bigText',!!save.bigText,'Bigger text','Makes words and buttons larger')}</div>
+ <div class="card" id="resetCard"><h2>🗑️ Reset one hero</h2><p>Erases one hero's stars, chapters, treasures and needs-work list. Their name and About Me are kept. Other heroes are not touched.</p>
+ ${msg?`<p class="okmsg" role="status" id="resetMsg">✅ ${esc(msg)}</p>`:''}
+ ${ask?`<div class="confirm" role="alertdialog" aria-labelledby="cfT" aria-describedby="cfD" id="resetConfirm"><h3 id="cfT">Reset ${esc(save.profiles[ask].name)}?</h3><p id="cfD">This removes ⭐ ${allStars(save.profiles[ask])} stars and ${(save.profiles[ask].rewards||[]).length} treasures. It cannot be undone.</p><div class="center"><button class="btn gray" type="button" id="resetNo" onclick="resetAsk(null)">✖ No, keep it</button><button class="btn red" type="button" id="resetYes" onclick="resetDo('${ask}')">🗑️ Yes, reset ${esc(save.profiles[ask].name)}</button></div></div>`
+  :`<div class="rsel" role="group" aria-label="Choose a hero to reset">${HERO_ORDER.map(h=>`<button type="button" class="pgtab" data-reset="${h}" onclick="resetAsk('${h}')"><span class="pgav" aria-hidden="true">${heroSVGeq(h,save.profiles[h].eq||{},'idle')}</span>Reset ${esc(save.profiles[h].name)}</button>`).join('')}</div>`}
+ <div class="verlab">NumiRealm v${APP_VERSION} · progress is saved on this device</div></div>${backBtn()}`,'settings');
+ if(ask){const b=$('resetNo');if(b)b.focus();}}
+function resetAsk(id){SFX.tap();V12.ask=id;runScr({n:'settings',a:[]});if(!id){const r=$('resetCard');if(r)r.scrollIntoView({block:'nearest'});}}
+function resetDo(id){const old=save.profiles[id],keep={name:old.name,age:old.age,grade:old.grade,prologue:old.prologue};save.profiles[id]=freshProfile(id);Object.keys(keep).forEach(k=>{if(keep[k]!=null)save.profiles[id][k]=keep[k];});persist();
+ V12.ask=null;V12.msg=`${old.name} was reset.`;SFX.tap();runScr({n:'settings',a:[]});const m=$('resetMsg');if(m)m.focus&&m.setAttribute('tabindex','-1');}
+/* ---------- PROGRESS: a "what to practise next" tip for parents ---------- */
+function practiceTip(id){const pf=save.profiles[id],wl=weakList(pf);
+ if(wl.length){const w=wl[0],sb=SUBJ_BY[w.sid];return {sid:w.sid,t:`Practise <b>${esc(chName(w.sid,w.c))}</b> in ${sb.realm}. ${esc(pf.name)} ${w.m?`missed ${w.m} question${w.m===1?'':'s'} here`:''}${w.m&&w.h?' and ':''}${w.h?`used ${w.h} lantern${w.h===1?'':'s'} here`:''}. Try the Needs-work mix in Training Grounds.`};}
+ const log=pf.hintLog||{};let hs=null,hm=0;SUBJ.forEach(sb=>{const u=(log[sb.id]||{}).used||0;if(u>hm){hm=u;hs=sb.id;}});
+ if(hs)return {sid:hs,t:`${esc(pf.name)} used the most lanterns in <b>${SUBJ_BY[hs].realm}</b> (${hm}). A short ${SUBJ_BY[hs].name} drill will help.`};
+ let ws=null,wr=4;SUBJ.forEach(sb=>{const d=sDone(sb.id,pf);if(d){const r=sStars(sb.id,pf)/d;if(r<wr){wr=r;ws=sb.id;}}});
+ if(ws&&wr<3)return {sid:ws,t:`<b>${SUBJ_BY[ws].name}</b> is the weakest subject so far (${wr.toFixed(1)} stars per chapter). Replay a chapter there for 3 stars.`};
+ const rec=SUBJ.find(sb=>hasAbout(pf)&&sb.grades.includes(pf.grade))||SUBJ[0];
+ return {sid:rec.id,t:ws?`Great work so far! Next, start a new chapter in <b>${rec.realm}</b>.`:`No games played yet. <b>${rec.realm}</b> is a great place to start${hasAbout(pf)?` for ${esc(gradeOf(pf.grade)[2])}`:''}.`};}
+{const _pg=progressScreen;SCR.progress=function(id){_pg(id);const pid=id&&HEROES[id]?id:(save.hero||save.lastHero||HERO_ORDER[0]),tp=practiceTip(pid);
+ const card=document.querySelector('#app .card');if(card)card.insertAdjacentHTML('afterend',`<div class="card tipcard" id="parentTip"><h2>🧑‍🏫 For grown-ups: what to practise next</h2><p class="big" style="font-size:17px">${tp.t}</p><div class="center"><button class="btn purple sm" type="button" id="tipGo" onclick="go('training',null,'${tp.sid}')">🎯 Open Training Grounds</button></div></div>`);
+ const bs=document.querySelectorAll('#app > .center .btn');const b=bs[bs.length-1];if(b&&/Back/.test(b.textContent)){b.setAttribute('onclick','goBack()');b.id='backBtn';}
+ document.querySelectorAll('.pgtab').forEach(t=>{const h=(t.getAttribute('onclick')||'').match(/'(\w+)'/);if(h)t.setAttribute('onclick',`runScr({n:'progress',a:['${h[1]}']})`);});};
+ progressScreen=track('progress',SCR.progress);}
+/* ---------- register screens + rewire every button ---------- */
+Object.assign(SCR,{pick:heroPickScreen,realms:realmMap,chapter:chapterDetail,training,trophies:trophyRoom,guide:guideScreen,profile:heroCards,heroes:heroesHall,hero:heroPage,villain:villainPage,settings:settingsV12});
+settingsScreen=track('settings',settingsV12);
+{const _t=titleScreen;SCR.home=_t;titleScreen=function(){NAVST=[];PEND=null;V12.view=null;V12.ask=null;drStop();DR=null;const was=REG;CUR={n:'home',a:[]};REG=true;try{_t.apply(this,arguments);}finally{REG=was;}v12Home();};}
+['subjectScreen','mapScreen','smapScreen'].forEach(n=>{const f=eval(n);const w=track(n,f);SCR[n]=f;if(n==='subjectScreen')subjectScreen=w;else if(n==='mapScreen')mapScreen=w;else smapScreen=w;});
+practiceHub=function(){go('training');};profileScreen=function(){go('profile');};
+function v12Home(){const set=(id,fn)=>{const b=$(id);if(b)b.setAttribute('onclick',fn);};
+ set('levelsBtn',"SFX.tap();go('realms')");set('practiceBtn',"SFX.tap();go('training')");
+ const tiles=document.querySelector('#app .tiles');if(tiles)tiles.innerHTML=[['trophies','🏆','Rewards','Trophy Room: badges and treasures'],['guide','📜','Map','How NumiRealm works'],['heroes','🦸','Heroes','Heroes Hall'],['progress','📈','Progress','Your progress'],['profile','👤','Profile','Hero profiles'],['settings','⚙️','Settings','Settings']]
+  .map(([s,e,l,a])=>`<button class="tile" type="button" data-tile="${s}" onclick="SFX.tap();go('${s}')" aria-label="${a}"><span class="ti" aria-hidden="true">${e}</span>${l}</button>`).join('');
+ document.querySelectorAll('#app .realm').forEach((b,i)=>{const sb=SUBJ[i];if(sb)b.setAttribute('onclick',`SFX.tap();go('realms','${sb.id}')`);});
+ if(tiles)tiles.classList.remove('mob');
+ const hs=document.querySelector('#app .herosec .hintro');if(hs&&!$('hallLink'))hs.insertAdjacentHTML('afterend',`<div class="center"><button class="btn purple sm" type="button" id="hallLink" onclick="SFX.tap();go('heroes')">🦸 Meet the heroes and their superpowers</button></div>`);}
+[['navHome',()=>titleScreen()],['bnHome',()=>titleScreen()],['navPlay',()=>playNow()],['navLevels',()=>go('realms')],['bnQuest',()=>go('realms')],['navPractice',()=>go('training')],['bnPractice',()=>go('training')],
+ ['navHeroes',()=>go('heroes')],['bnHeroes',()=>go('heroes')],['navProgress',()=>go('progress')],['bnProgress',()=>go('progress')],['navSettings',()=>go('settings')],['bnSettings',()=>go('settings')],['navProfile',()=>go('profile')]].forEach(([id,f])=>{const b=$(id);if(b)b.onclick=()=>{SFX.tap();f();};});
+/* nav highlight for the new screens */
+{const _u=updateStatus;updateStatus=function(){_u();if(HUB==='heroes'){['navHeroes','bnHeroes'].forEach(i=>{const b=$(i);if(b){b.classList.add('on');b.setAttribute('aria-current','page');}});}};}
+window.TTQ_V12={go,goBack,get CUR(){return CUR;},get NAVST(){return NAVST;},get DR(){return DR;},weakList,badgesOf,practiceTip,HERO12,streakOf,uIdx,chStars};
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
 </script>
