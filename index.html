@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#f9a8d4">
+<title>Times Table Quest: The Muddle Monster</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{font-family:"Comic Sans MS","Chalkboard SE","Comic Neue","Trebuchet MS",system-ui,sans-serif;color:#1e1b4b;
+ background:linear-gradient(160deg,#7dd3fc 0%,#c4b5fd 55%,#fbcfe8 100%);background-attachment:fixed;min-height:100vh;-webkit-user-select:none;user-select:none}
+body.theme-emi{background:linear-gradient(160deg,#fbcfe8 0%,#f5d0fe 45%,#ddd6fe 75%,#bbf7d0 100%);background-attachment:fixed}
+body.theme-blu{background:linear-gradient(160deg,#bae6fd 0%,#93c5fd 40%,#c4b5fd 75%,#fde68a 100%);background-attachment:fixed}
+#top{display:flex;align-items:center;gap:6px;padding:8px 10px;background:rgba(255,255,255,.7);position:sticky;top:0;z-index:20;box-shadow:0 2px 8px #0001}
+#top .title{font-weight:800;font-size:19px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#status{font-weight:800;font-size:17px;background:#fff;border-radius:14px;padding:6px 10px;white-space:nowrap}
+.iconbtn{font-size:21px;border:none;background:#fff;border-radius:14px;width:44px;height:44px;box-shadow:0 3px 0 #0002;cursor:pointer;flex:none;padding:0}
+.iconbtn.off{opacity:.45;filter:grayscale(1)}
+#app{max-width:900px;margin:0 auto;padding:14px 12px 40px}
+.card{background:#fff;border-radius:24px;padding:18px;box-shadow:0 6px 0 #0000000f,0 10px 30px #0000001a;margin-bottom:14px}
+.btn{font:inherit;font-weight:800;font-size:22px;border:none;border-radius:18px;padding:12px 24px;background:#f97316;color:#fff;box-shadow:0 5px 0 #c2410c;cursor:pointer;min-height:60px;transition:transform .08s;margin:6px}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #c2410c}
+.btn.green{background:#22c55e;box-shadow:0 5px 0 #15803d}
+.btn.blue{background:#3b82f6;box-shadow:0 5px 0 #1d4ed8}
+.btn.purple{background:#8b5cf6;box-shadow:0 5px 0 #6d28d9}
+.btn.pink{background:#ec4899;box-shadow:0 5px 0 #be185d}
+.btn.gray{background:#94a3b8;box-shadow:0 5px 0 #64748b}
+.btn.sm{font-size:18px;min-height:48px;padding:8px 16px}
+.hidden{display:none!important}
+h1{font-size:42px;margin:.15em 0;text-align:center;color:#7c3aed;text-shadow:3px 3px 0 #fde68a}
+h2{font-size:28px;margin:.2em 0}
+.center{text-align:center}
+.big{font-size:22px;line-height:1.4}
+.row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;align-items:center}
+.between{justify-content:space-between}
+.bigemoji{font-size:80px;line-height:1.1}
+.bob{display:inline-block;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+input.nm{font:inherit;font-size:24px;padding:12px 16px;border-radius:16px;border:3px solid #c4b5fd;width:min(320px,90%);text-align:center;margin:10px 0;-webkit-user-select:text;user-select:text}
+/* heroes */
+svg.hero{display:block;overflow:visible;width:100%;height:auto}
+svg.hero.idle{animation:bob 2.4s ease-in-out infinite}
+svg.hero.cheer{animation:jump .5s ease 2}
+svg.hero.sad{animation:wob .6s ease 2}
+svg.hero.strut{animation:strut 1.4s ease-in-out infinite}
+svg.hero.dance{animation:dance2 .6s ease-in-out infinite}
+@keyframes jump{0%,100%{transform:translateY(0)}40%{transform:translateY(-26px) scale(1.05)}}
+@keyframes wob{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes strut{0%,100%{transform:translateX(-22px) rotate(-4deg)}50%{transform:translateX(22px) rotate(4deg)}}
+@keyframes dance2{0%,100%{transform:rotate(-8deg) translateY(0)}50%{transform:rotate(8deg) translateY(-10px)}}
+.eyes{transform-box:fill-box;transform-origin:center;animation:blink 4s infinite}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.herocards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.herocard{font:inherit;border:none;background:#fff;border-radius:26px;padding:14px;cursor:pointer;box-shadow:0 7px 0 #0002;color:#1e1b4b}
+.herocard.emi{background:linear-gradient(#fdf2f8,#fae8ff);box-shadow:0 7px 0 #f472b6}
+.herocard.blu{background:linear-gradient(#eff6ff,#fef9c3);box-shadow:0 7px 0 #60a5fa}
+.herocard:active{transform:translateY(4px)}
+.herocard .hsv{width:min(180px,100%);margin:0 auto}
+.herocard .hn{font-size:24px;font-weight:900}
+.herocard .ht{font-size:16px;color:#7c3aed;font-weight:800}
+.herocard .hl{font-size:15px;color:#475569;margin-top:4px}
+/* map */
+.levels{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:14px}
+.lvl{font:inherit;border:none;border-radius:22px;padding:10px 6px;background:#fff;box-shadow:0 6px 0 #a78bfa;cursor:pointer;color:#1e1b4b;position:relative}
+.lvl:active{transform:translateY(3px)}
+.lvl .lch{font-size:13px;font-weight:800;color:#64748b}
+.lvl .lnum{font-size:30px;font-weight:900;color:#7c3aed}
+.lvl .lboss{font-size:34px;height:44px;display:flex;align-items:center;justify-content:center}
+.lvl .lboss svg{width:44px;height:44px}
+.lvl .lplace{font-size:13px;font-weight:800;color:#475569;min-height:32px}
+.lvl .lstars{font-size:20px;color:#f59e0b;letter-spacing:2px}
+.lvl.locked{background:#e2e8f0;box-shadow:0 6px 0 #94a3b8;cursor:not-allowed}
+.lvl.locked .lnum{color:#94a3b8}
+.lvl.done{background:#fef9c3;box-shadow:0 6px 0 #f59e0b}
+.lvl.final{outline:3px dashed #7c3aed}
+.lvl.next{animation:glow 1.5s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 6px 0 #a78bfa,0 0 0 0 #f9731688}50%{box-shadow:0 6px 0 #a78bfa,0 0 0 10px #f9731600}}
+.tag{position:absolute;top:-8px;right:-4px;background:#f97316;color:#fff;font-size:13px;border-radius:10px;padding:2px 8px;font-weight:800}
+.maphead{display:flex;align-items:center;gap:12px;text-align:left}
+.maphead .mh{width:90px;flex:none}
+/* scenes */
+.scene{position:relative;height:340px;border-radius:24px;overflow:hidden;box-shadow:0 6px 0 #0000001a}
+.scenetitle{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:#fffd;border-radius:999px;padding:4px 14px;font-weight:900;white-space:nowrap;font-size:17px;z-index:4;max-width:94%;overflow:hidden;text-overflow:ellipsis}
+.prop{position:absolute;font-size:38px;cursor:pointer;z-index:5;filter:drop-shadow(0 3px 2px #0003);line-height:1;padding:4px}
+.prop.star{filter:grayscale(1) opacity(.55)}
+.prop.star.lit{filter:drop-shadow(0 0 12px #fde047);animation:twinkle 1s ease-in-out infinite}
+.prop.fruit{filter:grayscale(.8)}
+.prop.fruit.awake{filter:drop-shadow(0 3px 2px #0003)}
+.prop.dance{animation:dance2 .45s ease-in-out 4}
+.prop.bloom{animation:pop .4s}
+@keyframes twinkle{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.25) rotate(15deg)}}
+.wake{display:inline-block;background:#fef3c7;color:#92400e;border-radius:12px;padding:2px 10px;font-weight:900;font-size:14px;margin-left:6px}
+.cast{position:absolute;bottom:4px;left:80px;right:6px;display:flex;justify-content:center;align-items:flex-end;gap:6px;z-index:3;pointer-events:none}
+.castm{width:130px;transition:transform .2s}
+.castm.side{width:100px}
+.castm.bossm{width:120px;text-align:center;font-size:100px;line-height:1}
+.castm.talk{transform:translateY(-8px) scale(1.06)}
+.owlbox{position:absolute;left:6px;bottom:6px;width:84px;z-index:3;transition:transform .2s}
+.owlbox.talk{transform:translateY(-8px) scale(1.08)}
+.bubble{background:#fffdf5;border-radius:24px;padding:12px 18px;margin-top:12px;position:relative;border:4px solid #fbbf24;box-shadow:0 6px 0 #f59e0b55;cursor:pointer}
+.bubble:before{content:"";position:absolute;top:-18px;left:40px;border:14px solid transparent;border-bottom:0;border-top:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:18px solid #fbbf24}
+.who{font-weight:900;color:#7c3aed;font-size:18px}
+.btext{font-size:24px;line-height:1.4;min-height:68px;font-weight:700;animation:slidein .35s both}
+.brow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.lineno{color:#94a3b8;font-weight:800}
+.fx{position:fixed;pointer-events:none;font-size:30px;z-index:60;animation:fxfly 1.2s ease-out forwards}
+@keyframes fxfly{from{transform:translate(0,0) scale(.4);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(1.3);opacity:0}}
+/* stage bar */
+.stagebar{display:flex;gap:8px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.pill{background:#ffffffaa;border-radius:999px;padding:6px 14px;font-weight:800;font-size:17px;color:#64748b}
+.pill.on{background:#fff;color:#7c3aed;box-shadow:0 3px 0 #a78bfa}
+.pill.lv{background:#7c3aed;color:#fff}
+/* blocks */
+.gridwrap{display:flex;flex-direction:column;align-items:center;gap:3px;margin:10px 0;transition:transform .45s}
+.grow{display:flex;align-items:center;gap:8px}
+.blks{display:flex;gap:3px}
+.blk{width:var(--s);height:var(--s);border-radius:calc(var(--s)/4);display:inline-flex;align-items:center;justify-content:center;box-shadow:inset 0 -3px 0 #0002;animation:pop .35s both;cursor:pointer;font-size:calc(var(--s)*.62);line-height:1}
+.blk i{font-style:normal}
+.blk.tap{animation:tapb .3s}
+.dancing .blk{animation:dance2 .5s ease-in-out 3}
+@keyframes pop{0%{transform:scale(0)}80%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes tapb{50%{transform:scale(1.35) rotate(10deg)}}
+.sc{min-width:44px;font-weight:900;font-size:18px;background:#fef3c7;border-radius:10px;padding:2px 6px;color:#b45309;animation:pop .35s both}
+.spin{transform:rotate(90deg) scale(.6)}
+.skip{font-size:22px;font-weight:800;color:#7c3aed;min-height:30px}
+.eq{font-size:26px;font-weight:900;margin:8px 0}
+.eq.huge{font-size:36px;color:#16a34a}
+.trickbox{text-align:left;max-width:520px;margin:10px auto}
+.ex{background:#f5f3ff;border-radius:16px;padding:10px 16px;margin:8px 0}
+.exh{font-weight:900;color:#7c3aed;font-size:20px}
+.step{font-size:24px;font-weight:800;padding:4px 0;animation:slidein .4s both}
+@keyframes slidein{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:none}}
+.fingers{display:flex;gap:6px;justify-content:center;align-items:flex-end;height:90px;margin:8px 0}
+.finger{width:24px;height:80px;background:#c68642;border-radius:12px 12px 6px 6px;font-size:12px;font-weight:800;display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px;color:#fff}
+.finger.down{height:30px;background:#f87171}
+.finger.gap{margin-left:16px}
+.learnhead{display:flex;align-items:center;justify-content:center;gap:10px}
+.minihero{width:80px;flex:none;position:relative}
+/* questions */
+.qcard{text-align:center}
+.lead{font-size:20px;color:#7c3aed;font-weight:800}
+.qtext{font-size:46px;font-weight:900;margin:8px 0}
+.qtext.story{font-size:24px;line-height:1.4;font-weight:800}
+.storypic{font-size:24px;line-height:1.3;margin:6px 0}
+.storypic .grp{display:inline-block;background:#fef3c7;border-radius:12px;padding:2px 6px;margin:3px}
+.ansbox{display:inline-block;min-width:140px;font-size:46px;font-weight:900;border:4px dashed #a78bfa;border-radius:18px;padding:4px 18px;color:#7c3aed;background:#faf5ff}
+.ansbox.ok{border-color:#22c55e;color:#16a34a;background:#dcfce7;border-style:solid}
+.ansbox.no{border-color:#ef4444;color:#dc2626;background:#fee2e2;border-style:solid}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:330px;margin:14px auto 0}
+.pad button{font:inherit;font-size:30px;font-weight:900;height:62px;border:none;border-radius:16px;background:#ede9fe;color:#4c1d95;box-shadow:0 4px 0 #c4b5fd;cursor:pointer}
+.pad button:active{transform:translateY(3px);box-shadow:0 1px 0 #c4b5fd}
+.pad .ok{background:#22c55e;color:#fff;box-shadow:0 4px 0 #15803d}
+.pad .del{background:#fde68a;box-shadow:0 4px 0 #f59e0b}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:460px;margin:12px auto}
+.opt{font:inherit;font-size:34px;font-weight:900;min-height:76px;border:none;border-radius:18px;background:#e0f2fe;color:#075985;box-shadow:0 5px 0 #7dd3fc;cursor:pointer}
+.opt:active{transform:translateY(3px)}
+.arrs{grid-template-columns:repeat(3,1fr);max-width:600px}
+.arrs .opt{display:flex;align-items:center;justify-content:center;padding:8px;min-height:130px;background:#fff7ed;box-shadow:0 5px 0 #fdba74}
+.arrs .gridwrap{margin:0;gap:2px}.arrs .blks{gap:2px}.arrs .blk{animation:none;box-shadow:none}
+.opt.right{background:#bbf7d0!important;box-shadow:0 5px 0 #22c55e!important}
+.opt.wrong{background:#fecaca!important;box-shadow:0 5px 0 #ef4444!important}
+.fb{font-size:24px;font-weight:900;min-height:34px;margin-top:10px;text-align:center}
+.fb.good{color:#16a34a}.fb.bad{color:#dc2626}
+.hint{background:#fffbeb;border:3px dashed #fbbf24;border-radius:18px;padding:10px;margin-top:12px;text-align:center;font-size:20px;font-weight:700}
+.dots{display:flex;gap:6px;justify-content:center;margin:4px 0}
+.dot{width:16px;height:16px;border-radius:50%;background:#e2e8f0}.dot.g{background:#22c55e}.dot.r{background:#f87171}.dot.c{background:#a78bfa}
+/* boss */
+.bossrow{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.bossside{flex:1;text-align:center}
+.bossE{font-size:96px;line-height:1;display:inline-block}
+.bossE svg{width:120px;height:120px}
+.bossE.hit{animation:hit .5s}
+@keyframes hit{0%{transform:none;filter:none}20%{transform:translateX(-14px) rotate(-12deg) scale(.9);filter:brightness(2) saturate(0)}50%{transform:translateX(12px) rotate(10deg)}100%{transform:none}}
+.bname{font-weight:900;font-size:19px}
+.hpbar{height:22px;background:#fee2e2;border-radius:12px;overflow:hidden;border:3px solid #1e1b4b;max-width:300px;margin:6px auto}
+.hpfill{height:100%;background:linear-gradient(90deg,#ef4444,#f97316);transition:width .4s}
+.player{text-align:center;width:150px;position:relative;flex:none}
+.player .pv{width:110px;margin:0 auto;position:relative}
+.pname{font-weight:900;font-size:18px}
+.hearts{font-size:30px;letter-spacing:2px}
+.shield{position:absolute;left:-14px;right:-14px;top:-10px;bottom:-10px;border-radius:50%;border:5px solid #facc15;background:radial-gradient(#fde04766,#fde04700 70%);animation:shieldA 1.2s forwards;pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:40px}
+@keyframes shieldA{0%{transform:scale(.3);opacity:0}25%{transform:scale(1.05);opacity:1}80%{opacity:1}100%{opacity:0}}
+.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.pow{position:absolute;font-size:60px;animation:powa .8s forwards;pointer-events:none}
+@keyframes powa{from{transform:scale(.3);opacity:1}to{transform:scale(1.6) translateY(-40px);opacity:0}}
+.starsbig{font-size:70px;color:#f59e0b;letter-spacing:6px}
+.starsbig span{display:inline-block;animation:pop .5s both}
+.starsbig .off{color:#cbd5e1}
+.winheroes{display:flex;justify-content:center;align-items:flex-end;gap:10px}
+.winheroes .w1{width:150px}.winheroes .w2{width:105px}
+.reward{display:inline-block;background:#fef9c3;border:3px solid #facc15;border-radius:18px;padding:8px 16px;font-size:22px;font-weight:900;margin:6px}
+/* closet */
+.closethero{width:200px;margin:0 auto;cursor:pointer}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+.item{font:inherit;border:none;background:#fff;border-radius:20px;padding:10px;cursor:pointer;box-shadow:0 5px 0 #c4b5fd;color:#1e1b4b}
+.item .ie{font-size:42px}.item .in{font-weight:800;font-size:15px}.item .is{font-size:12px;color:#64748b;font-weight:700}
+.item.on{background:#dcfce7;box-shadow:0 5px 0 #22c55e}
+.item.locked{background:#e2e8f0;box-shadow:0 5px 0 #94a3b8;cursor:not-allowed}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+@media (max-width:560px){h1{font-size:32px}.qtext{font-size:38px}.bossE{font-size:72px}.bossE svg{width:90px;height:90px}.bigemoji{font-size:64px}.arrs .opt{min-height:100px}.btn{font-size:20px}
+ .scene{height:300px}.castm{width:100px}.castm.side{width:74px}.castm.bossm{width:86px;font-size:72px}.owlbox{width:62px}.cast{left:60px}.btext{font-size:21px}.prop{font-size:32px}
+ .player{width:110px}.player .pv{width:84px}.hearts{font-size:24px}#top .title{font-size:16px}.iconbtn{width:40px;height:40px;font-size:19px}}
+</style>
+</head>
+<body>
+<div id="top">
+ <button class="iconbtn" id="homeBtn" title="Map" aria-label="Map">🗺️</button>
+ <div class="title" id="topTitle">Times Table Quest</div>
+ <div id="status">⭐ 0</div>
+ <button class="iconbtn hidden" id="closetBtn" title="Rewards" aria-label="Rewards">🎀</button>
+ <button class="iconbtn" id="narrBtn" title="Narrator voice on/off" aria-label="Narrator">🦉</button>
+ <button class="iconbtn" id="muteBtn" title="Sound" aria-label="Sound">🔊</button>
+</div>
+<div id="app"></div>
+<canvas id="confetti"></canvas>
+<script>
+"use strict";
+const ORDER=[1,2,10,5,3,4,9,6,7,8,11,12];
+const HEARTS=3;
+const bossHP=n=>n===12?10:8;
+const BOSSES={1:['🐌','Slowpoke the Snail Minion'],2:['🦀','Captain Pinch'],10:['🐙','Octo-Ten'],5:['🦖','Rex the Muddler'],3:['👾','Glitch Trio'],4:['🐲','Quad Dragon'],9:['🧌','Grumble Nine'],6:['🦈','Sharky Six'],7:['🦑','Squid Seven'],8:['🤖','Robo-Eight'],11:['👹','Ogre Eleven'],12:['MUDDLE','The Muddle Monster']};
+const HEROES={
+ emi:{id:'emi',name:'Emi',title:'Emi the Bloom Star',sib:'blu',closet:'Closet',closetE:'👗',fx:['🌸','🌷','🌼','💖','✨','🌺'],power:'Petal Power',
+  palette:['#f472b6','#e879f9','#c084fc','#fb7185','#f9a8d4','#a78bfa','#f0abfc','#86efac','#fda4af','#d8b4fe','#f472b6','#c084fc'],icons:['🌸','🌷','🌼','🌺','🌻','💐'],
+  blurb:'Fashionista hero with a big, loving heart. Her powers make flowers bloom!',verb:'🌱 Plant',thing:'flower',things:'flowers'},
+ blu:{id:'blu',name:'Blú',title:'Blú the Star Guardian',sib:'emi',closet:'Music Box',closetE:'🎵',fx:['🎵','🎶','⭐','🍓','🍌','🌟'],power:'Star Blast',
+  palette:['#f87171','#fb923c','#facc15','#4ade80','#2dd4bf','#60a5fa','#a78bfa','#f472b6','#34d399','#fbbf24','#38bdf8','#c084fc'],icons:['🍓','🍌','🍇','🍊','🍉','🍍','🍒','⭐'],
+  blurb:'Brave protector who loves making people smile. His powers are music and stars!',verb:'🎵 Add',thing:'dancing fruit',things:'dancing fruits'}
+};
+const REWARDS={
+ emi:[{id:'fcrown',name:'Flower Crown',e:'🌸',slot:'head'},{id:'jacket',name:'Sparkly Jacket',e:'🧥',slot:'outfit'},{id:'tiara',name:'Princess Tiara',e:'👑',slot:'head'},
+  {id:'wand',name:'Bloom Wand',e:'🪄',slot:'hand'},{id:'wings',name:'Butterfly Wings',e:'🦋',slot:'back'},{id:'pearls',name:'Pearl Necklace',e:'📿',slot:'neck'},
+  {id:'rainbow',name:'Rainbow Gown',e:'🌈',slot:'outfit'},{id:'purse',name:'Pink Purse',e:'👛',slot:'hand'},{id:'heels',name:'Glitter Heels',e:'👠',slot:'feet'},
+  {id:'cape',name:'Rose Cape',e:'🌹',slot:'back'},{id:'bigbow',name:'Giant Glitter Bow',e:'🎀',slot:'head'},{id:'gala',name:'Bloom Star Gala Gown',e:'✨',slot:'outfit'}],
+ blu:[{id:'bronze',name:'Bronze Star Badge',e:'🥉',slot:'badge'},{id:'drum',name:'Bongo Drum',e:'🥁',slot:'hand',snd:'drum'},{id:'phones',name:'Groovy Headphones',e:'🎧',slot:'head'},
+  {id:'guitar',name:'Rock Guitar',e:'🎸',slot:'hand',snd:'guitar'},{id:'silver',name:'Silver Star Badge',e:'🥈',slot:'badge'},{id:'trumpet',name:'Shiny Trumpet',e:'🎺',slot:'hand',snd:'trumpet'},
+  {id:'scape',name:'Star Cape',e:'🌟',slot:'back'},{id:'piano',name:'Rainbow Keyboard',e:'🎹',slot:'hand',snd:'piano'},{id:'gold',name:'Gold Star Badge',e:'🥇',slot:'badge'},
+  {id:'violin',name:'Magic Violin',e:'🎻',slot:'hand',snd:'violin'},{id:'sax',name:'Super Sax',e:'🎷',slot:'hand',snd:'sax'},{id:'superstar',name:'Superstar Guardian Badge',e:'🌠',slot:'badge'}]
+};
+const SLOTNAMES={head:'Head',outfit:'Outfit',hand:'Hand',back:'Back',neck:'Neck',feet:'Shoes',badge:'Badge'};
+const PLACES=[
+ {name:'Flower Garden',e:'🌷',bg:'linear-gradient(#bae6fd,#bbf7d0 60%,#4ade80)',props:['flower','flower','flower','fruit','flower','star','flower'],desc:'Usually it smells like roses and sunshine.',lost:'every flower forgot how to bloom',back:'the flowers are blooming in every colour again',
+  emi:"My poor flowers! Don't worry, little buds. My Bloom Power will help you grow!",blu:"The bees are so quiet... I'll play a happy tune so the garden can smile again!"},
+ {name:'Fruit Disco',e:'🍓',bg:'linear-gradient(#f0abfc,#c084fc 60%,#818cf8)',props:['fruit','fruit','star','fruit','fruit','fruit','star'],desc:'The fruits here dance all night under the disco ball.',lost:'the fruits are frozen and the disco went silent',back:'the fruits are dancing to the beat again',
+  emi:"Frozen fruit is NOT a fashion statement! Let's get them grooving in style!",blu:"Dancing fruits are my favourite! Let's bring back the beat!"},
+ {name:'Star Stage',e:'⭐',bg:'linear-gradient(#1e1b4b,#4c1d95 70%,#7c3aed)',props:['star','star','star','star','star','fruit','star'],desc:'This is where the stars sing their sparkly songs.',lost:'the stars stopped twinkling',back:'the stars are twinkling and singing',
+  emi:"A stage with no sparkle? I'll make it shine like a runway!",blu:"The stars are my friends! I'll protect their sparkle!"},
+ {name:'Runway Castle',e:'🏰',bg:'linear-gradient(#fbcfe8,#f9a8d4 60%,#e879f9)',props:['star','flower','star','flower','star','flower','fruit'],desc:'The fanciest fashion shows happen here!',lost:'the runway lights went dark and all the dresses turned grey',back:'the runway lights are flashing pink and purple',
+  emi:"MY runway! Grey dresses?! Not on my watch, darling!",blu:"Emi loves this place. I'll protect it for her, and add music to the show!"},
+ {name:'Melody Meadow',e:'🎵',bg:'linear-gradient(#a7f3d0,#fde68a)',props:['flower','star','flower','fruit','flower','star','flower'],desc:'The grass here hums little songs when the wind blows.',lost:'the meadow forgot its melody',back:'the meadow is humming its song again',
+  emi:"I'll plant singing sunflowers all over this meadow!",blu:"A meadow that sings? I'll help it remember the tune!"},
+ {name:'Sparkle Lake',e:'💎',bg:'linear-gradient(#a5f3fc,#67e8f9 50%,#3b82f6)',props:['star','fruit','star','flower','star','fruit','star'],desc:'Its water glitters like a million gems.',lost:'the water turned muddy and dull',back:'the lake is sparkling like diamonds',
+  emi:"Sparkles are my specialty! Let's make this lake glitter!",blu:"I'll guard the fish while we clean up this muddle!"},
+ {name:'Rainbow Bridge',e:'🌈',bg:'linear-gradient(#fecaca,#fde68a,#bbf7d0,#bfdbfe,#ddd6fe)',props:['star','flower','fruit','star','flower','fruit','star'],desc:'It joins the whole kingdom together with seven bright colours.',lost:'the colours got scrambled and the bridge is wobbling',back:'all seven colours shine on the bridge again',
+  emi:"Seven colours! That's the perfect outfit for a bridge!",blu:"Hold my hand, everyone! I'll keep you safe on the bridge!"},
+ {name:'Butterfly Greenhouse',e:'🦋',bg:'linear-gradient(#d9f99d,#86efac 60%,#34d399)',props:['flower','flower','flower','flower','star','flower','flower'],desc:'Butterflies and flowers grow up together here.',lost:'the butterflies are hiding because the flowers wilted',back:'the butterflies are fluttering around fresh flowers',
+  emi:"I'll grow the prettiest garden bed so the butterflies come home!",blu:"I'll hum a gentle song so the butterflies aren't scared!"},
+ {name:'Candy Cloud Carnival',e:'🍭',bg:'linear-gradient(#fbcfe8,#ddd6fe 50%,#bae6fd)',props:['fruit','star','fruit','flower','fruit','star','fruit'],desc:'Rides made of cotton candy float in the sky.',lost:'the rides stopped and the candy lost its colours',back:'the carnival rides are spinning and the music is playing',
+  emi:"Cotton candy pink is my colour! Let's bring it back!",blu:"A carnival needs music and dancing fruit! Let's go!"},
+ {name:'Moonlight Drum Jungle',e:'🥁',bg:'linear-gradient(#064e3b,#065f46 60%,#1e3a8a)',props:['star','fruit','star','flower','fruit','star','fruit'],desc:'At night the jungle plays drums: boom, boom, tap!',lost:'the drums are silent and the jungle is too dark',back:'the jungle drums are booming under the moon',
+  emi:"I'll grow glowing moonflowers to light the way!",blu:"Boom, boom, tap! I know this rhythm! Let's wake the drums!"},
+ {name:'Crystal Ballroom',e:'💃',bg:'linear-gradient(#e0e7ff,#c7d2fe 50%,#f5d0fe)',props:['star','flower','star','fruit','star','flower','star'],desc:'The grandest party in the kingdom happens here.',lost:'the dancers froze in the middle of their dance',back:'everyone is dancing in the Crystal Ballroom',
+  emi:"A ballroom party? I was BORN for this! Let's unfreeze them!",blu:"Let's make them smile and dance again!"},
+ {name:'Muddle Tower',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','fruit','flower','star','fruit','flower','star'],desc:'The spooky, swirly home of the Muddle Monster himself!',lost:'all the stolen colour and music are trapped inside',back:'all the colour and music burst out over the whole Number Kingdom',
+  emi:"You took our colours, Muddle Monster! Time to give them back, with love!",blu:"I'm not scared. I'll protect everyone. Let's finish this together!"}
+];
+const SIDE={emi:["I'm right here, {hero}! Big sister hugs give you extra power! 💖","You can do it, little brother! I love you to the moon and back!","I'll cheer the loudest, {hero}! Go, go, go! 🌸"],
+ blu:["Don't worry, {hero}! My star shield will keep you safe! ⭐","I'll protect you, big sister! You do the math magic! 🛡️","I'll play you a brave song, {hero}! 🎵"]};
+const BRAVE={emi:["Let's do this with love and sparkle! 💖","Time to bloom! Petal Power, go!"],blu:["Star Guardian, ready! ⭐","I bet I can even make YOU smile, Minion!"]};
+const VICTORY={emi:["Strike a pose! Time for my runway strut! 💃","Bloom-tastic! Every flower deserves a little love! 🌸","Sparkle, shine, and multiply! ✨"],
+ blu:["Yay! Everyone is smiling again! 🎶","Star power! Dance, fruits, dance! 🍓🍌","Boom, boom, tap! That's the sound of winning! 🥁"]};
+const SIB_PROUD={emi:["That's my brother! I'm so proud of you, {hero}! 💖","Woo-hoo! Group hug, {hero}!"],blu:["Best big sister ever! I kept you safe AND you won! ⭐","Woo-hoo, {hero}! Let's dance!"]};
+const LOSE_SIB={emi:["I love you no matter what, {hero}. Let's try again together! 💖","Big hearts never give up! I believe in you, {hero}!"],blu:["I'll guard you even better next time, {hero}! We've got this! 🛡️","Hey, smile! Heroes always get back up! ⭐"]};
+const LOSE_HERO={emi:["I'm not giving up! A true star keeps shining!","Okay! Deep breath... and bloom again!"],blu:["I'm not giving up! Guardians never quit!","Let's turn up the music and try again!"]};
+const RETRY_OWL=["Whoosh! The Muddle Monster mixed up the numbers again, but {hero} is braver now!","Hoo-hoo! Back for more? The Muddle Monster moved everything around. Look closely!","A fresh start, {hero}! New numbers, same super brain!"];
+const RETRY_HERO={emi:["This time I'll grow an even bigger garden!","Practice makes perfect, darling! Let's go again! 💅"],blu:["I'm ready! This time my star shield is extra strong!","New numbers? No problem! Let's rock! 🎸"]};
+const TAUNTS=["Muddle, muddle, numbers in a puddle! You'll never solve my ×{n} riddles!","Hee hee! I scrambled the ×{n} table! Try and fix it!","Grrr! No colours, no music, only muddles!"];
+const CTX=[
+ {e:'🍎',one:'apple',many:'apples',g1:'basket',gs:'baskets'},{e:'⭐',one:'star',many:'stars',g1:'box',gs:'boxes'},
+ {e:'🔋',one:'battery',many:'batteries',g1:'robot',gs:'robots'},{e:'🍪',one:'cookie',many:'cookies',g1:'plate',gs:'plates'},
+ {e:'🐟',one:'fish',many:'fish',g1:'pond',gs:'ponds'},{e:'⚽',one:'ball',many:'balls',g1:'bag',gs:'bags'},
+ {e:'🧁',one:'cupcake',many:'cupcakes',g1:'tray',gs:'trays'},{e:'🥚',one:'egg',many:'eggs',g1:'nest',gs:'nests'}];
+const HCTX={emi:[{e:'🌸',one:'flower',many:'flowers',g1:'flower pot',gs:'flower pots'},{e:'🎀',one:'bow',many:'bows',g1:'hat',gs:'hats'},
+  {e:'👗',one:'dress',many:'dresses',g1:'clothes rack',gs:'clothes racks'},{e:'💎',one:'jewel',many:'jewels',g1:'tiara',gs:'tiaras'},
+  {e:'🌱',one:'seed',many:'seeds',g1:'garden row',gs:'garden rows'},{e:'🦋',one:'butterfly',many:'butterflies',g1:'garden bed',gs:'garden beds'},{e:'👠',one:'shoe',many:'shoes',g1:'shoe shelf',gs:'shoe shelves'}],
+ blu:[{e:'🎵',one:'note',many:'notes',g1:'song',gs:'songs'},{e:'🍌',one:'banana',many:'bananas',g1:'bunch',gs:'bunches'},
+  {e:'⭐',one:'star',many:'stars',g1:'constellation',gs:'constellations'},{e:'🥁',one:'drum',many:'drums',g1:'band',gs:'bands'},
+  {e:'🍓',one:'strawberry',many:'strawberries',g1:'dance team',gs:'dance teams'},{e:'🎈',one:'balloon',many:'balloons',g1:'party',gs:'parties'},{e:'🍇',one:'grape',many:'grapes',g1:'disco ball',gs:'disco balls'}]};
+const COLORS=['#f87171','#fb923c','#facc15','#4ade80','#2dd4bf','#60a5fa','#a78bfa','#f472b6','#34d399','#fbbf24','#38bdf8','#c084fc'];
+const CHEERS=['Awesome!','Super!','You rock!','Brilliant!','Amazing!','Fantastic!','Way to go!','Nailed it!','Math hero!','Wow!'];
+const TRICKS={
+ 1:{e:'🪞',t:'The Mirror Trick',d:'Times 1 is like a mirror: the number stays exactly the same!',s:k=>[`1 group of ${k} is just ${k}`,`1 × ${k} = ${k} 🪞`]},
+ 2:{e:'👯',t:'Double It!',d:'Times 2 means DOUBLE: add the number to itself.',s:k=>[`${k} + ${k}`,`= ${2*k}`,`so 2 × ${k} = ${2*k} 👯`]},
+ 10:{e:'0️⃣',t:'Add a Zero!',d:'Times 10? Just stick a 0 on the end of the number!',s:k=>[`${k}  ➜  ${k}0`,`10 × ${k} = ${10*k} 🎉`]},
+ 5:{e:'🖐️',t:'High Five!',d:'Times 5 answers always end in 0 or 5. Shortcut: do times 10, then cut it in half!',s:k=>[`10 × ${k} = ${10*k}`,`half of ${10*k} is ${5*k}`,`5 × ${k} = ${5*k} (ends in ${5*k%10}!) 🖐️`]},
+ 3:{e:'🍀',t:'Triple Treat',d:'Times 3 means 3 groups. Double the number, then add one more!',s:k=>[`double ${k} = ${2*k}`,`${2*k} + ${k} = ${3*k}`,`3 × ${k} = ${3*k} 🍀`]},
+ 4:{e:'✌️✌️',t:'Double Double!',d:'Times 4? Double the number, then double it AGAIN!',s:k=>[`double ${k} = ${2*k}`,`double ${2*k} = ${4*k}`,`4 × ${k} = ${4*k} ✨`]},
+ 9:{e:'🪄',t:'Magic Nines',d:'Do times 10, then take away one group. Look: the digits of the answer add up to 9! You can use your fingers too.',s:k=>{const p=9*k,a=[`10 × ${k} = ${10*k}`,`${10*k} − ${k} = ${p}`];if(k>=2&&k<=10)a.push(`${Math.floor(p/10)} + ${p%10} = 9 ✨ magic!`);return a;}},
+ 6:{e:'🖐️☝️',t:'Five and One More',d:'Times 6 is times 5 plus one more group!',s:k=>[`5 × ${k} = ${5*k}`,`${5*k} + ${k} = ${6*k}`,`6 × ${k} = ${6*k} 🎯`]},
+ 7:{e:'🌈',t:'Five + Two',d:'Split 7 into 5 and 2. Do both, then add them together!',s:k=>[`5 × ${k} = ${5*k}`,`2 × ${k} = ${2*k}`,`${5*k} + ${2*k} = ${7*k} 🌈`]},
+ 8:{e:'🚀',t:'Double Double Double!',d:'Times 8? Double it three times. Whoosh!',s:k=>[`${k} ➜ ${2*k}`,`${2*k} ➜ ${4*k}`,`${4*k} ➜ ${8*k}`,`8 × ${k} = ${8*k} 🚀`]},
+ 11:{e:'👯‍♂️',t:'Twin Numbers',d:'11 times a one-digit number makes twins: the digit repeats! For bigger numbers: times 10, then add one more.',s:k=>k<=9?[`11 × ${k}  ➜  ${k} and ${k}`,`= ${11*k} ✨`]:[`10 × ${k} = ${10*k}`,`${10*k} + ${k} = ${11*k}`,`11 × ${k} = ${11*k} ✨`]},
+ 12:{e:'🕛',t:'Ten + Two',d:'Split 12 into 10 and 2. Do both, then add!',s:k=>[`10 × ${k} = ${10*k}`,`2 × ${k} = ${2*k}`,`${10*k} + ${2*k} = ${12*k} 🕛`]}
+};
+/* ---------- original cartoon SVG characters ---------- */
+const SKIN='#8d5524',SKIN_L='#a0643a',HAIR='#2b1a10';
+function starPts(cx,cy,R,r){let p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r:R;p.push((cx+rr*Math.cos(a)).toFixed(1)+','+(cy+rr*Math.sin(a)).toFixed(1));}return p.join(' ');}
+function curls(cx,cy,R,r,a0,a1,step){let h='';for(let a=a0;a<=a1;a+=step){const t=a*Math.PI/180;h+=`<circle cx="${(cx+R*Math.cos(t)).toFixed(1)}" cy="${(cy+R*Math.sin(t)).toFixed(1)}" r="${r}"/>`;}return h;}
+const DEFS=`<defs><linearGradient id="g-rbw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f87171"/><stop offset=".25" stop-color="#fbbf24"/><stop offset=".5" stop-color="#4ade80"/><stop offset=".75" stop-color="#60a5fa"/><stop offset="1" stop-color="#a78bfa"/></linearGradient><linearGradient id="g-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef08a"/><stop offset="1" stop-color="#f59e0b"/></linearGradient><linearGradient id="g-pink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#db2777"/></linearGradient></defs>`;
+function face(xl,xr,ey,mouthW){return `<g class="eyes"><ellipse cx="${xl}" cy="${ey}" rx="7" ry="9" fill="#1f130b"/><ellipse cx="${xr}" cy="${ey}" rx="7" ry="9" fill="#1f130b"/><circle cx="${xl+2.5}" cy="${ey-3.5}" r="2.8" fill="#fff"/><circle cx="${xr+2.5}" cy="${ey-3.5}" r="2.8" fill="#fff"/></g>
+ <ellipse cx="${xl-14}" cy="${ey+20}" rx="9" ry="6" fill="#f472b6" opacity=".45"/><ellipse cx="${xr+14}" cy="${ey+20}" rx="9" ry="6" fill="#f472b6" opacity=".45"/>
+ <path d="M${100-mouthW} ${ey+20} Q100 ${ey+50} ${100+mouthW} ${ey+20} Q100 ${ey+27} ${100-mouthW} ${ey+20}Z" fill="#7f1d1d"/>
+ <path d="M${100-mouthW+4} ${ey+22} Q100 ${ey+28} ${100+mouthW-4} ${ey+22} L${100+mouthW-6} ${ey+26} Q100 ${ey+31} ${100-mouthW+6} ${ey+26}Z" fill="#fff"/>
+ <ellipse cx="100" cy="${ey+37}" rx="7" ry="4" fill="#fb7185"/>`;}
+function emiSVG(eq,cls){eq=eq||{};const o=eq.outfit,dress=o==='rainbow'?'url(#g-rbw)':o==='gala'?'url(#g-gold)':'url(#g-pink)';
+ let s=`<svg class="hero emi ${cls||'idle'}" viewBox="0 0 210 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Emi">${DEFS}`;
+ if(eq.back==='wings')s+=`<g fill="#f0abfc" fill-opacity=".85" stroke="#a855f7" stroke-width="3"><ellipse cx="62" cy="178" rx="30" ry="42" transform="rotate(-25 62 178)"/><ellipse cx="148" cy="178" rx="30" ry="42" transform="rotate(25 148 178)"/><ellipse cx="66" cy="222" rx="18" ry="24" transform="rotate(20 66 222)"/><ellipse cx="144" cy="222" rx="18" ry="24" transform="rotate(-20 144 222)"/></g>`;
+ if(eq.back==='cape')s+=`<path d="M78 160 L40 252 Q105 266 170 252 L132 160Z" fill="#e11d48" stroke="#9f1239" stroke-width="3"/><text x="58" y="246" font-size="16">🌹</text><text x="136" y="246" font-size="16">🌹</text>`;
+ // ponytail (behind head)
+ s+=`<g fill="${HAIR}"><circle cx="150" cy="34" r="18"/><circle cx="168" cy="24" r="16"/><circle cx="185" cy="34" r="15"/><circle cx="193" cy="54" r="14"/><circle cx="189" cy="74" r="12"/><circle cx="196" cy="90" r="9"/></g>`;
+ // legs + shoes
+ const shoe=eq.feet==='heels'?'#e879f9':'#fff';
+ s+=`<rect x="86" y="228" width="14" height="28" rx="6" fill="${SKIN}"/><rect x="110" y="228" width="14" height="28" rx="6" fill="${SKIN}"/>
+ <ellipse cx="92" cy="258" rx="14" ry="7" fill="${shoe}" stroke="#be185d" stroke-width="2.5"/><ellipse cx="118" cy="258" rx="14" ry="7" fill="${shoe}" stroke="#be185d" stroke-width="2.5"/>`;
+ if(eq.feet==='heels')s+=`<text x="84" y="262" font-size="9" fill="#fff">✦ ✦</text><text x="110" y="262" font-size="9" fill="#fff">✦ ✦</text>`;
+ // arms
+ s+=`<path d="M80 168 Q58 190 54 212" stroke="${SKIN}" stroke-width="13" stroke-linecap="round" fill="none"/><path d="M130 168 Q152 190 156 208" stroke="${SKIN}" stroke-width="13" stroke-linecap="round" fill="none"/><circle cx="54" cy="214" r="8" fill="${SKIN}"/><circle cx="156" cy="210" r="8" fill="${SKIN}"/>`;
+ // dress
+ s+=`<rect x="98" y="146" width="14" height="16" fill="${SKIN}"/><path d="M78 162 Q105 152 132 162 L152 234 Q105 248 58 234Z" fill="${dress}" stroke="#9d174d" stroke-width="3"/>
+ <rect x="80" y="180" width="50" height="8" rx="4" fill="#a855f7"/><circle cx="105" cy="184" r="6" fill="#fde047"/>
+ <text x="78" y="218" font-size="12" fill="#fff">✦</text><text x="122" y="206" font-size="10" fill="#fff">✦</text><text x="100" y="230" font-size="11" fill="#fff">✦</text>`;
+ if(o==='jacket')s+=`<path d="M78 162 Q90 156 99 158 L95 206 L72 206Z" fill="#7c3aed" stroke="#4c1d95" stroke-width="2.5"/><path d="M132 162 Q120 156 111 158 L115 206 L138 206Z" fill="#7c3aed" stroke="#4c1d95" stroke-width="2.5"/><g fill="#fde047"><circle cx="84" cy="176" r="2"/><circle cx="90" cy="190" r="2"/><circle cx="80" cy="198" r="2"/><circle cx="126" cy="176" r="2"/><circle cx="120" cy="190" r="2"/><circle cx="130" cy="198" r="2"/></g>`;
+ if(o==='gala')s+=`<g fill="#fff"><polygon points="${starPts(90,205,6,2.5)}"/><polygon points="${starPts(120,220,6,2.5)}"/><polygon points="${starPts(105,195,5,2)}"/></g>`;
+ if(eq.neck==='pearls'){for(let i=0;i<7;i++){const t=Math.PI*(i/6);s+=`<circle cx="${(92+i*26/6).toFixed(1)}" cy="${(162+8*Math.sin(t)).toFixed(1)}" r="3.2" fill="#fff" stroke="#cbd5e1"/>`;}}
+ // head
+ s+=`<circle cx="42" cy="104" r="10" fill="${SKIN}"/><circle cx="168" cy="104" r="10" fill="${SKIN}"/><circle cx="105" cy="96" r="62" fill="${SKIN}"/>`;
+ // curly hair cap
+ s+=`<g fill="${HAIR}"><path d="M43 104 C38 44 74 26 105 26 C136 26 172 44 167 104 C160 74 142 60 105 60 C68 60 50 74 43 104Z"/>${curls(105,96,58,15,190,350,16)}<circle cx="46" cy="96" r="11"/><circle cx="164" cy="96" r="11"/></g>`;
+ // bow
+ s+=`<g fill="#fff" stroke="#e5e7eb" stroke-width="2"><path d="M146 36 L126 22 L128 50Z"/><path d="M146 36 L166 22 L164 50Z"/><circle cx="146" cy="36" r="6"/></g>`;
+ // face + round blue glasses
+ s+=face(83,127,104,24);
+ s+=`<g fill="#bfdbfe" fill-opacity=".3" stroke="#2563eb" stroke-width="5"><circle cx="83" cy="104" r="18"/><circle cx="127" cy="104" r="18"/></g><path d="M100 102 Q105 97 110 102" stroke="#2563eb" stroke-width="4" fill="none"/>
+ <path d="M64 92 l-6 -5 M66 98 l-8 -2 M146 92 l6 -5 M144 98 l8 -2" stroke="#1f130b" stroke-width="2.5" stroke-linecap="round"/>`;
+ if(eq.head==='fcrown')s+=`<text x="105" y="44" font-size="22" text-anchor="middle">🌸🌼🌸🌺🌸</text>`;
+ if(eq.head==='tiara')s+=`<path d="M75 44 L83 24 L93 38 L105 14 L117 38 L127 24 L135 44Z" fill="url(#g-gold)" stroke="#ca8a04" stroke-width="2.5"/><circle cx="105" cy="30" r="5" fill="#ec4899"/><circle cx="84" cy="36" r="3" fill="#60a5fa"/><circle cx="126" cy="36" r="3" fill="#60a5fa"/>`;
+ if(eq.head==='bigbow')s+=`<g fill="url(#g-pink)" stroke="#9d174d" stroke-width="2.5"><path d="M66 34 L38 14 L40 58Z"/><path d="M66 34 L94 14 L92 58Z"/><circle cx="66" cy="34" r="9"/></g><text x="44" y="30" font-size="10" fill="#fff">✦</text><text x="80" y="50" font-size="10" fill="#fff">✦</text>`;
+ if(eq.hand==='wand')s+=`<line x1="158" y1="210" x2="180" y2="176" stroke="#a855f7" stroke-width="5" stroke-linecap="round"/><polygon points="${starPts(182,172,13,5.5)}" fill="#fde047" stroke="#f59e0b" stroke-width="2"/>`;
+ if(eq.hand==='purse')s+=`<path d="M146 214 Q156 196 166 214" stroke="#be185d" stroke-width="3" fill="none"/><rect x="142" y="212" width="28" height="22" rx="6" fill="#f472b6" stroke="#be185d" stroke-width="2.5"/><circle cx="156" cy="222" r="3" fill="#fde047"/>`;
+ return s+'</svg>';}
+function bluSVG(eq,cls){eq=eq||{};
+ let s=`<svg class="hero blu ${cls||'idle'}" viewBox="0 0 210 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Blú">${DEFS}`;
+ if(eq.back==='scape')s+=`<path d="M80 162 L44 250 Q105 264 166 250 L130 162Z" fill="#facc15" stroke="#ca8a04" stroke-width="3"/><g fill="#fff"><polygon points="${starPts(62,236,7,3)}"/><polygon points="${starPts(148,236,7,3)}"/><polygon points="${starPts(105,252,6,2.5)}"/></g>`;
+ s+=`<rect x="88" y="226" width="14" height="26" rx="6" fill="${SKIN}"/><rect x="108" y="226" width="14" height="26" rx="6" fill="${SKIN}"/>
+ <path d="M80 252 h26 a6 6 0 0 1 0 12 h-26z" fill="#ef4444"/><path d="M104 252 h26 a6 6 0 0 1 0 12 h-26z" fill="#ef4444"/><rect x="80" y="260" width="26" height="5" rx="2" fill="#fff"/><rect x="104" y="260" width="26" height="5" rx="2" fill="#fff"/>`;
+ s+=`<path d="M80 170 Q58 190 54 210" stroke="${SKIN}" stroke-width="13" stroke-linecap="round" fill="none"/><path d="M130 170 Q152 190 156 206" stroke="${SKIN}" stroke-width="13" stroke-linecap="round" fill="none"/><circle cx="54" cy="212" r="8" fill="${SKIN}"/><circle cx="156" cy="208" r="8" fill="${SKIN}"/>`;
+ s+=`<rect x="98" y="148" width="14" height="16" fill="${SKIN}"/><path d="M74 166 Q105 154 136 166 L142 212 L68 212Z" fill="#3b82f6" stroke="#1e40af" stroke-width="3"/>
+ <path d="M74 166 L62 184 L76 190Z" fill="#3b82f6" stroke="#1e40af" stroke-width="2.5"/><path d="M136 166 L148 184 L134 190Z" fill="#3b82f6" stroke="#1e40af" stroke-width="2.5"/>
+ <polygon points="${starPts(105,190,15,6.5)}" fill="#fde047" stroke="#f59e0b" stroke-width="2"/>
+ <rect x="70" y="208" width="70" height="24" rx="6" fill="#1e3a8a"/><line x1="105" y1="214" x2="105" y2="232" stroke="#172554" stroke-width="3"/>`;
+ const bc={bronze:'#cd7f32',silver:'#e2e8f0',gold:'url(#g-gold)',superstar:'url(#g-rbw)'}[eq.badge];
+ if(bc)s+=`<circle cx="128" cy="178" r="12" fill="#fff" stroke="#1e40af" stroke-width="2"/><polygon points="${starPts(128,178,10,4.5)}" fill="${bc}" stroke="#92400e" stroke-width="1.5"/>`;
+ s+=`<circle cx="44" cy="104" r="10" fill="${SKIN}"/><circle cx="166" cy="104" r="10" fill="${SKIN}"/><circle cx="105" cy="98" r="60" fill="${SKIN}"/>`;
+ s+=`<g fill="${HAIR}"><path d="M48 96 C44 48 76 34 105 34 C134 34 166 48 162 96 C156 70 140 62 105 64 C70 62 54 70 48 96Z"/>${curls(105,98,56,12,196,344,12)}</g>`;
+ s+=`<path d="M76 84 Q86 78 96 84 M114 84 Q124 78 134 84" stroke="${HAIR}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+ s+=face(85,125,102,26);
+ if(eq.head==='phones')s+=`<path d="M46 100 Q46 22 105 22 Q164 22 164 100" stroke="#111827" stroke-width="9" fill="none"/><rect x="30" y="86" width="20" height="32" rx="8" fill="#ef4444" stroke="#111827" stroke-width="3"/><rect x="160" y="86" width="20" height="32" rx="8" fill="#ef4444" stroke="#111827" stroke-width="3"/>`;
+ const hi={drum:'🥁',guitar:'🎸',trumpet:'🎺',piano:'🎹',violin:'🎻',sax:'🎷'}[eq.hand];
+ if(hi)s+=`<text x="170" y="222" font-size="38" text-anchor="middle">${hi}</text>`;
+ return s+'</svg>';}
+function heroSVG(id,cls){const eq=(save.profiles[id]&&save.profiles[id].eq)||{};return id==='emi'?emiSVG(eq,cls):bluSVG(eq,cls);}
+function owlSVG(){return `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Professor Hoot" style="display:block;width:100%;height:auto;overflow:visible">
+ <path d="M30 34 L24 10 L46 26Z M90 34 L96 10 L74 26Z" fill="#7c4a1e"/><ellipse cx="60" cy="78" rx="44" ry="52" fill="#92400e"/><ellipse cx="60" cy="92" rx="29" ry="32" fill="#fde68a"/>
+ <path d="M44 84 q4 4 8 0 M56 94 q4 4 8 0 M68 84 q4 4 8 0 M50 106 q4 4 8 0 M62 106 q4 4 8 0" stroke="#d97706" stroke-width="2" fill="none"/>
+ <circle cx="42" cy="56" r="17" fill="#fff" stroke="#7c4a1e" stroke-width="3"/><circle cx="78" cy="56" r="17" fill="#fff" stroke="#7c4a1e" stroke-width="3"/>
+ <g class="eyes"><circle cx="44" cy="57" r="8" fill="#1f130b"/><circle cx="76" cy="57" r="8" fill="#1f130b"/><circle cx="46" cy="54" r="2.5" fill="#fff"/><circle cx="78" cy="54" r="2.5" fill="#fff"/></g>
+ <path d="M54 68 L66 68 L60 80Z" fill="#f97316"/><path d="M22 4 L60 -8 L98 4 L60 16Z" fill="#1e1b4b"/><rect x="44" y="8" width="32" height="10" fill="#1e1b4b"/><line x1="96" y1="4" x2="100" y2="24" stroke="#facc15" stroke-width="3"/><circle cx="100" cy="26" r="4" fill="#facc15"/>
+ <rect x="28" y="108" width="64" height="24" rx="4" fill="#7c3aed" stroke="#4c1d95" stroke-width="3"/><line x1="60" y1="108" x2="60" y2="132" stroke="#fde68a" stroke-width="3"/>
+ <path d="M42 132 l-4 8 M48 132 l0 8 M72 132 l0 8 M78 132 l4 8" stroke="#f97316" stroke-width="4" stroke-linecap="round"/></svg>`;}
+function monsterSVG(){return `<svg class="monster" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Muddle Monster" style="display:block;width:100%;height:100%;overflow:visible">
+ <path d="M30 140 C0 120 8 70 30 52 C40 20 70 10 90 22 C120 10 150 40 140 70 C162 96 150 140 120 146 C100 158 60 158 30 140Z" fill="#7e22ce" stroke="#3b0764" stroke-width="5"/>
+ <path d="M40 60 q-10 -24 6 -34 M118 54 q12 -24 -4 -36" stroke="#3b0764" stroke-width="6" fill="none" stroke-linecap="round"/>
+ <circle cx="58" cy="76" r="20" fill="#fff"/><circle cx="104" cy="76" r="20" fill="#fff"/>
+ <path d="M58 76 m-12 0 a12 12 0 1 1 12 12 a8 8 0 1 1 -8 -8 a4 4 0 1 1 4 4" stroke="#3b0764" stroke-width="3.5" fill="none"/>
+ <path d="M104 76 m-12 0 a12 12 0 1 1 12 12 a8 8 0 1 1 -8 -8 a4 4 0 1 1 4 4" stroke="#3b0764" stroke-width="3.5" fill="none"/>
+ <path d="M44 110 Q80 140 118 110 Z" fill="#3b0764"/><path d="M50 112 l8 10 l8 -8 l8 10 l8 -10 l8 10 l8 -8 l8 6" stroke="#fff" stroke-width="4" fill="none" stroke-linejoin="round"/>
+ <g font-weight="900" font-size="22" fill="#fde047"><text x="2" y="40" transform="rotate(-20 2 40)">7</text><text x="136" y="28" transform="rotate(25 136 28)">×</text><text x="146" y="120">3</text><text x="0" y="118">?</text><text x="70" y="12">9</text></g></svg>`;}
+function bossFace(n){return n===12?monsterSVG():`<span>${BOSSES[n][0]}</span>`;}
+const $=id=>document.getElementById(id);
+const rand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const range=(a,b)=>{const r=[];for(let i=a;i<=b;i++)r.push(i);return r;};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* ---------- save (each hero has its own progress) ---------- */
+const SKEY='ttq-save-v2';
+function freshProfile(id){return {name:HEROES[id].name,stars:{},hist:{},rewards:[],eq:{},prologue:false};}
+function freshSave(){return {muted:false,narrator:true,hero:null,profiles:{emi:freshProfile('emi'),blu:freshProfile('blu')}};}
+function loadSave(){const f=freshSave();try{const s=JSON.parse(localStorage.getItem(SKEY));if(s&&s.profiles){const o=Object.assign(f,s);['emi','blu'].forEach(id=>{o.profiles[id]=Object.assign(freshProfile(id),s.profiles[id]||{});});return o;}}catch(e){}return f;}
+function persist(){try{localStorage.setItem(SKEY,JSON.stringify(save));}catch(e){}}
+let save=loadSave();
+const P=()=>save.profiles[save.hero];
+const H=()=>HEROES[save.hero];
+const sibId=()=>H().sib;
+const nm=id=>(save.profiles[id]&&save.profiles[id].name)||HEROES[id].name;
+function unlockedIndex(){let i=0;while(i<ORDER.length&&P().stars[ORDER[i]])i++;return i;}
+function totalStars(){return save.hero?ORDER.reduce((s,n)=>s+(P().stars[n]||0),0):0;}
+function updateStatus(){$('status').textContent='⭐ '+totalStars();$('muteBtn').textContent=save.muted?'🔇':'🔊';
+ $('narrBtn').classList.toggle('off',!save.narrator);$('narrBtn').title=save.narrator?'Narrator voice: ON':'Narrator voice: OFF (captions only)';
+ const cb=$('closetBtn');if(save.hero){cb.classList.remove('hidden');cb.textContent=H().closetE;cb.title=H().closet;$('topTitle').textContent=H().title;}else{cb.classList.add('hidden');$('topTitle').textContent='Times Table Quest';}
+ document.body.className=save.hero?'theme-'+save.hero:'';}
+
+/* ---------- sound ---------- */
+let actx=null;
+function tone(f,d,type,vol,delay){if(save.muted)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();if(actx.state==='suspended')actx.resume();const t=actx.currentTime+(delay||0);const o=actx.createOscillator(),g=actx.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(vol||.2,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(actx.destination);o.start(t);o.stop(t+d+.05);}catch(e){}}
+const PENTA=[523,587,659,784,880,1046,1175];
+const SFX={
+ tap:()=>tone(620,.06,'triangle',.12),
+ note:i=>tone(330*Math.pow(2,(i%12)/12*1.5),.15,'triangle',.18),
+ good:()=>{tone(660,.12,'triangle',.2);tone(990,.2,'triangle',.2,.1);},
+ bad:()=>{tone(260,.18,'sawtooth',.1);tone(180,.3,'sawtooth',.1,.12);},
+ hit:()=>{tone(180,.12,'square',.15);tone(90,.3,'square',.15,.07);tone(880,.15,'triangle',.15,.15);},
+ roar:()=>{tone(110,.5,'sawtooth',.12);tone(82,.6,'sawtooth',.1,.15);},
+ win:()=>[523,659,784,1046,784,1046].forEach((f,i)=>tone(f,.25,'triangle',.2,i*.13)),
+ lose:()=>[392,349,311,262].forEach((f,i)=>tone(f,.35,'sine',.2,i*.2)),
+ bloom:()=>[784,988,1175,1568].forEach((f,i)=>tone(f,.18,'sine',.14,i*.06)),
+ melody:()=>{const st=rand(0,2);[0,2,4,2].forEach((x,i)=>tone(PENTA[st+x],.16,'triangle',.18,i*.11));},
+ boop:i=>tone(PENTA[i%PENTA.length]/2,.12,'square',.08),
+ chime:()=>{tone(1568,.3,'sine',.12);tone(2093,.4,'sine',.1,.08);},
+ shield:()=>{tone(440,.2,'sine',.15);tone(660,.3,'sine',.15,.08);tone(880,.35,'sine',.12,.16);}
+};
+const INSTR={drum:{w:'square',n:[110,110,165,110,220],d:.1,g:.14},guitar:{w:'sawtooth',n:[196,247,294,392,294],d:.25,g:.12},trumpet:{w:'square',n:[523,659,784,659,1046],d:.18,g:.16},
+ piano:{w:'triangle',n:[523,659,784,1046,784],d:.3,g:.13},violin:{w:'sine',n:[440,494,523,587,659],d:.4,g:.2},sax:{w:'sawtooth',n:[294,349,392,349,294],d:.25,g:.17}};
+function playInstrument(k){const I=INSTR[k];if(!I)return SFX.chime();I.n.forEach((f,i)=>tone(f,I.d,I.w,.12,i*I.g));}
+
+/* ---------- narrator (Web Speech API, captions always shown) ---------- */
+let VOICE=null;
+const hasTTS=()=>!!(window.speechSynthesis&&window.SpeechSynthesisUtterance);
+function pickVoice(){try{if(!hasTTS())return;const vs=window.speechSynthesis.getVoices()||[];const en=vs.filter(v=>/^en/i.test(v.lang||''));
+ const pref=[/samantha/i,/google uk english female/i,/(aria|jenny|libby|sonia|natasha|ava|emma).*natural/i,/aria|jenny|libby|sonia|ava|emma/i,/karen|moira|tessa|serena|fiona|victoria/i,/zira|hazel|susan/i,/female/i,/google us english/i];
+ for(const r of pref){const v=en.find(v=>r.test(v.name));if(v){VOICE=v;return;}}VOICE=en.find(v=>v.localService)||en[0]||null;}catch(e){VOICE=null;}}
+try{if(hasTTS()){pickVoice();window.speechSynthesis.addEventListener&&window.speechSynthesis.addEventListener('voiceschanged',pickVoice);}}catch(e){}
+function speakClean(t){return String(t).replace(/Blú/g,'Blue').replace(/×/g,' times ').replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}\u{20E3}]/gu,'').replace(/\s+/g,' ').trim();}
+function stopConfetti(){parts=[];if(confRAF){cancelAnimationFrame(confRAF);confRAF=0;}cx.clearRect(0,0,cv.width,cv.height);}
+function stopSpeech(){try{if(hasTTS())window.speechSynthesis.cancel();}catch(e){}}
+function speak(text,who){try{if(!save.narrator||!hasTTS())return;const t=speakClean(text);if(!t)return;stopSpeech();const u=new SpeechSynthesisUtterance(t);if(VOICE){u.voice=VOICE;u.lang=VOICE.lang;}else u.lang='en-US';
+ u.rate=who==='boss'?.9:.95;u.pitch=who==='boss'?.6:who==='owl'?1.05:1.35;window.speechSynthesis.speak(u);}catch(e){}}
+
+/* ---------- confetti + effects ---------- */
+const cv=$('confetti'),cx=cv.getContext('2d');let parts=[],confRAF=0;
+function confetti(){cv.width=innerWidth;cv.height=innerHeight;const pal=save.hero==='emi'?['#f472b6','#e879f9','#c084fc','#fde047','#fff']:COLORS;for(let i=0;i<180;i++)parts.push({x:innerWidth/2+rand(-100,100),y:innerHeight/3,vx:(Math.random()-.5)*16,vy:-Math.random()*14-4,s:rand(6,12),c:pick(pal),r:Math.random()*6,vr:(Math.random()-.5)*.4,life:180});if(!confRAF)confRAF=requestAnimationFrame(confStep);}
+function confStep(){cx.clearRect(0,0,cv.width,cv.height);parts.forEach(p=>{p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life--;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);cx.restore();});parts=parts.filter(p=>p.life>0&&p.y<cv.height+40);if(parts.length)confRAF=requestAnimationFrame(confStep);else{confRAF=0;cx.clearRect(0,0,cv.width,cv.height);}}
+function fxBurst(el,chars,n){if(!el)return;const r=el.getBoundingClientRect();n=n||8;for(let i=0;i<n;i++){const s=document.createElement('span');s.className='fx';s.textContent=pick(chars);s.style.left=(r.left+r.width/2-15)+'px';s.style.top=(r.top+r.height/3)+'px';s.style.setProperty('--dx',rand(-120,120)+'px');s.style.setProperty('--dy',rand(-160,-40)+'px');s.style.animationDelay=(i*0.04)+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),1500);}}
+function react(sel,cls){const e=document.querySelector(sel+' svg.hero');if(!e)return;e.classList.remove('idle','cheer','sad','dance','strut');void e.getBoundingClientRect();e.classList.add(cls);clearTimeout(e._t);e._t=setTimeout(()=>{e.classList.remove(cls);e.classList.add('idle');},1300);}
+function heroRight(sel){const h=H();fxBurst(document.querySelector(sel),h.fx,9);react(sel,save.hero==='blu'?'dance':'cheer');if(save.hero==='blu')SFX.melody();else SFX.bloom();}
+function heroWrong(sel){react(sel,'sad');}
+
+/* ---------- rendering helpers ---------- */
+const app=$('app');
+function show(html){app.innerHTML=html;window.scrollTo(0,0);updateStatus();}
+function blockSize(rows,cols){const W=Math.min(innerWidth,900)-130;let s=Math.floor(W/cols)-3;s=Math.min(s,Math.floor(380/rows)-3,40);return Math.max(8,s);}
+function gridHTML(rows,cols,o){o=o||{};const s=o.size||blockSize(rows,cols);const h0=save.hero?H():null;const pal=h0?h0.palette:COLORS;const icons=(o.icons!==false&&h0&&s>=20)?h0.icons:null;
+ let h=`<div class="gridwrap" style="--s:${s}px">`;for(let r=0;r<rows;r++){h+='<div class="grow"><div class="blks">';for(let c=0;c<cols;c++)h+=`<span class="blk" style="background:${pal[r%pal.length]};animation-delay:${o.anim===false?0:c*0.03}s${o.anim===false?';animation:none':''}">${icons?'<i>'+icons[r%icons.length]+'</i>':''}</span>`;h+='</div>';if(o.labels){const lbl=(o.hideLast&&r===rows-1)?'?':(r+1)*cols;h+=`<span class="sc" style="animation-delay:${cols*0.03}s">${lbl}</span>`;}h+='</div>';}return h+'</div>';}
+function miniGrid(rows,cols){const pal=save.hero?H().palette:COLORS;const s=Math.max(5,Math.min(16,Math.floor(96/Math.max(rows,cols))-2));let h=`<div class="gridwrap" style="--s:${s}px">`;for(let r=0;r<rows;r++){h+='<div class="blks">';for(let c=0;c<cols;c++)h+=`<span class="blk" style="background:${pal[r%pal.length]}"></span>`;h+='</div>';}return h+'</div>';}
+function stageBar(stage){const st=[['learn','📚 Learn'],['practice','🎯 Practice'],['boss','⚔️ Boss']];return `<div class="stagebar"><span class="pill lv">Ch.${ORDER.indexOf(S.n)+1} · ×${S.n}</span>${st.map(([k,l])=>`<span class="pill ${k===stage?'on':''}">${l}</span>`).join('')}</div>`;}
+function starStr(n){return '★'.repeat(n)+'☆'.repeat(3-n);}
+const cheer=()=>pick(CHEERS);
+
+/* ---------- story scenes ---------- */
+let SC=null;
+function fillT(t){return String(t).replace(/\{hero\}/g,nm(save.hero)).replace(/\{sib\}/g,nm(sibId())).replace(/\{title\}/g,H().title).replace(/\{n\}/g,S?S.n:'').replace(/\{boss\}/g,S?BOSSES[S.n][1]:'');}
+const L=(who,text)=>({who,text:fillT(text)});
+const PROP_ICONS={fruit:['🍓','🍌','🍍','🍉','🍇','🍊','🍒'],flower:['🌸','🌷','🌻','🌺','🌼'],star:['⭐']};
+function playScene(sc,done){stopSpeech();SC=Object.assign({i:0,woke:0},sc,{done});renderScene();showLine();}
+function renderScene(){const pl=SC.place,props=SC.props||pl.props;
+ const spots=shuffle([[3,13],[17,24],[31,11],[45,25],[59,12],[73,25],[87,13],[10,36],[38,38],[80,38]]);
+ const ph=props.map((t,i)=>{const [x,y]=spots[i%spots.length];const ic=t==='flower'?'🌱':t==='star'?'⭐':pick(PROP_ICONS.fruit);return `<span class="prop ${t}" data-kind="${t}" style="left:${x+rand(-1,1)}%;top:${y+rand(-1,1)}%" onclick="tapProp(this)">${ic}</span>`;}).join('');
+ show(`<div class="scene" id="scene" style="background:${pl.bg}"><div class="scenetitle">${esc(SC.title)}</div><div class="props">${ph}</div>
+ <div class="owlbox" id="c-owl">${owlSVG()}</div>
+ <div class="cast"><div class="castm" id="c-hero">${heroSVG(save.hero,SC.pose||'idle')}</div><div class="castm side" id="c-sib">${heroSVG(sibId(),SC.pose||'idle')}</div>${SC.boss?`<div class="castm bossm" id="c-boss"><span class="bob" style="display:inline-block;width:100%">${bossFace(SC.boss)}</span></div>`:''}</div></div>
+ <div class="bubble" id="bubble" onclick="nextLine()"><div class="who" id="who"></div><div class="btext" id="btext"></div>
+ <div class="brow"><button class="iconbtn" id="replayBtn" title="Hear it again" aria-label="Replay line" onclick="event.stopPropagation();replayLine()">🔁</button><span class="lineno"><span id="lineno"></span> <span class="wake" id="wake">Tap the scene! ✨ 0/${props.length}</span></span>
+ <button class="btn green sm" id="contBtn" data-enter onclick="event.stopPropagation();nextLine()">Tap to continue ▶</button></div></div>`);
+ if(SC.confetti)setTimeout(confetti,300);}
+function whoName(w){return w==='owl'?'🦉 Professor Hoot':w==='hero'?(save.hero==='emi'?'🌸 ':'⭐ ')+nm(save.hero):w==='sib'?(sibId()==='emi'?'🌸 ':'⭐ ')+nm(sibId()):'😈 '+(SC.boss?BOSSES[SC.boss][1]:'');}
+function showLine(){const l=SC.lines[SC.i];$('who').textContent=whoName(l.who);const bt=$('btext');bt.textContent=l.text;bt.style.animation='none';void bt.offsetWidth;bt.style.animation='';
+ $('lineno').textContent=(SC.i+1)+' / '+SC.lines.length;$('contBtn').textContent=SC.i===SC.lines.length-1?(SC.endLabel||"Let's go! ▶"):'Tap to continue ▶';
+ document.querySelectorAll('.castm,.owlbox').forEach(e=>e.classList.remove('talk'));const m={owl:'c-owl',hero:'c-hero',sib:'c-sib',boss:'c-boss'}[l.who];if(m&&$(m))$(m).classList.add('talk');
+ if(l.who==='boss')SFX.roar();speak(l.text,l.who);}
+function nextLine(){if(!SC)return;SFX.tap();SC.i++;if(SC.i>=SC.lines.length){const d=SC.done;SC=null;stopSpeech();if(d)d();return;}showLine();}
+function replayLine(){if(!SC)return;const l=SC.lines[SC.i];const bt=$('btext');bt.style.animation='none';void bt.offsetWidth;bt.style.animation='';speak(l.text,l.who);if(!save.narrator||!hasTTS())SFX.chime();}
+function tapProp(el){const k=el.dataset.kind;const first=!el.dataset.w;el.dataset.w='1';
+ if(k==='flower'){const st=(+el.dataset.s||0)+1;el.dataset.s=st;el.textContent=st===1?'🌷':pick(PROP_ICONS.flower);el.classList.remove('bloom');void el.offsetWidth;el.classList.add('bloom');SFX.bloom();fxBurst(el,['🌸','✨','💖'],4);}
+ else if(k==='fruit'){el.classList.add('awake');el.classList.remove('dance');void el.offsetWidth;el.classList.add('dance');[0,1,2].forEach(i=>tone(PENTA[rand(0,6)]/2,.12,'square',.08,i*.12));fxBurst(el,['🎵','🎶'],3);}
+ else{el.classList.add('lit');el.textContent='🌟';SFX.chime();fxBurst(el,['✨','⭐'],4);}
+ if(first&&SC){SC.woke++;const tot=document.querySelectorAll('.prop').length;$('wake').textContent=SC.woke>=tot?'All awake! 🎉':`✨ ${SC.woke}/${tot}`;if(SC.woke>=tot){SFX.win();react('#c-hero',save.hero==='blu'?'dance':'cheer');react('#c-sib','cheer');}}}
+function placeOf(n){return PLACES[ORDER.indexOf(n)];}
+function propWords(pl){const m={flower:'flowers',fruit:'fruits',star:'stars'};return [...new Set(pl.props)].map(k=>m[k]).join(' and ');}
+function prologueScene(){const id=save.hero;return {title:'📖 Once upon a time…',place:{bg:'linear-gradient(#fde68a,#f9a8d4 55%,#a78bfa)',props:['flower','fruit','star','flower','fruit','star','star']},lines:[
+ L('owl',"Hoo-hoo! Hello, {hero}! I'm Professor Hoot, the storybook owl. 🦉"),
+ L('owl',"The Number Kingdom used to be full of colour and music, until the Muddle Monster scrambled all the times tables!"),
+ L('owl',"Now the flowers can't bloom, the fruits can't dance, and the stars can't sing."),
+ L('hero',id==='emi'?"I'm {title}! I'll bring back the colours with my big, loving heart! 💖":"I'm {title}! I'll protect everyone and bring back the music! 🎵"),
+ L('sib',id==='emi'?"And I'm your little brother {sib}! I'll be your sidekick and guard you with my star shield! ⭐":"And I'm your big sister {sib}! I'll be your sidekick and cheer you on with all my love! 🌸"),
+ L('owl',"Beat the Muddle Monster's minions in all 12 chapters to save the kingdom. Tap the things up there to wake them, then let's begin!")],endLabel:'Open the map 🗺️'};}
+function introScene(){const i=ORDER.indexOf(S.n),pl=placeOf(S.n),id=save.hero;let lines;
+ if(S.attempt>1)lines=[L('owl',pick(RETRY_OWL)),L('hero',pick(RETRY_HERO[id])),L('sib',pick(SIDE[sibId()])),L('owl',`Tap the ${propWords(pl)} for luck, then let's learn the ×{n} table again with brand-new numbers!`)];
+ else lines=[L('owl',`Chapter ${i+1}: the ${pl.name}! ${pl.desc}`),L('owl',`But the Muddle Monster scrambled the ×{n} table, and ${pl.lost}.`),L('hero',pl[id]),L('sib',pick(SIDE[sibId()])),L('owl',`Tap the ${propWords(pl)} to wake them up! Then let's learn the ×{n} table, {hero}.`)];
+ return {title:`Chapter ${i+1} · ${pl.e} ${pl.name}`,place:pl,props:shuffle(pl.props),lines,endLabel:'Start learning 📚'};}
+function midScene(){const pl=placeOf(S.n),fin=S.n===12;
+ return {title:`${pl.e} ${pl.name} · Boss time!`,place:pl,boss:S.n,lines:[
+  L('owl',fin?"The ground shakes... The MUDDLE MONSTER himself appears! This is the final showdown!":"Uh-oh! {boss}, a sneaky minion of the Muddle Monster, jumps out!"),
+  L('boss',fin?"I am the MUDDLE MONSTER! I scrambled EVERY table in the kingdom! Mwa-ha-ha!":pick(TAUNTS)),
+  L('sib',pick(SIDE[sibId()])),L('hero',pick(BRAVE[save.hero])),
+  L('owl',`Get ${bossHP(S.n)} answers right to win${fin?', and watch out: he uses numbers from every chapter':''}. You have ${HEARTS} hearts. Go, {hero}!`)],endLabel:'⚔️ Fight!'};}
+function outroScene(reward){const pl=placeOf(S.n),fin=S.n===12,h=H();const lines=[
+ L('owl',fin?"You did it! The Muddle Monster is defeated, and "+pl.back+"!":`Hooray! {boss} is defeated, and ${pl.back}!`),
+ L('hero',pick(VICTORY[save.hero])),L('sib',pick(SIB_PROUD[sibId()]))];
+ if(reward)lines.push(L('owl',`You earned a new treasure: ${reward.e} ${reward.name}! Find it in your ${h.closet}.`));
+ if(fin)lines.push(L('owl',"The Number Kingdom is saved! {hero} and {sib} are true Times Table Champions! 🏆"));
+ return {title:`${pl.e} ${pl.name} · Saved!`,place:pl,lines,pose:save.hero==='emi'?'strut':'dance',confetti:true,endLabel:'Yay! ▶'};}
+function loseScene(){const pl=placeOf(S.n);return {title:`${pl.e} ${pl.name}`,place:pl,boss:S.n,lines:[
+ L('owl',"Oh no! {boss} won this round. But every mistake helps your brain grow stronger!"),L('sib',pick(LOSE_SIB[sibId()])),L('hero',pick(LOSE_HERO[save.hero])),
+ L('owl',"The Muddle Monster shuffled the numbers. Let's train again from the start with new ones!")],endLabel:'🔁 Train again'};}
+
+/* ---------- title / hero select / map ---------- */
+function titleScreen(){S=null;SC=null;stopSpeech();save.hero=null;persist();
+ show(`<div class="card center"><h1>Times Table Quest</h1><p class="big" style="margin:4px">The Muddle Monster scrambled the times tables! Pick your hero to save the Number Kingdom.</p></div>
+ <div class="herocards">${['emi','blu'].map(id=>{const h=HEROES[id],pf=save.profiles[id],st=ORDER.reduce((s,n)=>s+(pf.stars[n]||0),0);
+ return `<button class="herocard ${id}" data-hero="${id}" onclick="pickHero('${id}')"><div class="hsv">${id==='emi'?emiSVG(pf.eq,'idle'):bluSVG(pf.eq,'idle')}</div><div class="hn">${esc(pf.name)}</div><div class="ht">${h.title}</div><div class="hl">${h.blurb}</div><div class="hl"><b>⭐ ${st}</b> stars</div></button>`;}).join('')}</div>`);}
+function pickHero(id){save.hero=id;persist();SFX.good();const pf=P(),h=H();
+ show(`<div class="card center"><div style="width:180px;margin:0 auto" id="selHero">${heroSVG(id,'cheer')}</div><h2>${h.title}</h2>
+ <p class="big">What's your hero name? (optional)</p><input class="nm" id="nm" maxlength="14" value="${esc(pf.name)}" autocomplete="off"><br>
+ <button class="btn green" data-enter onclick="startAdventure()">▶ Start the adventure!</button><button class="btn gray sm" onclick="titleScreen()">↩ Pick another hero</button></div>`);
+ fxBurst($('selHero'),h.fx,10);if(id==='blu')SFX.melody();else SFX.bloom();}
+function startAdventure(){const v=$('nm')?$('nm').value.trim().slice(0,14):'';P().name=v||H().name;persist();
+ if(!P().prologue)playScene(prologueScene(),()=>{P().prologue=true;persist();mapScreen();});else mapScreen();}
+function mapScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SC=null;stopSpeech();const u=unlockedIndex(),all=u>=ORDER.length,pf=P();
+ let h=`<div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>${esc(pf.name)}'s Kingdom Map</h2><div class="big" style="font-size:18px">Beat each chapter's boss to unlock the next one. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div></div></div></div><div class="levels">`;
+ ORDER.forEach((n,i)=>{const locked=i>u,st=pf.stars[n]||0,isNext=i===u,pl=PLACES[i];
+  h+=`<button class="lvl ${locked?'locked':''} ${st?'done':''} ${isNext?'next':''} ${n===12?'final':''}" data-level="${n}" ${locked?'disabled':''} onclick="openLevel(${n})">${isNext?'<span class="tag">PLAY!</span>':''}<div class="lch">Chapter ${i+1}</div><div class="lnum">×${n}</div><div class="lboss">${locked?'🔒':(n===12?monsterSVG():BOSSES[n][0])}</div><div class="lplace">${pl.e} ${pl.name}</div><div class="lstars">${starStr(st)}</div></button>`;});
+ h+='</div>';
+ if(all)h+=`<div class="card center"><div class="winheroes"><div class="w1">${heroSVG(save.hero,save.hero==='emi'?'strut':'dance')}</div><div class="w2">${heroSVG(sibId(),'cheer')}</div></div><h2>🏆 Times Table Champion!</h2><p class="big">The Number Kingdom is saved! Replay chapters to collect all ${ORDER.length*3} stars.</p></div>`;
+ h+=`<div class="center" style="margin-top:18px"><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button><button class="btn gray sm" onclick="pickHero(save.hero)">✏️ Change name</button><button class="btn gray sm" onclick="resetProgress()">🗑️ Reset ${esc(pf.name)}</button></div>`;
+ show(h);}
+function resetProgress(){if(!confirm('Reset all of '+P().name+"'s stars, chapters and treasures? This cannot be undone."))return;const id=save.hero,nmv=P().name;save.profiles[id]=freshProfile(id);save.profiles[id].name=nmv;persist();mapScreen();}
+
+/* ---------- closet / music box ---------- */
+function closetScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SC=null;stopSpeech();const id=save.hero,pf=P(),h=H(),list=REWARDS[id];
+ show(`<div class="card center"><h2>${h.closetE} ${esc(pf.name)}'s ${h.closet}</h2><div class="closethero" id="ch" onclick="posePlay()">${heroSVG(id)}</div>
+ <p class="big" style="font-size:18px">${id==='emi'?'Tap a treasure to try it on (tap again to take it off). Tap Emi for a runway strut! 💃':'Tap an instrument to play it and hold it. Tap a badge to wear it. Tap Blú to dance! 🕺'}</p></div>
+ <div class="items">${list.map((r,i)=>{const got=pf.rewards.includes(r.id),on=pf.eq[r.slot]===r.id;return `<button class="item ${got?'':'locked'} ${on?'on':''}" data-item="${r.id}" ${got?`onclick="toggleItem('${r.id}')"`:'disabled'}><div class="ie">${got?r.e:'🔒'}</div><div class="in">${got?r.name:'Beat Chapter '+(i+1)}</div><div class="is">${got?(on?'✅ Wearing':SLOTNAMES[r.slot]):''}</div></button>`;}).join('')}</div>
+ <div class="center" style="margin-top:14px"><button class="btn blue" data-enter onclick="mapScreen()">🗺️ Back to map</button></div>`);}
+function toggleItem(rid){const r=REWARDS[save.hero].find(x=>x.id===rid),pf=P();if(!r||!pf.rewards.includes(rid))return;if(pf.eq[r.slot]===rid)delete pf.eq[r.slot];else pf.eq[r.slot]=rid;persist();
+ const y=window.scrollY;closetScreen();window.scrollTo(0,y);if(r.snd)playInstrument(r.snd);else if(save.hero==='emi')SFX.bloom();else SFX.chime();fxBurst($('ch'),H().fx,6);react('#ch',save.hero==='emi'?'strut':'dance');}
+function posePlay(){react('#ch',save.hero==='emi'?'strut':'dance');const pf=P();const r=REWARDS.blu.find(x=>x.id===pf.eq.hand);if(save.hero==='blu')(r&&r.snd)?playInstrument(r.snd):SFX.melody();else SFX.bloom();fxBurst($('ch'),H().fx,6);}
+
+/* ---------- session (fresh random content per attempt) ---------- */
+let S=null;
+function makeSession(n,prev){
+ const h=P().hist[n]||{};
+ const learnK=pick([3,4,5,6,7].filter(x=>x!==h.learnK&&x!==n))||4;
+ const flipK=pick([2,3,4,5,6].filter(x=>x!==learnK&&x!==h.flipK&&x!==n))||3;
+ let trickKs;
+ if(n===11)trickKs=[pick(range(2,9).filter(x=>!(h.trickKs||[]).includes(x))),pick(range(10,12).filter(x=>!(h.trickKs||[]).includes(x)))];
+ else{const hi=n===9?10:12;trickKs=shuffle(range(2,hi).filter(x=>!(h.trickKs||[]).includes(x)&&x!==learnK)).slice(0,2);}
+ const pool=HCTX[save.hero].concat(CTX);const ctxs=shuffle(pool.filter(c=>!(h.ctx||[]).includes(c.e))).concat(shuffle(pool));
+ const hp=bossHP(n),nq=hp+HEARTS-1;
+ const last=(h.bossKs||[]).slice(0,hp);
+ const fresh=shuffle(range(1,12).filter(x=>!last.includes(x))),old=shuffle(range(1,12).filter(x=>last.includes(x)));
+ let base=fresh.concat(old).slice(0,Math.min(hp,12));let bossKs=shuffle(base);while(bossKs.length<nq)bossKs.push(rand(2,12));
+ const bt=['fill','mc','array','missing','story','fill','mc','story','fill','missing','mc','array'];
+ const bTypes=shuffle(bt.slice(0,hp)).concat(shuffle(['fill','mc','missing','story'])).slice(0,nq);
+ const tables=ORDER.filter(x=>x!==1);
+ const boss=bossKs.map((k,i)=>makeQ(bTypes[i],(n===12&&i%2===1)?pick(tables):n,k,ctxs[i%ctxs.length]));
+ const pKs=shuffle(range(2,12).filter(x=>x!==learnK)).slice(0,5);
+ const pTypes=shuffle(['fill','mc','story','array','missing']);
+ const practice=pKs.map((k,i)=>makeQ(pTypes[i],n,k,ctxs[(i+nq)%ctxs.length]));
+ P().hist[n]={learnK,flipK,trickKs,bossKs,ctx:ctxs.slice(0,6).map(c=>c.e)};persist();
+ return {n,learnK,flipK,trickKs,boss,practice,attempt:(prev&&prev.n===n?prev.attempt+1:1)};
+}
+function makeQ(type,n,k,ctx){
+ const flip=Math.random()<.5,a=flip?k:n,b=flip?n:k,p=n*k;const q={type,n,k,a,b,p,ctx};
+ if(type==='fill'){q.text=`${a} × ${b} = ?`;q.ans=p;q.input='pad';}
+ else if(type==='mc'){q.text=`${a} × ${b} = ?`;q.ans=p;q.input='mc';q.lead='Tap the right answer!';const c=shuffle([p+n,p-n,p+1,p-1,p+k,p-k,p+10,p+2,p-2]).filter((v,i,ar)=>v>0&&v!==p&&ar.indexOf(v)===i).slice(0,3);q.opts=shuffle([p].concat(c));}
+ else if(type==='missing'){q.text=Math.random()<.5?`${n} × ? = ${p}`:`? × ${n} = ${p}`;q.ans=k;q.input='pad';q.lead='Find the missing number! 🔍';}
+ else if(type==='story'){q.a=k;q.b=n;q.text=`${k===1?'There is 1 '+ctx.g1:'There are '+k+' '+ctx.gs}. Each ${ctx.g1} has ${n} ${n===1?ctx.one:ctx.many} ${ctx.e}. How many ${ctx.many} are there in all?`;q.ans=p;q.input='pad';q.lead='Story problem! 📖';}
+ else if(type==='array'){q.text=`Which blocks show ${a} × ${b}?`;q.input='arr';q.lead='Rows × blocks in each row 🧱';
+  const cand=shuffle([[a,b+1],[a+1,b],[a,b-1],[a-1,b],[a+1,b+1],[a-1,b+1],[a+1,b-1],[a+2,b]]).filter(([r,c])=>r>=1&&c>=1&&r<=12&&c<=12&&r*c!==a*b);
+  const ds=[];cand.forEach(d=>{if(ds.length<2&&!ds.some(x=>x[0]===d[0]&&x[1]===d[1]))ds.push(d);});
+  q.opts=shuffle([[a,b]].concat(ds));q.ans=q.opts.findIndex(x=>x[0]===a&&x[1]===b);}
+ return q;}
+function explain(q){if(q.type==='array')return `It's the one with ${q.a} rows of ${q.b} blocks.`;if(q.type==='missing')return `${q.n} × ${q.k} = ${q.p}, so the missing number is ${q.k}.`;return `${q.a} × ${q.b} = ${q.p}`;}
+
+/* ---------- question UI ---------- */
+let inp='';
+function qHTML(q){
+ let h=`<div id="q" class="qcard" data-type="${q.type}" data-answer="${q.ans}" data-sig="${q.type}:${esc(q.text)}">`;
+ if(q.lead)h+=`<div class="lead">${q.lead}</div>`;
+ h+=`<div class="qtext ${q.type==='story'?'story':''}">${q.text}</div>`;
+ if(q.type==='story'&&q.p<=36)h+=`<div class="storypic">${Array.from({length:q.k},()=>`<span class="grp">${q.ctx.e.repeat(q.n)}</span>`).join('')}</div>`;
+ if(q.input==='pad')h+=`<div><span class="ansbox" id="ans">?</span></div><div class="pad" id="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button onclick="padPress('${d}')">${d}</button>`).join('')}<button class="del" onclick="padDel()" aria-label="Delete">⌫</button><button onclick="padPress('0')">0</button><button class="ok" id="okBtn" onclick="padOK()" aria-label="Check">✔</button></div>`;
+ else if(q.input==='mc')h+=`<div class="opts" id="opts">${q.opts.map(v=>`<button class="opt" data-val="${v}" onclick="answer(${v},this)">${v}</button>`).join('')}</div>`;
+ else h+=`<div class="opts arrs" id="opts">${q.opts.map((d,i)=>`<button class="opt" data-val="${i}" onclick="answer(${i},this)">${miniGrid(d[0],d[1])}</button>`).join('')}</div>`;
+ return h+'</div>';}
+function padPress(d){if(!S||S.locked)return;if(inp.length>=3)return;if(inp==='0')inp='';inp+=d;SFX.tap();const a=$('ans');if(a)a.textContent=inp;}
+function padDel(){if(!S||S.locked)return;inp=inp.slice(0,-1);SFX.tap();const a=$('ans');if(a)a.textContent=inp||'?';}
+function padOK(){if(!S||S.locked||!inp)return;answer(parseInt(inp,10));}
+function answer(v,el){if(!S||S.locked||!S.onAnswer)return;const q=S.cur,ok=v===q.ans;
+ const a=$('ans');if(a)a.classList.add(ok?'ok':'no');if(el)el.classList.add(ok?'right':'wrong');
+ if(!ok){const c=document.querySelector(`#opts .opt[data-val="${q.ans}"]`);if(c)c.classList.add('right');}
+ S.onAnswer(ok);}
+
+/* ---------- LEARN ---------- */
+function openLevel(n){const i=ORDER.indexOf(n);if(i>unlockedIndex())return;SFX.good();S=makeSession(n,null);playScene(introScene(),learnBuild);}
+function learnBuild(){S.built=0;S.locked=false;const n=S.n,k=S.learnK,h=H(),pl=placeOf(n);const th=n===1?h.thing:h.things;
+ show(`${stageBar('learn')}<div class="card center"><div class="learnhead"><div class="minihero" id="mh">${heroSVG(save.hero)}</div><h2>🧱 Build it!</h2></div>
+ <p class="big">${save.hero==='emi'?`Let's plant <b>${k} garden rows</b> with <b>${n} ${th}</b> in each row to help the ${pl.name}!`:`Let's line up <b>${k} rows</b> of <b>${n} ${th}</b> to bring the beat back to the ${pl.name}!`} Tap the button to add a row.</p>
+ <div id="build"></div><div id="skip" class="skip"></div><div id="buildmsg"></div>
+ <div class="row"><button id="addbtn" class="btn purple" data-enter onclick="addRow()">${h.verb} ${n} ${th}</button>
+ <button id="nextbtn" class="btn green hidden" data-enter onclick="learnTrick()">Next: a trick! ▶</button></div>
+ <p style="color:#64748b">Tip: tap any block to make it jump! Counting by ${n}s is called <b>skip counting</b>.</p></div>`);}
+function addRow(){const n=S.n,k=S.learnK;if(S.built>=k)return;S.built++;if(save.hero==='blu')SFX.boop(S.built+2);else SFX.note(S.built);
+ $('build').innerHTML=gridHTML(S.built,n,{labels:true,size:blockSize(k,n)});
+ $('skip').textContent='Skip count: '+range(1,S.built).map(i=>i*n).join(', ');
+ if(S.built===k){$('addbtn').classList.add('hidden');$('nextbtn').classList.remove('hidden');
+  $('buildmsg').innerHTML=`<div class="eq">${k} rows of ${n} = <b>${k*n}</b></div><div class="eq huge">${k} × ${n} = ${k*n} 🎉</div>`;
+  setTimeout(()=>{const b=$('build');if(!b)return;heroRight('#mh');if(save.hero==='blu')b.classList.add('dancing');},150);}}
+function learnTrick(){const T=TRICKS[S.n];S.tStep=0;S.tEx=0;
+ show(`${stageBar('learn')}<div class="card center"><div class="learnhead"><div class="minihero" id="mh">${heroSVG(save.hero)}</div><div class="bigemoji">${T.e}</div></div><h2>${T.t}</h2><p class="big">${T.d}</p>
+ <div id="trickbox" class="trickbox"></div><div id="fingers"></div>
+ <div class="row"><button id="stepbtn" class="btn blue" data-enter onclick="trickStep()">Show me! ✨</button>
+ <button id="nextbtn" class="btn green hidden" data-enter onclick="learnFlip()">Next ▶</button></div></div>`);}
+function trickStep(){const k=S.trickKs[S.tEx],steps=TRICKS[S.n].s(k),box=$('trickbox');
+ if(S.tStep===0){const d=document.createElement('div');d.className='ex';d.id='ex'+S.tEx;d.innerHTML=`<div class="exh">Example: ${S.n} × ${k}</div>`;box.appendChild(d);if(S.n===9)fingers(k);}
+ const ln=document.createElement('div');ln.className='step';ln.textContent=steps[S.tStep];$('ex'+S.tEx).appendChild(ln);SFX.note(S.tStep+2);S.tStep++;
+ const btn=$('stepbtn');
+ if(S.tStep>=steps.length){heroRight('#mh');if(S.tEx===0&&S.trickKs.length>1){S.tEx=1;S.tStep=0;btn.textContent='Another one! ✨';}else btn.classList.add('hidden');$('nextbtn').classList.remove('hidden');}
+ else btn.textContent='Next step ▶';}
+function fingers(k){const f=$('fingers');if(k<1||k>10){f.innerHTML='';return;}let h='<div class="big"><b>Finger trick:</b> hold up 10 fingers and fold down finger number '+k+'.</div><div class="fingers">';
+ for(let i=1;i<=10;i++)h+=`<div class="finger ${i===k?'down':''} ${i===6?'gap':''}">${i}</div>`;
+ f.innerHTML=h+`</div><div class="big">${k-1} finger${k-1===1?'':'s'} before it = <b>${k-1}</b> tens, ${10-k} after it = <b>${10-k}</b> ones ➜ <b>${9*k}</b></div>`;}
+function learnFlip(){S.flipped=false;show(`${stageBar('learn')}<div class="card center"><h2>🔄 The Flip Trick</h2>
+ <p class="big">Turn the blocks sideways: the answer stays the same! So if you know one, you know both.</p>
+ <div id="fliparea"></div><div class="eq" id="flipeq"></div>
+ <div class="row"><button class="btn purple" id="flipbtn" data-enter onclick="doFlip()">🔄 Flip it!</button>
+ <button id="nextbtn" class="btn green hidden" data-enter onclick="practiceStart()">Start Practice 🎯</button></div></div>`);renderFlip();}
+function renderFlip(){const n=S.n,k=S.flipK,r=S.flipped?n:k,c=S.flipped?k:n,sz=blockSize(Math.max(n,k),Math.max(n,k));
+ $('fliparea').innerHTML=gridHTML(r,c,{size:sz});$('flipeq').innerHTML=S.flipped?`${n} × ${k} = ${n*k} <br><span style="color:#16a34a">Same as ${k} × ${n}! ✅</span>`:`${k} rows of ${n}: ${k} × ${n} = ${n*k}`;}
+function doFlip(){const g=document.querySelector('#fliparea .gridwrap');SFX.note(5);if(g)g.classList.add('spin');
+ setTimeout(()=>{if(!S||!$('fliparea'))return;S.flipped=!S.flipped;renderFlip();SFX.good();$('nextbtn').classList.remove('hidden');$('flipbtn').textContent='🔄 Flip back';},450);}
+
+/* ---------- PRACTICE ---------- */
+function practiceStart(){S.pi=0;S.pScore=0;S.pRes=[];renderPractice();}
+function dots(res,total){let h='<div class="dots">';for(let i=0;i<total;i++)h+=`<span class="dot ${res[i]===true?'g':res[i]===false?'r':i===res.length?'c':''}"></span>`;return h+'</div>';}
+function renderPractice(){const q=S.practice[S.pi];inp='';S.cur=q;S.locked=false;
+ show(`${stageBar('practice')}<div class="card"><div class="row between"><div class="row"><div class="minihero" id="mh">${heroSVG(save.hero)}</div><h2>🎯 Practice ${S.pi+1}/${S.practice.length}</h2></div>
+ <button class="btn blue sm" id="hintBtn" onclick="showHint()">💡 Hint</button></div>${dots(S.pRes,S.practice.length)}
+ ${qHTML(q)}<div id="hint" class="hint hidden"></div><div id="fb" class="fb"></div>
+ <div class="row"><button id="nextbtn" class="btn green hidden" data-enter onclick="practiceNext()">Next ▶</button></div></div>`);
+ S.onAnswer=ok=>{S.locked=true;S.pRes.push(ok);
+  if(ok){S.pScore++;heroRight('#mh');$('fb').className='fb good';$('fb').textContent='🎉 '+cheer();setTimeout(()=>{if(S&&S.cur===q)practiceNext();},1000);}
+  else{SFX.bad();heroWrong('#mh');$('fb').className='fb bad';$('fb').innerHTML='Not quite! '+explain(q)+' 💪';showHint(true);$('nextbtn').classList.remove('hidden');}};}
+function hintHTML(q,full){const T=TRICKS[q.n];
+ if(q.type==='array')return `Look for <b>${q.a} rows</b> with <b>${q.b} blocks</b> in each row.`+(full?gridHTML(q.a,q.b,{anim:false}):'');
+ if(q.type==='missing')return `Skip count by ${q.n}s until you reach ${q.p}. How many jumps?`+gridHTML(q.k,q.n,{labels:true})+(full?`<div class="eq">${q.k} jumps ➜ ${q.k}</div>`:'');
+ const rows=q.type==='story'?q.k:q.a,cols=q.type==='story'?q.n:q.b;
+ return `<div>Trick: ${T.s(q.k).slice(0,-1).join(' ➜ ')||T.d}</div>`+gridHTML(rows,cols,{labels:true,hideLast:!full});}
+function showHint(full){const h=$('hint');h.innerHTML='💡 '+hintHTML(S.cur,full);h.classList.remove('hidden');if(!full)SFX.tap();}
+function practiceNext(){if(!S)return;if(S.pi>=S.practice.length-1){practiceDone();return;}S.pi++;renderPractice();}
+function practiceDone(){S.locked=false;S.cur=null;
+ show(`${stageBar('practice')}<div class="card center"><div class="winheroes"><div class="w1" id="mh">${heroSVG(save.hero,'cheer')}</div><div class="w2">${heroSVG(sibId())}</div></div><h2>Practice done!</h2><p class="big">You got <b>${S.pScore} out of ${S.practice.length}</b>. ${S.pScore>=4?'You are ready!':'Good try! Remember the tricks you learned!'}</p>
+ <p class="big">But wait... something is coming... ${S.n===12?'🌀':BOSSES[S.n][0]}</p><button class="btn" data-enter onclick="playScene(midScene(),bossStart)">📖 Continue the story</button>
+ <button class="btn gray sm" onclick="learnBuild()">📚 Learn again</button></div>`);}
+
+/* ---------- BOSS ---------- */
+function bossStart(){S.hp=bossHP(S.n);S.hearts=HEARTS;S.bi=0;renderBoss();}
+function heartStr(){return '❤️'.repeat(S.hearts)+'🖤'.repeat(HEARTS-S.hearts);}
+function renderBoss(){const q=S.boss[S.bi],name=BOSSES[S.n][1],max=bossHP(S.n);inp='';S.cur=q;S.locked=false;
+ show(`${stageBar('boss')}<div class="card" id="arena" style="position:relative"><div class="bossrow">
+ <div class="bossside"><div id="bossE" class="bossE"><span class="bob">${bossFace(S.n)}</span></div><div class="bname">${name}</div>
+ <div class="hpbar"><div class="hpfill" id="hpfill" style="width:${S.hp/max*100}%"></div></div><div style="font-weight:800">${S.hp}/${max} HP</div></div>
+ <div class="player"><div class="pv" id="pv">${heroSVG(save.hero)}</div><div class="pname">${esc(nm(save.hero))}</div><div class="hearts" id="hearts">${heartStr()}</div></div></div></div>
+ <div class="card" id="qbox">${qHTML(q)}<div id="fb" class="fb"></div></div>`);
+ S.onAnswer=ok=>{S.locked=true;
+  if(ok){S.hp--;SFX.hit();heroRight('#pv');const b=$('bossE');b.classList.remove('hit');void b.offsetWidth;b.classList.add('hit');$('hpfill').style.width=(S.hp/max*100)+'%';
+   const p=document.createElement('div');p.className='pow';p.textContent=save.hero==='emi'?'🌸':'⭐';p.style.left='20%';p.style.top='10px';$('arena').appendChild(p);
+   $('fb').className='fb good';$('fb').textContent=`${H().power}! ${cheer()}`;setTimeout(()=>{if(!S||S.cur!==q)return;if(S.hp<=0)bossWin();else{S.bi++;renderBoss();}},1000);}
+  else{S.hearts--;SFX.bad();heroWrong('#pv');$('hearts').textContent=heartStr();$('qbox').classList.add('shake');
+   if(save.hero==='blu'||true){const sh=document.createElement('div');sh.className='shield';sh.textContent=save.hero==='blu'?'⭐':'💖';$('pv').appendChild(sh);setTimeout(SFX.shield,200);}
+   const enc=save.hero==='blu'?`${nm('emi')}: "You've got this!" 💖`:`${nm('blu')}: "Star shield up! Keep going!" ⭐`;
+   $('fb').className='fb bad';$('fb').innerHTML=`Ouch! ${explain(q)}<div style="font-size:18px;color:#7c3aed">${esc(enc)}</div>`;setTimeout(()=>{if(!S||S.cur!==q)return;if(S.hearts<=0)bossLose();else{S.bi++;renderBoss();}},2200);}};}
+function bossWin(){const n=S.n,stars=S.hearts,pf=P(),i=ORDER.indexOf(n);const prev=pf.stars[n]||0;pf.stars[n]=Math.max(prev,stars);
+ const r=REWARDS[save.hero][i];let newR=null;if(r&&!pf.rewards.includes(r.id)){pf.rewards.push(r.id);newR=r;}persist();SFX.win();confetti();
+ playScene(outroScene(newR),()=>winScreen(stars,newR));}
+function winScreen(stars,newR){const n=S.n,name=BOSSES[n][1],i=ORDER.indexOf(n),nxt=ORDER[i+1];confetti();
+ show(`<div class="card center"><div class="winheroes"><div class="w1" id="wh">${heroSVG(save.hero,save.hero==='emi'?'strut':'dance')}</div><div class="w2">${heroSVG(sibId(),'cheer')}</div></div><h1>You WIN!</h1>
+ <div class="starsbig">${[0,1,2].map(j=>`<span class="${j<stars?'':'off'}" style="animation-delay:${.2+j*.25}s">★</span>`).join('')}</div>
+ <p class="big">${esc(nm(save.hero))}, you beat <b>${name}</b>! You're a <b>×${n} master</b>!<br>${stars===3?'Perfect! Not a single heart lost! 🌟':'Play again to earn all 3 stars!'}</p>
+ ${newR?`<div class="reward">New treasure: ${newR.e} ${newR.name}</div><br>`:''}
+ ${nxt?`<button class="btn green" data-enter onclick="openLevel(${nxt})">Next: Chapter ${i+2} ▶</button>`:'<p class="big">🎉 You saved the whole Number Kingdom! 🎉</p>'}
+ <button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn blue" ${nxt?'':'data-enter'} onclick="mapScreen()">🗺️ Map</button></div>`);
+ if(save.hero==='blu')SFX.melody();}
+function bossLose(){SFX.lose();playScene(loseScene(),retryLevel);}
+function retryLevel(){const n=S.n;S=makeSession(n,S);playScene(introScene(),learnBuild);}
+
+/* ---------- global input ---------- */
+function clickEnter(){const b=[...document.querySelectorAll('[data-enter]')].filter(x=>!x.classList.contains('hidden')&&x.offsetParent!==null);if(b.length)b[b.length-1].click();}
+document.addEventListener('keydown',e=>{
+ if(e.target&&e.target.tagName==='INPUT'){if(e.key==='Enter'){e.preventDefault();clickEnter();}return;}
+ const pad=$('pad');
+ if(/^[0-9]$/.test(e.key)){if(pad){padPress(e.key);e.preventDefault();}else if($('opts')&&S&&!S.locked){const o=document.querySelectorAll('#opts .opt')[parseInt(e.key,10)-1];if(o){o.click();e.preventDefault();}}}
+ else if(e.key==='Backspace'&&pad){padDel();e.preventDefault();}
+ else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(pad&&S&&!S.locked&&inp)padOK();else clickEnter();}
+});
+app.addEventListener('click',e=>{const b=e.target.closest('.blk');if(b&&!b.closest('.opt')){b.classList.remove('tap');void b.offsetWidth;b.classList.add('tap');if(save.hero==='blu')SFX.boop(rand(0,6));else SFX.tap();}});
+$('homeBtn').onclick=()=>{SFX.tap();save.hero?mapScreen():titleScreen();};
+$('closetBtn').onclick=()=>{SFX.tap();closetScreen();};
+$('muteBtn').onclick=()=>{save.muted=!save.muted;persist();updateStatus();if(!save.muted)SFX.tap();};
+$('narrBtn').onclick=()=>{save.narrator=!save.narrator;persist();updateStatus();if(!save.narrator)stopSpeech();else if(SC)replayLine();SFX.tap();};
+window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},hasTTS,get voice(){return VOICE?VOICE.name:null;}};
+if(save.hero)mapScreen();else titleScreen();
+</script>
+</body>
+</html>
