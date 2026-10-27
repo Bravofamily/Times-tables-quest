@@ -301,6 +301,125 @@ svg.hero.dunk{animation:dunk .7s cubic-bezier(.3,1.4,.5,1) 2}
 .bubblefx span{position:absolute;bottom:0;animation:bubup 1.4s ease-out forwards;opacity:0}
 @keyframes bubup{0%{transform:translateY(0) scale(.4);opacity:0}20%{opacity:1}100%{transform:translateY(-140px) scale(1.1);opacity:0}}
 .prop.ball.dance{animation:dance2 .5s ease-in-out 3}
+/* ===== v9: subjects ===== */
+.subtitle{font-size:22px;font-weight:900;color:#db2777;margin-top:-6px;letter-spacing:1px}
+.subjects{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:6px}
+.stile{font:inherit;border:none;border-radius:26px;padding:14px 12px 12px;background:linear-gradient(160deg,#fff 0%,var(--sc2) 100%);box-shadow:0 7px 0 var(--sc);cursor:pointer;color:#1e1b4b;text-align:center;position:relative;transition:transform .15s}
+.stile:hover{transform:translateY(-3px)}.stile:active{transform:translateY(3px);box-shadow:0 3px 0 var(--sc)}
+.stile .se{font-size:58px;line-height:1.1}
+.stile .sop{position:absolute;top:10px;left:14px;width:40px;height:40px;border-radius:50%;background:var(--sc);color:#fff;font-size:26px;font-weight:900;line-height:40px}
+.stile .sname{font-size:26px;font-weight:900;color:var(--sc)}
+.stile .srealm{font-size:15px;font-weight:800;color:#475569;margin-bottom:8px}
+.sbar{height:14px;border-radius:999px;background:#ffffffcc;overflow:hidden;border:2px solid var(--sc)}
+.sbar i{display:block;height:100%;background:var(--sc);border-radius:999px}
+.sprog{display:flex;justify-content:space-between;font-size:14px;font-weight:800;color:#334155;margin-top:6px;gap:6px}
+.sbadge{margin-top:8px;display:inline-block;background:#fef08a;color:#854d0e;border-radius:999px;padding:4px 10px;font-size:13px;font-weight:900;box-shadow:0 2px 0 #eab308}
+.stile.rec{outline:4px solid #facc15;outline-offset:2px}
+.realmhead{background:linear-gradient(160deg,#fff,var(--sc2))}
+.tosub{margin-right:6px}
+.slevels .lvl{box-shadow:0 6px 0 var(--hc)}
+.slevels .lvl.locked{box-shadow:0 6px 0 #94a3b8}.slevels .lvl.done{box-shadow:0 6px 0 #f59e0b}
+.lvl .ltxt{font-size:34px}
+/* lesson */
+.slh{flex-wrap:wrap}.slh .minihero{width:70px}.slt{flex:1;min-width:200px}
+.tmsay{background:#f0fdf4;border:3px solid #86efac;border-radius:16px;padding:6px 10px;font-size:17px;font-weight:700;color:#14532d}
+.lsteps{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.lstep{display:flex;gap:10px;align-items:flex-start;background:#faf5ff;border-radius:18px;padding:10px;animation:pop .35s}
+.lsn{flex:none;width:34px;height:34px;border-radius:50%;background:#7c3aed;color:#fff;font-weight:900;font-size:20px;display:flex;align-items:center;justify-content:center}
+.lsb{flex:1;min-width:0}.lst{font-size:20px;font-weight:700;color:#1e1b4b}.lsv{margin-top:8px;overflow-x:auto;text-align:center}
+.tipbox{background:#fffbeb;border:3px dashed #f59e0b;border-radius:18px;padding:10px 12px;margin-top:12px;font-size:20px;font-weight:700;text-align:center}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
+/* questions */
+.sq .qlead{font-size:17px;font-weight:900;color:#7c3aed}
+.sq .qeq{font-size:38px;font-weight:900;color:#1e1b4b;margin:6px 0}
+.sq .qstory{font-size:21px;font-weight:700;color:#1e1b4b;margin:6px 0;line-height:1.4}
+.qvis{margin:8px auto;overflow-x:auto;max-width:100%}
+.spad{max-width:300px}.spad button{height:56px}
+.sopts .opt{font-size:28px;min-height:76px}.sopts.pics .opt{min-height:110px}
+.multi{margin:10px 0}.fstack{display:inline-flex;flex-direction:column;align-items:center;gap:4px;vertical-align:middle}
+.fbarline{display:block;width:84px;height:5px;background:#1e1b4b;border-radius:3px}
+.fbox{display:inline-block;min-width:76px;font-size:36px;font-weight:900;border:4px dashed #a78bfa;border-radius:14px;padding:0 10px;color:#7c3aed;background:#faf5ff;cursor:pointer;text-align:center}
+.fbox.on{border-style:solid;border-color:#7c3aed;background:#ede9fe;box-shadow:0 0 0 4px #c4b5fd}
+.fbox.ok{border-color:#22c55e;color:#16a34a;background:#dcfce7;border-style:solid}.fbox.no{border-color:#ef4444;color:#dc2626;background:#fee2e2;border-style:solid}
+.mixin,.qrin{display:inline-flex;align-items:center;gap:10px}.rlab{font-size:32px;color:#475569}
+.flab{font-size:13px;font-weight:800;color:#64748b;margin-top:4px}
+.shake{animation:shake .4s}
+/* fractions text */
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;margin:0 .12em;font-weight:900}
+.fr .fn{border-bottom:.09em solid currentColor;padding:0 .12em .04em}.fr .fd{padding:.04em .12em 0}
+.qeq .fr,.eq .fr{font-size:.85em}.opt .fr{font-size:1em}
+.mixd{display:inline-flex;align-items:center;gap:.08em}
+/* ten-frames */
+.tfs{display:inline-flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tf{display:grid;grid-template-columns:repeat(5,30px);grid-template-rows:repeat(2,30px);border:3px solid #334155;border-radius:6px;background:#fff}
+.tfc{border:1px solid #cbd5e1;display:flex;align-items:center;justify-content:center}
+.tfc i{width:22px;height:22px;border-radius:50%;display:block}
+.tfc i.a{background:#ef4444}.tfc i.b{background:#3b82f6}
+.tfc i.x{background:#fecaca;position:relative}.tfc i.x:after{content:'✕';position:absolute;inset:0;color:#b91c1c;font-weight:900;font-size:18px;line-height:22px;text-align:center}
+.ctrs{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;font-size:28px;max-width:420px;margin:0 auto}
+.ctr.gone{opacity:.3;text-decoration:line-through;filter:grayscale(1)}
+.ctrplus{font-size:30px;font-weight:900;color:#16a34a;align-self:center;margin:0 6px}
+.nline{width:100%;height:auto;display:block;margin:0 auto}
+.hop{stroke-dasharray:300;stroke-dashoffset:300;animation:draw 0.8s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+/* base ten */
+.b10{display:inline-flex;align-items:flex-end;gap:3px;flex-wrap:wrap;justify-content:center;vertical-align:middle;max-width:100%}
+.flat{width:60px;height:60px;background:#f59e0b;border:2px solid #92400e;background-image:linear-gradient(#92400e55 1px,transparent 1px),linear-gradient(90deg,#92400e55 1px,transparent 1px);background-size:6px 6px}
+.rod{width:12px;height:70px;display:flex;flex-direction:column;border:2px solid #1d4ed8;background:#60a5fa;border-radius:2px}
+.rod i{flex:1;border-bottom:1px solid #1d4ed855}
+.rod.brk{border-style:dashed;border-color:#dc2626;background:#fecaca;animation:wob 1s infinite}
+@keyframes wob{50%{transform:rotate(6deg)}}
+.cubes{display:inline-flex;flex-wrap:wrap;gap:2px;max-width:70px;align-items:flex-end}
+.cube{width:12px;height:12px;background:#22c55e;border:2px solid #15803d;border-radius:2px}
+.cube.gone{opacity:.25}.cube.new{background:#fbbf24;border-color:#b45309}
+.b10gap{width:10px}.b10lab{font-size:16px;font-weight:800;color:#475569;margin:4px 0}
+/* column maths */
+.colm{margin:6px auto;border-collapse:collapse;font-size:34px;font-weight:900;font-family:ui-monospace,Menlo,Consolas,monospace;color:#1e1b4b}
+.colm td{width:1.05em;height:1.2em;text-align:center;padding:0;border-radius:6px}
+.colm td.op{color:#7c3aed}
+.colm .carry td{font-size:20px;color:#dc2626;height:1em}
+.colm .ln td{border-top:4px solid #1e1b4b;height:4px}
+.colm td.hi{background:#fef08a}
+.colm td.strk{text-decoration:line-through;text-decoration-color:#dc2626;text-decoration-thickness:3px;color:#94a3b8}
+.colm .ansd{color:#16a34a}
+/* number bond */
+.bond{display:inline-flex;flex-direction:column;align-items:center;width:160px}
+.bw,.bp{width:54px;height:54px;border-radius:50%;border:4px solid #7c3aed;background:#faf5ff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#4c1d95}
+.bl{width:160px;height:40px}.bl line{stroke:#7c3aed;stroke-width:4}.bps{display:flex;justify-content:space-between;width:100%}
+/* groups and arrays */
+.grps{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.grp2{border:3px dashed #0ea5e9;border-radius:50%/40%;min-width:70px;padding:8px 10px 10px;font-size:22px;max-width:150px;background:#f0f9ff;word-break:break-all}
+.grp2 .gl{font-size:13px;font-weight:900;color:#0369a1;word-break:normal}
+.grp2.left{border-color:#f97316;background:#fff7ed}.grp2.left .gl{color:#c2410c}
+.arr{display:inline-flex;flex-direction:column;gap:2px;font-size:20px;line-height:1}
+/* fraction bars */
+.fbar{display:flex;width:280px;max-width:100%;height:40px;border:3px solid #334155;border-radius:8px;overflow:hidden;margin:6px auto;background:#fff}
+.fbar span{flex:1;border-right:2px solid #334155}.fbar span:last-child{border-right:none}
+.fblab{font-size:24px;text-align:center}
+.pizza{display:inline-block;vertical-align:middle;margin:2px}
+/* long division */
+.ldwrap{display:flex;justify-content:center;overflow-x:auto;margin:8px 0}
+.ld{display:grid;font-size:34px;font-weight:900;font-family:ui-monospace,Menlo,Consolas,monospace;color:#1e1b4b;line-height:1.25}
+.ld span{text-align:center;border-radius:6px;min-height:1.25em}
+.ld .qd{color:#7c3aed}.ld .ldd{color:#0369a1}
+.ld .br{border-top:4px solid #1e1b4b}.ld .brl{border-left:4px solid #1e1b4b}.ld span.br,.ld span.ul{border-radius:0}
+.ld .ldm{color:#dc2626}.ld .ul{border-bottom:4px solid #1e1b4b}.ld .ldd{padding-right:4px}.ld .ldr{color:#16a34a}.ld .ldb{color:#f97316}
+.ld .hi{background:#fef08a;box-shadow:0 0 0 2px #facc15}
+.dmsb{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0}
+.dmsb span{background:#f1f5f9;color:#64748b;border-radius:999px;padding:4px 10px;font-weight:900;font-size:15px}
+.dmsb span.on{background:#7c3aed;color:#fff;transform:scale(1.08);box-shadow:0 3px 0 #4c1d95}
+.ldsay,.ldask{text-align:center;font-size:21px;font-weight:700;margin:8px 0;min-height:30px}
+.ldfix{color:#b45309;font-size:18px;margin-top:4px}.ldtry{color:#dc2626;font-size:17px;margin-top:4px}
+@media (max-width:480px){
+ .subjects{grid-template-columns:1fr 1fr;gap:10px}
+ .stile{padding:10px 6px 10px;border-radius:20px}.stile .se{font-size:40px}.stile .sname{font-size:19px}.stile .srealm{font-size:12px}
+ .stile .sop{width:28px;height:28px;font-size:18px;line-height:28px;top:6px;left:6px}
+ .sprog{flex-direction:column;align-items:center;gap:0;font-size:12px}.sbadge{font-size:11px;padding:3px 7px}
+ .lst{font-size:17px}.sq .qeq{font-size:30px}.sq .qstory{font-size:18px}
+ .tf{grid-template-columns:repeat(5,24px);grid-template-rows:repeat(2,24px)}.tfc i{width:17px;height:17px}
+ .colm,.ld{font-size:28px}.fbox{min-width:62px;font-size:30px}.spad button{height:52px;font-size:26px}
+ .slh .minihero{width:56px}.tmsay{font-size:15px}.fbar{width:240px}
+}
 </style>
 </head>
 <body>
@@ -919,7 +1038,7 @@ const HS=()=>HSTYLE[save.hero];
 function heroSfx(){SFX[HS().sfx]();}
 const nm=id=>(save.profiles[id]&&save.profiles[id].name)||HEROES[id].name;
 function unlockedIndex(){let i=0;while(i<ORDER.length&&P().stars[ORDER[i]])i++;return i;}
-function totalStars(){return save.hero?ORDER.reduce((s,n)=>s+(P().stars[n]||0),0):0;}
+function totalStars(){return save.hero?allStars(P()):0;}
 function updateStatus(){$('status').textContent='⭐ '+totalStars();$('muteBtn').textContent=save.muted?'🔇':'🔊';
  $('narrBtn').classList.toggle('off',!save.narrator);$('narrBtn').title=save.narrator?'Narrator voice: ON':'Narrator voice: OFF (captions only)';
  const cb=$('closetBtn');if(save.hero){cb.classList.remove('hidden');cb.textContent=H().closetE;cb.title=H().closet;$('topTitle').textContent=H().title;}else{cb.classList.add('hidden');$('topTitle').textContent='Times Table Quest';}
@@ -964,7 +1083,7 @@ function pickVoice(){try{if(!hasTTS())return;const vs=window.speechSynthesis.get
  const pref=[/samantha/i,/google uk english female/i,/(aria|jenny|libby|sonia|natasha|ava|emma).*natural/i,/aria|jenny|libby|sonia|ava|emma/i,/karen|moira|tessa|serena|fiona|victoria/i,/zira|hazel|susan/i,/female/i,/google us english/i];
  for(const r of pref){const v=en.find(v=>r.test(v.name));if(v){VOICE=v;return;}}VOICE=en.find(v=>v.localService)||en[0]||null;}catch(e){VOICE=null;}}
 try{if(hasTTS()){pickVoice();window.speechSynthesis.addEventListener&&window.speechSynthesis.addEventListener('voiceschanged',pickVoice);}}catch(e){}
-function speakClean(t){return String(t).replace(/Blú/g,'Blue').replace(/×/g,' times ').replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}\u{20E3}]/gu,'').replace(/\s+/g,' ').trim();}
+function speakClean(t){return String(t).replace(/Blú/g,'Blue').replace(/×/g,' times ').replace(/÷/g,' divided by ').replace(/−/g,' minus ').replace(/(\d) ?\+ ?(\d)/g,'$1 plus $2').replace(/(\d) ?= ?\?/g,'$1 equals what').replace(/(\d) ?= ?(\d)/g,'$1 equals $2').replace(/\? ?\+/g,'what plus').replace(/\? ?×/g,'what times').replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}\u{20E3}]/gu,'').replace(/\s+/g,' ').trim();}
 function stopConfetti(){parts=[];if(confRAF){cancelAnimationFrame(confRAF);confRAF=0;}cx.clearRect(0,0,cv.width,cv.height);}
 function stopSpeech(){try{if(hasTTS())window.speechSynthesis.cancel();}catch(e){}}
 function speak(text,who){try{if(!save.narrator||!hasTTS())return;const t=speakClean(text);if(!t)return;stopSpeech();const u=new SpeechSynthesisUtterance(t);if(VOICE){u.voice=VOICE;u.lang=VOICE.lang;}else u.lang='en-US';
@@ -1017,12 +1136,12 @@ function renderScene(){const pl=SC.place,props=SC.props||pl.props;
  const ph=props.map((t,i)=>{const [x,y]=spots[i%spots.length];const ic=t==='flower'?'🌱':t==='star'?'⭐':t==='shell'?'🐚':t==='ball'?pick(PROP_ICONS.ball):pick(PROP_ICONS.fruit);return `<span class="prop ${t}" data-kind="${t}" style="left:${x+rand(-1,1)}%;top:${y+rand(-1,1)}%" onclick="tapProp(this)">${ic}</span>`;}).join('');
  show(`<div class="scene" id="scene" style="background:${pl.bg}"><div class="scenetitle">${esc(SC.title)}</div><div class="props">${ph}</div>
  <div class="owlbox" id="c-owl">${owlSVG()}</div>
- <div class="cast"><div class="castm" id="c-hero">${heroSVG(save.hero,SC.pose||'idle')}</div><div class="castm side" id="c-sib">${heroSVG(sibId(),SC.pose||'idle')}</div>${(SC.extras||[]).map(x=>`<div class="castm side side2" id="c-x-${x}" data-who="${x}">${heroSVG(x,SC.pose||'idle')}</div>`).join('')}${SC.boss?`<div class="castm bossm" id="c-boss"><span class="bob" style="display:inline-block;width:100%">${bossFace(SC.boss)}</span></div>`:''}</div></div>
+ <div class="cast"><div class="castm" id="c-hero">${heroSVG(save.hero,SC.pose||'idle')}</div><div class="castm side" id="c-sib">${heroSVG(sibId(),SC.pose||'idle')}</div>${(SC.extras||[]).map(x=>`<div class="castm side side2" id="c-x-${x}" data-who="${x}">${heroSVG(x,SC.pose||'idle')}</div>`).join('')}${SC.boss?`<div class="castm bossm" id="c-boss"><span class="bob" style="display:inline-block;width:100%">${SC.bossFace||bossFace(SC.boss)}</span></div>`:''}</div></div>
  <div class="bubble" id="bubble" onclick="nextLine()"><div class="who" id="who"></div><div class="btext" id="btext"></div>
  <div class="brow"><button class="iconbtn" id="replayBtn" title="Hear it again" aria-label="Replay line" onclick="event.stopPropagation();replayLine()">🔁</button><span class="lineno"><span id="lineno"></span> <span class="wake" id="wake">Tap the scene! ✨ 0/${props.length}</span></span>
  <button class="btn green sm" id="contBtn" data-enter onclick="event.stopPropagation();nextLine()">Tap to continue ▶</button></div></div>`);
  if(SC.confetti)setTimeout(confetti,300);}
-function whoName(w){return w==='owl'?'🦉 Professor Hoot':w==='hero'?HSTYLE[save.hero].tag+' '+nm(save.hero):w==='sib'?HSTYLE[sibId()].tag+' '+nm(sibId()):HEROES[w]?HSTYLE[w].tag+' '+nm(w):'😈 '+(SC.boss?bossOf(SC.boss)[1]:'');}
+function whoName(w){return w==='owl'?'🦉 Professor Hoot':w==='hero'?HSTYLE[save.hero].tag+' '+nm(save.hero):w==='sib'?HSTYLE[sibId()].tag+' '+nm(sibId()):HEROES[w]?HSTYLE[w].tag+' '+nm(w):'😈 '+(SC.bossName||(SC.boss?bossOf(SC.boss)[1]:''));}
 function showLine(){const l=SC.lines[SC.i];$('who').textContent=whoName(l.who);const bt=$('btext');bt.textContent=l.text;bt.style.animation='none';void bt.offsetWidth;bt.style.animation='';
  $('lineno').textContent=(SC.i+1)+' / '+SC.lines.length;$('contBtn').textContent=SC.i===SC.lines.length-1?(SC.endLabel||"Let's go! ▶"):'Tap to continue ▶';
  document.querySelectorAll('.castm,.owlbox').forEach(e=>e.classList.remove('talk'));const m={owl:'c-owl',hero:'c-hero',sib:'c-sib',boss:'c-boss'}[l.who]||(HEROES[l.who]?'c-x-'+l.who:null);if(m&&$(m))$(m).classList.add('talk');
@@ -1050,12 +1169,12 @@ function pickExtras(kind){const h=save.hero,fin=S&&S.n===12,o=SIBS[h].slice(1),r
 function addExtras(lines,pool,ex){const k=lines.findIndex(l=>l.who==='sib');lines.splice(k+1,0,...ex.map(x=>L(x,pick(pool[x]))));return lines;}
 function prologueScene(){const id=save.hero;return {title:'📖 Once upon a time…',place:{bg:'linear-gradient(#fde68a,#f9a8d4 55%,#a78bfa)',props:['flower','fruit','star','flower','fruit','star','star']},lines:[
  L('owl',"Hoo-hoo! Hello, {hero}! I'm Professor Hoot, the storybook owl. 🦉"),
- L('owl',"The Number Kingdom used to be full of colour and music, until the Muddle Monster scrambled all the times tables!"),
+ L('owl',"The Number Kingdom used to be full of colour and music, until the Muddle Monster scrambled all the numbers: adding, taking away, times tables, sharing and even fractions!"),
  L('owl',"Now the flowers can't bloom, the fruits can't dance, and the stars can't sing."),
  L('hero',HERO_INTRO[id]),
  L('sib',SIB_INTRO[sibId()]),...SIBS[id].slice(1).map(x=>L(x,SIB_INTRO[x])),
  L('hero',HERO_TEAM[id]),
- L('owl',"Beat the Muddle Monster's minions in all 12 chapters to save the kingdom. Tap the things up there to wake them, then let's begin!")],extras:SIBS[id].slice(1),endLabel:'Open the map 🗺️'};}
+ L('owl',"There are five realms to save: Addition Meadow, the Subtraction Caves, Times Table Castle, the Division Docks and the Fraction Bakery. Tap the things up there to wake them, then pick a realm!")],extras:SIBS[id].slice(1),endLabel:'Pick a realm 🗺️'};}
 function introScene(){const i=ORDER.indexOf(S.n),pl=placeOf(S.n),id=save.hero,ex=pickExtras('intro');let lines;
  if(S.attempt>1)lines=[L('owl',pick(RETRY_OWL)),L('hero',pick(RETRY_HERO[id])),L('sib',pick(SIDE[sibId()])),L('owl',`Tap the ${propWords(pl)} for luck, then let's learn the ×{n} table again with brand-new numbers!`)];
  else lines=[L('owl',`Chapter ${i+1}: the ${pl.name}! ${pl.desc}`),L('owl',`But the Muddle Monster scrambled the ×{n} table, and ${pl.lost}.`),L('hero',pl[id]),L('sib',pick(SIDE[sibId()])),L('owl',`Tap the ${propWords(pl)} to wake them up! Then let's learn the ×{n} table, {hero}.`)];
@@ -1070,7 +1189,7 @@ function outroScene(reward){const pl=placeOf(S.n),fin=S.n===12,h=H(),ex=pickExtr
  L('owl',fin?"You did it! The Muddle Monster is defeated, and "+pl.back+"!":`Hooray! {boss} is defeated, and ${pl.back}!`),
  L('hero',pick(VICTORY[save.hero])),L('sib',pick(SIB_PROUD[sibId()])),L('owl',OWL_WIN[save.hero])],SIB_PROUD,ex);
  if(reward)lines.push(L('owl',`You earned a new treasure: ${reward.e} ${reward.name}! Find it in your ${h.closet}.`));
- if(fin)lines.push(L('owl',"The Number Kingdom is saved! {team} are true Times Table Champions! 🏆"));
+ if(fin)lines.push(L('owl',"Times Table Castle is saved! {team} are true Times Table Champions! 🏆 The other realms of the Number Kingdom are waiting!"));
  return {title:`${pl.e} ${pl.name} · Saved!`,place:pl,lines,extras:ex,pose:HS().win,confetti:true,endLabel:'Yay! ▶'};}
 function loseScene(){const pl=placeOf(S.n),ex=pickExtras('boss');return {title:`${pl.e} ${pl.name}`,place:pl,boss:S.n,extras:ex,lines:addExtras([
  L('owl',"Oh no! {boss} won this round. But every mistake helps your brain grow stronger!"),L('sib',pick(LOSE_SIB[sibId()])),L('hero',pick(LOSE_HERO[save.hero])),
@@ -1078,8 +1197,8 @@ function loseScene(){const pl=placeOf(S.n),ex=pickExtras('boss');return {title:`
 
 /* ---------- title / hero select / map ---------- */
 function titleScreen(){S=null;SC=null;stopSpeech();save.hero=null;persist();
- show(`<div class="card center"><h1>Times Table Quest</h1><p class="big" style="margin:4px">The Muddle Monster scrambled the times tables! Pick your hero to save the Number Kingdom.</p></div>
- <div class="herocards">${HERO_ORDER.map(id=>{const h=HEROES[id],pf=save.profiles[id],st=ORDER.reduce((s,n)=>s+(pf.stars[n]||0),0);
+ show(`<div class="card center"><h1>Times Table Quest</h1><div class="subtitle">✨ Number Kingdom ✨</div><p class="big" style="margin:4px">The Muddle Monster scrambled all the numbers! Adding, taking away, times tables, sharing and fractions. Pick your hero to save the Number Kingdom.</p></div>
+ <div class="herocards">${HERO_ORDER.map(id=>{const h=HEROES[id],pf=save.profiles[id],st=allStars(pf);
  return `<button class="herocard ${id}" data-hero="${id}" onclick="pickHero('${id}')"><div class="hsv">${heroSVGeq(id,pf.eq,'idle')}</div><div class="hn">${esc(pf.name)}</div><div class="ht">${h.title}</div><div class="hl">${h.blurb}</div><div class="hl"><b>⭐ ${st}</b> stars</div>${hasAbout(pf)?`<div class="hl abmini">${aboutChip(pf)}</div>`:''}</button>`;}).join('')}</div>`);}
 function pickHero(id){save.hero=id;persist();SFX.good();const pf=P(),h=H();
  show(`<div class="card center"><div style="width:180px;margin:0 auto" id="selHero">${heroSVG(id,'cheer')}</div><h2>${h.title}</h2>
@@ -1087,7 +1206,7 @@ function pickHero(id){save.hero=id;persist();SFX.good();const pf=P(),h=H();
  <button class="btn green" data-enter onclick="startAdventure()">▶ Start the adventure!</button><button class="btn gray sm" onclick="titleScreen()">↩ Pick another hero</button></div>`);
  fxBurst($('selHero'),h.fx,10);heroSfx();}
 function startAdventure(){const v=$('nm')?$('nm').value.trim().slice(0,14):'';P().name=v||H().name;persist();
- const go=()=>{if(!P().prologue)playScene(prologueScene(),()=>{P().prologue=true;persist();mapScreen();});else mapScreen();};
+ const go=()=>{if(!P().prologue)playScene(prologueScene(),()=>{P().prologue=true;persist();subjectScreen();});else subjectScreen();};
  if(!hasAbout(P()))aboutScreen(go);else go();}
 
 /* ---------- About Me (age + grade, per hero; display only, no effect on difficulty) ---------- */
@@ -1113,22 +1232,22 @@ function aboutPickGrade(k){AB.grade=k;const pf=P();pf.age=AB.age;pf.grade=k;pers
  show(aboutHead(esc(msg))+`<div class="abchip big">${aboutChip(pf)}</div><button class="btn green" id="abGo" onclick="AB.then()">${AB.editing?'✔ All done!':"▶ Let's go!"}</button></div>`);
  react('#abHero','cheer');fxBurst($('abHero'),H().fx,10);heroSfx();speak(msg,'owl');}
 
-function mapScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SC=null;stopSpeech();const u=unlockedIndex(),all=u>=ORDER.length,pf=P();
- let h=`<div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>${esc(pf.name)}'s Kingdom Map</h2><div class="big" style="font-size:18px">Beat each chapter's boss to unlock the next one. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(mapScreen,true)">✏️ About me</button></div></div></div></div><div class="levels">`;
+function mapScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SS=null;SC=null;stopSpeech();lastMap='mult';if(save.lastSubj!=='mult'){save.lastSubj='mult';persist();}const u=unlockedIndex(),all=u>=ORDER.length,pf=P();
+ let h=`<div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>🏰 ${esc(pf.name)}'s Times Table Castle</h2><div class="big" style="font-size:18px">Multiplication: beat each chapter's boss to unlock the next one. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="btn blue sm tosub" id="toSubjects" onclick="subjectScreen()">↩ All subjects</button><button class="abedit" id="abEdit" onclick="aboutScreen(mapScreen,true)">✏️ About me</button></div></div></div></div><div class="levels">`;
  ORDER.forEach((n,i)=>{const locked=i>u,st=pf.stars[n]||0,isNext=i===u,pl=placeOf(n);
   h+=`<button class="lvl ${locked?'locked':''} ${st?'done':''} ${isNext?'next':''} ${n===12?'final':''}" data-level="${n}" ${locked?'disabled':''} onclick="openLevel(${n})">${isNext?'<span class="tag">PLAY!</span>':''}<div class="lch">Chapter ${i+1}</div><div class="lnum">×${n}</div><div class="lboss">${locked?'🔒':(n===12?monsterSVG():bossOf(n)[0])}</div><div class="lplace">${pl.e} ${pl.name}</div><div class="lstars">${starStr(st)}</div></button>`;});
  h+='</div>';
  if(all)h+=`<div class="card center"><div class="winheroes"><div class="w1">${heroSVG(save.hero,HS().win)}</div>${SIBS[save.hero].map((x,i)=>`<div class="w${i+2>3?4:i+2}">${heroSVG(x,'cheer')}</div>`).join('')}</div><h2>🏆 Times Table Champion!</h2><p class="big">The Number Kingdom is saved! Replay chapters to collect all ${ORDER.length*3} stars.</p></div>`;
- h+=`<div class="center" style="margin-top:18px"><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button><button class="btn gray sm" onclick="pickHero(save.hero)">✏️ Change name</button><button class="btn gray sm" onclick="resetProgress()">🗑️ Reset ${esc(pf.name)}</button></div>`;
+ h+=`<div class="center" style="margin-top:18px"><button class="btn blue" onclick="subjectScreen()">↩ Subjects</button><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button></div>`;
  show(h);}
-function resetProgress(){if(!confirm('Reset all of '+P().name+"'s stars, chapters and treasures? This cannot be undone."))return;const id=save.hero,nmv=P().name;const ag=P().age,gr=P().grade;save.profiles[id]=freshProfile(id);save.profiles[id].name=nmv;if(ag!=null)save.profiles[id].age=ag;if(gr!=null)save.profiles[id].grade=gr;persist();mapScreen();}
+function resetProgress(){if(!confirm('Reset all of '+P().name+"'s stars, chapters and treasures? This cannot be undone."))return;const id=save.hero,nmv=P().name;const ag=P().age,gr=P().grade;save.profiles[id]=freshProfile(id);save.profiles[id].name=nmv;if(ag!=null)save.profiles[id].age=ag;if(gr!=null)save.profiles[id].grade=gr;persist();subjectScreen();}
 
 /* ---------- closet / music box ---------- */
-function closetScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SC=null;stopSpeech();const id=save.hero,pf=P(),h=H(),list=REWARDS[id];
+function closetScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SS=null;SC=null;stopSpeech();const id=save.hero,pf=P(),h=H(),list=REWARDS[id];
  show(`<div class="card center"><h2>${h.closetE} ${esc(pf.name)}'s ${h.closet}</h2><div class="closethero" id="ch" onclick="posePlay()">${heroSVG(id)}</div>
  <p class="big" style="font-size:18px">${HSTYLE[id].closetHelp}</p></div>
- <div class="items">${list.map((r,i)=>{const got=pf.rewards.includes(r.id),on=pf.eq[r.slot]===r.id;return `<button class="item ${got?'':'locked'} ${on?'on':''}" data-item="${r.id}" ${got?`onclick="toggleItem('${r.id}')"`:'disabled'}><div class="ie">${got?r.e:'🔒'}</div><div class="in">${got?r.name:'Beat Chapter '+(i+1)}</div><div class="is">${got?(on?'✅ Wearing':SLOTNAMES[r.slot]):''}</div></button>`;}).join('')}</div>
- ${id==='eshon'?padHTML():''}<div class="center" style="margin-top:14px"><button class="btn blue" data-enter onclick="mapScreen()">🗺️ Back to map</button></div>`);if(id==='eshon')initPad();}
+ <div class="items">${list.map((r,i)=>{const got=pf.rewards.includes(r.id),on=pf.eq[r.slot]===r.id;return `<button class="item ${got?'':'locked'} ${on?'on':''}" data-item="${r.id}" ${got?`onclick="toggleItem('${r.id}')"`:'disabled'}><div class="ie">${got?r.e:'🔒'}</div><div class="in">${got?r.name:'Beat a boss to unlock'}</div><div class="is">${got?(on?'✅ Wearing':SLOTNAMES[r.slot]):''}</div></button>`;}).join('')}</div>
+ ${id==='eshon'?padHTML():''}<div class="center" style="margin-top:14px"><button class="btn blue" data-enter onclick="goMap()">🗺️ Back to map</button></div>`);if(id==='eshon')initPad();}
 /* ---------- Eshon's Doodle Pad ---------- */
 const PKEY='ttq-doodle-eshon';let PAD={col:'#16a34a',img:null};
 function padColors(){const pf=save.profiles.eshon;return PAD_COLORS.map(p=>Object.assign({ok:!p.need||pf.rewards.includes(p.need)},p));}
@@ -1289,7 +1408,7 @@ function renderBoss(){const q=S.boss[S.bi],name=bossOf(S.n)[1],max=bossHP(S.n);i
    const hlp=(save.hero==='emi'||save.hero==='blu')?sibId():pick(SIBS[save.hero]),enc=`${nm(hlp)}: ${ENC[hlp]}`;
    $('fb').className='fb bad';$('fb').innerHTML=`Ouch! ${explain(q)}<div style="font-size:18px;color:#7c3aed">${esc(enc)}</div>`;setTimeout(()=>{if(!S||S.cur!==q)return;if(S.hearts<=0)bossLose();else{S.bi++;renderBoss();}},2200);}};}
 function bossWin(){const n=S.n,stars=S.hearts,pf=P(),i=ORDER.indexOf(n);const prev=pf.stars[n]||0;pf.stars[n]=Math.max(prev,stars);
- const r=REWARDS[save.hero][i];let newR=null;if(r&&!pf.rewards.includes(r.id)){pf.rewards.push(r.id);newR=r;}persist();SFX.win();confetti();
+ let r=REWARDS[save.hero][i];if(r&&pf.rewards.includes(r.id)&&!prev)r=nextReward();let newR=null;if(r&&!pf.rewards.includes(r.id)){pf.rewards.push(r.id);newR=r;}persist();SFX.win();confetti();
  playScene(outroScene(newR),()=>winScreen(stars,newR));}
 function winScreen(stars,newR){const n=S.n,name=bossOf(n)[1],i=ORDER.indexOf(n),nxt=ORDER[i+1];confetti();
  show(`<div class="card center"><div class="winheroes"><div class="w1" id="wh">${heroSVG(save.hero,HS().win)}</div><div class="w2">${heroSVG(sibId(),'cheer')}</div>${pickExtras('boss').map(x=>`<div class="w3">${heroSVG(x,'cheer')}</div>`).join('')}</div><h1>You WIN!</h1>
@@ -1305,6 +1424,7 @@ function retryLevel(){const n=S.n;S=makeSession(n,S);playScene(introScene(),lear
 /* ---------- global input ---------- */
 function clickEnter(){const b=[...document.querySelectorAll('[data-enter]')].filter(x=>!x.classList.contains('hidden')&&x.offsetParent!==null);if(b.length)b[b.length-1].click();}
 document.addEventListener('keydown',e=>{
+ if(subjKey(e))return;
  if(e.target&&e.target.tagName==='INPUT'){if(e.key==='Enter'){e.preventDefault();clickEnter();}return;}
  const pad=$('pad');
  if(/^[0-9]$/.test(e.key)){if(pad){padPress(e.key);e.preventDefault();}else if($('opts')&&S&&!S.locked){const o=document.querySelectorAll('#opts .opt')[parseInt(e.key,10)-1];if(o){o.click();e.preventDefault();}}}
@@ -1312,20 +1432,19 @@ document.addEventListener('keydown',e=>{
  else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(pad&&S&&!S.locked&&inp)padOK();else clickEnter();}
 });
 app.addEventListener('click',e=>{const b=e.target.closest('.blk');if(b&&!b.closest('.opt')){b.classList.remove('tap');void b.offsetWidth;b.classList.add('tap');if(save.hero==='blu')SFX.boop(rand(0,6));else if(save.hero==='sage')SFX.singNote(rand(0,6));else if(save.hero==='eshon')SFX.scribble(rand(0,6));else if(save.hero==='melrose')SFX.bubble(rand(0,6));else if(save.hero==='cayden')SFX.bounce(rand(0,6));else SFX.tap();}});
-$('homeBtn').onclick=()=>{SFX.tap();save.hero?mapScreen():titleScreen();};
+$('homeBtn').onclick=()=>{SFX.tap();save.hero?subjectScreen():titleScreen();};
 $('closetBtn').onclick=()=>{SFX.tap();closetScreen();};
 $('muteBtn').onclick=()=>{save.muted=!save.muted;persist();updateStatus();if(!save.muted)SFX.tap();};
 $('narrBtn').onclick=()=>{save.narrator=!save.narrator;persist();updateStatus();if(!save.narrator)stopSpeech();else if(SC)replayLine();SFX.tap();};
 window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},hasTTS,get voice(){return VOICE?VOICE.name:null;}};
-if(save.hero)mapScreen();else titleScreen();
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='8';
+const APP_VERSION='9';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
- ['titleScreen','mapScreen','closetScreen','winScreen'].forEach(wrap);
+ ['titleScreen','mapScreen','closetScreen','winScreen','subjectScreen','smapScreen','sWinScreen'].forEach(wrap);
  // anything else that replaces the screen (scenes, lessons, bosses) counts as "in progress"
  const _show=window.show;window.show=function(){safe=depth>0;return _show.apply(this,arguments);};
  function go(){if(!pending)return;const v=pending,k='ttq-reloaded-'+v;
@@ -1342,6 +1461,647 @@ const APP_VERSION='8';
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check(false);});
  window.addEventListener('pageshow',ev=>{if(ev.persisted)check(false);});
 })();
+
+/* =====================================================================
+   v9: SUBJECT REALMS (addition, subtraction, division, fractions)
+   Multiplication keeps the original engine above (pf.stars / ORDER).
+   ===================================================================== */
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a;};
+const lcm=(a,b)=>a/gcd(a,b)*b;
+function frH(n,d,cls){return `<span class="fr ${cls||''}"><span class="fn">${n}</span><span class="fd">${d}</span></span>`;}
+function mixH(w,n,d){return `<span class="mixd"><b>${w}</b>${frH(n,d)}</span>`;}
+const FRW={2:['half','halves'],3:['third','thirds'],4:['fourth','fourths'],5:['fifth','fifths'],6:['sixth','sixths'],7:['seventh','sevenths'],8:['eighth','eighths'],9:['ninth','ninths'],10:['tenth','tenths'],12:['twelfth','twelfths']};
+function frSay(n,d){const w=FRW[d];return w?`${n} ${n===1?w[0]:w[1]}`:`${n} over ${d}`;}
+const stripH=s=>String(s).replace(/<span class="fr[^"]*"><span class="fn">(\d+)<\/span><span class="fd">(\d+)<\/span><\/span>/g,(m,n,d)=>' '+frSay(+n,+d)+' ').replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim();
+/* ten-frames: a cells colour A, b cells colour B; x = how many of the A cells are crossed out (take-away) */
+function frames(a,b,x){b=b||0;x=x||0;const tot=Math.max(10,Math.ceil((a+b)/10)*10);let h='<div class="tfs">';
+ for(let f=0;f<tot;f+=10){h+='<div class="tf">';for(let i=f;i<f+10;i++){const c=i<a?'a':i<a+b?'b':'';h+=`<span class="tfc"><i class="${c}${(x&&i<a&&i>=a-x)?' x':''}"></i></span>`;}h+='</div>';}
+ return h+'</div>';}
+function counters(n,e,x,e2,n2){x=x||0;let h='<div class="ctrs">';for(let i=0;i<n;i++)h+=`<span class="ctr${i>=n-x?' gone':''}">${e}</span>`;if(n2){h+='<span class="ctrplus">+</span>';for(let i=0;i<n2;i++)h+=`<span class="ctr two">${e2||e}</span>`;}return h+'</div>';}
+/* number line with hops. steps = list of signed hop sizes starting at 'from' */
+function nline(min,max,from,steps,o){o=o||{};const n=max-min,sp=Math.max(18,Math.min(46,Math.floor(620/n))),W=n*sp+40,Hh=96;
+ let s=`<svg class="nline" viewBox="0 0 ${W} ${Hh}" style="max-width:${W}px" role="img" aria-label="number line">`;
+ s+=`<line x1="10" y1="66" x2="${W-10}" y2="66" stroke="#475569" stroke-width="3"/>`;
+ const lab=o.every||(n>24?5:n>12?2:1);
+ for(let i=0;i<=n;i++){const x=20+i*sp,v=min+i;s+=`<line x1="${x}" y1="58" x2="${x}" y2="74" stroke="#475569" stroke-width="2"/>`;if((v%lab===0)||v===from||i===n||i===0)s+=`<text x="${x}" y="92" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">${v}</text>`;}
+ let cur=from;(steps||[]).forEach((st,k)=>{const x1=20+(cur-min)*sp,x2=20+(cur+st-min)*sp,mx=(x1+x2)/2,hgt=Math.min(52,14+Math.abs(x2-x1)*.35);
+  s+=`<path d="M${x1} 60 Q${mx} ${60-hgt} ${x2} 60" fill="none" stroke="${st<0?'#ef4444':'#22c55e'}" stroke-width="3" class="hop" style="animation-delay:${k*.25}s"/><polygon points="${x2-5},54 ${x2+5},54 ${x2},62" fill="${st<0?'#ef4444':'#22c55e'}"/>`;
+  if(o.lab!==false)s+=`<text x="${mx}" y="${Math.max(12,60-hgt-4)}" text-anchor="middle" font-size="13" font-weight="800" fill="${st<0?'#dc2626':'#16a34a'}">${st<0?'−':'+'}${Math.abs(st)}</text>`;cur+=st;});
+ s+=`<circle cx="${20+(from-min)*sp}" cy="66" r="7" fill="#7c3aed"/>`;if(o.end!==false&&steps&&steps.length)s+=`<circle cx="${20+(cur-min)*sp}" cy="66" r="7" fill="${o.endq?'#fbbf24':'#16a34a'}"/>`;
+ return s+'</svg>';}
+/* base-ten blocks */
+function base10(n,o){o=o||{};const h=Math.floor(n/100),t=Math.floor(n%100/10),u=n%10;let s='<div class="b10">';
+ for(let i=0;i<h;i++)s+='<span class="flat"></span>';
+ if(h&&(t||u))s+='<span class="b10gap"></span>';
+ for(let i=0;i<t;i++)s+=`<span class="rod${o.brk&&i===t-1?' brk':''}">${'<i></i>'.repeat(10)}</span>`;
+ if(t&&u)s+='<span class="b10gap"></span>';
+ s+='<span class="cubes">';for(let i=0;i<u;i++)s+=`<span class="cube${o.xo&&i>=u-o.xo?' gone':''}${o.newo&&i>=u-o.newo?' new':''}"></span>`;s+='</span>';
+ return s+`</div>${o.lab===false?'':`<div class="b10lab">${h?h+' hundred'+(h>1?'s':'')+', ':''}${t} ten${t===1?'':'s'}, ${u} one${u===1?'':'s'}</div>`}`;}
+/* column (vertical) arithmetic. top = per-column small numbers (carries / borrowed values); strike = a-digit columns crossed out; hi = highlighted column from the right */
+function colH(a,b,op,o){o=o||{};const terms=Array.isArray(a)?a:[a,b];const ansS=o.ans!=null?String(o.ans):'';const w=Math.max(...terms.map(x=>String(x).length),ansS.length);
+ const cells=(v,cls,strike)=>String(v).padStart(w,' ').split('').map((c,i)=>{const fromR=w-1-i;return `<td class="${o.hi===fromR?'hi ':''}${strike&&strike[fromR]&&c!==' '?'strk ':''}${cls||''}">${c===' '?'':c}</td>`;}).join('');
+ let h='<table class="colm">';
+ if(o.top){const tp=[];for(let i=w-1;i>=0;i--)tp.push(o.top[i]||'');h+=`<tr class="carry"><td></td>${tp.map((c,i)=>`<td class="${o.hi===w-1-i?'hi':''}">${c}</td>`).join('')}</tr>`;}
+ terms.forEach((x,i)=>{h+=`<tr><td class="op">${i===terms.length-1?op:''}</td>${cells(x,'',i===0?o.strike:null)}</tr>`;});
+ h+=`<tr class="ln"><td></td>${'<td></td>'.repeat(w)}</tr><tr class="res"><td></td>${o.ans!=null?cells(o.ansPart!=null?String(o.ans).slice(-o.ansPart).padStart(String(o.ans).length,' '):o.ans,'ansd'):'<td></td>'.repeat(w)}</tr>`;
+ return h+'</table>';}
+function bondH(w,a,b){return `<div class="bond"><div class="bw">${w}</div><svg viewBox="0 0 160 40" class="bl"><line x1="80" y1="0" x2="30" y2="40"/><line x1="80" y1="0" x2="130" y2="40"/></svg><div class="bps"><div class="bp">${a}</div><div class="bp">${b}</div></div></div>`;}
+/* fair-share groups */
+function groupsH(g,per,e,o){o=o||{};let h='<div class="grps">';for(let i=0;i<g;i++)h+=`<div class="grp2"><div class="gl">${o.names&&o.names[i]?esc(o.names[i]):''}</div>${(o.hide?'❔':e).repeat(o.hide?1:per)}</div>`;if(o.left)h+=`<div class="grp2 left"><div class="gl">left over</div>${e.repeat(o.left)}</div>`;return h+'</div>';}
+function arrH(r,c,e){let h='<div class="arr">';for(let i=0;i<r;i++)h+=`<div>${(e||'🔵').repeat(c)}</div>`;return h+'</div>';}
+/* fractions */
+const FCOL=['#f472b6','#60a5fa','#f59e0b','#22c55e','#a78bfa','#fb923c'];
+function fbar(n,d,o){o=o||{};const col=o.col||FCOL[d%FCOL.length];let h=`<div class="fbar" style="${o.w?'width:'+o.w+'px':''}">`;for(let i=0;i<d;i++)h+=`<span style="${i<n?'background:'+col:''}"></span>`;return h+`</div>${o.lab?`<div class="fblab">${frH(n,d)}</div>`:''}`;}
+function pizza(n,d,sz){sz=sz||110;const r=sz/2-4,c=sz/2;let s=`<svg class="pizza" width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}"><circle cx="${c}" cy="${c}" r="${r+2}" fill="#d97706"/>`;
+ for(let i=0;i<d;i++){const a1=-Math.PI/2+i*2*Math.PI/d,a2=a1+2*Math.PI/d,x1=c+r*Math.cos(a1),y1=c+r*Math.sin(a1),x2=c+r*Math.cos(a2),y2=c+r*Math.sin(a2);
+  s+=d===1?`<circle cx="${c}" cy="${c}" r="${r}" fill="${i<n?'#facc15':'#fef3c7'}" stroke="#92400e" stroke-width="2"/>`:`<path d="M${c} ${c} L${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 ${d===2?0:0} 1 ${x2.toFixed(1)} ${y2.toFixed(1)} Z" fill="${i<n?'#facc15':'#fef3c7'}" stroke="#92400e" stroke-width="2"/>`;
+  if(i<n){const am=(a1+a2)/2;s+=`<circle cx="${(c+r*.55*Math.cos(am)).toFixed(1)}" cy="${(c+r*.55*Math.sin(am)).toFixed(1)}" r="${Math.max(3,r/9)}" fill="#dc2626"/>`;}}
+ return s+'</svg>';}
+function fline(d,n,o){o=o||{};const mx=o.max||1,segs=d*mx,W=Math.min(620,Math.max(300,segs*44)),sp=(W-40)/segs;let s=`<svg class="nline" viewBox="0 0 ${W} 100" style="max-width:${W}px" role="img" aria-label="fraction number line"><line x1="14" y1="50" x2="${W-14}" y2="50" stroke="#475569" stroke-width="3"/>`;
+ for(let i=0;i<=segs;i++){const x=20+i*sp,whole=i%d===0;s+=`<line x1="${x}" y1="${whole?38:42}" x2="${x}" y2="${whole?62:58}" stroke="#475569" stroke-width="${whole?3:2}"/>`;
+  if(whole)s+=`<text x="${x}" y="88" text-anchor="middle" font-size="18" font-weight="900" fill="#334155">${i/d}</text>`;else if(o.labels)s+=`<text x="${x}" y="22" text-anchor="middle" font-size="12" font-weight="800" fill="#64748b">${i}/${d}</text>`;}
+ if(n!=null)s+=`<circle cx="${20+n*sp}" cy="50" r="9" fill="${o.dot||'#ec4899'}" stroke="#fff" stroke-width="2"/>`;
+ return s+'</svg>';}
+/* long division: compute the Divide / Multiply / Subtract / Bring-down steps */
+function ldSteps(n,d){const dg=String(n).split('').map(Number),N=dg.length;let idx=0,cur=dg[0];while(cur<d&&idx<N-1){idx++;cur=cur*10+dg[idx];}
+ const st=[];for(;;){const q=Math.floor(cur/d),m=q*d,r=cur-m,s={col:idx,cur,q,m,r};st.push(s);if(idx<N-1){idx++;s.bring=dg[idx];cur=r*10+dg[idx];}else break;}
+ return {n,d,dg,N,steps:st,Q:Math.floor(n/d),R:n%d};}
+/* render the long-division layout. upto = {k: step index, ph: phase reached in that step ('D','M','S','B','end')} */
+function ldHTML(L,upto,hi){const {N,dg,steps}=L,cols=N+2,PH=['D','M','S','B'];hi=hi||{};const hk=hi.k,hp=hi.ph;
+ const shown=(k,ph)=>upto.ph==='end'||k<upto.k||(k===upto.k&&PH.indexOf(ph)<PH.indexOf(upto.ph));
+ const rows=[];const blank=()=>Array(cols).fill(null).map(()=>({t:'',c:''}));
+ const put=(row,str,endCol,cls)=>{const s=String(str);for(let i=0;i<s.length;i++){const ci=endCol-(s.length-1-i)+2;if(ci>=0&&ci<cols){row[ci].t=s[i];row[ci].c+=' '+(cls||'');}}};
+ const mark=(row,from,to)=>{for(let i=from;i<=to;i++)if(row[i+2]&&(row[i+2].t!==''))row[i+2].c+=' hi';};
+ const qr=blank();steps.forEach((s,k)=>{if(shown(k,'D'))put(qr,s.q,s.col,'qd'+(k===hk&&(hp==='D'||hp==='M')?' hi':''));});rows.push({cells:qr,cls:'ldq'});
+ const dv=blank();dv[1].t=String(L.d);dv[1].c=' ldd'+(hk!=null&&(hp==='D'||hp==='M')?' hi':'');dg.forEach((x,i)=>{dv[i+2].t=String(x);dv[i+2].c=' ldv';});
+ const curSpan=k=>{const c=steps[k];return [c.col-String(c.cur).length+1,c.col];};
+ if(hk===0&&(hp==='D'||hp==='S')){const [f,t]=curSpan(0);mark(dv,f,t);}
+ if(hk!=null&&hp==='B'&&steps[hk]&&steps[hk].bring!=null){dv[steps[hk].col+3].c+=' hi';}
+ rows.push({cells:dv,cls:'ldrow'});
+ steps.forEach((s,k)=>{if(!shown(k,'M'))return;const pr=blank();put(pr,s.m,s.col,'ldm'+(k===hk&&(hp==='M'||hp==='S')?' hi':''));const ms=s.col-String(s.m).length+1;if(pr[ms+1])pr[ms+1].t='−';for(let i=s.col-Math.max(String(s.m).length,String(s.cur).length)+1;i<=s.col;i++)if(pr[i+2])pr[i+2].c+=' ul';rows.push({cells:pr,cls:'ldp'});
+  if(!shown(k,'S'))return;const rr=blank();put(rr,s.r,s.col,'ldr'+(k===hk&&hp==='S'?' hi':''));
+  if(s.bring!=null&&shown(k,'B'))put(rr,s.bring,s.col+1,'ldb'+(k===hk&&hp==='B'?' hi':''));
+  if(hk===k+1&&(hp==='D'||hp==='S')&&steps[hk]){const [f,t]=curSpan(hk);mark(rr,f,t);}
+  rows.push({cells:rr,cls:'ldrr'});});
+ return `<div class="ldwrap"><div class="ld" style="grid-template-columns:repeat(${cols},1.25em)">${rows.map(r=>r.cells.map((c,i)=>`<span class="${r.cls}${c.c}${r.cls==='ldrow'&&i>=2?' br':''}${r.cls==='ldrow'&&i===2?' brl':''}">${c.t}</span>`).join('')).join('')}</div></div>`;}
+function dmsbBar(ph){return `<div class="dmsb">${[['D','Divide','➗'],['M','Multiply','✖️'],['S','Subtract','➖'],['B','Bring down','⬇️']].map(([k,l,e])=>`<span class="${ph===k?'on':''}" data-ph="${k}">${e} ${l}</span>`).join('')}</div>`;}
+/* ---------- question builders ---------- */
+let SS=null; /* subject session (separate from the times-table session S) */
+const teamOf=()=>SS&&SS.team?SS.team:sibId();
+const tN=()=>nm(teamOf());
+function oN(){const o=SIBS[save.hero].filter(x=>x!==teamOf());return nm(o[0]);}
+function oN2(){const o=SIBS[save.hero].filter(x=>x!==teamOf());return nm(o[1]||o[0]);}
+function itm(){return pick((HCTX[save.hero]||CTX).concat(CTX.slice(0,3)));}
+const cnt=(n,it)=>n===1?`1 ${it.one}`:`${n} ${it.many}`;
+const sum=a=>a.reduce((x,y)=>x+y,0);
+function Qp(text,ans,o){return Object.assign({input:'pad',text,ans,check:v=>v===ans},o||{});}
+function Qmc(text,opts,ai,o){return Object.assign({input:'mc',text,opts,ans:ai,check:v=>v===ai},o||{});}
+function mcNum(q,ds){const a=q.ans;const c=shuffle([...new Set(ds.filter(v=>v>=0&&v!==a))]).slice(0,3);while(c.length<3){const v=a+rand(1,9)*(Math.random()<.5?-1:1);if(v>=0&&v!==a&&!c.includes(v))c.push(v);}
+ const vals=shuffle([a].concat(c));return Object.assign(q,{input:'mc',opts:vals.map(v=>({h:String(v),v})),ans:vals.indexOf(a),num:a,check:v=>v===vals.indexOf(a)});}
+function Qfr(text,check,ans,o){return Object.assign({input:'multi',lay:'frac',nf:2,text,check,ans},o||{});}
+function Qqr(text,q,r,o){return Object.assign({input:'multi',lay:'qr',nf:2,text,ans:[q,r],check:v=>v[0]===q&&v[1]===r},o||{});}
+const frEq=(N,D)=>v=>v[1]>0&&v[0]*D===N*v[1];
+const frExact=(N,D)=>v=>v[0]===N&&v[1]===D;
+function carries(terms){const w=Math.max(...terms.map(t=>String(t).length));const top=[];let c=0;for(let i=0;i<=w;i++){if(i>0&&c)top[i]=String(c);let s=c;terms.forEach(t=>{s+=Math.floor(t/10**i)%10;});c=Math.floor(s/10);}return top;}
+function borrowInfo(a,b){const da=String(a).split('').reverse().map(Number),db=String(b).split('').reverse().map(Number);const nd=da.slice(),ch=[];
+ for(let i=0;i<da.length;i++){const bi=db[i]||0;if(nd[i]<bi){let j=i+1;while(nd[j]===0)j++;nd[j]--;ch[j]=true;for(let k=j-1;k>i;k--){nd[k]=9;ch[k]=true;}nd[i]+=10;ch[i]=true;}}
+ return {top:nd.map((v,i)=>ch[i]?String(v):''),strike:ch.map(Boolean)};}
+const hasCarry=terms=>carries(terms).some(Boolean);
+const needBorrow=(a,b)=>borrowInfo(a,b).strike.some(Boolean);
+const STORY='Story problem! 📖';
+/* ---------- addition ---------- */
+function addQ(terms,kind,o){o=o||{};const s=sum(terms);const q=Qp(terms.join(' + ')+' = ?',s,{m:{op:'add',terms},sig:'add:'+terms.join('+'),explain:`${terms.join(' + ')} = ${s}`,lead:o.lead,vis:o.vis,hint:o.hint});
+ if(kind==='a'||(kind==='b'&&Math.random()<.3))storyAdd(q,terms);else if(o.mc!==false&&Math.random()<(kind==='b'?.3:.25))mcNum(q,[s+1,s-1,s+10,s-10,s+2,s-2]);return q;}
+function storyAdd(q,t){const it=itm(),H=nm(save.hero),T=tN(),O=oN();let x;
+ if(t.length===2)x=pick([`${H} has ${cnt(t[0],it)} ${it.e}. ${T} brings ${t[1]} more. How many ${it.many} does ${H} have now?`,`${H} found ${cnt(t[0],it)} ${it.e} and ${T} found ${t[1]}. How many ${it.many} did the team find in all?`,`There are ${cnt(t[0],it)} ${it.e} on the table. ${T} puts down ${t[1]} more. How many ${it.many} are on the table altogether?`]);
+ else x=`${H} has ${cnt(t[0],it)} ${it.e}, ${T} has ${t[1]}, ${t.length>3?`${O} has ${t[2]} and ${oN2()} has ${t[3]}`:`and ${O} has ${t[2]}`}. How many ${it.many} do they have altogether?`;
+ q.text=x;q.lead=STORY;q.story=true;q.sig+=':s';if(sum(t)<=20&&t.length===2)q.vis=counters(t[0],it.e,0,it.e,t[1]);}
+function bondQ(w,a,kind){const b=w-a;const q=Qp(Math.random()<.5?`${a} + ? = ${w}`:`? + ${a} = ${w}`,b,{m:{op:'eqn',x:a,o:'+',r:w},sig:`bond:${a}:${w}`,lead:'Find the missing part! 🔍',vis:bondH(w,a,'?'),explain:`${a} + ${b} = ${w}, so the missing part is ${b}.`,hint:`Start at ${a} and count up to ${w}.`+(w<=20?frames(a,b):'')});
+ if(kind==='a'||(kind==='b'&&Math.random()<.3)){const it=itm();q.text=`${nm(save.hero)} needs ${cnt(w,it)} ${it.e} for a surprise. ${tN()} already found ${a}. How many more do they need?`;q.lead=STORY;q.sig+=':s';q.vis='';}return q;}
+const ADD=[
+ {t:'Counting On',e:'🔢',skill:'counting on',place:{name:'Counting Clover Patch',e:'🍀',desc:'Ladybugs count the clover leaves here: one, two, three!'},boss:['🐞','Lady Lumpbug'],
+  tip:'Start with the BIGGER number in your head and count on. No need to count from 1!',
+  learn(){const a=rand(3,6),b=rand(2,3);return [{t:`Here are ${a} dots. Keep the big number in your head: <b>${a}</b>!`,v:frames(a,0)},{t:`Now add ${b} more. Count on: ${range(a+1,a+b).join(', ')}.`,v:frames(a,b)},{t:`${a} + ${b} = <b>${a+b}</b>! Hop along the number line to check.`,v:nline(0,10,a,Array(b).fill(1))}];},
+  gen(k){const a=rand(2,7),b=rand(1,Math.min(k==='b'?4:3,10-a));return addQ(Math.random()<.25?[b,a]:[a,b],k,{vis:frames(a,b),hint:`Start at ${Math.max(a,b)} and count on ${Math.min(a,b)}: ${range(Math.max(a,b)+1,a+b).join(', ')}.`});}},
+ {t:'Number Bonds & Making 10',e:'🔗',skill:'number bonds and making 10',place:{name:'Number Bond Bridge',e:'🌉',desc:'Two little paths join together to make one big path.'},boss:['🦗','Cricket Crossbond'],
+  tip:'Make-10 friends: 1+9, 2+8, 3+7, 4+6, 5+5. Learn them by heart!',
+  learn(){const a=rand(3,7);return [{t:'A number bond shows a whole on top and its two parts below.',v:bondH(10,a,10-a)},{t:`On a ten-frame, ${a} boxes are full and ${10-a} are empty. So ${a} and ${10-a} make 10!`,v:frames(a,10-a)},{t:'Every number has bonds. The make-10 friends are: 1+9, 2+8, 3+7, 4+6, 5+5.',v:`<div class="eq">${[1,2,3,4,5].map(i=>`${i}+${10-i}`).join(' · ')}</div>`}];},
+  gen(k){if(k==='p'&&Math.random()<.25){const a=rand(1,9),ds=shuffle(range(1,9).filter(z=>z!==10-a)).slice(0,2),u=shuffle([[a,10-a]].concat(ds.map(z=>[a,z]))),f=u;const ai=f.findIndex(o=>o[0]+o[1]===10);return Qmc('Which pair makes 10?',f.map(o=>({h:`${o[0]} + ${o[1]}`})),ai,{m:{op:'mcpair',opts:f,target:10},sig:'pair:'+a,lead:'Find the make-10 friends! 🤝',explain:`${a} + ${10-a} = 10`,hint:frames(a,10-a)});}
+   const w=Math.random()<.6?10:rand(5,9),a=rand(1,w-1);return bondQ(w,a,k);}},
+ {t:'Doubles & Near Doubles',e:'👯',skill:'doubles and near doubles',place:{name:'Double Daisy Field',e:'🌼',desc:'Every daisy here has a twin!'},boss:['🐛','Double-Trouble Caterpillar'],
+  tip:'Know a double? Then a near double is just ONE more!',
+  learn(){const d=rand(3,8);return [{t:`Doubles are twins: ${d} + ${d} = <b>${2*d}</b>.`,v:frames(d,d)},{t:`A near double is a double plus one: ${d} + ${d+1} is ${d} + ${d}, plus 1 more.`,v:frames(d,d+1)},{t:`So ${d} + ${d+1} = ${2*d} + 1 = <b>${2*d+1}</b>!`,v:`<div class="eq">${d} + ${d} = ${2*d} ➜ ${d} + ${d+1} = ${2*d+1}</div>`}];},
+  gen(k){const d=rand(2,10),near=Math.random()<.5,t=near?shuffle([d,d+1]):[d,d];return addQ(t,k,{vis:sum(t)<=20?frames(t[0],t[1]):'',hint:near?`Double ${d} is ${2*d}. One more is ${2*d+1}.`:`Think of twins: ${d} and ${d}. Count by ${d}s twice.`});}},
+ {t:'Adding Within 20',e:'🔟',skill:'adding within 20 by making ten',place:{name:'Twenty Tulip Garden',e:'🌷',desc:'Twenty tulips grow in neat rows of ten.'},boss:['🐸','Twenty-Toad'],
+  tip:'Make 10 first, then add what is left. 10 + anything is easy!',
+  learn(){const a=rand(7,9),b=rand(11-a+1,9),f=10-a,r=b-f;return [{t:`Let's add ${a} + ${b}. First, MAKE TEN!`,v:frames(a,0)},{t:`${a} needs ${f} more to make 10. Take ${f} from the ${b}. ${r} are left.`,v:frames(a,b)},{t:`Now it's 10 + ${r} = <b>${a+b}</b>!`,v:`<div class="eq">${a} + ${b} = 10 + ${r} = ${a+b}</div>`}];},
+  gen(k){const a=rand(6,9),b=rand(11-a,9),t=Math.random()<.5?[a,b]:[b,a],big=Math.max(a,b),f=10-big;return addQ(t,k,{vis:frames(t[0],t[1]),hint:`Make 10: ${big} + ${f} = 10. Then ${a+b-10} more makes ${a+b}.`});}},
+ {t:'Adding Tens',e:'🧱',skill:'adding tens',place:{name:'Tens Tower Farm',e:'🚜',desc:'The farmer packs carrots in bundles of ten.'},boss:['🦆','Ten-Quack Duck'],
+  tip:'When you add tens, only the TENS digit changes. Count by tens: 23, 33, 43…',
+  learn(){const a=10*rand(2,4),b=10*rand(1,3),c=rand(12,39),dd=10*rand(1,4);return [{t:`Each rod is one ten. Here is ${a}.`,v:base10(a)},{t:`${a/10} tens + ${b/10} tens = ${(a+b)/10} tens. So ${a} + ${b} = <b>${a+b}</b>.`,v:base10(a+b)},{t:`It works with ones too! ${c} + ${dd}: count by tens: ${range(1,dd/10).map(i=>c+10*i).join(', ')}.`,v:nline(c,c+dd,c,Array(dd/10).fill(10),{every:10})}];},
+  gen(k){let t;if(Math.random()<.45){const x=rand(1,8),y=rand(1,9-x);t=[10*x,10*y];}else{const x=rand(1,7),o=rand(1,9),y=rand(1,8-x);t=[10*x+o,10*y];}return addQ(t,k,{vis:base10(t[0],{lab:false})+'<div class="ctrplus">+</div>'+base10(t[1],{lab:false}),hint:`Count on by tens from ${t[0]}: ${range(1,t[1]/10).map(i=>t[0]+10*i).join(', ')}.`});}},
+ {t:'2-Digit Adding',e:'📏',skill:'adding two-digit numbers',place:{name:'Bumblebee Hives',e:'🐝',desc:'Bees bring nectar home in tens and ones.'},boss:['🐝','Buzz Bungle'],
+  tip:'Line up ones under ones, tens under tens. Always start with the ONES on the right.',
+  learn(){const at=rand(2,5),bt=rand(1,3),ao=rand(1,5),bo=rand(1,4),a=at*10+ao,b=bt*10+bo;return [{t:`${a} + ${b}: stack them so ones are under ones and tens are under tens.`,v:colH(a,b,'+')},{t:`Add the ones first: ${ao} + ${bo} = ${ao+bo}.`,v:colH(a,b,'+',{ans:a+b,ansPart:1,hi:0})},{t:`Then the tens: ${at} + ${bt} = ${at+bt}. So ${a} + ${b} = <b>${a+b}</b>!`,v:colH(a,b,'+',{ans:a+b,hi:1})}];},
+  gen(k){const at=rand(1,8),bt=rand(1,9-at),ao=rand(0,9),bo=rand(0,9-ao),t=[at*10+ao,bt*10+bo];return addQ(t,k,{vis:colH(t[0],t[1],'+'),hint:`Ones: ${ao} + ${bo} = ${ao+bo}. Tens: ${at} + ${bt} = ${at+bt}.`});}},
+ {t:'Regrouping (Carrying)',e:'🛶',skill:'adding with regrouping',place:{name:'Carry-Over Creek',e:'🛶',desc:'When ten ones fill a boat, they carry over to the next one!'},boss:['🦫','Carry-Not Beaver'],
+  tip:'If the ones make 10 or more, trade 10 ones for 1 ten and carry it to the tens column!',
+  learn(){const ao=rand(5,9),bo=rand(10-ao+1,9),at=rand(1,4),bt=rand(1,3),a=at*10+ao,b=bt*10+bo,so=ao+bo;return [{t:`${a} + ${b}. Start with the ones: ${ao} + ${bo} = ${so}. That's more than 9!`,v:base10(a)+'<div class="ctrplus">+</div>'+base10(b)},{t:`10 ones make 1 ten! Trade them: write ${so-10} in the ones and carry the 1 to the tens.`,v:base10(so,{newo:0})+colH(a,b,'+',{top:['','1'],ans:a+b,ansPart:1,hi:0})},{t:`Tens: 1 + ${at} + ${bt} = ${1+at+bt}. So ${a} + ${b} = <b>${a+b}</b>!`,v:colH(a,b,'+',{top:['','1'],ans:a+b,hi:1})}];},
+  gen(k){const ao=rand(1,9),bo=rand(10-ao,9),at=rand(1,7),bt=rand(1,8-at),t=[at*10+ao,bt*10+bo];return addQ(t,k,{vis:colH(t[0],t[1],'+'),hint:`Ones: ${ao} + ${bo} = ${ao+bo}. Write ${ao+bo-10}, carry 1. Tens: 1 + ${at} + ${bt} = ${1+at+bt}.`+colH(t[0],t[1],'+',{top:carries(t)})});}},
+ {t:'3-Digit Regrouping',e:'🏔️',skill:'adding three-digit numbers',place:{name:'Hundred Hill',e:'🏔️',desc:'Up here, the numbers grow into the hundreds!'},boss:['🐐','Hundred-Horn Goat'],
+  tip:'Ones, then tens, then hundreds. Carry whenever a column makes 10 or more.',
+  learn(){let a,b;do{a=rand(150,499);b=rand(150,450);}while(!(a%10+b%10>=10)||a+b>999);const c=carries([a,b]),s=a+b;return [{t:`${a} + ${b}: line up hundreds, tens and ones.`,v:colH(a,b,'+')},{t:`Ones: ${a%10} + ${b%10} = ${a%10+b%10}. Write ${(a+b)%10}${c[1]?', carry 1':''}.`,v:colH(a,b,'+',{top:{1:c[1]},ans:s,ansPart:1,hi:0})},{t:`Tens: ${c[1]?'1 + ':''}${Math.floor(a/10)%10} + ${Math.floor(b/10)%10}. Write ${Math.floor(s/10)%10}${c[2]?', carry 1':''}.`,v:colH(a,b,'+',{top:{1:c[1],2:c[2]},ans:s,ansPart:2,hi:1})},{t:`Hundreds: ${c[2]?'1 + ':''}${Math.floor(a/100)} + ${Math.floor(b/100)} = ${Math.floor(s/100)}. Answer: <b>${s}</b>!`,v:colH(a,b,'+',{top:c,ans:s,hi:2})}];},
+  gen(k){let a,b;do{a=rand(100,799);b=rand(100,799);}while(a+b>999||!hasCarry([a,b]));return addQ([a,b],k,{mc:false,vis:colH(a,b,'+'),hint:'Carry digits go on top:'+colH(a,b,'+',{top:carries([a,b])})});}},
+ {t:'Adding Several Numbers',e:'🧺',skill:'adding several numbers',place:{name:'Picnic Pond',e:'🧺',desc:'Everybody brings snacks for the giant picnic.'},boss:['🐜','Ant Army Pile-Up'],
+  tip:'Look for make-10 friends first, add those, then add the rest!',
+  learn(){const x=rand(3,7),y=rand(2,8);return [{t:`${x} + ${y} + ${10-x}: look for numbers that make 10!`,v:`<div class="eq">${x} + ${y} + ${10-x}</div>`},{t:`${x} + ${10-x} = 10. Add those first!`,v:frames(x,10-x)},{t:`Then 10 + ${y} = <b>${10+y}</b>. Easy!`,v:frames(10,y)},{t:'Bigger numbers? Stack them in columns and add one column at a time.',v:colH([24,13,31],null,'+',{ans:68})}];},
+  gen(k){const r=Math.random();let t;if(r<.45){const x=rand(1,9);t=shuffle([x,10-x,rand(2,9)]);}else if(r<.7)t=[rand(2,9),rand(2,9),rand(2,9),rand(1,9)];else t=[rand(11,39),rand(10,29),rand(10,29)];
+   return addQ(t,k,{vis:t[0]>9?colH(t,null,'+'):'',hint:t[0]>9?'Add the ones column, carry, then the tens.'+colH(t,null,'+',{top:carries(t)}):'Find two numbers that make 10, then add the rest.'});}},
+ {t:'Addition Word Problems',e:'📖',skill:'addition story problems',place:{name:'Meadow Fair',e:'🎡',desc:'The whole meadow comes to the fair, and every game is a story problem!'},boss:['🌀','The Muddle Monster'],final:true,
+  tip:'Clue words like "in all", "altogether", "total" and "more" mean ADD. Draw a picture if it helps!',
+  learn(){const a=rand(12,35),b=rand(11,40),it=itm();return [{t:`Read the story: ${nm(save.hero)} has ${a} ${it.many}. ${tN()} gives ${b} more. How many now?`,v:`<div class="eq">${it.e}</div>`},{t:'Find the numbers and the clue: "more" means we put them together. That\'s adding!',v:`<div class="eq">${a} ➕ ${b}</div>`},{t:`Write it and solve: ${a} + ${b} = <b>${a+b}</b>.`,v:colH(a,b,'+',{top:carries([a,b]),ans:a+b})}];},
+  gen(k){const r=Math.random();if(r<.2){const w=rand(20,60),a=rand(5,w-5);return bondQ(w,a,'a');}let t;if(r<.6)t=[rand(10,59),rand(10,39)];else t=[rand(5,30),rand(5,30),rand(5,20)];return addQ(t,'a',{});}}
+];
+/* ---------- subtraction ---------- */
+function subQ(a,b,kind,o){o=o||{};const d=a-b;const q=Qp(`${a} − ${b} = ?`,d,{m:{op:'sub',a,b},sig:`sub:${a}-${b}`,explain:`${a} − ${b} = ${d}`,lead:o.lead,vis:o.vis,hint:o.hint});
+ if(kind==='a'||(kind==='b'&&Math.random()<.3))storySub(q,a,b);else if(o.mc!==false&&Math.random()<(kind==='b'?.3:.25))mcNum(q,[d+1,d-1,d+10,d-10,a+b,d+2]);return q;}
+function storySub(q,a,b){const it=itm(),H=nm(save.hero),T=tN();const f=pick([0,1,2]);
+ q.text=f===0?`${H} had ${cnt(a,it)} ${it.e}. ${H} gave ${b} to ${T}. How many ${it.many} does ${H} have left?`:f===1?`${H} has ${cnt(a,it)} ${it.e} and ${T} has ${cnt(b,it)}. How many more ${it.many} does ${H} have than ${T}?`:`There were ${cnt(a,it)} ${it.e}. The Muddle Monster's minion took ${b}! How many ${it.many} are left?`;
+ q.lead=STORY;q.story=true;q.sig+=':s'+f;if(a<=12)q.vis=counters(a,it.e,f===1?0:b);}
+function eqnQ(l,op,r,unk,kind){/* l op r = res, one of l/r/res unknown */const res=op==='+'?l+r:l-r;const show=[unk==='l'?'?':l,op==='+'?'+':'−',unk==='r'?'?':r,'=',unk==='res'?'?':res].join(' ');const ans=unk==='l'?l:unk==='r'?r:res;
+ const q=Qp(show,ans,{m:{op:'eqn2',l:unk==='l'?null:l,o:op,r:unk==='r'?null:r,res},sig:`eq:${show}`,lead:'Find the missing number! 🔍',explain:`${l} ${op==='+'?'+':'−'} ${r} = ${res}, so the missing number is ${ans}.`,
+  hint:unk==='l'&&op==='−'?`Think backwards: ${res} + ${r} = ?`:unk==='r'&&op==='−'?`Count up from ${res} to ${l}.`:`Use the fact family: ${res} − ${op==='+'&&unk==='l'?r:l} = ?`});
+ if(kind==='a'){const it=itm(),H=nm(save.hero),T=tN();if(op==='−'&&unk==='l'){q.text=`${H} had some ${it.many} ${it.e}. After giving ${r} to ${T}, ${H} has ${res} left. How many did ${H} have at the start?`;}else if(op==='−'&&unk==='r'){q.text=`${H} had ${cnt(l,it)} ${it.e}. ${T} borrowed some. Now ${H} has ${res}. How many did ${T} borrow?`;}else{q.text=`${H} has ${cnt(op==='+'&&unk==='l'?r:l,it)} ${it.e}. How many more does ${H} need to have ${res}?`;}q.lead=STORY;q.sig+=':s';}return q;}
+const SUB=[
+ {t:'Take Away',e:'✋',skill:'taking away',place:{name:'Glow-Worm Grotto',e:'✨',desc:'Glow-worms light the way, but some keep wandering off!'},boss:['🦇','Bitty Bat'],
+  tip:'Take away means cross them out, then count what is LEFT.',
+  learn(){const a=rand(6,9),b=rand(2,4);return [{t:`There are ${a} glow-worms.`,v:counters(a,'🐛')},{t:`${b} wiggle away. Cross them out!`,v:counters(a,'🐛',b)},{t:`Count what's left: ${a} − ${b} = <b>${a-b}</b>.`,v:frames(a,0,b)}];},
+  gen(k){const a=rand(3,10),b=rand(1,a-1),it=itm();return subQ(a,b,k,{vis:counters(a,it.e),hint:`Cross out ${b} and count the rest.`+counters(a,it.e,b)});}},
+ {t:'Counting Back',e:'⬅️',skill:'counting back on a number line',place:{name:'Number Line Tunnel',e:'🛤️',desc:'A long track runs through the cave with a number on every step.'},boss:['🦂','Back-Step Scorpion'],
+  tip:'Start at the big number and hop BACK one at a time.',
+  learn(){const a=rand(12,18),b=rand(3,4);return [{t:`${a} − ${b}: start at ${a} on the number line.`,v:nline(a-10,a,a,[])},{t:`Hop back ${b} times: ${range(1,b).map(i=>a-i).join(', ')}.`,v:nline(a-10,a,a,Array(b).fill(-1))},{t:`You land on ${a-b}. So ${a} − ${b} = <b>${a-b}</b>!`,v:`<div class="eq">${a} − ${b} = ${a-b}</div>`}];},
+  gen(k){const a=rand(6,20),b=rand(1,4),lo=Math.max(0,a-10);return subQ(a,b,k,{vis:nline(lo,a,a,[]),hint:`Hop back ${b} from ${a}:`+nline(lo,a,a,Array(b).fill(-1),{endq:true})});}},
+ {t:'Fact Families',e:'👨‍👩‍👧',skill:'fact families',place:{name:'Fact Family Cavern',e:'🏠',desc:'Number families live together in cosy crystal houses.'},boss:['🕷️','Family-Tangle Spider'],
+  tip:'If you know an adding fact, you know two taking-away facts too!',
+  learn(){const a=rand(3,8),b=rand(2,7),c=a+b;return [{t:`${a}, ${b} and ${c} are a family.`,v:bondH(c,a,b)},{t:`Adding: ${a} + ${b} = ${c} and ${b} + ${a} = ${c}.`,v:frames(a,b)},{t:`Taking away: ${c} − ${b} = ${a} and ${c} − ${a} = ${b}. Four facts, one family!`,v:`<div class="eq">${c} − ${b} = ${a} · ${c} − ${a} = ${b}</div>`}];},
+  gen(k){const a=rand(2,9),b=rand(2,9),c=a+b;if(k==='p'&&Math.random()<.3){const good=`${c} − ${a} = ${b}`,bad=shuffle([`${a} − ${b} = ${c}`,`${c} + ${a} = ${b}`,`${b} − ${c} = ${a}`,`${c} − ${b} = ${a+1}`]).slice(0,2);const o=shuffle([good].concat(bad));return Qmc(`Which fact belongs to the family ${a}, ${b}, ${c}?`,o.map(x=>({h:x})),o.indexOf(good),{m:{op:'mcfact',opts:o},sig:`fam:${a}:${b}`,lead:'Fact family! 👨‍👩‍👧',vis:bondH(c,a,b),explain:`${good} is in the family.`,hint:`The biggest number (${c}) comes first when you take away.`});}
+   const q=subQ(c,b,k,{hint:`${a} + ${b} = ${c}, so ${c} − ${b} = ${a}.`,vis:bondH(c,'?',b)});if(!q.story){q.text=`${a} + ${b} = ${c}, so ${c} − ${b} = ?`;q.sig+=':f';}return q;}},
+ {t:'Subtracting Within 20',e:'🔟',skill:'subtracting within 20',place:{name:'Crystal Corridor',e:'💎',desc:'Crystals hang in bunches of ten here.'},boss:['🦔','Prickly Twenty'],
+  tip:'Take away down to 10 first, then take away the rest.',
+  learn(){const a=rand(12,16),b=rand(a-9,9);const f=a-10;return [{t:`${a} − ${b}: first take away ${f} to get to 10.`,v:frames(a,0,f)},{t:`${b} − ${f} = ${b-f} more to take away from 10.`,v:frames(a,0,b)},{t:`10 − ${b-f} = <b>${a-b}</b>. So ${a} − ${b} = ${a-b}!`,v:`<div class="eq">${a} − ${f} = 10 ➜ 10 − ${b-f} = ${a-b}</div>`}];},
+  gen(k){const a=rand(11,18),b=rand(Math.max(a%10+1,a-9),9);const f=a-10;return subQ(a,b,k,{vis:frames(a,0),hint:`${a} − ${f} = 10. Then 10 − ${b-f} = ${a-b}.`+frames(a,0,b)});}},
+ {t:'Subtracting Tens',e:'🪨',skill:'subtracting tens',place:{name:'Tens Mine',e:'⛏️',desc:'Miners carry rocks in carts of ten.'},boss:['🪨','Rocky Ten-Ton'],
+  tip:'Taking away tens only changes the TENS digit. Count back by tens!',
+  learn(){const a=rand(5,8)*10+rand(1,9),b=10*rand(2,3);return [{t:`Here is ${a}.`,v:base10(a)},{t:`Take away ${b/10} tens. Count back by tens: ${range(1,b/10).map(i=>a-10*i).join(', ')}.`,v:nline(a-b,a,a,Array(b/10).fill(-10),{every:10})},{t:`The ones didn't change! ${a} − ${b} = <b>${a-b}</b>.`,v:base10(a-b)}];},
+  gen(k){const at=rand(2,9),ao=Math.random()<.4?0:rand(1,9),bt=rand(1,at-(ao?0:1)||1),a=at*10+ao,b=bt*10;return subQ(a,b,k,{vis:base10(a,{lab:false}),hint:`Count back by tens from ${a}: ${range(1,bt).map(i=>a-10*i).join(', ')}.`});}},
+ {t:'2-Digit Subtracting',e:'🔊',skill:'subtracting two-digit numbers',place:{name:'Echo Chamber',e:'🔊',desc:'Every number you shout comes back a little smaller!'},boss:['🦇','Echo Bat'],
+  tip:'Stack the numbers. Subtract the ONES first, then the tens.',
+  learn(){const at=rand(5,8),bt=rand(1,4),ao=rand(5,9),bo=rand(1,ao-1),a=at*10+ao,b=bt*10+bo;return [{t:`${a} − ${b}: big number on top, line up the columns.`,v:colH(a,b,'−')},{t:`Ones: ${ao} − ${bo} = ${ao-bo}.`,v:colH(a,b,'−',{ans:a-b,ansPart:1,hi:0})},{t:`Tens: ${at} − ${bt} = ${at-bt}. So ${a} − ${b} = <b>${a-b}</b>!`,v:colH(a,b,'−',{ans:a-b,hi:1})}];},
+  gen(k){const at=rand(2,9),bt=rand(1,at-1),ao=rand(0,9),bo=rand(0,ao),a=at*10+ao,b=bt*10+bo;return subQ(a,b,k,{vis:colH(a,b,'−'),hint:`Ones: ${ao} − ${bo} = ${ao-bo}. Tens: ${at} − ${bt} = ${at-bt}.`});}},
+ {t:'Borrowing',e:'🌉',skill:'subtracting with borrowing',place:{name:'Borrowing Bridge',e:'🌉',desc:"When you don't have enough ones, you break a ten into ten ones."},boss:['🧌','Borrow Troll'],
+  tip:'Not enough ones? Break 1 ten into 10 ones. Cross out the tens digit and make it one less.',
+  learn(){const at=rand(4,8),bt=rand(1,at-1),ao=rand(1,4),bo=rand(ao+2,9),a=at*10+ao,b=bt*10+bo,bi=borrowInfo(a,b);return [{t:`${a} − ${b}. Ones: ${ao} − ${bo}? We don't have enough ones!`,v:base10(a)+colH(a,b,'−',{hi:0})},{t:`Break one ten into ten ones. Now there are ${at-1} tens and ${ao+10} ones.`,v:base10(a,{brk:true,lab:false})+`<div class="b10lab">break 1 ten ➜ ${at-1} tens, ${ao+10} ones</div>`+colH(a,b,'−',{top:bi.top,strike:bi.strike,hi:0})},{t:`Ones: ${ao+10} − ${bo} = ${ao+10-bo}. Tens: ${at-1} − ${bt} = ${at-1-bt}.`,v:colH(a,b,'−',{top:bi.top,strike:bi.strike,ans:a-b,hi:1})},{t:`So ${a} − ${b} = <b>${a-b}</b>!`,v:`<div class="eq">${a} − ${b} = ${a-b}</div>`}];},
+  gen(k){const at=rand(2,9),bt=rand(1,at-1),ao=rand(0,8),bo=rand(ao+1,9),a=at*10+ao,b=bt*10+bo,bi=borrowInfo(a,b);return subQ(a,b,k,{vis:colH(a,b,'−'),hint:`Break a ten: ${ao} ones become ${ao+10}. ${ao+10} − ${bo} = ${ao+10-bo}.`+colH(a,b,'−',{top:bi.top,strike:bi.strike})});}},
+ {t:'3-Digit & Across Zeros',e:'🕳️',skill:'borrowing across zeros',place:{name:'Zero Pit',e:'🕳️',desc:'Deep down, zeros make borrowing extra tricky!'},boss:['🐉','Zero Dragon'],
+  tip:'A zero has nothing to lend, so go to the next column: the zero becomes 10, then lends 1 and becomes 9.',
+  learn(){const h=rand(3,8),o=rand(0,4),a=h*100+o,b=rand(1,h-1)*100+rand(1,9)*10+rand(o+1,9),bi=borrowInfo(a,b);return [{t:`${a} − ${b}. The ones need borrowing, but the tens digit is 0!`,v:colH(a,b,'−',{hi:0})},{t:`Go to the hundreds: ${h} becomes ${h-1}. The tens get 10.`,v:colH(a,b,'−',{top:{2:String(h-1),1:'10'},strike:{2:true,1:true},hi:1})},{t:`Now a ten can lend: tens become 9, ones become ${o+10}.`,v:colH(a,b,'−',{top:bi.top,strike:bi.strike,hi:0})},{t:`Subtract each column: ${a} − ${b} = <b>${a-b}</b>!`,v:colH(a,b,'−',{top:bi.top,strike:bi.strike,ans:a-b})}];},
+  gen(k){let a,b;if(Math.random()<.55){const h=rand(2,9),o=Math.random()<.3?0:rand(0,8);a=h*100+o;do{b=rand(101,a-1);}while(b%10<=o&&o!==0||!needBorrow(a,b));}else{do{a=rand(300,999);b=rand(100,a-1);}while(!needBorrow(a,b));}
+   const bi=borrowInfo(a,b);return subQ(a,b,k,{mc:false,vis:colH(a,b,'−'),hint:'Borrow marks go on top:'+colH(a,b,'−',{top:bi.top,strike:bi.strike})});}},
+ {t:'Missing Numbers',e:'🔍',skill:'finding missing numbers',place:{name:'Mystery Mine',e:'🔍',desc:'Some numbers here are hiding. Can you find them?'},boss:['👻','Hide-and-Seek Ghost'],
+  tip:'Use the fact family! If ? − 7 = 8, then 8 + 7 = ?.',
+  learn(){const r=rand(5,9),b=rand(4,8),a=r+b;return [{t:`? − ${b} = ${r}. Something take away ${b} leaves ${r}.`,v:bondH('?',b,r)},{t:`Put it back together: ${r} + ${b} = ${a}.`,v:frames(r,b)},{t:`So ? is <b>${a}</b>. Check: ${a} − ${b} = ${r} ✅`,v:`<div class="eq">${a} − ${b} = ${r}</div>`}];},
+  gen(k){const big=Math.random()<.4,l=big?rand(30,90):rand(8,18),r=rand(2,Math.min(l-1,big?40:9));const op=Math.random()<.65?'−':'+';const unk=pick(['l','r']);return eqnQ(op==='+'?r:l,op,op==='+'?(big?rand(10,30):rand(2,9)):r,unk,k);}},
+ {t:'Subtraction Word Problems',e:'📖',skill:'subtraction story problems',place:{name:'Crystal Market',e:'🏪',desc:'Everyone trades crystals here, so every trade tells a story.'},boss:['🌀','The Muddle Monster'],final:true,
+  tip:'"Left", "fewer", "how many more" and "gave away" usually mean SUBTRACT.',
+  learn(){const a=rand(40,90),b=rand(12,a-10),it=itm();return [{t:`${nm(save.hero)} has ${a} ${it.many}. ${tN()} has ${b}. How many more does ${nm(save.hero)} have?`,v:`<div class="eq">${it.e}</div>`},{t:'"How many more" means compare: take the smaller from the bigger.',v:`<div class="eq">${a} − ${b}</div>`},{t:`${a} − ${b} = <b>${a-b}</b>.`,v:(()=>{const bi=borrowInfo(a,b);return colH(a,b,'−',{top:bi.top,strike:bi.strike,ans:a-b});})()}];},
+  gen(k){if(Math.random()<.25){const res=rand(5,30),r=rand(5,25);return eqnQ(res+r,'−',r,'l','a');}const a=rand(20,99),b=rand(5,a-5);return subQ(a,b,'a',{});}}
+];
+/* ---------- division ---------- */
+function divQ(n,d,kind,o){o=o||{};const qv=n/d;const q=Qp(`${n} ÷ ${d} = ?`,qv,{m:{op:'div',n,d},sig:`div:${n}/${d}`,explain:`${d} × ${qv} = ${n}, so ${n} ÷ ${d} = ${qv}`,lead:o.lead,vis:o.vis,hint:o.hint||`Skip count by ${d}s to ${n}: ${range(1,Math.min(qv,12)).map(i=>i*d).join(', ')}.`});
+ if(kind==='a'||(kind==='b'&&Math.random()<.3))storyDiv(q,n,d);else if(o.mc!==false&&Math.random()<(kind==='b'?.3:.2))mcNum(q,[qv+1,qv-1,d,qv+2,n-d,qv*2]);return q;}
+function teamList(k){const ids=teamIds();if(k<=ids.length){const a=ids.slice(0,k).map(nm);return a.slice(0,-1).join(', ')+' and '+a[a.length-1];}return `${k} friends`;}
+function storyDiv(q,n,d){const it=itm(),H=nm(save.hero);const f=pick([0,1]);
+ q.text=f===0?`${teamList(d)} share ${cnt(n,it)} ${it.e} fairly. How many ${it.many} does each one get?`:`${H} packs ${cnt(n,it)} ${it.e} into bags of ${d}. How many bags does ${H} fill?`;q.lead=STORY;q.story=true;q.sig+=':s'+f;if(n<=24)q.vis=counters(n,it.e);}
+function remQ(n,d,kind,o){o=o||{};const Q=Math.floor(n/d),R=n%d;const q=Qqr(`${n} ÷ ${d} = ?`,Q,R,{m:{op:'divr',n,d},sig:`divr:${n}/${d}`,lead:o.lead||'Answer and remainder! 🧩',vis:o.vis,explain:`${d} × ${Q} = ${d*Q}, and ${n} − ${d*Q} = ${R} left over. So ${Q} R ${R}.`,hint:o.hint||`Biggest jump of ${d} that fits: ${d} × ${Q} = ${d*Q}. What's left?`});
+ if(kind==='a'||(kind==='b'&&Math.random()<.3)){const it=itm();q.text=`${teamList(d)} share ${cnt(n,it)} ${it.e} fairly. How many does each one get, and how many are left over?`;q.lead=STORY;q.sig+=':s';}return q;}
+function ldQ(n,d){const L=ldSteps(n,d);const q={input:'ld',L,text:`${n} ÷ ${d}`,lead:'Long division: Divide, Multiply, Subtract, Bring down! 🔦',ans:[L.Q,L.R],m:{op:'divr',n,d},sig:`ld:${n}/${d}`,check:()=>true,explain:`${n} ÷ ${d} = ${L.Q}${L.R?' R '+L.R:''}`};return q;}
+function factQ(op,k){const a=rand(2,9),b=rand(2,9),c=a*b;if(k==='p'&&Math.random()<.3){const good=`${c} ÷ ${a} = ${b}`,bad=shuffle([`${a} ÷ ${b} = ${c}`,`${c} ÷ ${a} = ${b+1}`,`${b} ÷ ${c} = ${a}`,`${c} × ${a} = ${b}`]).slice(0,2);const o=shuffle([good].concat(bad));return Qmc(`Which fact belongs to the family ${a}, ${b}, ${c}?`,o.map(x=>({h:x})),o.indexOf(good),{m:{op:'mcfact',opts:o},sig:`dfam:${a}:${b}`,lead:'Fact family! 👨‍👩‍👧',vis:arrH(a,b,'🟣'),explain:`${good} is in the family.`,hint:`${a} × ${b} = ${c}. The biggest number comes first when you divide.`});}
+ const q=divQ(c,a,k,{hint:`${a} × ${b} = ${c}, so ${c} ÷ ${a} = ${b}.`,vis:c<=40?arrH(a,b,'🟣'):''});if(!q.story&&q.input==='pad'){q.text=`${a} × ${b} = ${c}, so ${c} ÷ ${a} = ?`;q.sig+=':f';}return q;}
+function tableDiv(ds,k){const d=pick(ds),qv=rand(k==='b'?2:1,10),n=d*qv;if(Math.random()<.2&&k!=='a'){const q=Qp(`? × ${d} = ${n}`,qv,{m:{op:'div',n,d},sig:`mdiv:${n}/${d}`,lead:'Find the missing number! 🔍',explain:`${qv} × ${d} = ${n}`,hint:`Skip count by ${d}s until you reach ${n}. How many jumps?`});return q;}return divQ(n,d,k);}
+const DIV=[
+ {t:'Fair Sharing',e:'🤝',skill:'sharing fairly',place:{name:'Sharing Shore',e:'🏖️',desc:'Friends share their treats here so everyone gets the same.'},boss:['🦭','Greedy Seal'],
+  tip:'Deal them out one at a time, like cards: one for you, one for you… until they are all gone.',
+  learn(){const g=3,per=rand(2,4),n=g*per,ids=teamIds().slice(0,3).map(nm);return [{t:`${n} treats to share fairly between ${ids.join(', ')}.`,v:counters(n,'🍬')},{t:'Deal them out one at a time: one for you, one for you, one for you…',v:groupsH(g,per,'🍬',{names:ids})},{t:`Everyone gets ${per}! ${n} ÷ ${g} = <b>${per}</b>.`,v:`<div class="eq">${n} ÷ ${g} = ${per}</div>`}];},
+  gen(k){const g=rand(2,4),per=rand(2,5),n=g*per,it=itm();const q=divQ(n,g,k,{mc:false,vis:counters(n,it.e),hint:`Deal them into ${g} groups:`+groupsH(g,per,it.e)});if(!q.story){q.text=`Share ${n} ${it.many} ${it.e} equally into ${g} groups. How many in each group?`;q.sig+=':g';}return q;}},
+ {t:'Equal Groups & Arrays',e:'🗼',skill:'making equal groups',place:{name:'Lighthouse Steps',e:'🗼',desc:'Hop down the steps the same size each time.'},boss:['🐢','Tumble Turtle'],
+  tip:'Division asks "how many groups?" Keep taking away the group size and count your jumps.',
+  learn(){const per=rand(3,5),g=rand(3,4),n=per*g;return [{t:`${n} ÷ ${per} means: how many groups of ${per} are in ${n}?`,v:arrH(g,per,'🔵')},{t:`Take away ${per} again and again: ${range(1,g).map(i=>n-per*i).join(', ')}.`,v:nline(0,n,n,Array(g).fill(-per),{every:per})},{t:`${g} jumps to reach 0, so ${n} ÷ ${per} = <b>${g}</b>.`,v:`<div class="eq">${n} ÷ ${per} = ${g}</div>`}];},
+  gen(k){const per=rand(2,6),g=rand(2,6),n=per*g;if(k!=='a'&&Math.random()<.4){return Qp(`These ${n} dots are in rows of ${per}. How many rows?`,g,{m:{op:'div',n,d:per},sig:`arr:${n}/${per}`,lead:'Count the rows! 🔵',vis:arrH(g,per,'🔵'),explain:`${n} ÷ ${per} = ${g} rows.`,hint:`Count the rows: each row has ${per}.`});}
+   return divQ(n,per,k,{hint:`Jump back by ${per}s from ${n}:`+nline(0,n,n,Array(g).fill(-per),{every:per,endq:true})});}},
+ {t:'Times & Divide Families',e:'⛴️',skill:'linking division to times tables',place:{name:'Fact Family Ferry',e:'⛴️',desc:'Times and divide families ride the ferry together.'},boss:['🦑','Mix-Up Squid'],
+  tip:'Division is times tables backwards! 3 × 4 = 12, so 12 ÷ 3 = 4 and 12 ÷ 4 = 3.',
+  learn(){const a=rand(3,5),b=rand(3,6),c=a*b;return [{t:`${a} rows of ${b} make ${c}: ${a} × ${b} = ${c}.`,v:arrH(a,b,'🟣')},{t:`Backwards: ${c} split into ${a} rows gives ${b} in each row. ${c} ÷ ${a} = ${b}.`,v:arrH(a,b,'🟣')},{t:`The whole family: ${a} × ${b} = ${c}, ${b} × ${a} = ${c}, ${c} ÷ ${a} = ${b}, ${c} ÷ ${b} = ${a}.`,v:`<div class="eq">${a} × ${b} = ${c} ⇄ ${c} ÷ ${a} = ${b}</div>`}];},
+  gen(k){return factQ('÷',k);}},
+ {t:'Dividing by 2, 5 & 10',e:'⚓',skill:'dividing by 2, 5 and 10',place:{name:'Two-Five-Ten Pier',e:'⚓',desc:'Boats tie up here in twos, fives and tens.'},boss:['🐡','Puff-Pier Pufferfish'],
+  tip:'÷2 is half. ÷10: take off the zero. ÷5: count by fives!',
+  learn(){const q2=rand(3,9),q5=rand(3,9),q10=rand(3,9);return [{t:`÷ 2 means split in half: ${2*q2} ÷ 2 = <b>${q2}</b>.`,v:groupsH(2,q2,'🐟')},{t:`÷ 5: count by fives to ${5*q5}: ${range(1,q5).map(i=>i*5).join(', ')}. That's ${q5} jumps!`,v:nline(0,5*q5,0,Array(q5).fill(5),{every:5})},{t:`÷ 10: just take off the zero! ${10*q10} ÷ 10 = <b>${q10}</b>.`,v:`<div class="eq">${10*q10} ÷ 10 = ${q10}</div>`}];},
+  gen(k){return tableDiv([2,5,10],k);}},
+ {t:'Dividing by 3, 4 & 6',e:'🦀',skill:'dividing by 3, 4 and 6',place:{name:'Crab Cove',e:'🦀',desc:'Crabs march in threes, fours and sixes along the sand.'},boss:['🦀','Clacky Crab'],
+  tip:'Ask yourself: what times the divisor makes this number? ÷4 is halving twice!',
+  learn(){const q=rand(4,8);return [{t:`${3*q} ÷ 3: which 3-times fact makes ${3*q}? 3 × ${q} = ${3*q}.`,v:arrH(3,q,'🦀')},{t:`${4*q} ÷ 4: halve, then halve again: ${4*q} ➜ ${2*q} ➜ <b>${q}</b>.`,v:`<div class="eq">${4*q} ÷ 2 = ${2*q}, ${2*q} ÷ 2 = ${q}</div>`},{t:`${6*q} ÷ 6: 6 × ${q} = ${6*q}, so the answer is <b>${q}</b>.`,v:`<div class="eq">${6*q} ÷ 6 = ${q}</div>`}];},
+  gen(k){return tableDiv([3,4,6],k);}},
+ {t:'Dividing by 7, 8 & 9',e:'🐙',skill:'dividing by 7, 8 and 9',place:{name:'Octopus Reef',e:'🐙',desc:'Octopuses juggle shells in sevens, eights and nines.'},boss:['🐙','Octo-Muddle'],
+  tip:'Use your times tables backwards. For ÷9 the digits of the answer × 9 always add to 9!',
+  learn(){const q=rand(4,9);return [{t:`${7*q} ÷ 7: think 7 × ? = ${7*q}. 7 × ${q} = ${7*q}!`,v:`<div class="eq">7 × ${q} = ${7*q}</div>`},{t:`${8*q} ÷ 8: halve three times! ${8*q} ➜ ${4*q} ➜ ${2*q} ➜ <b>${q}</b>.`,v:`<div class="eq">${8*q} ➜ ${4*q} ➜ ${2*q} ➜ ${q}</div>`},{t:`${9*q} ÷ 9 = <b>${q}</b>, because 9 × ${q} = ${9*q}.`,v:`<div class="eq">${9*q} ÷ 9 = ${q}</div>`}];},
+  gen(k){return tableDiv([7,8,9],k);}},
+ {t:'Remainders',e:'🏝️',skill:'remainders',place:{name:'Leftover Lagoon',e:'🏝️',desc:"Sometimes things don't share out evenly, and a few are left over."},boss:['🦜','Leftover Parrot'],
+  tip:'The remainder is what is LEFT. It must always be smaller than the number you divide by.',
+  learn(){const d=rand(3,4),q=rand(2,4),r=rand(1,d-1),n=d*q+r;return [{t:`Share ${n} fish between ${d} friends.`,v:counters(n,'🐟')},{t:`Each friend gets ${q}. That uses ${d*q}. ${r} ${r===1?'is':'are'} left over!`,v:groupsH(d,q,'🐟',{left:r})},{t:`${n} ÷ ${d} = <b>${q} R ${r}</b>. R means remainder.`,v:`<div class="eq">${n} ÷ ${d} = ${q} R ${r}</div>`}];},
+  gen(k){const d=rand(2,9),q=rand(1,9),r=rand(1,d-1);return remQ(d*q+r,d,k,{hint:`${d} × ${q} = ${d*q}. ${d*q+r} − ${d*q} = ${r} left.`+(d*q+r<=30?groupsH(d,q,'⚫',{left:r}):'')});}},
+ {t:'2-Digit Division',e:'📦',skill:'dividing two-digit numbers',place:{name:'Cargo Crates Wharf',e:'📦',desc:'Crates are packed in tens and ones on the dock.'},boss:['🐋','Cargo Whale'],
+  tip:'Split the number into tens and ones, divide each part, then add.',
+  learn(){const d=rand(2,4),a=d*rand(2,3)*10,b=d*rand(1,3),n=a+b;return [{t:`${n} ÷ ${d}: split ${n} into ${a} and ${b}.`,v:base10(n)},{t:`${a} ÷ ${d} = ${a/d} and ${b} ÷ ${d} = ${b/d}.`,v:`<div class="eq">${a} ÷ ${d} = ${a/d} · ${b} ÷ ${d} = ${b/d}</div>`},{t:`Add them: ${a/d} + ${b/d} = <b>${n/d}</b>. So ${n} ÷ ${d} = ${n/d}!`,v:`<div class="eq">${n} ÷ ${d} = ${n/d}</div>`}];},
+  gen(k){const d=rand(2,6),Q=rand(10,Math.floor(99/d));if(Math.random()<.3){const r=rand(1,d-1);if(d*Q+r<=99)return remQ(d*Q+r,d,k);}const n=d*Q;return divQ(n,d,k,{mc:false,hint:`Split it: ${Math.floor(Q/10)*10*d} ÷ ${d} = ${Math.floor(Q/10)*10}, and ${n-Math.floor(Q/10)*10*d} ÷ ${d} = ${Q%10}.`});}},
+ {t:'Long Division Step by Step',e:'🔦',skill:'long division',ld:true,place:{name:'Long Division Lighthouse',e:'🔦',desc:'The lighthouse keeper uses four steps that light the way.'},boss:['🦈','Long-Fin Shark'],
+  tip:'Does McDonald\'s Sell Burgers? Divide, Multiply, Subtract, Bring down. Repeat until no digits are left!',
+  learnLD(){let d=rand(3,6),Q,r;do{Q=rand(12,32);r=rand(0,d-1);}while(d*Q+r>99||d*Q+r<20);return ldSteps(d*Q+r,d);},
+  learn(){return [];},
+  gen(k){const d=rand(2,9);let Q=rand(10,Math.floor(199/d));const r=Math.random()<.5?0:rand(1,d-1);const n=d*Q+r;if(k==='p')return ldQ(n,d);return r?remQ(n,d,k):divQ(n,d,k,{mc:false,hint:'Use the steps: Divide, Multiply, Subtract, Bring down.'});}},
+ {t:'3-Digit Long Division',e:'🏴‍☠️',skill:'three-digit long division',ld:true,place:{name:'Treasure Ship',e:'🏴‍☠️',desc:'Pirates divide their gold coins with long division.'},boss:['🏴‍☠️','Captain Scramble'],
+  tip:'If the divisor does not go into a number, write 0 in the answer and bring down the next digit.',
+  learnLD(){const d=rand(3,7);let Q,r;do{Q=rand(1,2)*100+(Math.random()<.5?0:rand(1,9))*10+rand(1,9);r=rand(0,d-1);}while(d*Q+r>999);return ldSteps(d*Q+r,d);},
+  learn(){return [];},
+  gen(k){const d=rand(2,9);let Q,n,r;do{Q=Math.random()<.35?rand(1,9)*100+rand(0,9)+0:rand(Math.ceil(100/d),Math.floor(999/d));if(Q>=100&&Math.random()<.4)Q=Math.floor(Q/100)*100+Q%10;r=Math.random()<.5?0:rand(1,d-1);n=d*Q+r;}while(n<100||n>999||Q<10);
+   if(k==='p')return ldQ(n,d);return r?remQ(n,d,k):divQ(n,d,k,{mc:false,hint:'Use the steps: Divide, Multiply, Subtract, Bring down. Write 0 when it does not go.'});}},
+ {t:'Division Word Problems',e:'📖',skill:'division story problems',place:{name:'Harbor Festival',e:'🎏',desc:'Boats from every dock gather for the big harbour festival.'},boss:['🌀','The Muddle Monster'],final:true,
+  tip:'Sharing or grouping? Both mean divide. Then decide what the remainder means in the story!',
+  learn(){const d=4,n=rand(5,8)*4+rand(1,3),Q=Math.floor(n/d),R=n%d;return [{t:`${n} kids go to the boat ride. Each boat holds 4. How many boats do they need?`,v:counters(Math.min(n,30),'🧒')},{t:`${n} ÷ 4 = ${Q} R ${R}. ${Q} boats are full and ${R} ${R===1?'kid is':'kids are'} still waiting!`,v:groupsH(Math.min(Q,8),4,'🧒',{left:R})},{t:`So they need <b>${Q+1}</b> boats. Always check what the remainder means!`,v:`<div class="eq">${Q} full boats + 1 more = ${Q+1}</div>`}];},
+  gen(k){const r=Math.random(),it=itm(),H=nm(save.hero),d=rand(3,8);if(r<.3){const Q=rand(3,12);return divQ(d*Q,d,'a');}if(r<.55){const Q=rand(2,9),R=rand(1,d-1);return remQ(d*Q+R,d,'a');}
+   const Q=rand(3,9),R=rand(1,d-1),n=d*Q+R,need=Math.random()<.5;return Qp(need?`${H} has ${n} ${it.many} ${it.e}. Each box holds ${d}. How many boxes does ${H} need to fit them ALL?`:`${H} has ${n} ${it.many} ${it.e}. ${H} fills boxes of ${d}. How many boxes are completely FULL?`,need?Q+1:Q,{m:{op:need?'divceil':'divfloor',n,d},sig:`dw:${n}/${d}:${need}`,lead:STORY,story:true,explain:`${n} ÷ ${d} = ${Q} R ${R}, so ${need?`${Q} full boxes plus 1 more for the leftovers = ${Q+1}`:`${Q} boxes are full`}.`,hint:`${n} ÷ ${d} = ${Q} R ${R}. What does the remainder mean here?`});}}
+];
+/* ---------- fractions ---------- */
+function frPicQ(n,d,k,o){o=o||{};const usePizza=o.pizza!=null?o.pizza:Math.random()<.5,vis=usePizza?pizza(n,d):fbar(n,d);const ds=o.ds||[2,3,4];
+ const cand=[[n,d]];ds.forEach(dd=>{for(let nn=1;nn<dd;nn++)cand.push([nn,dd]);});cand.push([d-n,d],[n,d+1],[d,n]);
+ const u=[];cand.forEach((c,i)=>{if(c[0]>0&&c[1]>1&&c[0]<c[1]&&(i===0||c[0]*d!==n*c[1])&&!u.some(x=>x[0]===c[0]&&x[1]===c[1]))u.push(c);});const opts=shuffle([u[0]].concat(shuffle(u.slice(1)).slice(0,3)));
+ return Qmc(k==='a'?`${nm(save.hero)} cut a ${usePizza?'pizza':'chocolate bar'} into ${d} equal pieces and gave ${n} to ${tN()}. What fraction did ${tN()} get?`:'What fraction is shaded?',opts.map(x=>({h:frH(x[0],x[1]),say:frSay(x[0],x[1]),v:x})),opts.findIndex(x=>x[0]===n&&x[1]===d),{m:{op:'frname',n,d,opts},sig:`frp:${n}/${d}:${usePizza}`,lead:k==='a'?STORY:'Count the shaded pieces! 🍕',vis,explain:`${n} of ${d} equal pieces = ${frH(n,d)}`,hint:`Bottom number: how many equal pieces in all (${d}). Top number: how many are shaded.`});}
+function frBuildQ(n,d,k){const q=Qfr('What fraction is shaded? Fill in the top and bottom.',frExact(n,d),[n,d],{m:{op:'frname',n,d},sig:`frb:${n}/${d}`,lead:'Build the fraction! 🧁',vis:fbar(n,d),explain:`${n} shaded out of ${d} equal parts = ${frH(n,d)}`,hint:`Count ALL the parts for the bottom (${d}). Count the shaded parts for the top.`});
+ if(k==='a'){q.text=`${nm(save.hero)} baked a tray of ${d} muffins. ${tN()} ate ${n}. What fraction of the muffins did ${tN()} eat?`;q.lead=STORY;q.vis=fbar(n,d,{col:'#f59e0b'});q.sig+=':s';}return q;}
+function frCmpQ(a,b,k){/* a,b = [n,d] */const va=a[0]/a[1],vb=b[0]/b[1];const big=Math.random()<.6;const ai=(big?va>vb:va<vb)?0:1;const H=nm(save.hero),T=tN();
+ const opts=k==='a'?[{h:esc(H),v:a},{h:esc(T),v:b}]:[{h:frH(a[0],a[1]),say:frSay(a[0],a[1]),v:a},{h:frH(b[0],b[1]),say:frSay(b[0],b[1]),v:b}];
+ return Qmc(k==='a'?`${H} ate ${frH(a[0],a[1])} of a cake. ${T} ate ${frH(b[0],b[1])} of the same size cake. Who ate ${big?'MORE':'LESS'}?`:`Which fraction is ${big?'BIGGER':'SMALLER'}?`,opts,ai,{m:{op:'frcmp',a,b,want:big?'big':'small'},sig:`frc:${a.join('/')}:${b.join('/')}:${big}`,lead:k==='a'?STORY:'Compare! ⚖️',vis:fbar(a[0],a[1],{lab:true})+fbar(b[0],b[1],{lab:true}),
+  explain:`${frH(a[0],a[1])} ${va>vb?'>':'<'} ${frH(b[0],b[1])}`,hint:a[1]===b[1]?'Same size pieces: more pieces means bigger!':`Make the bottoms the same: ${frH(a[0]*lcm(a[1],b[1])/a[1],lcm(a[1],b[1]))} and ${frH(b[0]*lcm(a[1],b[1])/b[1],lcm(a[1],b[1]))}.`});}
+const FR=[
+ {t:'Halves, Thirds & Fourths',e:'🍕',skill:'halves, thirds and fourths',place:{name:'Pizza Parlor',e:'🍕',desc:'Every pizza here must be cut into EQUAL slices.'},boss:['🐭','Nibbles the Crumb Mouse'],
+  tip:'Fractions only work when every piece is the SAME size.',
+  learn(){return [{t:'Cut a pizza into 2 equal pieces: each piece is one half, written 1/2.',v:pizza(1,2)},{t:'3 equal pieces are thirds. One piece is 1/3.',v:pizza(1,3)},{t:'4 equal pieces are fourths (or quarters). 3 pieces are 3/4.',v:pizza(3,4)+fbar(3,4,{lab:true})}];},
+  gen(k){const d=pick([2,3,4]),n=rand(1,d-1);if((k==='p'&&Math.random()<.35)||(k==='b'&&Math.random()<.4)){const cs=[];[2,3,4].forEach(dd=>{for(let nn=1;nn<dd;nn++)if(nn*d!==n*dd)cs.push([nn,dd]);});const ps=shuffle([[n,d]].concat(shuffle(cs).slice(0,2)));const ai=ps.findIndex(x=>x[0]===n&&x[1]===d);return Qmc(`Which picture shows ${frH(n,d)}?`,ps.map(x=>({h:pizza(x[0],x[1],90),v:x})),ai,{m:{op:'frname',n,d,opts:ps},sig:`frpick:${n}/${d}`,lead:'Find the picture! 🔎',explain:`${frH(n,d)} means ${n} of ${d} equal pieces.`,hint:`Look for ${d} equal slices with ${n} shaded.`});}
+   return frPicQ(n,d,k,{pizza:k==='b'?null:true});}},
+ {t:'Numerator & Denominator',e:'🥧',skill:'naming fractions',place:{name:'Pie Shop',e:'🥧',desc:'The baker writes a fraction on every pie box.'},boss:['🦝','Pie-Snatch Raccoon'],
+  tip:'The bottom number (denominator) says how many equal parts. The top (numerator) says how many we have.',
+  learn(){const d=rand(5,8),n=rand(2,d-1);return [{t:`This bar has ${d} equal parts. That's the DENOMINATOR, the bottom number.`,v:fbar(0,d)},{t:`${n} parts are coloured. That's the NUMERATOR, the top number.`,v:fbar(n,d)},{t:`So the fraction is ${frH(n,d)}: ${frSay(n,d)}.`,v:fbar(n,d,{lab:true})}];},
+  gen(k){const d=rand(3,10),n=rand(1,d-1);const r=Math.random();if(k==='p'&&r<.3){const top=Math.random()<.5;return Qp(`In ${frH(n,d)}, what is the ${top?'numerator (top)':'denominator (bottom)'}?`,top?n:d,{m:{op:'frpart',n,d,top},sig:`frpart:${n}/${d}:${top}`,lead:'Name the parts! 🥧',vis:fbar(n,d),explain:`The ${top?'numerator':'denominator'} is ${top?n:d}.`,hint:'Numerator on top, denominator at the bottom (D for Down!).'});}
+   return frBuildQ(n,d,k);}},
+ {t:'Fractions on a Number Line',e:'🥖',skill:'fractions on a number line',place:{name:'Baguette Bridge',e:'🥖',desc:'A giant baguette stretches from 0 to 1, marked in equal pieces.'},boss:['🐜','Crumb-Line Ant'],
+  tip:'Count the jumps between 0 and 1 for the bottom number. Count jumps to the dot for the top.',
+  learn(){const d=pick([3,4,5,6]),n=rand(1,d-1);return [{t:`The space from 0 to 1 is cut into ${d} equal jumps.`,v:fline(d,null)},{t:`Each jump is ${frH(1,d)}. Count the jumps: ${range(1,d-1).map(i=>i+'/'+d).join(', ')}.`,v:fline(d,null,{labels:true})},{t:`The dot is ${n} jumps from 0, so it's at ${frH(n,d)}.`,v:fline(d,n)}];},
+  gen(k){const d=pick([2,3,4,5,6,8]),n=rand(1,d-1);if(Math.random()<.5){const q=frPicQ(n,d,k,{ds:[d,d===2?4:d-1]});q.vis=fline(d,n);q.text=k==='a'?`${nm(save.hero)} walked along the baguette bridge from 0 to 1. The bridge has ${d} equal parts and ${nm(save.hero)} stopped after ${n}. What fraction is that?`:'What fraction is at the dot?';q.sig='frl:'+n+'/'+d+':'+k;q.hint=`Count the jumps between 0 and 1 (${d}), then count jumps to the dot.`;return q;}
+   const q=frBuildQ(n,d,k);q.vis=fline(d,n);q.text='Which fraction is at the dot? Fill in the top and bottom.';q.sig='frlb:'+n+'/'+d;return q;}},
+ {t:'Comparing (Same Bottom)',e:'🧁',skill:'comparing fractions',place:{name:'Cupcake Counter',e:'🧁',desc:'Cupcake trays are lined up for the big taste test.'},boss:['🐝','Sugar-Buzz Bee'],
+  tip:'Same denominator = same size pieces. More pieces means a bigger fraction!',
+  learn(){const d=rand(5,8),a=rand(1,d-2),b=rand(a+1,d-1);return [{t:`${frH(a,d)} and ${frH(b,d)} have the same bottom number, so the pieces are the same size.`,v:fbar(a,d,{lab:true})+fbar(b,d,{lab:true})},{t:`${b} pieces is more than ${a} pieces.`,v:`<div class="eq">${b} &gt; ${a}</div>`},{t:`So ${frH(b,d)} &gt; ${frH(a,d)}. The alligator mouth eats the bigger one! 🐊`,v:`<div class="eq">${frH(b,d)} &gt; ${frH(a,d)}</div>`}];},
+  gen(k){const d=rand(3,12),a=rand(1,d-1);let b;do{b=rand(1,d-1);}while(b===a);return frCmpQ([a,d],[b,d],k);}},
+ {t:'Equivalent Fractions',e:'🎂',skill:'equivalent fractions',place:{name:'Cake Layer Lab',e:'🎂',desc:'Cakes are sliced in different ways, but some slices are just the same size!'},boss:['🧁','Muffin Mix-Up'],
+  tip:'Multiply the top AND bottom by the same number and you get an equal fraction.',
+  learn(){const d=pick([2,3,4]),n=rand(1,d-1),m=rand(2,3);return [{t:`Here is ${frH(n,d)}.`,v:fbar(n,d,{lab:true,w:260})},{t:`Cut every piece into ${m}. Now there are ${d*m} pieces and ${n*m} are shaded.`,v:fbar(n*m,d*m,{lab:true,w:260})},{t:`Same amount! ${frH(n,d)} = ${frH(n*m,d*m)}, because ${n} × ${m} = ${n*m} and ${d} × ${m} = ${d*m}.`,v:`<div class="eq">${frH(n,d)} = ${frH(n*m,d*m)}</div>`}];},
+  gen(k){const d=rand(2,6),n=rand(1,d-1),m=rand(2,4);if(k!=='a'&&Math.random()<.3){const good=[n*m,d*m],bad=shuffle([[n*m,d*m+1],[n+m,d+m],[n*m+1,d*m],[d*m,n*m]]).filter((x,i,a)=>x[0]*d!==n*x[1]&&x[0]<x[1]&&a.findIndex(y=>y[0]===x[0]&&y[1]===x[1])===i).slice(0,2);const o=shuffle([good].concat(bad));return Qmc(`Which fraction is equal to ${frH(n,d)}?`,o.map(x=>({h:frH(x[0],x[1]),say:frSay(x[0],x[1]),v:x})),o.indexOf(good),{m:{op:'freqmc',n,d,opts:o},sig:`freqm:${n}/${d}:${m}`,lead:'Find the twin fraction! 👯',vis:fbar(n,d,{w:260}),explain:`${frH(n,d)} = ${frH(n*m,d*m)}`,hint:'Multiply the top and bottom by the same number.'});}
+   const top=Math.random()<.6;const q=Qp(top?`${frH(n,d)} = ${frH('?',d*m)}`:`${frH(n,d)} = ${frH(n*m,'?')}`,top?n*m:d*m,{m:{op:'freq',n,d,N:top?null:n*m,D:top?d*m:null},sig:`freq:${n}/${d}:${m}:${top}`,lead:'Make an equal fraction! 🎂',vis:fbar(n,d,{w:260})+fbar(n*m,d*m,{w:260}),explain:`${frH(n,d)} = ${frH(n*m,d*m)} (× ${m})`,hint:top?`${d} × ${m} = ${d*m}. So multiply the top by ${m} too.`:`${n} × ${m} = ${n*m}. So multiply the bottom by ${m} too.`});
+   if(k==='a'){q.text=`${nm(save.hero)} ate ${frH(n,d)} of a cake. ${tN()} cut the same size cake into ${d*m} slices and wants to eat the same amount. How many slices should ${tN()} eat?`;q.ans=n*m;q.check=v=>v===n*m;q.m={op:'freq',n,d,N:null,D:d*m};q.lead=STORY;q.sig+=':s';}return q;}},
+ {t:'Simplifying',e:'🍪',skill:'simplifying fractions',place:{name:'Cookie Cutter Corner',e:'🍪',desc:'Bakers squash big fractions down into their smallest shape.'},boss:['🐊','Snappy Cookie Croc'],
+  tip:'Find a number that divides BOTH top and bottom. Keep going until nothing else works.',
+  learn(){const d=pick([3,4,5]),n=rand(1,d-1),m=rand(2,3);return [{t:`${frH(n*m,d*m)} looks big. Can we make it simpler?`,v:fbar(n*m,d*m,{w:260})},{t:`${n*m} and ${d*m} can both be divided by ${m}.`,v:`<div class="eq">${n*m} ÷ ${m} = ${n} · ${d*m} ÷ ${m} = ${d}</div>`},{t:`So ${frH(n*m,d*m)} = ${frH(n,d)}. Same amount, simplest form!`,v:fbar(n,d,{w:260,lab:true})}];},
+  gen(k){let d=rand(2,8),n=rand(1,d-1);while(gcd(n,d)!==1){d=rand(2,8);n=rand(1,d-1);}const m=rand(2,5),N=n*m,D=d*m;const q=Qfr(`Simplify ${frH(N,D)}`,v=>v[1]>0&&v[0]*D===N*v[1]&&gcd(v[0],v[1])===1,[n,d],{m:{op:'frsimp',N,D},sig:`frs:${N}/${D}`,lead:'Make it as simple as possible! 🍪',vis:fbar(N,D,{w:280}),explain:`Divide top and bottom by ${m}: ${frH(N,D)} = ${frH(n,d)}`,hint:`Both ${N} and ${D} can be divided by ${m}.`});
+   if(k==='a'){q.text=`${tN()} ate ${N} of the ${D} cookie pieces. ${nm(save.hero)} says that's a simpler fraction. What is ${frH(N,D)} in simplest form?`;q.lead=STORY;q.sig+=':s';}return q;}},
+ {t:'Comparing (Different Bottoms)',e:'🥞',skill:'comparing fractions with different denominators',place:{name:'Pancake Stack',e:'🥞',desc:'Pancakes are cut in all sorts of ways. Which piece is bigger?'},boss:['🦩','Flip-Flap Flamingo'],
+  tip:'Make the bottoms the same first, then compare the tops!',
+  learn(){const a=[2,3],b=[3,4],c=lcm(3,4);return [{t:`Which is bigger, ${frH(2,3)} or ${frH(3,4)}? The pieces are different sizes.`,v:fbar(2,3,{lab:true,w:240})+fbar(3,4,{lab:true,w:240})},{t:`Make the bottoms the same (${c}): ${frH(2,3)} = ${frH(8,c)} and ${frH(3,4)} = ${frH(9,c)}.`,v:fbar(8,c,{w:240})+fbar(9,c,{w:240})},{t:`9 twelfths beats 8 twelfths, so ${frH(3,4)} &gt; ${frH(2,3)}!`,v:`<div class="eq">${frH(3,4)} &gt; ${frH(2,3)}</div>`}];},
+  gen(k){let a,b;do{const d1=pick([2,3,4,5,6,8]),d2=pick([2,3,4,5,6,8].filter(x=>x!==d1));a=[rand(1,d1-1),d1];b=[rand(1,d2-1),d2];}while(a[0]*b[1]===b[0]*a[1]);return frCmpQ(a,b,k);}},
+ {t:'Adding & Subtracting Fractions',e:'🥤',skill:'adding and subtracting fractions',place:{name:'Smoothie Station',e:'🥤',desc:'Mix fractions of fruit to make the perfect smoothie.'},boss:['🐻','Gulp the Smoothie Bear'],
+  tip:'Same bottoms? Just add or subtract the TOPS. The bottom stays the same!',
+  learn(){const d=rand(5,8),a=rand(1,3),b=rand(1,d-a-1);return [{t:`${frH(a,d)} + ${frH(b,d)}: the pieces are the same size (${frSay(1,d)}).`,v:fbar(a,d,{lab:true})+fbar(b,d,{lab:true,col:'#60a5fa'})},{t:`Add the tops: ${a} + ${b} = ${a+b}. The bottom stays ${d}.`,v:fbar(a+b,d,{lab:true})},{t:`So ${frH(a,d)} + ${frH(b,d)} = ${frH(a+b,d)}. Subtracting works the same way!`,v:`<div class="eq">${frH(a+b,d)} − ${frH(b,d)} = ${frH(a,d)}</div>`}];},
+  gen(k){const d=rand(3,12),add=Math.random()<.55;let a,b;if(add){a=rand(1,d-1);b=rand(1,d-a);}else{a=rand(2,d);b=rand(1,a-1);}const r=add?a+b:a-b;
+   const q=Qfr(`${frH(a,d)} ${add?'+':'−'} ${frH(b,d)} = ?`,frEq(r,d),[r,d],{m:{op:add?'fradd':'frsub',a:[a,d],b:[b,d]},sig:`fra:${a}${add?'+':'-'}${b}/${d}`,lead:add?'Add the tops! 🥤':'Subtract the tops! 🥤',vis:fbar(a,d)+(add?fbar(b,d,{col:'#60a5fa'}):''),explain:`${a} ${add?'+':'−'} ${b} = ${r}, so the answer is ${frH(r,d)}`,hint:`The bottom stays ${d}. ${a} ${add?'+':'−'} ${b} = ?`});
+   if(k==='a'){q.text=add?`${nm(save.hero)} poured ${frH(a,d)} of a jug of smoothie and ${tN()} poured ${frH(b,d)}. How much of the jug did they pour together?`:`There was ${frH(a,d)} of a jug left. ${tN()} drank ${frH(b,d)}. How much is left now?`;q.lead=STORY;q.sig+=':s';}return q;}},
+ {t:'Mixed Numbers',e:'🍩',skill:'mixed numbers and improper fractions',place:{name:'Donut Den',e:'🍩',desc:'Whole donuts and leftover pieces fill the shelves.'},boss:['🐷','Donut Hog'],
+  tip:'Improper ➜ mixed: divide top by bottom. Mixed ➜ improper: whole × bottom + top.',
+  learn(){const d=pick([3,4,5]),w=rand(1,2),n=rand(1,d-1),N=w*d+n;return [{t:`${frH(N,d)} has more pieces than one whole. It's an improper fraction.`,v:fbar(d,d)+(w>1?fbar(d,d):'')+fbar(n,d)},{t:`${N} ÷ ${d} = ${w} R ${n}: that's ${w} whole${w>1?'s':''} and ${frH(n,d)} more.`,v:`<div class="eq">${frH(N,d)} = ${mixH(w,n,d)}</div>`},{t:`Back again: ${w} × ${d} + ${n} = ${N}, so ${mixH(w,n,d)} = ${frH(N,d)}.`,v:`<div class="eq">${mixH(w,n,d)} = ${frH(N,d)}</div>`}];},
+  gen(k){const d=rand(2,8),w=rand(1,4),n=rand(1,d-1),N=w*d+n;if(Math.random()<.5){const q=Object.assign(Qfr(`Write ${frH(N,d)} as a mixed number.`,v=>v[0]===w&&v[2]>0&&v[1]<v[2]&&v[1]*d===n*v[2],[w,n,d],{m:{op:'tomixed',N,d},sig:`tomix:${N}/${d}`,lead:'Whole number and a fraction! 🍩',vis:Array(w).fill(fbar(d,d)).join('')+fbar(n,d),explain:`${N} ÷ ${d} = ${w} R ${n}, so ${mixH(w,n,d)}`,hint:`How many times does ${d} go into ${N}? That's the whole number. The leftover is the top.`}),{lay:'mix',nf:3});
+    if(k==='a'){q.text=`${tN()} has ${N} donut pieces, and each piece is ${frH(1,d)} of a donut. How many whole donuts is that, and what fraction is left over?`;q.lead=STORY;q.sig+=':s';}return q;}
+   const q=Qp(`${mixH(w,n,d)} = ${frH('?',d)}`,N,{m:{op:'toimp',w,n,d},sig:`toimp:${w}_${n}/${d}`,lead:'Make it improper! 🍩',vis:Array(w).fill(fbar(d,d)).join('')+fbar(n,d),explain:`${w} × ${d} + ${n} = ${N}`,hint:`Whole × bottom + top: ${w} × ${d} + ${n}.`});
+   if(k==='a'){q.text=`${nm(save.hero)} has ${mixH(w,n,d)} pizzas, all cut into ${d} slices. How many slices is that?`;q.lead=STORY;q.sig+=':s';}return q;}},
+ {t:'Adding Different Bottoms',e:'📖',skill:'adding fractions with different denominators',place:{name:'Recipe Room',e:'📖',desc:'The secret recipes mix halves, thirds and quarters.'},boss:['🧙','Recipe Wizard Wobble'],
+  tip:'Find a common bottom number, change both fractions, then add the tops.',
+  learn(){return [{t:`${frH(1,2)} + ${frH(1,4)}: the pieces are different sizes. We can't add them yet!`,v:fbar(1,2,{lab:true,w:240})+fbar(1,4,{lab:true,w:240,col:'#60a5fa'})},{t:`Change ${frH(1,2)} into fourths: ${frH(1,2)} = ${frH(2,4)}.`,v:fbar(2,4,{lab:true,w:240})},{t:`Now ${frH(2,4)} + ${frH(1,4)} = <b>${frH(3,4)}</b>!`,v:fbar(3,4,{lab:true,w:240})}];},
+  gen(k){const pairs=[[2,4],[2,6],[3,6],[2,8],[4,8],[2,3],[3,4],[2,5],[4,6],[3,9],[5,10],[2,10]];let d1,d2,a,b,D,N;do{[d1,d2]=pick(pairs);if(Math.random()<.5)[d1,d2]=[d2,d1];a=rand(1,d1-1);b=rand(1,d2-1);D=lcm(d1,d2);N=a*D/d1+b*D/d2;}while(N>D);
+   const q=Qfr(`${frH(a,d1)} + ${frH(b,d2)} = ?`,frEq(N,D),[N,D],{m:{op:'fraddu',a:[a,d1],b:[b,d2]},sig:`frau:${a}/${d1}+${b}/${d2}`,lead:'Common bottoms first! 📖',vis:fbar(a,d1,{w:240})+fbar(b,d2,{w:240,col:'#60a5fa'}),explain:`${frH(a,d1)} = ${frH(a*D/d1,D)} and ${frH(b,d2)} = ${frH(b*D/d2,D)}, so the total is ${frH(N,D)}`,hint:`Use ${D} for the bottom: ${frH(a,d1)} = ${frH(a*D/d1,D)}, ${frH(b,d2)} = ${frH(b*D/d2,D)}.`});
+   if(k==='a'){q.text=`The recipe needs ${frH(a,d1)} cup of sugar and ${frH(b,d2)} cup of flour. ${nm(save.hero)} and ${tN()} pour them in the same bowl. How many cups is that altogether?`;q.lead=STORY;q.sig+=':s';}return q;}},
+ {t:'Fraction of a Number',e:'🏆',skill:'finding a fraction of a number',place:{name:'Grand Bake-Off',e:'🏆',desc:'The final contest! Every baker must share their treats in fractions.'},boss:['🌀','The Muddle Monster'],final:true,
+  tip:'To find a fraction of a number: divide by the bottom, multiply by the top.',
+  learn(){const d=pick([3,4]),k=rand(2,4),N=d*k,n=rand(1,d-1);return [{t:`Find ${frH(n,d)} of ${N}. First split ${N} into ${d} equal groups.`,v:groupsH(d,k,'🍪')},{t:`Each group has ${N} ÷ ${d} = ${k}.`,v:`<div class="eq">${N} ÷ ${d} = ${k}</div>`},{t:`Take ${n} group${n>1?'s':''}: ${n} × ${k} = <b>${n*k}</b>. So ${frH(n,d)} of ${N} is ${n*k}!`,v:`<div class="eq">${frH(n,d)} of ${N} = ${n*k}</div>`}];},
+  gen(k){const d=pick([2,3,4,5,6,8,10]),g=rand(2,6),N=d*g,n=rand(1,d-1);const q=Qp(`${frH(n,d)} of ${N} = ?`,n*g,{m:{op:'frof',n,d,N},sig:`frof:${n}/${d}:${N}`,lead:'Fraction of a number! 🏆',vis:N<=30?groupsH(d,g,'🍪'):'',explain:`${N} ÷ ${d} = ${g}, then ${g} × ${n} = ${n*g}`,hint:`Divide ${N} by ${d}, then multiply by ${n}.`});
+   if(k==='a'||(k==='b'&&Math.random()<.3)){const it=itm();q.text=`${nm(save.hero)} baked ${N} ${it.many} ${it.e}. ${tN()} gets ${frH(n,d)} of them. How many ${it.many} does ${tN()} get?`;q.lead=STORY;q.sig+=':s';}return q;}}
+];
+/* ---------- the five realms of the Number Kingdom ---------- */
+const SUBJ=[
+ {id:'add',name:'Addition',op:'+',realm:'Addition Meadow',e:'🌼',col:'#22c55e',col2:'#bbf7d0',bg:'linear-gradient(#bbf7d0,#fef08a 60%,#86efac)',props:['flower','flower','fruit','flower','star','flower'],ch:ADD,grades:['none','prek','k','1','2'],
+  lost:'the meadow forgot how to put things together, so nothing can grow',back:'flowers are blooming all over the meadow again',champ:'Addition Champions'},
+ {id:'sub',name:'Subtraction',op:'−',realm:'Subtraction Caves',e:'💎',col:'#6366f1',col2:'#c7d2fe',bg:'linear-gradient(#c4b5fd,#818cf8 55%,#a5b4fc)',props:['star','shell','star','shell','star','star'],ch:SUB,grades:['1','2'],
+  lost:'the crystals forgot how to take away, so the caves went dark',back:'the crystals are glowing all through the caves again',champ:'Subtraction Champions'},
+ {id:'mult',name:'Multiplication',op:'×',realm:'Times Table Castle',e:'🏰',col:'#f59e0b',col2:'#fde68a',bg:'linear-gradient(#fde68a,#f9a8d4 55%,#a78bfa)',props:['star','flower','fruit','star','flower','star'],grades:['2','3','4'],
+  lost:'all twelve times tables are scrambled',back:'every times table is in order again',champ:'Times Table Champions'},
+ {id:'div',name:'Division',op:'÷',realm:'Division Docks',e:'⚓',col:'#0ea5e9',col2:'#bae6fd',bg:'linear-gradient(#bae6fd,#38bdf8 60%,#fde68a)',props:['shell','shell','fruit','star','shell','shell'],ch:DIV,grades:['3','4','5','6'],
+  lost:'the boats cannot share their cargo fairly, so nobody can sail',back:'boats are sailing and sharing fairly again',champ:'Division Champions'},
+ {id:'frac',name:'Fractions',op:'½',realm:'Fraction Bakery',e:'🧁',col:'#ec4899',col2:'#fbcfe8',bg:'linear-gradient(#fecdd3,#fde68a 60%,#fbcfe8)',props:['fruit','star','flower','fruit','star','fruit'],ch:FR,grades:['3','4','5','6'],
+  lost:'every cake, pie and pizza is cut into wobbly, unfair pieces',back:'every treat is sliced into fair, equal pieces again',champ:'Fraction Champions'}];
+const SUBJ_BY=Object.fromEntries(SUBJ.map(s=>[s.id,s]));
+/* what each hero says when they arrive in a realm / start a chapter */
+const HSUB={
+ add:{sage:["Adding is like adding voices to a choir: more singers, bigger song! 🎤","La-la-la, let's put the numbers together! 🎶"],
+  emi:["More flowers, more fun! Let's make the meadow bloom! 🌸","I love adding flowers to my garden. Let's go! 🌷"],
+  blu:["More drums in the band! Boom, boom, BOOM! 🥁","Add a beat, add a star! ⭐"],
+  eshon:["I'll draw one group, then another, then the big group! ✏️","Adding is like drawing more characters into my comic! 🖍️"],
+  melrose:["Every seashell I add makes the meadow sparkle more! 🐚✨","Fairies love adding sparkles. Let's go! 🧚"],
+  cayden:["Adding is like scoring points. Let's run up the score! 🏀","Two points plus three points? That's a combo! 🏈"]},
+ sub:{sage:["I'll sing a countdown song: ten, nine, eight… 🎤","Subtraction is like a song getting quieter, one voice at a time. 🎶"],
+  emi:["When I pick flowers, I count how many are left in the garden. 🌸","Let's light up the caves, one crystal at a time! 💎"],
+  blu:["Count backwards with the drum: boom… boom… boom! 🥁","Stars in the dark cave! I'll find them! ⭐"],
+  eshon:["I'll draw the crystals, then rub some out to see what's left! ✏️","Every cave needs a map. I'll draw one! 🗺️"],
+  melrose:["Even mermaids explore caves! Splash, here I come! 🧜‍♀️","When the tide takes shells away, I count what's left. 🐚"],
+  cayden:["We're ahead on the scoreboard. Subtract to find out by how much! 🏆","Defence time! Take those muddles away! 🛡️"]},
+ mult:{sage:["Times tables are my favourite song! 2, 4, 6, 8! 🎤","Let's sing our way through the castle! 🎶"],
+  emi:["Rows and rows of flowers: that's multiplying! 🌷","Equal rows in my garden! Let's go! 🌸"],
+  blu:["Beats in groups! Boom-boom, boom-boom! 🥁","Stars in rows! ⭐"],
+  eshon:["I'll draw arrays of characters, row after row! ✏️","Multiplying is like copying a drawing again and again! 🖍️"],
+  melrose:["Rows of seashells, rows of pearls! Let's multiply! 🐚","Fairy wings come in pairs: that's times two! 🧚"],
+  cayden:["Three-pointers times four? That's twelve points! 🏀","Practice drills in rows! Let's go! 🏈"]},
+ div:{sage:["I'll sing a sharing song, one for you and one for me! 🎤","Skip-counting songs help with dividing! 🎶"],
+  emi:["Let's put the same number of flowers in every vase! 💐","Sharing is caring! 🌸"],
+  blu:["One for you, one for me! ⭐","Boats and stars! Boom! 🥁"],
+  eshon:["I'll draw circles for groups and share the dots! ✏️","Every pirate needs a fair share! I'll draw the treasure map! 🗺️"],
+  melrose:["The docks are by the sea, my favourite place! 🧜‍♀️","Mermaids always share their pearls fairly! 🦪"],
+  cayden:["Coach always splits us into equal teams. That's dividing! 🏀","Fair teams make a fair game! ⚖️"]},
+ frac:{sage:["Half notes and quarter notes: music has fractions! 🎤","Let's sing while we bake! 🎶"],
+  emi:["Fair slices for everyone! 🍰","I'll decorate every slice with a flower! 🌸"],
+  blu:["Yummy! Cake! 🧁","Pizza pieces! Same size! 🍕"],
+  eshon:["I'll draw fraction pictures with my magic pencil! ✏️","Fraction bars look like comic panels! 🖍️"],
+  melrose:["Fairy cupcakes need equal sprinkles! 🧁","A mermaid tea party with cake slices! 🫖"],
+  cayden:["Pizza for the whole team, cut fair and square! 🍕","Halftime is half the game: that's a fraction! 🏈"]}};
+/* teammate teamwork lines: {rel} = what the hero is to the speaker */
+const TEAM_SUB={
+ add:{emi:["I'll plant my garden in rows, {rel}! Then we count on from the biggest row. 🌷","Look: 4 tulips plus 3 daisies. Let's add my garden together! 🌸"],
+  blu:["Bum, bum, bum! Each drum beat is one more. Count on with my music, {rel}! 🥁","Clap with me, {rel}! One clap for each number we add! 👏"],
+  sage:["I'll sing the counting-on song, {rel}: start with the big number, then sing the rest! 🎤","Doubles are like a duet: two singers, same song! 🎶"],
+  eshon:["I'll draw ten-frames, {rel}! When all ten boxes fill up, that's a ten! ✏️","I'll sketch the blocks: tens are tall rods, ones are tiny cubes! 🖍️"],
+  melrose:["I'll line up my seashells in pairs, {rel}. Doubles are like mermaid twins! 🐚","Let's put the pearls together and count them all! 🦪"],
+  cayden:["Points add up like a basketball score, {rel}! Let's keep counting! 🏀","Teamwork! You add the ones, I'll carry the tens like a quarterback! 🏈"]},
+ sub:{emi:["If the Muddle Monster picks some flowers, we count what's left in my garden, {rel}. 🌸","Take away the weeds and count the flowers left! 🌷"],
+  blu:["Hop back on the number line to the beat, {rel}: boom, boom, boom! 🥁","Count down with me! Ten, nine, eight… blast off! 🚀"],
+  sage:["Fact families are like a song with four verses, {rel}! 🎶","I'll sing it backwards: 15, 14, 13! 🎤"],
+  eshon:["I'll draw the ten breaking into ten little ones, {rel}. Crack! ✏️","Look, I drew a picture: cross some out and count the rest! 🖍️"],
+  melrose:["When the tide takes seashells away, we count back what's still on the sand, {rel}. 🌊","Let's find the missing pearls! 🦪"],
+  cayden:["It's like the scoreboard, {rel}: we're ahead, so subtract to find by how much! 🏆","Break a ten like a power move: one ten becomes ten ones! ⚡"]},
+ mult:{emi:["Let's plant equal rows of flowers, {rel}! 🌷","Rows times flowers in each row! 🌸"],
+  blu:["Boom-boom! Two beats, then two more! 🥁","Count the stars by twos with me, {rel}! ⭐"],
+  sage:["I'll sing the skip-counts, {rel}: 3, 6, 9, 12! 🎤","Times tables are better when we sing them! 🎶"],
+  eshon:["I'll draw the arrays, {rel}, row by row! ✏️","I drew the same picture three times. That's times three! 🖍️"],
+  melrose:["Rows of shells on the sand, {rel}! 🐚","Fairy dust in equal sprinkles! ✨"],
+  cayden:["Every drill has equal sets, {rel}! 🏀","Four quarters, three points each! 🏈"]},
+ div:{emi:["Let's put the flowers into vases, {rel}, the same number in each! 💐","Every garden bed gets the same number of seeds! 🌱"],
+  blu:["Share the stars fair and square, {rel}: one for you, one for me! ⭐","My drum says: boom, boom, share! 🥁"],
+  sage:["I'll sing a skip-count, {rel}: 3, 6, 9, 12! That tells us how many groups! 🎤","Division is times tables sung backwards! 🎶"],
+  eshon:["I'll draw circles for the groups and dots inside, {rel}. Division pictures! ✏️","Let me sketch the long division steps for you! 🖍️"],
+  melrose:["{rel}, let's split our treats fairly. One for you, one for me, until they're all gone! 🍬","Fair shares of pearls for every mermaid! 🦪"],
+  cayden:["Coach says: split the team into equal squads. That's dividing, {rel}! 🏀","Let's split these snacks fairly, {rel}. One for you, one for me! 🍪"]},
+ frac:{emi:["I'll cut the flower cake into equal slices, {rel}: every piece the same size! 🎂","Half the garden is tulips, half is daisies! 🌷"],
+  blu:["A whole note, a half note, a quarter note! Music has fractions too, {rel}! 🎵","Me and you, half and half! 🧁"],
+  sage:["Let's sing it, {rel}: the top number counts, the bottom number names the slices! 🎶","Half a song, then the other half! 🎤"],
+  eshon:["I'll draw fraction pictures, {rel}! Same size pieces, or it's not fair! ✏️","Look, I drew a pizza cut into fourths! 🍕"],
+  melrose:["Fairy cupcakes in halves and quarters, {rel}. Sprinkles on every piece! 🧁","A mermaid tea party: everyone gets an equal slice! 🫖"],
+  cayden:["Pizza time, {rel}! We cut it in equal slices for the whole team. 🍕","A game has four quarters. That's fourths! 🏈"]}};
+const REPLY=["Great idea, {T}! Let's do it together!","Thanks, {T}! You're the best {R} ever!","Teamwork makes it easy! Thanks, {T}!","Yes! {T} and me, the best team!"];
+const STAUNTS={add:["Muddle, muddle! I mixed up all the adding so nothing grows!","You'll never put these numbers back together!"],
+ sub:["Hee hee! I hid the crystals in the dark! You can't take away my muddles!","Borrow? Never! I keep all my tens!"],
+ div:["Share? NEVER! I keep all the treasure for myself!","My cargo is too jumbled to share fairly!"],
+ frac:["I cut every cake into wobbly pieces! Nobody gets a fair slice!","Crumbs and muddles, crumbs and muddles!"]};
+const SFINAL={add:"I am the MUDDLE MONSTER! I scrambled every sum in the meadow, and now I'll mix up your stories too!",
+ sub:"I am the MUDDLE MONSTER! I stole every crystal in the caves! Come and take them back, if you can!",
+ div:"I am the MUDDLE MONSTER! I'll never share the harbour treasure! Mwa-ha-ha!",
+ frac:"I am the MUDDLE MONSTER! I'll eat the WHOLE cake, not just a fraction! Mwa-ha-ha!"};
+const REALM_OWL={add:"Welcome to Addition Meadow! Here we put numbers together, from counting on all the way to adding hundreds.",
+ sub:"Welcome to the Subtraction Caves! Here we take away, count back, and learn to borrow.",
+ mult:"Welcome to Times Table Castle! Twelve times tables are waiting, from ×1 to ×12.",
+ div:"Welcome to the Division Docks! Here we share fairly, make equal groups, and learn long division.",
+ frac:"Welcome to the Fraction Bakery! Here we cut treats into equal pieces and learn all about fractions."};
+/* ---------- v9: subject select, subject maps and the subject lesson / practice / apply / boss flow ---------- */
+let lastMap=null;
+function goMap(){if(!save.hero)return titleScreen();if(lastMap==='mult')return mapScreen();if(lastMap&&SUBJ_BY[lastMap]&&SUBJ_BY[lastMap].ch)return smapScreen(lastMap);subjectScreen();}
+function SP(sid,pf){pf=pf||P();if(!pf.subj||typeof pf.subj!=='object')pf.subj={};if(!pf.subj[sid])pf.subj[sid]={stars:{},hist:{},intro:false};const o=pf.subj[sid];if(!o.stars)o.stars={};if(!o.hist)o.hist={};return o;}
+function sCount(sid){return sid==='mult'?ORDER.length:SUBJ_BY[sid].ch.length;}
+function sStars(sid,pf){pf=pf||P();if(sid==='mult')return ORDER.reduce((s,n)=>s+((pf.stars||{})[n]||0),0);const o=pf.subj&&pf.subj[sid];return o&&o.stars?Object.values(o.stars).reduce((a,b)=>a+(b||0),0):0;}
+function sDone(sid,pf){pf=pf||P();if(sid==='mult')return ORDER.filter(n=>(pf.stars||{})[n]).length;const o=pf.subj&&pf.subj[sid];return o&&o.stars?Object.keys(o.stars).filter(k=>o.stars[k]>0).length:0;}
+function allStars(pf){return SUBJ.reduce((s,x)=>s+sStars(x.id,pf),0);}
+function sUnlocked(sid){const o=SP(sid),N=sCount(sid);let i=0;while(i<N&&o.stars[i+1])i++;return i;}
+function nextReward(){const pf=P();return REWARDS[save.hero].find(r=>!pf.rewards.includes(r.id))||null;}
+function gradeBadge(sb,pf){if(!hasAbout(pf)||!sb.grades.includes(pf.grade))return '';const g=gradeOf(pf.grade);
+ return /^\d$/.test(g[0])?`⭐ Recommended for ${g[1]} grade`:g[0]==='k'?'⭐ Recommended for Kindergarten':g[0]==='prek'?'⭐ Recommended for Pre-K':'⭐ A great place to start';}
+function subjectScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SS=null;SC=null;stopSpeech();lastMap=null;if(save.lastSubj){save.lastSubj=null;persist();}const pf=P();
+ let h=`<div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>Where to, ${esc(pf.name)}?</h2><div class="big" style="font-size:18px">The Muddle Monster scrambled all five realms of the Number Kingdom! Pick one to explore. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(subjectScreen,true)">✏️ About me</button></div></div></div></div><div class="subjects" id="subjects">`;
+ SUBJ.forEach(sb=>{const N=sCount(sb.id),d=sDone(sb.id,pf),st=sStars(sb.id,pf),bd=gradeBadge(sb,pf);
+  h+=`<button class="stile ${bd?'rec':''}" data-subject="${sb.id}" style="--sc:${sb.col};--sc2:${sb.col2}" onclick="openSubject('${sb.id}')"><div class="se">${sb.e}</div><div class="sop">${sb.op}</div><div class="sname">${sb.name}</div><div class="srealm">${sb.realm}</div>
+  <div class="sbar"><i style="width:${Math.round(d/N*100)}%"></i></div><div class="sprog"><span>📖 ${d}/${N} chapters</span><span>⭐ ${st}/${N*3}</span></div>${bd?`<div class="sbadge">${bd}</div>`:''}</button>`;});
+ h+=`</div><div class="center" style="margin-top:18px"><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button><button class="btn gray sm" onclick="pickHero(save.hero)">✏️ Change name</button><button class="btn gray sm" onclick="resetProgress()">🗑️ Reset ${esc(pf.name)}</button></div>`;
+ show(h);}
+function openSubject(sid){SFX.tap();save.lastSubj=sid;const o=SP(sid);if(sid==='mult'&&sStars('mult')>0)o.intro=true;persist();
+ const go=()=>sid==='mult'?mapScreen():smapScreen(sid);
+ if(!o.intro)playScene(realmScene(sid),()=>{SP(sid).intro=true;persist();go();});else go();}
+const Lt=(who,text)=>{const l=L(who,text);l.text=l.text.charAt(0).toUpperCase()+l.text.slice(1);return l;};
+const tw=x=>x===sibId()?'sib':x;
+function realmScene(sid){const sb=SUBJ_BY[sid],h=save.hero;
+ return {title:`${sb.e} ${sb.realm}`,place:{bg:sb.bg,props:sb.props},lines:[L('owl',REALM_OWL[sid]),L('owl',`But the Muddle Monster came here too, and ${sb.lost}!`),L('hero',HSUB[sid][h][0]),
+  ...SIBS[h].map(x=>Lt(tw(x),TEAM_SUB[sid][x][0])),L('owl',"Every chapter has a lesson, practice, story problems and a boss. Beat a boss to unlock the next chapter!")],extras:SIBS[h].slice(1),endLabel:'Open the map 🗺️'};}
+function smapScreen(sid){if(!save.hero)return titleScreen();const sb=SUBJ_BY[sid];if(!sb||!sb.ch)return subjectScreen();stopConfetti();S=null;SS=null;SC=null;stopSpeech();lastMap=sid;if(save.lastSubj!==sid){save.lastSubj=sid;persist();}
+ const pf=P(),o=SP(sid),u=sUnlocked(sid),N=sb.ch.length,all=u>=N;
+ let h=`<div class="card realmhead" style="--sc:${sb.col};--sc2:${sb.col2}"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>${sb.e} ${esc(pf.name)}'s ${sb.realm}</h2><div class="big" style="font-size:18px">${sb.name}: beat each chapter's boss to unlock the next one. ⭐ <b>${sStars(sid)}/${N*3}</b></div><div class="abmap"><button class="btn blue sm tosub" id="toSubjects" onclick="subjectScreen()">↩ All subjects</button><button class="abedit" id="abEdit" onclick="aboutScreen(()=>smapScreen('${sid}'),true)">✏️ About me</button></div></div></div></div><div class="levels slevels" style="--hc:${sb.col}">`;
+ sb.ch.forEach((c,i)=>{const locked=i>u,st=o.stars[i+1]||0,isNext=i===u;
+  h+=`<button class="lvl ${locked?'locked':''} ${st?'done':''} ${isNext?'next':''} ${c.final?'final':''}" data-chapter="${i+1}" ${locked?'disabled':''} onclick="openChapter('${sid}',${i+1})">${isNext?'<span class="tag">PLAY!</span>':''}<div class="lch">Chapter ${i+1}</div><div class="lnum ltxt">${c.e}</div><div class="lboss">${locked?'🔒':(c.final?monsterSVG():c.boss[0])}</div><div class="lplace">${c.t}</div><div class="lstars">${starStr(st)}</div></button>`;});
+ h+='</div>';
+ if(all)h+=`<div class="card center"><div class="winheroes"><div class="w1">${heroSVG(save.hero,HS().win)}</div>${SIBS[save.hero].map((x,i)=>`<div class="w${i+2>3?4:i+2}">${heroSVG(x,'cheer')}</div>`).join('')}</div><h2>🏆 ${sb.champ}!</h2><p class="big">${sb.realm} is saved: ${sb.back}! Replay chapters to collect all ${N*3} stars.</p></div>`;
+ h+=`<div class="center" style="margin-top:18px"><button class="btn blue" onclick="subjectScreen()">↩ Subjects</button><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button></div>`;
+ show(h);}
+/* ---------- session ---------- */
+function bossHPs(c,ch){return ch.final?8:c<=3?5:c<=7?6:7;}
+function makeSS(sid,c,prev){const sb=SUBJ_BY[sid],ch=sb.ch[c-1],o=SP(sid),h=save.hero,attempt=prev?prev.attempt+1:1,team=SIBS[h][((c-1)+(attempt-1))%SIBS[h].length];
+ SS={sid,c,ch,sb,attempt,team};const avoid=new Set(o.hist[c]||[]),used=new Set();
+ const gen=(k,n,from,own)=>{const out=[],mine=own||used;let tries=0;while(out.length<n&&tries<600){tries++;const src=from?from():ch;const q=src.gen(k);if(mine.has(q.sig)&&tries<550)continue;if(avoid.has(q.sig)&&tries<400)continue;if(own&&used.has(q.sig)&&tries<200)continue;mine.add(q.sig);out.push(q);}return out;};
+ SS.practice=gen('p',4);SS.apply=gen('a',2);SS.max=bossHPs(c,ch);
+ const prevCh=ch.final?()=>Math.random()<.5?ch:sb.ch[rand(Math.max(0,c-5),c-2)]:null;
+ SS.boss=shuffle(gen('b',SS.max+HEARTS,prevCh,new Set()));
+ o.hist[c]=SS.boss.map(q=>q.sig);persist();
+ if(ch.ld)SS.L=ch.learnLD();else SS.steps=ch.learn();
+ return SS;}
+function openChapter(sid,c){SFX.tap();save.lastSubj=sid;persist();makeSS(sid,c);playScene(sIntroScene(),sLearn);}
+function sPlace(){const ch=SS.ch,sb=SS.sb;return {bg:sb.bg,props:sb.props,name:ch.place.name,e:ch.place.e};}
+function sExtras(all){const h=save.hero,T=SS.team,s=sibId();if(all)return SIBS[h].slice(1);return T!==s?[T]:[];}
+function sBossBits(){const ch=SS.ch;return {boss:true,bossFace:ch.final?monsterSVG():`<span style="font-size:1em">${ch.boss[0]}</span>`,bossName:ch.boss[1]};}
+function replyLine(){const T=SS.team;return L('hero',pick(REPLY).replace(/\{T\}/g,nm(T)).replace(/\{R\}/g,relTo(save.hero,T)));}
+function sIntroScene(){const ch=SS.ch,sb=SS.sb,sid=SS.sid,h=save.hero,T=SS.team,pl=sPlace();let lines;
+ if(SS.attempt>1)lines=[L('owl',pick(RETRY_OWL)),L('hero',pick(RETRY_HERO[h])),Lt(tw(T),TEAM_SUB[sid][T][1]),replyLine(),L('owl',`New numbers and new stories this time! Let's learn ${ch.skill} again.`)];
+ else lines=[L('owl',`Chapter ${SS.c}: the ${pl.name}! ${ch.place.desc}`),L('owl',ch.final?`The Muddle Monster himself is hiding here, mixing up all the ${sb.name.toLowerCase()} stories!`:`But the Muddle Monster scrambled ${ch.skill} here, and ${ch.boss[1]} is guarding the way!`),
+  L('hero',pick(HSUB[sid][h])),Lt(tw(T),TEAM_SUB[sid][T][SS.c%2]),replyLine(),L('owl',`Tap the scene to wake it up. Then let's learn ${ch.skill}, {hero}!`)];
+ return {title:`${pl.e} ${pl.name}`,place:pl,lines,extras:sExtras(),endLabel:'Start the lesson 📚'};}
+function sMidScene(){const ch=SS.ch,sid=SS.sid,h=save.hero,T=SS.team;
+ return Object.assign({title:`⚔️ ${ch.boss[1]}`,place:sPlace(),lines:[L('owl',ch.final?'The ground shakes… it is the MUDDLE MONSTER himself!':`Uh-oh! ${ch.boss[1]}, a sneaky minion of the Muddle Monster, jumps out!`),L('boss',ch.final?SFINAL[sid]:pick(STAUNTS[sid])),
+  Lt(tw(T),pick(SIDE[T])),L('hero',pick(BRAVE[h])),L('owl',`Get ${SS.max} answers right to win. You have ${HEARTS} hearts. Use your ${H().power}!`)],extras:sExtras(),endLabel:'Fight! ⚔️'},sBossBits());}
+function sOutroScene(newR){const ch=SS.ch,sb=SS.sb,h=save.hero,T=SS.team,pl=sPlace();
+ const lines=[L('owl',ch.final?`You did it! The Muddle Monster ran away from ${sb.realm}, and ${sb.back}!`:`Hooray! ${ch.boss[1]} is beaten and the ${pl.name} is fixed!`),L('hero',pick(VICTORY[h])),Lt(tw(T),pick(SIB_PROUD[T]))];
+ SIBS[h].filter(x=>x!==T).slice(0,1).forEach(x=>lines.push(Lt(tw(x),pick(SIB_PROUD[x]))));
+ lines.push(L('owl',`${H().power} and teamwork saved the day, {hero}!`+(ch.final?` You and {team} are true ${sb.champ}!`:'')));
+ if(newR)lines.push(L('owl',`You earned a treasure: ${newR.name}! Find it in your ${H().closet}.`));
+ return {title:`🎉 ${pl.name} is saved!`,place:pl,lines,extras:sExtras(true),pose:'cheer',endLabel:'Yay! 🎉'};}
+function sLoseScene(){const ch=SS.ch,h=save.hero,T=SS.team;const nt=SIBS[h][((SS.c-1)+SS.attempt)%SIBS[h].length];
+ return Object.assign({title:'💪 Try again!',place:sPlace(),lines:[L('owl',`Oh no! ${ch.boss[1]} won this round. But every mistake helps your brain grow!`),Lt(tw(T),pick(LOSE_SIB[T])),L('hero',pick(LOSE_HERO[h])),
+  L('owl',`The Muddle Monster shuffled all the numbers! This time ${nm(nt)} will help you. Let's learn it again with new ones.`)],extras:sExtras(),endLabel:'Try again 🔁'},sBossBits());}
+/* ---------- learn ---------- */
+function sStageBar(stage){const st=[['learn','📚 Learn'],['practice','🎯 Practice'],['apply','🌍 Apply'],['boss','⚔️ Boss']];
+ return `<div class="stagebar"><span class="pill lv" style="background:${SS.sb.col}">${SS.sb.e} Ch.${SS.c} · ${SS.ch.t}</span>${st.map(([k,l])=>`<span class="pill ${k===stage?'on':''}" data-stage="${k}">${l}</span>`).join('')}</div>`;}
+function teamBubble(){const T=SS.team;return `<div class="tmsay"><b>${HSTYLE[T].tag} ${esc(nm(T))}:</b> “${esc(Lt(tw(T),TEAM_SUB[SS.sid][T][(SS.c+1)%2]).text)}”</div>`;}
+function sLearnHead(){return `<div class="learnhead slh"><div class="minihero" id="mh">${heroSVG(save.hero)}</div><div class="minihero" id="mt">${heroSVG(SS.team)}</div><div class="slt"><h2>📚 ${SS.ch.e} ${SS.ch.t}</h2>${teamBubble()}</div></div>`;}
+function sLearn(){SS.cur=null;if(SS.ch.ld)return sLearnLD();SS.li=0;
+ show(`${sStageBar('learn')}<div class="card" id="learnCard">${sLearnHead()}<div id="lsteps" class="lsteps"></div><div id="ltip" class="tipbox hidden"></div>
+ <div class="row"><button class="btn purple" id="showBtn" data-enter onclick="sLearnNext()">✨ Show me</button><button class="btn green hidden" id="nextbtn" data-enter onclick="sPracticeStart()">Start Practice 🎯</button></div></div>`);
+ sLearnNext();}
+function sLearnNext(){if(!SS)return;const st=SS.steps;
+ if(SS.li<st.length){const s=st[SS.li];$('lsteps').insertAdjacentHTML('beforeend',`<div class="lstep" data-step="${SS.li}"><div class="lsn">${SS.li+1}</div><div class="lsb"><div class="lst">${s.t}</div>${s.v?`<div class="lsv">${s.v}</div>`:''}</div></div>`);
+  speak(stripH(s.t),'owl');SS.li++;SFX.tap();if(SS.li>=st.length)$('showBtn').textContent='💡 Show me the trick';const el=$('lsteps').lastElementChild;if(el&&el.scrollIntoView&&SS.li>1)el.scrollIntoView({behavior:'smooth',block:'nearest'});}
+ else{const t=$('ltip');t.innerHTML=`<b>💡 Easy trick:</b> ${SS.ch.tip}`;t.classList.remove('hidden');speak('Easy trick! '+stripH(SS.ch.tip),'owl');SFX.good();$('showBtn').classList.add('hidden');$('nextbtn').classList.remove('hidden');if(t.scrollIntoView)t.scrollIntoView({behavior:'smooth',block:'nearest'});}}
+function ldSeq(L){const q=[];L.steps.forEach((s,k)=>{q.push([k,'D'],[k,'M'],[k,'S']);if(s.bring!=null)q.push([k,'B']);});return q;}
+function ldAfter(L,seq,i){return i+1<seq.length?{k:seq[i+1][0],ph:seq[i+1][1]}:{k:L.steps.length,ph:'end'};}
+function ldSay(L,k,ph){const s=L.steps[k],d=L.d;
+ if(ph==='D')return (k===0&&String(s.cur).length>1&&L.dg[0]<d?`${d} can't go into ${L.dg[0]}, so we look at ${s.cur}. `:'')+`Divide: how many ${d}s fit in ${s.cur}? ${s.q}! Write ${s.q} on top.`;
+ if(ph==='M')return `Multiply: ${s.q} × ${d} = ${s.m}. Write ${s.m} under ${s.cur}.`;
+ if(ph==='S')return `Subtract: ${s.cur} − ${s.m} = ${s.r}.`+(s.r>=d?' Too big! Check the divide step.':'');
+ return `Bring down the next digit, ${s.bring}. Now we have ${s.r*10+s.bring}.`;}
+function ldDone(L){return `No more digits to bring down! ${L.n} ÷ ${L.d} = <b>${L.Q}${L.R?' R '+L.R:''}</b>`+(L.R?` (${L.R} left over).`:'.');}
+function sLearnLD(){const L=SS.L;SS.ldi=-1;SS.ldseq=ldSeq(L);
+ show(`${sStageBar('learn')}<div class="card" id="learnCard">${sLearnHead()}
+ <div class="lstep"><div class="lsb"><div class="lst">Let's solve <b>${L.n} ÷ ${L.d}</b> with long division. Every round has 4 steps: <b>Divide, Multiply, Subtract, Bring down</b>. Then repeat!</div></div></div>
+ <div id="ldmsb">${dmsbBar('')}</div><div id="ldbox">${ldHTML(L,{k:0,ph:'D'},{k:0,ph:'D'})}</div><div class="ldsay" id="ldsay">Tap “Show me” to do one step at a time.</div><div id="ltip" class="tipbox hidden"></div>
+ <div class="row"><button class="btn purple" id="showBtn" data-enter onclick="sLearnLDNext()">✨ Show me</button><button class="btn green hidden" id="nextbtn" data-enter onclick="sPracticeStart()">Start Practice 🎯</button></div></div>`);
+ speak(`Let's solve ${L.n} divided by ${L.d} with long division. Divide, multiply, subtract, bring down!`,'owl');}
+function sLearnLDNext(){if(!SS)return;const L=SS.L,seq=SS.ldseq;SS.ldi++;SFX.tap();
+ if(SS.ldi<seq.length){const [k,ph]=seq[SS.ldi];$('ldbox').innerHTML=ldHTML(L,ldAfter(L,seq,SS.ldi),{k,ph});$('ldmsb').innerHTML=dmsbBar(ph);const t=ldSay(L,k,ph);$('ldsay').innerHTML=t;speak(stripH(t),'owl');}
+ else if(SS.ldi===seq.length){$('ldbox').innerHTML=ldHTML(L,{k:L.steps.length,ph:'end'},null);$('ldmsb').innerHTML=dmsbBar('');const t=ldDone(L);$('ldsay').innerHTML=t;speak(stripH(t),'owl');$('showBtn').textContent='💡 Show me the trick';}
+ else{const t=$('ltip');t.innerHTML=`<b>💡 Easy trick:</b> ${SS.ch.tip}`;t.classList.remove('hidden');speak('Easy trick! '+stripH(SS.ch.tip),'owl');SFX.good();$('showBtn').classList.add('hidden');$('nextbtn').classList.remove('hidden');}}
+/* ---------- questions & inputs ---------- */
+function sPadHTML(){return `<div class="pad spad" id="spad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button data-k="${d}" onclick="sPad('${d}')">${d}</button>`).join('')}<button class="del" data-k="del" onclick="sDel()">⌫</button><button data-k="0" onclick="sPad('0')">0</button><button class="ok" id="sok" data-k="ok" onclick="sOK()">✔</button></div>`;}
+function sInputHTML(q){
+ if(q.input==='mc')return `<div class="opts sopts ${q.opts.some(o=>/<svg|class="fbar/.test(o.h))?'pics':''}" id="sopts">${q.opts.map((o,i)=>`<button class="opt" data-i="${i}" onclick="sPick(${i},this)">${o.h}</button>`).join('')}</div>`;
+ if(q.input==='ld')return `<div id="ldmsb">${dmsbBar('D')}</div><div id="ldbox"></div><div class="ldask" id="ldask"></div><div class="center"><div class="ansbox" id="sans">?</div></div><div class="center"><button class="btn blue sm hidden" id="bringBtn" onclick="sOK()">⬇️ Bring it down!</button></div>${sPadHTML()}`;
+ if(q.input==='multi'){const b=i=>`<span class="fbox" id="f${i}" data-f="${i}" onclick="sFocus(${i})">?</span>`;let h;
+  if(q.lay==='frac')h=`<div class="fstack">${b(0)}<span class="fbarline"></span>${b(1)}</div>`;
+  else if(q.lay==='mix')h=`<div class="mixin">${b(0)}<div class="fstack">${b(1)}<span class="fbarline"></span>${b(2)}</div></div><div class="flab">whole · top · bottom</div>`;
+  else h=`<div class="qrin">${b(0)}<b class="rlab">R</b>${b(1)}</div><div class="flab">answer · remainder</div>`;
+  return `<div class="multi center" id="smulti">${h}</div>${sPadHTML()}`;}
+ return `<div class="center"><div class="ansbox" id="sans">?</div></div>${sPadHTML()}`;}
+function sQHTML(q){return `<div class="qcard sq ${q.story?'story':''}">${q.lead?`<div class="qlead">${q.lead}</div>`:''}<div class="${q.story?'qstory':'qeq'}">${q.text}</div>${q.vis?`<div class="qvis">${q.vis}</div>`:''}</div>${sInputHTML(q)}`;}
+function sInpReset(q){SS.vals=Array(q.nf||1).fill('');SS.fi=0;SS.ldStep=0;SS.ldTry=0;SS.ldErr=0;}
+function sRenderInp(){const q=SS.cur;if(!q)return;
+ if(q.input==='multi'){for(let i=0;i<(q.nf||1);i++){const e=$('f'+i);if(e){e.textContent=SS.vals[i]===''?'?':SS.vals[i];e.classList.toggle('on',i===SS.fi&&!SS.locked);}}}
+ else{const a=$('sans');if(a)a.textContent=SS.vals[0]===''?'?':SS.vals[0];}}
+function sFocus(i){if(!SS||SS.locked)return;SS.fi=i;SFX.tap();sRenderInp();}
+function sPad(d){if(!SS||!SS.cur||SS.locked||SS.cur.input==='mc')return;if(SS.cur.input==='ld'&&SS.ldPh==='B')return;const v=SS.vals[SS.fi];if(v.length>=5)return;SS.vals[SS.fi]=(v==='0'?'':v)+d;SFX.tap();sRenderInp();}
+function sDel(){if(!SS||!SS.cur||SS.locked)return;const v=SS.vals[SS.fi];if(v===''&&SS.fi>0&&SS.cur.input==='multi')SS.fi--;else SS.vals[SS.fi]=v.slice(0,-1);SFX.tap();sRenderInp();}
+function sOK(){if(!SS||!SS.cur||SS.locked)return;const q=SS.cur;
+ if(q.input==='ld')return ldAnswer();
+ if(SS.vals[SS.fi]===''){const e=$(q.input==='multi'?'f'+SS.fi:'sans');if(e){e.classList.remove('shake');void e.offsetWidth;e.classList.add('shake');}return;}
+ if(q.input==='multi'){const nx=SS.vals.findIndex(v=>v==='');if(nx>=0){SS.fi=nx;SFX.tap();sRenderInp();return;}
+  const v=SS.vals.map(x=>parseInt(x,10)),ok=!!q.check(v);SS.locked=true;sRenderInp();document.querySelectorAll('#smulti .fbox').forEach(e=>e.classList.add(ok?'ok':'no'));SS.onAnswer(ok);return;}
+ const v=parseInt(SS.vals[0],10),ok=!!q.check(v);SS.locked=true;const a=$('sans');if(a)a.classList.add(ok?'ok':'no');SS.onAnswer(ok);}
+function sPick(i,el){if(!SS||!SS.cur||SS.locked)return;const q=SS.cur,ok=!!q.check(i);SS.locked=true;el.classList.add(ok?'right':'wrong');if(!ok){const r=document.querySelector(`#sopts .opt[data-i="${q.ans}"]`);if(r)r.classList.add('right');}SS.onAnswer(ok);}
+/* long division: the kid fills in each Divide / Multiply / Subtract / Bring-down step */
+function ldInit(){const q=SS.cur,L=q.L;SS.ldseq=ldSeq(L);SS.ldStep=0;SS.ldTry=0;SS.ldErr=0;ldShow();}
+function ldShow(){const q=SS.cur,L=q.L,seq=SS.ldseq,i=SS.ldStep;
+ if(i>=seq.length){$('ldbox').innerHTML=ldHTML(L,{k:L.steps.length,ph:'end'},null);$('ldmsb').innerHTML=dmsbBar('');$('ldask').innerHTML=ldDone(L);$('sans').classList.add('hidden');$('bringBtn').classList.add('hidden');return;}
+ const [k,ph]=seq[i],s=L.steps[k];SS.ldPh=ph;SS.vals=[''];
+ $('ldbox').innerHTML=ldHTML(L,{k,ph},{k,ph});$('ldmsb').innerHTML=dmsbBar(ph);
+ const ask=ph==='D'?`➗ <b>Divide:</b> how many times does ${L.d} go into <b>${s.cur}</b>?`:ph==='M'?`✖️ <b>Multiply:</b> ${s.q} × ${L.d} = ?`:ph==='S'?`➖ <b>Subtract:</b> ${s.cur} − ${s.m} = ?`:`⬇️ <b>Bring down</b> the next digit (${s.bring}).`;
+ $('ldask').innerHTML=ask;$('sans').classList.toggle('hidden',ph==='B');$('bringBtn').classList.toggle('hidden',ph!=='B');$('sans').classList.remove('ok','no');sRenderInp();}
+function ldAnswer(){const q=SS.cur,L=q.L,seq=SS.ldseq,[k,ph]=seq[SS.ldStep],s=L.steps[k];
+ if(ph!=='B'&&SS.vals[0]==='')return;
+ const want=ph==='D'?s.q:ph==='M'?s.m:ph==='S'?s.r:null,v=ph==='B'?null:parseInt(SS.vals[0],10);
+ if(ph==='B'||v===want){SFX.good();SS.ldTry=0;if(ph!=='B')$('sans').classList.add('ok');SS.ldStep++;
+  setTimeout(()=>{if(!SS||SS.cur!==q)return;ldShow();if(SS.ldStep>=seq.length){SS.locked=true;SS.onAnswer(true,SS.ldErr);}},ph==='B'?150:450);}
+ else{SS.ldTry++;SS.ldErr++;SFX.bad();const a=$('sans');a.classList.remove('shake');void a.offsetWidth;a.classList.add('shake','no');
+  if(SS.ldTry>=2){$('ldask').innerHTML+=`<div class="ldfix">It's <b>${want}</b>. ${ldSay(L,k,ph)}</div>`;SS.vals=[String(want)];sRenderInp();SS.ldTry=0;SS.ldStep++;setTimeout(()=>{if(!SS||SS.cur!==q)return;ldShow();if(SS.ldStep>=seq.length){SS.locked=true;SS.onAnswer(true,SS.ldErr);}},1800);}
+  else{$('ldask').innerHTML=$('ldask').innerHTML.replace(/<div class="ldtry">.*<\/div>/,'')+`<div class="ldtry">Try again! ${ph==='D'?`Think: ${L.d} × ? is close to ${s.cur} without going over.`:ph==='M'?`Skip-count by ${L.d}, ${s.q} times.`:'Count back carefully.'}</div>`;setTimeout(()=>{if(!SS||SS.cur!==q)return;SS.vals=[''];a.classList.remove('no');sRenderInp();},700);}}}
+/* ---------- practice + apply ---------- */
+function sPracticeStart(){SS.list=SS.practice.concat(SS.apply);SS.pi=0;SS.pScore=0;SS.pRes=[];sRenderQ();}
+function sRenderQ(){const q=SS.list[SS.pi],isApply=SS.pi>=SS.practice.length;SS.cur=q;SS.locked=false;sInpReset(q);
+ show(`${sStageBar(isApply?'apply':'practice')}<div class="card"><div class="row between"><div class="row"><div class="minihero" id="mh">${heroSVG(save.hero)}</div>${isApply?`<div class="minihero" id="mt">${heroSVG(SS.team)}</div>`:''}<h2>${isApply?`🌍 Apply it! ${SS.pi-SS.practice.length+1}/${SS.apply.length}`:`🎯 Practice ${SS.pi+1}/${SS.practice.length}`}</h2></div>
+ ${q.input!=='ld'?'<button class="btn blue sm" id="hintBtn" onclick="sHint()">💡 Hint</button>':''}</div>${dots(SS.pRes,SS.list.length)}
+ ${sQHTML(q)}<div id="hint" class="hint hidden"></div><div id="fb" class="fb"></div><div class="row"><button id="nextbtn" class="btn green hidden" data-enter onclick="sPracticeNext()">Next ▶</button></div></div>`);
+ if(q.input==='ld')ldInit();else sRenderInp();
+ speak(stripH(q.text),'owl');
+ SS.onAnswer=(ok,errs)=>{SS.locked=true;SS.pRes.push(ok);
+  if(ok){SS.pScore++;heroRight('#mh');$('fb').className='fb good';$('fb').textContent='🎉 '+cheer()+(errs?' You finished every step!':'');if(isApply&&$('mt'))react('#mt','cheer');setTimeout(()=>{if(SS&&SS.cur===q)sPracticeNext();},q.input==='ld'?2200:1100);}
+  else{SFX.bad();heroWrong('#mh');$('fb').className='fb bad';$('fb').innerHTML='Not quite! '+q.explain+' 💪';sHint(true);$('nextbtn').classList.remove('hidden');}};}
+function sHint(full){if(!SS||!SS.cur)return;const h=$('hint');if(!h)return;h.innerHTML='💡 '+(SS.cur.hint||'Take it one step at a time!');h.classList.remove('hidden');if(!full)SFX.tap();}
+function sPracticeNext(){if(!SS)return;if(SS.pi>=SS.list.length-1){sPracticeDone();return;}SS.pi++;sRenderQ();}
+function sPracticeDone(){SS.locked=false;SS.cur=null;const ch=SS.ch,tot=SS.list.length;
+ show(`${sStageBar('apply')}<div class="card center"><div class="winheroes"><div class="w1" id="mh">${heroSVG(save.hero,'cheer')}</div><div class="w2">${heroSVG(SS.team,'cheer')}</div></div><h2>Practice done!</h2><p class="big">You got <b>${SS.pScore} out of ${tot}</b>. ${SS.pScore>=tot-1?'You are ready!':'Good try! Remember the trick you learned!'}</p>
+ <p class="big">But wait… something is coming… ${ch.final?'🌀':ch.boss[0]}</p><button class="btn" data-enter onclick="playScene(sMidScene(),sBossStart)">📖 Continue the story</button>
+ <button class="btn gray sm" onclick="sLearn()">📚 Learn again</button></div>`);}
+/* ---------- boss ---------- */
+function sBossStart(){SS.hp=SS.max;SS.hearts=HEARTS;SS.bi=0;sRenderBoss();}
+function sHeartStr(){return '❤️'.repeat(SS.hearts)+'🖤'.repeat(HEARTS-SS.hearts);}
+function sRenderBoss(){const q=SS.boss[SS.bi%SS.boss.length],ch=SS.ch,max=SS.max;SS.cur=q;SS.locked=false;sInpReset(q);
+ show(`${sStageBar('boss')}<div class="card" id="arena" style="position:relative"><div class="bossrow">
+ <div class="bossside"><div id="bossE" class="bossE"><span class="bob">${ch.final?monsterSVG():ch.boss[0]}</span></div><div class="bname">${esc(ch.boss[1])}</div>
+ <div class="hpbar"><div class="hpfill" id="hpfill" style="width:${SS.hp/max*100}%"></div></div><div style="font-weight:800" id="hptxt">${SS.hp}/${max} HP</div></div>
+ <div class="player"><div class="pv" id="pv">${heroSVG(save.hero)}</div><div class="pname">${esc(nm(save.hero))}</div><div class="hearts" id="hearts">${sHeartStr()}</div></div></div></div>
+ <div class="card" id="qbox">${sQHTML(q)}<div id="fb" class="fb"></div></div>`);
+ if(q.input==='ld')ldInit();else sRenderInp();speak(stripH(q.text),'owl');
+ SS.onAnswer=ok=>{SS.locked=true;
+  if(ok){SS.hp--;SFX.hit();heroRight('#pv');const b=$('bossE');b.classList.remove('hit');void b.offsetWidth;b.classList.add('hit');$('hpfill').style.width=(SS.hp/max*100)+'%';$('hptxt').textContent=`${SS.hp}/${max} HP`;
+   const p=document.createElement('div');p.className='pow';p.textContent=HS().pow;p.style.left='20%';p.style.top='10px';$('arena').appendChild(p);
+   $('fb').className='fb good';$('fb').textContent=`${H().power}! ${cheer()}`;setTimeout(()=>{if(!SS||SS.cur!==q)return;if(SS.hp<=0)sBossWin();else{SS.bi++;sRenderBoss();}},1000);}
+  else{SS.hearts--;SFX.bad();heroWrong('#pv');$('hearts').textContent=sHeartStr();$('qbox').classList.add('shake');
+   const sh=document.createElement('div');sh.className='shield';sh.textContent=HS().shield;$('pv').appendChild(sh);setTimeout(SFX.shield,200);
+   const T=SS.team,enc=`${nm(T)}: ${ENC[T]||'"You can do it!"'}`;
+   $('fb').className='fb bad';$('fb').innerHTML=`Ouch! ${q.explain}<div style="font-size:18px;color:#7c3aed">${esc(enc)}</div>`;setTimeout(()=>{if(!SS||SS.cur!==q)return;if(SS.hearts<=0)sBossLose();else{SS.bi++;sRenderBoss();}},2400);}};}
+function sBossWin(){const stars=SS.hearts,o=SP(SS.sid),c=SS.c,prev=o.stars[c]||0;o.stars[c]=Math.max(prev,stars);let newR=null;
+ if(!prev){const r=nextReward();if(r){P().rewards.push(r.id);newR=r;}}persist();SFX.win();confetti();SS.cur=null;
+ playScene(sOutroScene(newR),()=>sWinScreen(stars,newR));}
+function sWinScreen(stars,newR){const ch=SS.ch,sb=SS.sb,c=SS.c,nxt=c<sb.ch.length?c+1:null;confetti();
+ show(`<div class="card center"><div class="winheroes"><div class="w1" id="wh">${heroSVG(save.hero,HS().win)}</div><div class="w2">${heroSVG(SS.team,'cheer')}</div>${SIBS[save.hero].filter(x=>x!==SS.team).slice(0,1).map(x=>`<div class="w3">${heroSVG(x,'cheer')}</div>`).join('')}</div><h1>You WIN!</h1>
+ <div class="starsbig">${[0,1,2].map(j=>`<span class="${j<stars?'':'off'}" style="animation-delay:${.2+j*.25}s">★</span>`).join('')}</div>
+ <p class="big">${esc(nm(save.hero))}, you beat <b>${esc(ch.boss[1])}</b>! You're a <b>${ch.t}</b> star!<br>${stars===3?'Perfect! Not a single heart lost! 🌟':'Play again to earn all 3 stars!'}</p>
+ ${newR?`<div class="reward">New treasure: ${newR.e} ${newR.name}</div><br>`:''}
+ ${nxt?`<button class="btn green" data-enter onclick="openChapter('${sb.id}',${nxt})">Next: Chapter ${nxt} ▶</button>`:`<p class="big">🎉 You saved ${sb.realm}! 🎉</p>`}
+ <button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn blue" ${nxt?'':'data-enter'} onclick="smapScreen('${sb.id}')">🗺️ Map</button><button class="btn gray sm" onclick="subjectScreen()">↩ Subjects</button></div>`);
+ if(save.hero==='blu')SFX.melody();else if(save.hero==='sage')SFX.sing();else if(save.hero==='eshon')SFX.sketch();else if(NEWH.includes(save.hero))heroSfx();}
+function sBossLose(){SFX.lose();SS.cur=null;playScene(sLoseScene(),()=>{makeSS(SS.sid,SS.c,SS);playScene(sIntroScene(),sLearn);});}
+/* keyboard: number keys / backspace / enter for subject questions */
+function subjKey(e){if(!SS||!SS.cur||SC)return false;if(e.target&&e.target.tagName==='INPUT')return false;const q=SS.cur;
+ if(q.input==='mc'){if(/^[1-9]$/.test(e.key)&&!SS.locked){const o=document.querySelectorAll('#sopts .opt')[parseInt(e.key,10)-1];if(o){o.click();e.preventDefault();return true;}}return false;}
+ if(!$('spad'))return false;
+ if(/^[0-9]$/.test(e.key)){sPad(e.key);e.preventDefault();return true;}
+ if(e.key==='Backspace'){sDel();e.preventDefault();return true;}
+ if(e.key==='Tab'&&q.input==='multi'){SS.fi=(SS.fi+1)%q.nf;sRenderInp();e.preventDefault();return true;}
+ if(e.key==='Enter'||e.key===' '){e.preventDefault();if(!SS.locked)sOK();else clickEnter();return true;}
+ return false;}
+window.TTQ_SUBJ={SUBJ,CHAP:{add:ADD,sub:SUB,div:DIV,frac:FR},ldSteps,borrowInfo,carries,gcd,lcm,SP,allStars,sStars,sDone,makeSS,get SS(){return SS;},get lastMap(){return lastMap;}};
+/* ---------- start ---------- */
+if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
 </script>
 </body>
 </html>
