@@ -7,7 +7,9 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#f9a8d4">
-<title>Times Table Quest: The Muddle Monster</title>
+<title>NumiRealm: The Muddle Monster</title>
+<meta name="application-name" content="NumiRealm">
+<meta name="apple-mobile-web-app-title" content="NumiRealm">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%}
@@ -425,7 +427,7 @@ svg.hero.dunk{animation:dunk .7s cubic-bezier(.3,1.4,.5,1) 2}
 <body>
 <div id="top">
  <button class="iconbtn" id="homeBtn" title="Map" aria-label="Map">🗺️</button>
- <div class="title" id="topTitle">Times Table Quest</div>
+ <div class="title" id="topTitle">NumiRealm</div>
  <div id="status">⭐ 0</div>
  <button class="iconbtn hidden" id="closetBtn" title="Rewards" aria-label="Rewards">🎀</button>
  <button class="iconbtn" id="narrBtn" title="Narrator voice on/off" aria-label="Narrator">🦉</button>
@@ -471,7 +473,7 @@ const PLACES=[
   emi:"I'll plant singing sunflowers all over this meadow!",blu:"A meadow that sings? I'll help it remember the tune!"},
  {name:'Sparkle Lake',e:'💎',bg:'linear-gradient(#a5f3fc,#67e8f9 50%,#3b82f6)',props:['star','fruit','star','flower','star','fruit','star'],desc:'Its water glitters like a million gems.',lost:'the water turned muddy and dull',back:'the lake is sparkling like diamonds',
   emi:"Sparkles are my specialty! Let's make this lake glitter!",blu:"I'll guard the fish while we clean up this muddle!"},
- {name:'Rainbow Bridge',e:'🌈',bg:'linear-gradient(#fecaca,#fde68a,#bbf7d0,#bfdbfe,#ddd6fe)',props:['star','flower','fruit','star','flower','fruit','star'],desc:'It joins the whole kingdom together with seven bright colours.',lost:'the colours got scrambled and the bridge is wobbling',back:'all seven colours shine on the bridge again',
+ {name:'Rainbow Bridge',e:'🌈',bg:'linear-gradient(#fecaca,#fde68a,#bbf7d0,#bfdbfe,#ddd6fe)',props:['star','flower','fruit','star','flower','fruit','star'],desc:'It joins all of NumiRealm together with seven bright colours.',lost:'the colours got scrambled and the bridge is wobbling',back:'all seven colours shine on the bridge again',
   emi:"Seven colours! That's the perfect outfit for a bridge!",blu:"Hold my hand, everyone! I'll keep you safe on the bridge!"},
  {name:'Butterfly Greenhouse',e:'🦋',bg:'linear-gradient(#d9f99d,#86efac 60%,#34d399)',props:['flower','flower','flower','flower','star','flower','flower'],desc:'Butterflies and flowers grow up together here.',lost:'the butterflies are hiding because the flowers wilted',back:'the butterflies are fluttering around fresh flowers',
   emi:"I'll grow the prettiest garden bed so the butterflies come home!",blu:"I'll hum a gentle song so the butterflies aren't scared!"},
@@ -479,9 +481,9 @@ const PLACES=[
   emi:"Cotton candy pink is my colour! Let's bring it back!",blu:"A carnival needs music and dancing fruit! Let's go!"},
  {name:'Moonlight Drum Jungle',e:'🥁',bg:'linear-gradient(#064e3b,#065f46 60%,#1e3a8a)',props:['star','fruit','star','flower','fruit','star','fruit'],desc:'At night the jungle plays drums: boom, boom, tap!',lost:'the drums are silent and the jungle is too dark',back:'the jungle drums are booming under the moon',
   emi:"I'll grow glowing moonflowers to light the way!",blu:"Boom, boom, tap! I know this rhythm! Let's wake the drums!"},
- {name:'Crystal Ballroom',e:'💃',bg:'linear-gradient(#e0e7ff,#c7d2fe 50%,#f5d0fe)',props:['star','flower','star','fruit','star','flower','star'],desc:'The grandest party in the kingdom happens here.',lost:'the dancers froze in the middle of their dance',back:'everyone is dancing in the Crystal Ballroom',
+ {name:'Crystal Ballroom',e:'💃',bg:'linear-gradient(#e0e7ff,#c7d2fe 50%,#f5d0fe)',props:['star','flower','star','fruit','star','flower','star'],desc:'The grandest party in NumiRealm happens here.',lost:'the dancers froze in the middle of their dance',back:'everyone is dancing in the Crystal Ballroom',
   emi:"A ballroom party? I was BORN for this! Let's unfreeze them!",blu:"Let's make them smile and dance again!"},
- {name:'Muddle Tower',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','fruit','flower','star','fruit','flower','star'],desc:'The spooky, swirly home of the Muddle Monster himself!',lost:'all the stolen colour and music are trapped inside',back:'all the colour and music burst out over the whole Number Kingdom',
+ {name:'Muddle Tower',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','fruit','flower','star','fruit','flower','star'],desc:'The spooky, swirly home of the Muddle Monster himself!',lost:'all the stolen colour and music are trapped inside',back:'all the colour and music burst out over all of NumiRealm',
   emi:"You took our colours, Muddle Monster! Time to give them back, with love!",blu:"I'm not scared. I'll protect everyone. Let's finish this together!"}
 ];
 const SIDE={emi:["I'm right here, {hero}! Hugs from me give you extra power! 💖","You can do it, {rel}! I love you to the moon and back!","I'll cheer the loudest, {hero}! Go, go, go! 🌸"],
@@ -545,10 +547,10 @@ const HSTYLE={
 /* what b is to a. Emi & Blú are sister and brother; Melrose & Cayden are sister and brother; every other pair is cousins. */
 function relTo(a,b){if(a==='melrose'&&b==='cayden')return 'big brother';if(a==='cayden'&&b==='melrose')return 'little sister';if(a==='emi'&&b==='blu')return 'little brother';if(a==='blu'&&b==='emi')return 'big sister';return 'cousin';}
 const SIB_INTRO={emi:"And I'm {me}, your {myrel}! I'll cheer for you with all my love! 🌸",blu:"And I'm {me}, your {myrel}! My star shield will keep you safe! ⭐",sage:"And I'm {me}, your {myrel}! I'll sing you brave songs all the way! 🎤"};
-const HERO_INTRO={emi:"I'm {title}! I'll bring back the colours with my big, loving heart! 💖",blu:"I'm {title}! I'll protect everyone and bring back the music! 🎵",sage:"I'm {title}! My singing voice will bring the music back to the whole kingdom! 🎤"};
+const HERO_INTRO={emi:"I'm {title}! I'll bring back the colours with my big, loving heart! 💖",blu:"I'm {title}! I'll protect everyone and bring back the music! 🎵",sage:"I'm {title}! My singing voice will bring the music back to all of NumiRealm! 🎤"};
 SIDE.sage=["You've got this, {rel}! I'll sing you a brave song! 🎤","Cousin {me} is right here, {hero}! Let's be brave together! 💚","La la la! That's my cheer song for you, {hero}! 🎶"];
 BRAVE.sage=["Mic on! Song Star, ready! 🎤","My voice is my power! Let's sing this muddle away! 🎶"];
-VICTORY.sage=["Take a bow! That was my best song ever! 🎤","Encore! Encore! The kingdom is singing again! 🎶","Sparkly notes for everyone! 🌟"];
+VICTORY.sage=["Take a bow! That was my best song ever! 🎤","Encore! Encore! NumiRealm is singing again! 🎶","Sparkly notes for everyone! 🌟"];
 SIB_PROUD.sage=["I'm SO proud of you, {hero}! You're a superstar! 🌟","That calls for a happy song! La la la! 🎶"];
 LOSE_SIB.sage=["It's okay, {hero}. Even pop stars practise a lot! Let's try again! 🎤","I believe in you, {rel}! Big hug, then we try again! 💚"];
 LOSE_HERO.sage=["Singers practise every day. I'll practise too!","Deep breath... and sing it again!"];
@@ -585,8 +587,8 @@ HSTYLE.eshon={tag:'✏️',right:'draw',win:'draw',sfx:'sketch',pow:'✏️',shi
  learn:(k,n,th,pl)=>`Let's draw <b>${k} rows</b> with <b>${n} ${th}</b> in each row on a sketchbook page for the ${pl.name}!`,
  closetHelp:'Tap a treasure to use it or wear it. Tap a doodle buddy to bring it to life! Tap Eshon to see him draw! ✏️'};
 SIB_INTRO.eshon="And I'm {me}, your {myrel}! I'll draw you brave doodle buddies to help! ✏️";
-HERO_INTRO.eshon="I'm {title}! My drawings come to life, and I'll draw the colours back into the kingdom! ✏️💚";
-const HERO_TEAM={emi:"Yay! Our whole crew is here! Let's go! 💪",blu:"Yay! Our whole crew is here! Let's go! 💪",sage:"Cousin crew, let's go! Team Song Star will save the kingdom! 🎶",eshon:"Cousin crew, let's go! I'll draw us a brave plan! ✏️"};
+HERO_INTRO.eshon="I'm {title}! My drawings come to life, and I'll draw the colours back into NumiRealm! ✏️💚";
+const HERO_TEAM={emi:"Yay! Our whole crew is here! Let's go! 💪",blu:"Yay! Our whole crew is here! Let's go! 💪",sage:"Cousin crew, let's go! Team Song Star will save NumiRealm! 🎶",eshon:"Cousin crew, let's go! I'll draw us a brave plan! ✏️"};
 SIDE.eshon=["Go, {hero}! I drew a picture of you winning! 🖍️","I'm drawing you a super-strong doodle buddy, {hero}! ✏️","You can do it, {rel}! Every great artist starts with one line! 💚"];
 BRAVE.eshon=["Pencil ready! Sketch Master, go! ✏️","I'll draw a brave plan and beat this minion! 💚"];
 VICTORY.eshon=["Ta-da! My doodles are dancing off the page! ✏️","That's a masterpiece! Green is the colour of winning! 💚","Doodle buddies, high five! We did it! 🖍️"];
@@ -642,7 +644,7 @@ SIB_INTRO.melrose="And I'm {me}, your {myrel}! I'll sprinkle fairy sparkles on e
 SIB_INTRO.cayden="And I'm {me}, your {myrel}! I'll coach you like a champion. Let's go! 🏀";
 HERO_INTRO.melrose="I'm {title}! I have fairy wings AND a mermaid tail, and my Sparkle Splash will wash the muddles away! 🧜‍♀️✨";
 HERO_INTRO.cayden="I'm {title}! I'm fast like an anime hero and I never miss a dunk. Time to win this game! 🏀⚡";
-HERO_TEAM.melrose="Family crew, let's go! My big brother, my cousins and me: Team Mermaid Fairy will save the kingdom! 🧚💜";
+HERO_TEAM.melrose="Family crew, let's go! My big brother, my cousins and me: Team Mermaid Fairy will save NumiRealm! 🧚💜";
 HERO_TEAM.cayden="Huddle up, family! Little sister, cousins, on three: one, two, three, TEAM! 🏀🏈";
 SIDE.melrose=["Go, big brother! I'm sending fairy sparkles your way! ✨","You can do it, {rel}! Even mermaids learn one wave at a time! 🧜‍♀️","{me} believes in you, {hero}! Flutter, flutter, brave wings! 🧚"];
 SIDE.cayden=["Big brother's got your back, {hero}! Eyes on the ball! 🏀","Let's go, {rel}! Every champion practises first! 💪","Power up, {hero}! I can see your speed lines already! ⚡"];
@@ -687,7 +689,7 @@ const HPLACES={
    melrose:"Pixies, don't be scared! I'll share my wing sparkles with you!"},
   {name:'Mermaid Masquerade',e:'🎭',bg:'linear-gradient(#fdf4ff,#e879f9 50%,#9333ea)',props:['star','shell','star','flower','star','shell','star'],desc:'The fanciest dress-up party under the sea!',lost:'the masks and gowns turned grey',back:'the whole party is shimmering and dancing again',
    melrose:"It's dress-up time! Masks, gowns and sparkles for everyone!"},
-  {name:'Muddle Whirlpool Tower',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','shell','flower','star','shell','flower','star'],desc:"A spinning whirlpool tower, the hideout of the Muddle Monster himself!",lost:'all the stolen sparkles are trapped inside',back:'sparkles burst out over the whole Number Kingdom and the sea',
+  {name:'Muddle Whirlpool Tower',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','shell','flower','star','shell','flower','star'],desc:"A spinning whirlpool tower, the hideout of the Muddle Monster himself!",lost:'all the stolen sparkles are trapped inside',back:'sparkles burst out over all of NumiRealm and the sea',
    melrose:"Muddle Monster, give back our sparkles! Fairy wings, mermaid tail, let's finish this!"}],
  cayden:[
   {name:'Backyard Court',e:'🏀',bg:'linear-gradient(#bfdbfe,#fecaca 55%,#f97316)',props:['ball','ball','star','ball','ball','star','ball'],desc:'Where every champion takes their very first shot.',lost:'the hoop lost its net and the balls went flat',back:'the balls are bouncing and the net is swishing again',
@@ -712,7 +714,7 @@ const HPLACES={
    cayden:"Let's sort these jerseys! Every team needs its colours!"},
   {name:'Championship Court',e:'🏆',bg:'linear-gradient(#fef08a,#f87171 50%,#2563eb)',props:['star','ball','star','ball','star','ball','star'],desc:'The court where the final championship is played.',lost:'the championship trophy lost its shine',back:'the trophy is shining and the fans are cheering again',
    cayden:"This is the championship! Let's play the best game ever!"},
-  {name:'Muddle Mega-Dome',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','ball','star','ball','star','ball','star'],desc:"A spooky, swirly dome, the home court of the Muddle Monster himself!",lost:'all the stolen cheers are trapped inside',back:'cheers and colour burst out over the whole Number Kingdom',
+  {name:'Muddle Mega-Dome',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','ball','star','ball','star','ball','star'],desc:"A spooky, swirly dome, the home court of the Muddle Monster himself!",lost:'all the stolen cheers are trapped inside',back:'cheers and colour burst out over all of NumiRealm',
    cayden:"Muddle Monster, it's game time! My whole crew is here. Let's win this!"}]};
 /* themed minions per hero (chapter 12 is always the Muddle Monster) */
 const HBOSS={
@@ -1041,7 +1043,7 @@ function unlockedIndex(){let i=0;while(i<ORDER.length&&P().stars[ORDER[i]])i++;r
 function totalStars(){return save.hero?allStars(P()):0;}
 function updateStatus(){$('status').textContent='⭐ '+totalStars();$('muteBtn').textContent=save.muted?'🔇':'🔊';
  $('narrBtn').classList.toggle('off',!save.narrator);$('narrBtn').title=save.narrator?'Narrator voice: ON':'Narrator voice: OFF (captions only)';
- const cb=$('closetBtn');if(save.hero){cb.classList.remove('hidden');cb.textContent=H().closetE;cb.title=H().closet;$('topTitle').textContent=H().title;}else{cb.classList.add('hidden');$('topTitle').textContent='Times Table Quest';}
+ const cb=$('closetBtn');if(save.hero){cb.classList.remove('hidden');cb.textContent=H().closetE;cb.title=H().closet;$('topTitle').textContent=H().title;}else{cb.classList.add('hidden');$('topTitle').textContent='NumiRealm';}
  document.body.className=save.hero?'theme-'+save.hero:'';const tc=document.querySelector('meta[name=theme-color]');if(tc)tc.setAttribute('content',{emi:'#a78bfa',sage:'#f472b6',blu:'#60a5fa',eshon:'#4ade80',melrose:'#d946ef',cayden:'#ef4444'}[save.hero]||'#f9a8d4');}
 
 /* ---------- sound ---------- */
@@ -1127,7 +1129,7 @@ const cheer=()=>pick(CHEERS);
 
 /* ---------- story scenes ---------- */
 let SC=null;
-function fillT(t,who){const sp=who==='hero'?save.hero:who==='sib'?sibId():HEROES[who]?who:null;t=String(t);if(sp&&sp!==save.hero)t=t.replace(/\{rel\}/g,relTo(sp,save.hero)).replace(/\{myrel\}/g,relTo(save.hero,sp)).replace(/\{me\}/g,nm(sp));t=t.replace(/\{rel\}/g,'friend').replace(/\{place\}/g,S?placeOf(S.n).name:'kingdom');return t.replace(/\{hero\}/g,nm(save.hero)).replace(/\{team\}/g,teamNames()).replace(/\{sib\}/g,nm(sibId())).replace(/\{title\}/g,H().title).replace(/\{n\}/g,S?S.n:'').replace(/\{boss\}/g,S?bossOf(S.n)[1]:'');}
+function fillT(t,who){const sp=who==='hero'?save.hero:who==='sib'?sibId():HEROES[who]?who:null;t=String(t);if(sp&&sp!==save.hero)t=t.replace(/\{rel\}/g,relTo(sp,save.hero)).replace(/\{myrel\}/g,relTo(save.hero,sp)).replace(/\{me\}/g,nm(sp));t=t.replace(/\{rel\}/g,'friend').replace(/\{place\}/g,S?placeOf(S.n).name:'realm');return t.replace(/\{hero\}/g,nm(save.hero)).replace(/\{team\}/g,teamNames()).replace(/\{sib\}/g,nm(sibId())).replace(/\{title\}/g,H().title).replace(/\{n\}/g,S?S.n:'').replace(/\{boss\}/g,S?bossOf(S.n)[1]:'');}
 const L=(who,text)=>({who,text:fillT(text,who)});
 const PROP_ICONS={shell:['🐚','🦪','⭐','🫧'],ball:['🏀','🏈','⚽'],fruit:['🍓','🍌','🍍','🍉','🍇','🍊','🍒'],flower:['🌸','🌷','🌻','🌺','🌼'],star:['⭐']};
 function playScene(sc,done){stopSpeech();SC=Object.assign({i:0,woke:0},sc,{done});renderScene();showLine();}
@@ -1169,7 +1171,7 @@ function pickExtras(kind){const h=save.hero,fin=S&&S.n===12,o=SIBS[h].slice(1),r
 function addExtras(lines,pool,ex){const k=lines.findIndex(l=>l.who==='sib');lines.splice(k+1,0,...ex.map(x=>L(x,pick(pool[x]))));return lines;}
 function prologueScene(){const id=save.hero;return {title:'📖 Once upon a time…',place:{bg:'linear-gradient(#fde68a,#f9a8d4 55%,#a78bfa)',props:['flower','fruit','star','flower','fruit','star','star']},lines:[
  L('owl',"Hoo-hoo! Hello, {hero}! I'm Professor Hoot, the storybook owl. 🦉"),
- L('owl',"The Number Kingdom used to be full of colour and music, until the Muddle Monster scrambled all the numbers: adding, taking away, times tables, sharing and even fractions!"),
+ L('owl',"NumiRealm used to be full of colour and music, until the Muddle Monster scrambled all the numbers: adding, taking away, times tables, sharing and even fractions!"),
  L('owl',"Now the flowers can't bloom, the fruits can't dance, and the stars can't sing."),
  L('hero',HERO_INTRO[id]),
  L('sib',SIB_INTRO[sibId()]),...SIBS[id].slice(1).map(x=>L(x,SIB_INTRO[x])),
@@ -1182,14 +1184,14 @@ function introScene(){const i=ORDER.indexOf(S.n),pl=placeOf(S.n),id=save.hero,ex
 function midScene(){const pl=placeOf(S.n),fin=S.n===12,ex=pickExtras('boss');
  return {title:`${pl.e} ${pl.name} · Boss time!`,place:pl,boss:S.n,extras:ex,lines:addExtras([
   L('owl',fin?"The ground shakes... The MUDDLE MONSTER himself appears! This is the final showdown!":"Uh-oh! {boss}, a sneaky minion of the Muddle Monster, jumps out!"),
-  L('boss',fin?"I am the MUDDLE MONSTER! I scrambled EVERY table in the kingdom! Mwa-ha-ha!":pick(HTAUNTS[save.hero]||TAUNTS)),
+  L('boss',fin?"I am the MUDDLE MONSTER! I scrambled EVERY table in NumiRealm! Mwa-ha-ha!":pick(HTAUNTS[save.hero]||TAUNTS)),
   L('sib',pick(SIDE[sibId()])),L('hero',pick(BRAVE[save.hero])),
   L('owl',`Get ${bossHP(S.n)} answers right to win${fin?', and watch out: he uses numbers from every chapter':''}. You have ${HEARTS} hearts. Use your ${H().power}! Go, {hero}!`)],SIDE,ex),endLabel:'⚔️ Fight!'};}
 function outroScene(reward){const pl=placeOf(S.n),fin=S.n===12,h=H(),ex=pickExtras('outro');const lines=addExtras([
  L('owl',fin?"You did it! The Muddle Monster is defeated, and "+pl.back+"!":`Hooray! {boss} is defeated, and ${pl.back}!`),
  L('hero',pick(VICTORY[save.hero])),L('sib',pick(SIB_PROUD[sibId()])),L('owl',OWL_WIN[save.hero])],SIB_PROUD,ex);
  if(reward)lines.push(L('owl',`You earned a new treasure: ${reward.e} ${reward.name}! Find it in your ${h.closet}.`));
- if(fin)lines.push(L('owl',"Times Table Castle is saved! {team} are true Times Table Champions! 🏆 The other realms of the Number Kingdom are waiting!"));
+ if(fin)lines.push(L('owl',"Times Table Castle is saved! {team} are true Times Table Champions! 🏆 The other realms of NumiRealm are waiting!"));
  return {title:`${pl.e} ${pl.name} · Saved!`,place:pl,lines,extras:ex,pose:HS().win,confetti:true,endLabel:'Yay! ▶'};}
 function loseScene(){const pl=placeOf(S.n),ex=pickExtras('boss');return {title:`${pl.e} ${pl.name}`,place:pl,boss:S.n,extras:ex,lines:addExtras([
  L('owl',"Oh no! {boss} won this round. But every mistake helps your brain grow stronger!"),L('sib',pick(LOSE_SIB[sibId()])),L('hero',pick(LOSE_HERO[save.hero])),
@@ -1197,7 +1199,7 @@ function loseScene(){const pl=placeOf(S.n),ex=pickExtras('boss');return {title:`
 
 /* ---------- title / hero select / map ---------- */
 function titleScreen(){S=null;SC=null;stopSpeech();save.hero=null;persist();
- show(`<div class="card center"><h1>Times Table Quest</h1><div class="subtitle">✨ Number Kingdom ✨</div><p class="big" style="margin:4px">The Muddle Monster scrambled all the numbers! Adding, taking away, times tables, sharing and fractions. Pick your hero to save the Number Kingdom.</p></div>
+ show(`<div class="card center"><h1>NumiRealm</h1><div class="subtitle">✨ The Muddle Monster ✨</div><p class="big" style="margin:4px">The Muddle Monster scrambled all the numbers! Adding, taking away, times tables, sharing and fractions. Pick your hero to save NumiRealm.</p></div>
  <div class="herocards">${HERO_ORDER.map(id=>{const h=HEROES[id],pf=save.profiles[id],st=allStars(pf);
  return `<button class="herocard ${id}" data-hero="${id}" onclick="pickHero('${id}')"><div class="hsv">${heroSVGeq(id,pf.eq,'idle')}</div><div class="hn">${esc(pf.name)}</div><div class="ht">${h.title}</div><div class="hl">${h.blurb}</div><div class="hl"><b>⭐ ${st}</b> stars</div>${hasAbout(pf)?`<div class="hl abmini">${aboutChip(pf)}</div>`:''}</button>`;}).join('')}</div>`);}
 function pickHero(id){save.hero=id;persist();SFX.good();const pf=P(),h=H();
@@ -1237,7 +1239,7 @@ function mapScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SS
  ORDER.forEach((n,i)=>{const locked=i>u,st=pf.stars[n]||0,isNext=i===u,pl=placeOf(n);
   h+=`<button class="lvl ${locked?'locked':''} ${st?'done':''} ${isNext?'next':''} ${n===12?'final':''}" data-level="${n}" ${locked?'disabled':''} onclick="openLevel(${n})">${isNext?'<span class="tag">PLAY!</span>':''}<div class="lch">Chapter ${i+1}</div><div class="lnum">×${n}</div><div class="lboss">${locked?'🔒':(n===12?monsterSVG():bossOf(n)[0])}</div><div class="lplace">${pl.e} ${pl.name}</div><div class="lstars">${starStr(st)}</div></button>`;});
  h+='</div>';
- if(all)h+=`<div class="card center"><div class="winheroes"><div class="w1">${heroSVG(save.hero,HS().win)}</div>${SIBS[save.hero].map((x,i)=>`<div class="w${i+2>3?4:i+2}">${heroSVG(x,'cheer')}</div>`).join('')}</div><h2>🏆 Times Table Champion!</h2><p class="big">The Number Kingdom is saved! Replay chapters to collect all ${ORDER.length*3} stars.</p></div>`;
+ if(all)h+=`<div class="card center"><div class="winheroes"><div class="w1">${heroSVG(save.hero,HS().win)}</div>${SIBS[save.hero].map((x,i)=>`<div class="w${i+2>3?4:i+2}">${heroSVG(x,'cheer')}</div>`).join('')}</div><h2>🏆 Times Table Champion!</h2><p class="big">Times Table Castle is saved! Replay chapters to collect all ${ORDER.length*3} stars.</p></div>`;
  h+=`<div class="center" style="margin-top:18px"><button class="btn blue" onclick="subjectScreen()">↩ Subjects</button><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button></div>`;
  show(h);}
 function resetProgress(){if(!confirm('Reset all of '+P().name+"'s stars, chapters and treasures? This cannot be undone."))return;const id=save.hero,nmv=P().name;const ag=P().age,gr=P().grade;save.profiles[id]=freshProfile(id);save.profiles[id].name=nmv;if(ag!=null)save.profiles[id].age=ag;if(gr!=null)save.profiles[id].grade=gr;persist();subjectScreen();}
@@ -1415,7 +1417,7 @@ function winScreen(stars,newR){const n=S.n,name=bossOf(n)[1],i=ORDER.indexOf(n),
  <div class="starsbig">${[0,1,2].map(j=>`<span class="${j<stars?'':'off'}" style="animation-delay:${.2+j*.25}s">★</span>`).join('')}</div>
  <p class="big">${esc(nm(save.hero))}, you beat <b>${name}</b>! You're a <b>×${n} master</b>!<br>${stars===3?'Perfect! Not a single heart lost! 🌟':'Play again to earn all 3 stars!'}</p>
  ${newR?`<div class="reward">New treasure: ${newR.e} ${newR.name}</div><br>`:''}
- ${nxt?`<button class="btn green" data-enter onclick="openLevel(${nxt})">Next: Chapter ${i+2} ▶</button>`:'<p class="big">🎉 You saved the whole Number Kingdom! 🎉</p>'}
+ ${nxt?`<button class="btn green" data-enter onclick="openLevel(${nxt})">Next: Chapter ${i+2} ▶</button>`:'<p class="big">🎉 You saved all of NumiRealm! 🎉</p>'}
  <button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn blue" ${nxt?'':'data-enter'} onclick="mapScreen()">🗺️ Map</button></div>`);
  if(save.hero==='blu')SFX.melody();else if(save.hero==='sage')SFX.sing();else if(save.hero==='eshon')SFX.sketch();else if(NEWH.includes(save.hero))heroSfx();}
 function bossLose(){SFX.lose();playScene(loseScene(),retryLevel);}
@@ -1440,7 +1442,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='9';
+const APP_VERSION='10';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -1810,7 +1812,7 @@ const FR=[
   gen(k){const d=pick([2,3,4,5,6,8,10]),g=rand(2,6),N=d*g,n=rand(1,d-1);const q=Qp(`${frH(n,d)} of ${N} = ?`,n*g,{m:{op:'frof',n,d,N},sig:`frof:${n}/${d}:${N}`,lead:'Fraction of a number! 🏆',vis:N<=30?groupsH(d,g,'🍪'):'',explain:`${N} ÷ ${d} = ${g}, then ${g} × ${n} = ${n*g}`,hint:`Divide ${N} by ${d}, then multiply by ${n}.`});
    if(k==='a'||(k==='b'&&Math.random()<.3)){const it=itm();q.text=`${nm(save.hero)} baked ${N} ${it.many} ${it.e}. ${tN()} gets ${frH(n,d)} of them. How many ${it.many} does ${tN()} get?`;q.lead=STORY;q.sig+=':s';}return q;}}
 ];
-/* ---------- the five realms of the Number Kingdom ---------- */
+/* ---------- the five realms of NumiRealm ---------- */
 const SUBJ=[
  {id:'add',name:'Addition',op:'+',realm:'Addition Meadow',e:'🌼',col:'#22c55e',col2:'#bbf7d0',bg:'linear-gradient(#bbf7d0,#fef08a 60%,#86efac)',props:['flower','flower','fruit','flower','star','flower'],ch:ADD,grades:['none','prek','k','1','2'],
   lost:'the meadow forgot how to put things together, so nothing can grow',back:'flowers are blooming all over the meadow again',champ:'Addition Champions'},
@@ -1914,7 +1916,7 @@ function nextReward(){const pf=P();return REWARDS[save.hero].find(r=>!pf.rewards
 function gradeBadge(sb,pf){if(!hasAbout(pf)||!sb.grades.includes(pf.grade))return '';const g=gradeOf(pf.grade);
  return /^\d$/.test(g[0])?`⭐ Recommended for ${g[1]} grade`:g[0]==='k'?'⭐ Recommended for Kindergarten':g[0]==='prek'?'⭐ Recommended for Pre-K':'⭐ A great place to start';}
 function subjectScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SS=null;SC=null;stopSpeech();lastMap=null;if(save.lastSubj){save.lastSubj=null;persist();}const pf=P();
- let h=`<div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>Where to, ${esc(pf.name)}?</h2><div class="big" style="font-size:18px">The Muddle Monster scrambled all five realms of the Number Kingdom! Pick one to explore. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(subjectScreen,true)">✏️ About me</button></div></div></div></div><div class="subjects" id="subjects">`;
+ let h=`<div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>Where to, ${esc(pf.name)}?</h2><div class="big" style="font-size:18px">The Muddle Monster scrambled all five realms of NumiRealm! Pick one to explore. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(subjectScreen,true)">✏️ About me</button></div></div></div></div><div class="subjects" id="subjects">`;
  SUBJ.forEach(sb=>{const N=sCount(sb.id),d=sDone(sb.id,pf),st=sStars(sb.id,pf),bd=gradeBadge(sb,pf);
   h+=`<button class="stile ${bd?'rec':''}" data-subject="${sb.id}" style="--sc:${sb.col};--sc2:${sb.col2}" onclick="openSubject('${sb.id}')"><div class="se">${sb.e}</div><div class="sop">${sb.op}</div><div class="sname">${sb.name}</div><div class="srealm">${sb.realm}</div>
   <div class="sbar"><i style="width:${Math.round(d/N*100)}%"></i></div><div class="sprog"><span>📖 ${d}/${N} chapters</span><span>⭐ ${st}/${N*3}</span></div>${bd?`<div class="sbadge">${bd}</div>`:''}</button>`;});

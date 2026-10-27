@@ -1,6 +1,6 @@
-# Times Table Quest
+# NumiRealm
 
-Times Table Quest, a story-driven math game (addition, subtraction, multiplication, division and fractions) for Sage, Emi, Blú, Eshon, Melrose and Cayden.
+NumiRealm, a story-driven math game (addition, subtraction, multiplication, division and fractions) for Sage, Emi, Blú, Eshon, Melrose and Cayden.
 
 It can be played at https://bravofamily.github.io/Times-tables-quest/.
 
