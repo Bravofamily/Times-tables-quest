@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#f9a8d4">
 <title>Times Table Quest: The Muddle Monster</title>
@@ -1022,6 +1025,30 @@ $('muteBtn').onclick=()=>{save.muted=!save.muted;persist();updateStatus();if(!sa
 $('narrBtn').onclick=()=>{save.narrator=!save.narrator;persist();updateStatus();if(!save.narrator)stopSpeech();else if(SC)replayLine();SFX.tap();};
 window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},hasTTS,get voice(){return VOICE?VOICE.name:null;}};
 if(save.hero)mapScreen();else titleScreen();
+
+// ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
+// RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
+const APP_VERSION='6';
+(function(){
+ let pending=null,safe=true,checking=false,depth=0;
+ const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
+ ['titleScreen','mapScreen','closetScreen','winScreen'].forEach(wrap);
+ // anything else that replaces the screen (scenes, lessons, bosses) counts as "in progress"
+ const _show=window.show;window.show=function(){safe=depth>0;return _show.apply(this,arguments);};
+ function go(){if(!pending)return;const v=pending,k='ttq-reloaded-'+v;
+  try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){return;}
+  try{persist();}catch(e){}
+  location.replace(location.pathname+'?v='+encodeURIComponent(v));}
+ function check(force){if(checking||!window.fetch||!/^https?:$/.test(location.protocol))return;checking=true;
+  fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{
+   const v=j&&j.version!=null?String(j.version):null;
+   if(v&&v!==APP_VERSION){pending=v;if(force||safe)go();}
+  }).catch(()=>{}).finally(()=>{checking=false;});}
+ window.TTQ_VERSION={get app(){return APP_VERSION;},get pending(){return pending;},get safe(){return safe;},check};
+ check(true); // launch: nothing in progress yet
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check(false);});
+ window.addEventListener('pageshow',ev=>{if(ev.persisted)check(false);});
+})();
 </script>
 </body>
 </html>
