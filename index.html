@@ -10,7 +10,7 @@
 html,body{margin:0;min-height:100%}
 body{font-family:"Comic Sans MS","Chalkboard SE","Comic Neue","Trebuchet MS",system-ui,sans-serif;color:#1e1b4b;
  background:linear-gradient(160deg,#7dd3fc 0%,#c4b5fd 55%,#fbcfe8 100%);background-attachment:fixed;min-height:100vh;-webkit-user-select:none;user-select:none}
-body.theme-emi{background:linear-gradient(160deg,#fbcfe8 0%,#f5d0fe 45%,#ddd6fe 75%,#bbf7d0 100%);background-attachment:fixed}
+body.theme-emi{background:linear-gradient(160deg,#ede9fe 0%,#ddd6fe 40%,#e9d5ff 72%,#f5d0fe 100%);background-attachment:fixed}
 body.theme-blu{background:linear-gradient(160deg,#bae6fd 0%,#93c5fd 40%,#c4b5fd 75%,#fde68a 100%);background-attachment:fixed}
 #top{display:flex;align-items:center;gap:6px;padding:8px 10px;background:rgba(255,255,255,.7);position:sticky;top:0;z-index:20;box-shadow:0 2px 8px #0001}
 #top .title{font-weight:800;font-size:19px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -204,9 +204,9 @@ svg.hero.dance{animation:dance2 .6s ease-in-out infinite}
  .player{width:110px}.player .pv{width:84px}.hearts{font-size:24px}#top .title{font-size:16px}.iconbtn{width:40px;height:40px;font-size:19px}}
 
 /* ---- v3: Sage + three heroes ---- */
-body.theme-sage{background:linear-gradient(160deg,#ccfbf1 0%,#a5f3fc 40%,#fecdd3 78%,#fef9c3 100%);background-attachment:fixed}
-.herocards{grid-template-columns:repeat(3,1fr)}
-.herocard.sage{background:linear-gradient(#f0fdfa,#ffe4e6);box-shadow:0 7px 0 #2dd4bf}
+body.theme-sage{background:linear-gradient(160deg,#fdf2f8 0%,#fbcfe8 42%,#fecdd3 75%,#fef3c7 100%);background-attachment:fixed}
+.herocards{grid-template-columns:repeat(2,1fr);max-width:760px;margin:0 auto}
+.herocard.sage{background:linear-gradient(#fdf2f8,#fce7f3);box-shadow:0 7px 0 #ec4899}
 .herocard .hsv{width:min(170px,100%)}
 svg.hero.sing{animation:sing .55s ease-in-out 3}
 @keyframes sing{0%,100%{transform:rotate(0) translateY(0)}25%{transform:rotate(-7deg) translateY(-8px) scale(1.04)}75%{transform:rotate(7deg) translateY(-8px) scale(1.04)}}
@@ -220,6 +220,45 @@ svg.hero.sing{animation:sing .55s ease-in-out 3}
  .herocard .hn{font-size:22px}.herocard .ht{font-size:15px}.herocard .hl{font-size:13px;margin-top:2px}
  .castm.side2{width:66px}.winheroes .w1{width:120px}.winheroes .w2,.winheroes .w3{width:84px}
 }
+
+/* ---- v4: Eshon + signature colours (Emi purple, Sage pink, Blú blue, Eshon green) ---- */
+body.theme-eshon{background:linear-gradient(160deg,#f0fdf4 0%,#bbf7d0 42%,#d9f99d 75%,#fef9c3 100%);background-attachment:fixed}
+.herocard.emi{background:linear-gradient(#f5f3ff,#ede9fe);box-shadow:0 7px 0 #8b5cf6}
+.herocard.blu{background:linear-gradient(#eff6ff,#dbeafe);box-shadow:0 7px 0 #3b82f6}
+.herocard.eshon{background:linear-gradient(#f0fdf4,#dcfce7);box-shadow:0 7px 0 #22c55e}
+.herocard.emi .ht{color:#6d28d9}.herocard.sage .ht{color:#be185d}.herocard.blu .ht{color:#1d4ed8}.herocard.eshon .ht{color:#15803d}
+@media (min-width:561px){.herocard .hsv{width:min(150px,100%)}}
+body.theme-emi{--hc:#8b5cf6;--hc2:#6d28d9;--hcl:#f5f3ff}
+body.theme-sage{--hc:#ec4899;--hc2:#be185d;--hcl:#fdf2f8}
+body.theme-blu{--hc:#3b82f6;--hc2:#1d4ed8;--hcl:#eff6ff}
+body.theme-eshon{--hc:#16a34a;--hc2:#166534;--hcl:#f0fdf4}
+body[class*=theme-] #top{background:var(--hcl);border-bottom:4px solid var(--hc)}
+body[class*=theme-] #top .title{color:var(--hc2)}
+body[class*=theme-] h2{color:var(--hc2)}
+body[class*=theme-] .btn.pink,body[class*=theme-] .btn.purple,body[class*=theme-] .btn.blue,body[class*=theme-] .btn.green{background:var(--hc);box-shadow:0 5px 0 var(--hc2);color:#fff}
+body[class*=theme-] .bubble{border-color:var(--hc)}
+body[class*=theme-] .lvl{box-shadow:0 6px 0 var(--hc)}
+body[class*=theme-] .tag{background:var(--hc2)}
+body[class*=theme-] .item{box-shadow:0 5px 0 var(--hc)}
+body[class*=theme-] .item.on{background:var(--hcl);box-shadow:0 5px 0 var(--hc2);outline:3px solid var(--hc)}
+body[class*=theme-] .item.locked{box-shadow:0 5px 0 #94a3b8;outline:none}
+body[class*=theme-] input.nm{border-color:var(--hc)}
+body[class*=theme-] .closetcard{background:var(--hcl);border:4px solid var(--hc)}
+svg.hero.draw{animation:draw .5s ease-in-out 3}
+@keyframes draw{0%,100%{transform:rotate(0) translateY(0)}30%{transform:rotate(-5deg) translateY(-6px)}60%{transform:rotate(4deg) translateY(-10px) scale(1.05)}}
+.doodlefx{position:fixed;pointer-events:none;z-index:60}
+.doodlefx path{stroke-dasharray:400;stroke-dashoffset:400;animation:dline .7s ease-out forwards}
+@keyframes dline{to{stroke-dashoffset:0}}
+.doodlefx .bud{position:absolute;width:64px;height:78px;animation:bpop 1.3s ease-out forwards;transform:scale(.2)}
+@keyframes bpop{0%{transform:scale(.2) translateY(0);opacity:0}25%{transform:scale(1.15) translateY(-20px);opacity:1}70%{transform:scale(1) translateY(-40px);opacity:1}100%{transform:scale(.9) translateY(-70px);opacity:0}}
+.winheroes .w4{width:105px}
+.padwrap{max-width:440px;margin:0 auto}
+#pad-c{width:100%;aspect-ratio:3/2;background:#fff;border:4px dashed #16a34a;border-radius:18px;touch-action:none;display:block;cursor:crosshair}
+.swatches{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+.sw{width:40px;height:40px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #94a3b8;cursor:pointer;padding:0}
+.sw.on{box-shadow:0 0 0 4px #1f2937;transform:scale(1.12)}
+.sw.lockd{opacity:.3;cursor:not-allowed}
+@media (max-width:560px){.winheroes .w3,.winheroes .w4{width:68px}.winheroes{gap:4px}.sw{width:34px;height:34px}}
 </style>
 </head>
 <body>
@@ -240,8 +279,8 @@ const HEARTS=3;
 const bossHP=n=>n===12?10:8;
 const BOSSES={1:['🐌','Slowpoke the Snail Minion'],2:['🦀','Captain Pinch'],10:['🐙','Octo-Ten'],5:['🦖','Rex the Muddler'],3:['👾','Glitch Trio'],4:['🐲','Quad Dragon'],9:['🧌','Grumble Nine'],6:['🦈','Sharky Six'],7:['🦑','Squid Seven'],8:['🤖','Robo-Eight'],11:['👹','Ogre Eleven'],12:['MUDDLE','The Muddle Monster']};
 const HEROES={
- emi:{id:'emi',name:'Emi',title:'Emi the Bloom Star',sib:'blu',closet:'Closet',closetE:'👗',fx:['🌸','🌷','🌼','💖','✨','🌺'],power:'Petal Power',
-  palette:['#f472b6','#e879f9','#c084fc','#fb7185','#f9a8d4','#a78bfa','#f0abfc','#86efac','#fda4af','#d8b4fe','#f472b6','#c084fc'],icons:['🌸','🌷','🌼','🌺','🌻','💐'],
+ emi:{id:'emi',name:'Emi',title:'Emi the Bloom Star',sib:'blu',closet:'Closet',closetE:'👗',fx:['🌸','💜','🌼','💖','✨','🪻'],power:'Petal Power',
+  palette:['#a78bfa','#c084fc','#8b5cf6','#d8b4fe','#e879f9','#7c3aed','#c4b5fd','#a855f7','#f0abfc','#9333ea','#ddd6fe','#b794f4'],icons:['🌸','🌷','🌼','🌺','🌻','💐'],
   blurb:'Fashionista hero with a big, loving heart. Her powers make flowers bloom!',verb:'🌱 Plant',thing:'flower',things:'flowers'},
  blu:{id:'blu',name:'Blú',title:'Blú the Star Guardian',sib:'emi',closet:'Music Box',closetE:'🎵',fx:['🎵','🎶','⭐','🍓','🍌','🌟'],power:'Star Blast',
   palette:['#f87171','#fb923c','#facc15','#4ade80','#2dd4bf','#60a5fa','#a78bfa','#f472b6','#34d399','#fbbf24','#38bdf8','#c084fc'],icons:['🍓','🍌','🍇','🍊','🍉','🍍','🍒','⭐'],
@@ -322,31 +361,31 @@ const TRICKS={
  11:{e:'👯‍♂️',t:'Twin Numbers',d:'11 times a one-digit number makes twins: the digit repeats! For bigger numbers: times 10, then add one more.',s:k=>k<=9?[`11 × ${k}  ➜  ${k} and ${k}`,`= ${11*k} ✨`]:[`10 × ${k} = ${10*k}`,`${10*k} + ${k} = ${11*k}`,`11 × ${k} = ${11*k} ✨`]},
  12:{e:'🕛',t:'Ten + Two',d:'Split 12 into 10 and 2. Do both, then add!',s:k=>[`10 × ${k} = ${10*k}`,`2 × ${k} = ${2*k}`,`${10*k} + ${2*k} = ${12*k} 🕛`]}
 };
-/* ---------- v3: Sage the Song Star (big sister, 7) ---------- */
-HEROES.sage={id:'sage',name:'Sage',title:'Sage the Song Star',sib:'emi',closet:'Doll House',closetE:'🏠',fx:['🎵','🎶','✨','🎤','💫','🌟'],power:'Song Power',
- palette:['#2dd4bf','#5eead4','#f43f5e','#67e8f9','#fb7185','#34d399','#22d3ee','#f472b6','#99f6e4','#fda4af','#14b8a6','#38bdf8'],icons:['🎤','🪆','🎤','🧸'],
- blurb:'Big sister superstar who loves dolls. Her singing voice is her power!',verb:'🎤 Add',thing:'doll or mic',things:'dolls and mics'};
+/* ---------- v3: Sage the Song Star (oldest cousin, 7) ---------- */
+HEROES.sage={id:'sage',name:'Sage',title:'Sage the Song Star',sib:'emi',closet:'Doll House',closetE:'🏠',fx:['🎵','🎶','✨','🎤','💖','🌟'],power:'Song Power',
+ palette:['#f472b6','#ec4899','#f9a8d4','#fb7185','#db2777','#fbcfe8','#f43f5e','#fda4af','#e11d48','#ff8fab','#be185d','#ffb3c6'],icons:['🎤','🪆','🎤','🧸'],
+ blurb:'Superstar cousin who loves dolls. Her singing voice is her power!',verb:'🎤 Add',thing:'doll or mic',things:'dolls and mics'};
 HEROES.emi.sib='blu';HEROES.blu.sib='emi';
 /* who helps whom: first = main sidekick, second = extra sidekick */
-const SIBS={emi:['blu','sage'],blu:['emi','sage'],sage:['emi','blu']};
-const HERO_ORDER=['sage','emi','blu'];
+const SIBS={emi:['blu','sage','eshon'],blu:['emi','sage','eshon'],sage:['emi','blu','eshon'],eshon:['sage','emi','blu']};
+const HERO_ORDER=['sage','emi','blu','eshon'];
 /* per-hero style + behaviour */
 const HSTYLE={
- emi:{tag:'🌸',right:'cheer',win:'strut',sfx:'bloom',pow:'🌸',shield:'💖',conf:['#f472b6','#e879f9','#c084fc','#fde047','#fff'],
+ emi:{tag:'💜',right:'cheer',win:'strut',sfx:'bloom',pow:'🌸',shield:'💖',conf:['#a78bfa','#c084fc','#7c3aed','#fde047','#fff','#ddd6fe'],
   learn:(k,n,th,pl)=>`Let's plant <b>${k} garden rows</b> with <b>${n} ${th}</b> in each row to help the ${pl.name}!`,
   closetHelp:'Tap a treasure to try it on (tap again to take it off). Tap Emi for a runway strut! 💃'},
  blu:{tag:'⭐',right:'dance',win:'dance',sfx:'melody',pow:'⭐',shield:'⭐',conf:null,
   learn:(k,n,th,pl)=>`Let's line up <b>${k} rows</b> of <b>${n} ${th}</b> to bring the beat back to the ${pl.name}!`,
   closetHelp:'Tap an instrument to play it and hold it. Tap a badge to wear it. Tap Blú to dance! 🕺'},
- sage:{tag:'🎤',right:'sing',win:'sing',sfx:'sing',pow:'🎵',shield:'💖',conf:['#2dd4bf','#5eead4','#f43f5e','#fde047','#fff','#67e8f9'],
+ sage:{tag:'🎤',right:'sing',win:'sing',sfx:'sing',pow:'🎵',shield:'💖',conf:['#f472b6','#ec4899','#f9a8d4','#fde047','#fff','#ef4444'],
   learn:(k,n,th,pl)=>`Let's set up <b>${k} rows</b> with <b>${n} ${th}</b> in each row for a big concert at the ${pl.name}!`,
   closetHelp:'Tap a doll to hold it, a doll outfit to dress your doll, and the mic to sing. Tap Sage to hear her sing! 🎶'}
 };
-/* what b is to a (for words like "big sister") */
-function relTo(a,b){if(b==='blu')return 'little brother';if(b==='sage')return 'big sister';if(b==='emi')return a==='sage'?'little sister':'big sister';return 'friend';}
+/* what b is to a. Only Emi and Blú are sister and brother; Sage and Eshon are cousins to everyone. */
+function relTo(a,b){if(a==='emi'&&b==='blu')return 'little brother';if(a==='blu'&&b==='emi')return 'big sister';return 'cousin';}
 const SIB_INTRO={emi:"And I'm {me}, your {myrel}! I'll cheer for you with all my love! 🌸",blu:"And I'm {me}, your {myrel}! My star shield will keep you safe! ⭐",sage:"And I'm {me}, your {myrel}! I'll sing you brave songs all the way! 🎤"};
 const HERO_INTRO={emi:"I'm {title}! I'll bring back the colours with my big, loving heart! 💖",blu:"I'm {title}! I'll protect everyone and bring back the music! 🎵",sage:"I'm {title}! My singing voice will bring the music back to the whole kingdom! 🎤"};
-SIDE.sage=["You've got this, {rel}! I'll sing you a brave song! 🎤","Big sister is right here, {hero}! Let's be brave together! 💚","La la la! That's my cheer song for you, {hero}! 🎶"];
+SIDE.sage=["You've got this, {rel}! I'll sing you a brave song! 🎤","Cousin {me} is right here, {hero}! Let's be brave together! 💚","La la la! That's my cheer song for you, {hero}! 🎶"];
 BRAVE.sage=["Mic on! Song Star, ready! 🎤","My voice is my power! Let's sing this muddle away! 🎶"];
 VICTORY.sage=["Take a bow! That was my best song ever! 🎤","Encore! Encore! The kingdom is singing again! 🎶","Sparkly notes for everyone! 🌟"];
 SIB_PROUD.sage=["I'm SO proud of you, {hero}! You're a superstar! 🌟","That calls for a happy song! La la la! 🎶"];
@@ -377,17 +416,63 @@ REWARDS.sage=[{id:'teddy',name:'Cuddle Teddy',e:'🧸',slot:'doll'},{id:'mic',na
  {id:'karaoke',name:'Karaoke Star',e:'🌟',slot:'badge'},{id:'ballerina',name:'Ballerina Doll',e:'🩰',slot:'doll'},{id:'tutu',name:'Rainbow Tutu',e:'🌈',slot:'outfit'},
  {id:'gown',name:'Doll Ball Gown',e:'💜',slot:'dollfit'},{id:'crown',name:'Song Star Crown',e:'👑',slot:'head'},{id:'superstar',name:'Superstar Stage Dress',e:'✨',slot:'outfit'}];
 Object.assign(SLOTNAMES,{doll:'Doll',dollfit:'Doll Outfit',stage:'Stage'});
+/* ---------- v4: Eshon the Sketch Master (cousin, 6) ---------- */
+HEROES.eshon={id:'eshon',name:'Eshon',title:'Eshon the Sketch Master',sib:'sage',closet:'Art Studio',closetE:'🎨',fx:['✏️','🖍️','✨','💚','🌟','🖌️'],power:'Doodle Power',
+ palette:['#22c55e','#4ade80','#16a34a','#86efac','#facc15','#38bdf8','#15803d','#a3e635','#34d399','#fb923c','#10b981','#84cc16'],icons:['✏️','🖍️','✏️','🖍️'],
+ blurb:'Super artist cousin who invents his own characters. His drawings come to life!',verb:'✏️ Draw',thing:'crayon',things:'crayons'};
+HSTYLE.eshon={tag:'✏️',right:'draw',win:'draw',sfx:'sketch',pow:'✏️',shield:'💚',conf:['#22c55e','#4ade80','#86efac','#facc15','#fff','#16a34a'],
+ learn:(k,n,th,pl)=>`Let's draw <b>${k} rows</b> with <b>${n} ${th}</b> in each row on a sketchbook page for the ${pl.name}!`,
+ closetHelp:'Tap a treasure to use it or wear it. Tap a doodle buddy to bring it to life! Tap Eshon to see him draw! ✏️'};
+SIB_INTRO.eshon="And I'm {me}, your {myrel}! I'll draw you brave doodle buddies to help! ✏️";
+HERO_INTRO.eshon="I'm {title}! My drawings come to life, and I'll draw the colours back into the kingdom! ✏️💚";
+const HERO_TEAM={emi:"Yay! Our whole crew is here! Let's go! 💪",blu:"Yay! Our whole crew is here! Let's go! 💪",sage:"Cousin crew, let's go! Team Song Star will save the kingdom! 🎶",eshon:"Cousin crew, let's go! I'll draw us a brave plan! ✏️"};
+SIDE.eshon=["Go, {hero}! I drew a picture of you winning! 🖍️","I'm drawing you a super-strong doodle buddy, {hero}! ✏️","You can do it, {rel}! Every great artist starts with one line! 💚"];
+BRAVE.eshon=["Pencil ready! Sketch Master, go! ✏️","I'll draw a brave plan and beat this minion! 💚"];
+VICTORY.eshon=["Ta-da! My doodles are dancing off the page! ✏️","That's a masterpiece! Green is the colour of winning! 💚","Doodle buddies, high five! We did it! 🖍️"];
+SIB_PROUD.eshon=["Awesome, {hero}! I'm drawing a picture of you as a superhero! 🖍️","Cousin crew wins again! High five, {hero}! ✋"];
+LOSE_SIB.eshon=["Oops is okay! Artists use erasers all the time, {hero}! ✏️","Let's start a fresh page and try again, {hero}! 💚"];
+LOSE_HERO.eshon=["Mistakes are just practice lines. I'll draw it again!","I'll flip to a new page and try again!"];
+RETRY_HERO.eshon=["New page, new numbers! My pencil is ready! ✏️","I'll sketch it better this time! Let's go!"];
+OWL_WIN.eshon="{hero}'s drawings came to life and filled the {place} with colour!";
+ENC.eshon="\"Keep drawing, you've got this!\" ✏️";
+const ESHON_LINES=["I'll draw a whole garden of happy flowers! Then they'll pop off the page and bloom!",
+ "A disco needs dancers! I'll draw fruits with funny faces and they'll dance!",
+ "I'll draw the biggest, shiniest star ever and make it twinkle!",
+ "I'll draw a cool outfit for Emi's fashion show! It'll be green, of course!",
+ "I'll draw a band of doodle buddies to play the meadow's song!",
+ "I'll draw sparkles on the water with my magic pencil! Swish, swish!",
+ "A rainbow needs every colour! I'll colour it in, one stripe at a time!",
+ "I'll draw a hundred butterflies and they'll fly off my page!",
+ "I'll draw a roller coaster! Can a drawing go loop-the-loop? Let's find out!",
+ "I'll draw a doodle drum for Blú! Boom, boom, scribble!",
+ "I'll draw everyone in fancy party clothes! Even the doodle buddies!",
+ "Muddle Monster, I've drawn a plan to beat you! Cousin crew, let's go!"];
+PLACES.forEach((p,i)=>p.eshon=ESHON_LINES[i]);
+HCTX.eshon=[{e:'🖍️',one:'crayon',many:'crayons',g1:'crayon box',gs:'crayon boxes'},{e:'✏️',one:'pencil',many:'pencils',g1:'pencil case',gs:'pencil cases'},
+ {e:'🐲',one:'doodle monster',many:'doodle monsters',g1:'sketchbook page',gs:'sketchbook pages'},{e:'🖌️',one:'paintbrush',many:'paintbrushes',g1:'paint jar',gs:'paint jars'},
+ {e:'🖼️',one:'picture',many:'pictures',g1:'art wall',gs:'art walls'},{e:'🟢',one:'green dot',many:'green dots',g1:'drawing',gs:'drawings'},
+ {e:'🦸',one:'comic hero',many:'comic heroes',g1:'comic page',gs:'comic pages'}];
+REWARDS.eshon=[{id:'pencil',name:'Magic Green Pencil',e:'✏️',slot:'hand'},{id:'squiggle',name:'Squiggle the Doodle Dragon',e:'🐲',slot:'buddy'},
+ {id:'colors',name:'Rainbow Crayon Pack',e:'🖍️',slot:'pocket'},{id:'beret',name:'Green Artist Beret',e:'🧑‍🎨',slot:'head'},
+ {id:'bloop',name:'Bloop the Giggle Blob',e:'👾',slot:'buddy'},{id:'palette',name:'Paint Palette',e:'🎨',slot:'hand'},
+ {id:'cape',name:'Art Hero Cape',e:'🦸',slot:'back'},{id:'zigzag',name:'Zig-Zag the Robot Cat',e:'🤖',slot:'buddy'},
+ {id:'easel',name:'Giant Easel',e:'🖼️',slot:'stage'},{id:'neon',name:'Glow Marker Pack',e:'🌈',slot:'pocket'},
+ {id:'fluff',name:'Captain Fluffernoodle the Cloud Pup',e:'☁️',slot:'buddy'},{id:'golden',name:'Golden Crayon',e:'🌟',slot:'hand'}];
+Object.assign(SLOTNAMES,{buddy:'Doodle Buddy',pocket:'Pocket'});
+/* Doodle Pad colours: green and black always; more unlock with prizes */
+const PAD_COLORS=[{c:'#16a34a',n:'Green'},{c:'#1f2937',n:'Black'},{c:'#ef4444',n:'Red',need:'colors'},{c:'#f97316',n:'Orange',need:'colors'},{c:'#facc15',n:'Yellow',need:'colors'},{c:'#3b82f6',n:'Blue',need:'colors'},{c:'#a855f7',n:'Purple',need:'colors'},
+ {c:'#ec4899',n:'Glow Pink',need:'neon'},{c:'#22d3ee',n:'Glow Blue',need:'neon'},{c:'#a3e635',n:'Glow Lime',need:'neon'},{c:'#eab308',n:'Gold',need:'golden'}];
 /* ---------- original cartoon SVG characters ---------- */
 const SKIN='#8d5524',SKIN_L='#a0643a',HAIR='#2b1a10';
 function starPts(cx,cy,R,r){let p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r:R;p.push((cx+rr*Math.cos(a)).toFixed(1)+','+(cy+rr*Math.sin(a)).toFixed(1));}return p.join(' ');}
 function curls(cx,cy,R,r,a0,a1,step){let h='';for(let a=a0;a<=a1;a+=step){const t=a*Math.PI/180;h+=`<circle cx="${(cx+R*Math.cos(t)).toFixed(1)}" cy="${(cy+R*Math.sin(t)).toFixed(1)}" r="${r}"/>`;}return h;}
-const DEFS=`<defs><linearGradient id="g-rbw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f87171"/><stop offset=".25" stop-color="#fbbf24"/><stop offset=".5" stop-color="#4ade80"/><stop offset=".75" stop-color="#60a5fa"/><stop offset="1" stop-color="#a78bfa"/></linearGradient><linearGradient id="g-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef08a"/><stop offset="1" stop-color="#f59e0b"/></linearGradient><linearGradient id="g-pink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#db2777"/></linearGradient></defs>`;
+const DEFS=`<defs><linearGradient id="g-rbw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f87171"/><stop offset=".25" stop-color="#fbbf24"/><stop offset=".5" stop-color="#4ade80"/><stop offset=".75" stop-color="#60a5fa"/><stop offset="1" stop-color="#a78bfa"/></linearGradient><linearGradient id="g-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef08a"/><stop offset="1" stop-color="#f59e0b"/></linearGradient><linearGradient id="g-pink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9a8d4"/><stop offset="1" stop-color="#db2777"/></linearGradient><linearGradient id="g-lav" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ddd6fe"/><stop offset=".45" stop-color="#a78bfa"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>`;
 function face(xl,xr,ey,mouthW){return `<g class="eyes"><ellipse cx="${xl}" cy="${ey}" rx="7" ry="9" fill="#1f130b"/><ellipse cx="${xr}" cy="${ey}" rx="7" ry="9" fill="#1f130b"/><circle cx="${xl+2.5}" cy="${ey-3.5}" r="2.8" fill="#fff"/><circle cx="${xr+2.5}" cy="${ey-3.5}" r="2.8" fill="#fff"/></g>
  <ellipse cx="${xl-14}" cy="${ey+20}" rx="9" ry="6" fill="#f472b6" opacity=".45"/><ellipse cx="${xr+14}" cy="${ey+20}" rx="9" ry="6" fill="#f472b6" opacity=".45"/>
  <path d="M${100-mouthW} ${ey+20} Q100 ${ey+50} ${100+mouthW} ${ey+20} Q100 ${ey+27} ${100-mouthW} ${ey+20}Z" fill="#7f1d1d"/>
  <path d="M${100-mouthW+4} ${ey+22} Q100 ${ey+28} ${100+mouthW-4} ${ey+22} L${100+mouthW-6} ${ey+26} Q100 ${ey+31} ${100-mouthW+6} ${ey+26}Z" fill="#fff"/>
  <ellipse cx="100" cy="${ey+37}" rx="7" ry="4" fill="#fb7185"/>`;}
-function emiSVG(eq,cls){eq=eq||{};const o=eq.outfit,dress=o==='rainbow'?'url(#g-rbw)':o==='gala'?'url(#g-gold)':'url(#g-pink)';
+function emiSVG(eq,cls){eq=eq||{};const o=eq.outfit,dress=o==='rainbow'?'url(#g-rbw)':o==='gala'?'url(#g-gold)':'url(#g-lav)';
  let s=`<svg class="hero emi ${cls||'idle'}" viewBox="0 0 210 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Emi">${DEFS}`;
  if(eq.back==='wings')s+=`<g fill="#f0abfc" fill-opacity=".85" stroke="#a855f7" stroke-width="3"><ellipse cx="62" cy="178" rx="30" ry="42" transform="rotate(-25 62 178)"/><ellipse cx="148" cy="178" rx="30" ry="42" transform="rotate(25 148 178)"/><ellipse cx="66" cy="222" rx="18" ry="24" transform="rotate(20 66 222)"/><ellipse cx="144" cy="222" rx="18" ry="24" transform="rotate(-20 144 222)"/></g>`;
  if(eq.back==='cape')s+=`<path d="M78 160 L40 252 Q105 266 170 252 L132 160Z" fill="#e11d48" stroke="#9f1239" stroke-width="3"/><text x="58" y="246" font-size="16">🌹</text><text x="136" y="246" font-size="16">🌹</text>`;
@@ -396,15 +481,15 @@ function emiSVG(eq,cls){eq=eq||{};const o=eq.outfit,dress=o==='rainbow'?'url(#g-
  // legs + shoes
  const shoe=eq.feet==='heels'?'#e879f9':'#fff';
  s+=`<rect x="86" y="228" width="14" height="28" rx="6" fill="${SKIN}"/><rect x="110" y="228" width="14" height="28" rx="6" fill="${SKIN}"/>
- <ellipse cx="92" cy="258" rx="14" ry="7" fill="${shoe}" stroke="#be185d" stroke-width="2.5"/><ellipse cx="118" cy="258" rx="14" ry="7" fill="${shoe}" stroke="#be185d" stroke-width="2.5"/>`;
+ <ellipse cx="92" cy="258" rx="14" ry="7" fill="${shoe}" stroke="#7c3aed" stroke-width="2.5"/><ellipse cx="118" cy="258" rx="14" ry="7" fill="${shoe}" stroke="#7c3aed" stroke-width="2.5"/>`;
  if(eq.feet==='heels')s+=`<text x="84" y="262" font-size="9" fill="#fff">✦ ✦</text><text x="110" y="262" font-size="9" fill="#fff">✦ ✦</text>`;
  // arms
  s+=`<path d="M80 168 Q58 190 54 212" stroke="${SKIN}" stroke-width="13" stroke-linecap="round" fill="none"/><path d="M130 168 Q152 190 156 208" stroke="${SKIN}" stroke-width="13" stroke-linecap="round" fill="none"/><circle cx="54" cy="214" r="8" fill="${SKIN}"/><circle cx="156" cy="210" r="8" fill="${SKIN}"/>`;
  // dress
- s+=`<rect x="98" y="146" width="14" height="16" fill="${SKIN}"/><path d="M78 162 Q105 152 132 162 L152 234 Q105 248 58 234Z" fill="${dress}" stroke="#9d174d" stroke-width="3"/>
- <rect x="80" y="180" width="50" height="8" rx="4" fill="#a855f7"/><circle cx="105" cy="184" r="6" fill="#fde047"/>
+ s+=`<rect x="98" y="146" width="14" height="16" fill="${SKIN}"/><path d="M78 162 Q105 152 132 162 L152 234 Q105 248 58 234Z" fill="${dress}" stroke="#5b21b6" stroke-width="3"/>
+ <rect x="80" y="180" width="50" height="8" rx="4" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1.5"/><circle cx="105" cy="184" r="6" fill="#fde047"/>
  <text x="78" y="218" font-size="12" fill="#fff">✦</text><text x="122" y="206" font-size="10" fill="#fff">✦</text><text x="100" y="230" font-size="11" fill="#fff">✦</text>`;
- if(o==='jacket')s+=`<path d="M78 162 Q90 156 99 158 L95 206 L72 206Z" fill="#7c3aed" stroke="#4c1d95" stroke-width="2.5"/><path d="M132 162 Q120 156 111 158 L115 206 L138 206Z" fill="#7c3aed" stroke="#4c1d95" stroke-width="2.5"/><g fill="#fde047"><circle cx="84" cy="176" r="2"/><circle cx="90" cy="190" r="2"/><circle cx="80" cy="198" r="2"/><circle cx="126" cy="176" r="2"/><circle cx="120" cy="190" r="2"/><circle cx="130" cy="198" r="2"/></g>`;
+ if(o==='jacket')s+=`<path d="M78 162 Q90 156 99 158 L95 206 L72 206Z" fill="#4c1d95" stroke="#2e1065" stroke-width="2.5"/><path d="M132 162 Q120 156 111 158 L115 206 L138 206Z" fill="#4c1d95" stroke="#2e1065" stroke-width="2.5"/><g fill="#fde047"><circle cx="84" cy="176" r="2"/><circle cx="90" cy="190" r="2"/><circle cx="80" cy="198" r="2"/><circle cx="126" cy="176" r="2"/><circle cx="120" cy="190" r="2"/><circle cx="130" cy="198" r="2"/></g>`;
  if(o==='gala')s+=`<g fill="#fff"><polygon points="${starPts(90,205,6,2.5)}"/><polygon points="${starPts(120,220,6,2.5)}"/><polygon points="${starPts(105,195,5,2)}"/></g>`;
  if(eq.neck==='pearls'){for(let i=0;i<7;i++){const t=Math.PI*(i/6);s+=`<circle cx="${(92+i*26/6).toFixed(1)}" cy="${(162+8*Math.sin(t)).toFixed(1)}" r="3.2" fill="#fff" stroke="#cbd5e1"/>`;}}
  // head
@@ -443,7 +528,7 @@ function bluSVG(eq,cls){eq=eq||{};
  const hi={drum:'🥁',guitar:'🎸',trumpet:'🎺',piano:'🎹',violin:'🎻',sax:'🎷'}[eq.hand];
  if(hi)s+=`<text x="170" y="222" font-size="38" text-anchor="middle">${hi}</text>`;
  return s+'</svg>';}
-function heroSVGeq(id,eq,cls){return id==='emi'?emiSVG(eq,cls):id==='sage'?sageSVG(eq,cls):bluSVG(eq,cls);}
+function heroSVGeq(id,eq,cls){return id==='emi'?emiSVG(eq,cls):id==='sage'?sageSVG(eq,cls):id==='eshon'?eshonSVG(eq,cls):bluSVG(eq,cls);}
 function heroSVG(id,cls){const eq=(save.profiles[id]&&save.profiles[id].eq)||{};return heroSVGeq(id,eq,cls);}
 function owlSVG(){return `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Professor Hoot" style="display:block;width:100%;height:auto;overflow:visible">
  <path d="M30 34 L24 10 L46 26Z M90 34 L96 10 L74 26Z" fill="#7c4a1e"/><ellipse cx="60" cy="78" rx="44" ry="52" fill="#92400e"/><ellipse cx="60" cy="92" rx="29" ry="32" fill="#fde68a"/>
@@ -475,22 +560,22 @@ function dollSVG(type,fit){/* small doll held in Sage's right hand, drawn around
  if(type==='princess')g+=`<path d="M164 196 l3 -8 l3 5 l2 -7 l2 7 l3 -5 l3 8z" fill="url(#g-gold)" stroke="#ca8a04" stroke-width="1"/>`;
  if(fit==='party')g+=`<text x="166" y="234" font-size="7" fill="#fff">✦ ✦</text>`;
  return g+'</g>';}
-function sageSVG(eq,cls){eq=eq||{};const o=eq.outfit,skirt=o==='tutu'?'url(#g-rbw)':o==='superstar'?'url(#g-gold)':'#2dd4bf';
+function sageSVG(eq,cls){eq=eq||{};const o=eq.outfit,skirt=o==='tutu'?'url(#g-rbw)':o==='superstar'?'url(#g-gold)':'url(#g-pink)';
  let s=`<svg class="hero sage ${cls||'idle'}" viewBox="0 0 210 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sage">${DEFS}`;
  if(eq.stage==='spotlight')s+=`<path d="M80 -10 L130 -10 L190 266 L20 266Z" fill="#fef08a" opacity=".45"/><ellipse cx="105" cy="262" rx="88" ry="10" fill="#fde047" opacity=".55"/>`;
  // legs + white sneakers
  s+=`<rect x="86" y="228" width="14" height="26" rx="6" fill="${SKIN}"/><rect x="110" y="228" width="14" height="26" rx="6" fill="${SKIN}"/>
- <path d="M78 252 h26 a6 6 0 0 1 0 12 h-26z" fill="#fff" stroke="#14b8a6" stroke-width="2"/><path d="M106 252 h26 a6 6 0 0 1 0 12 h-26z" fill="#fff" stroke="#14b8a6" stroke-width="2"/>
- <path d="M86 255 l6 3 M112 255 l6 3" stroke="#2dd4bf" stroke-width="2"/>`;
+ <path d="M78 252 h26 a6 6 0 0 1 0 12 h-26z" fill="#fff" stroke="#db2777" stroke-width="2"/><path d="M106 252 h26 a6 6 0 0 1 0 12 h-26z" fill="#fff" stroke="#db2777" stroke-width="2"/>
+ <path d="M86 255 l6 3 M112 255 l6 3" stroke="#f472b6" stroke-width="2"/>`;
  // arms
  s+=`<path d="M80 168 Q58 190 54 210" stroke="${SKIN}" stroke-width="13" stroke-linecap="round" fill="none"/><path d="M130 168 Q152 190 158 206" stroke="${SKIN}" stroke-width="13" stroke-linecap="round" fill="none"/><circle cx="54" cy="212" r="8" fill="${SKIN}"/><circle cx="158" cy="208" r="8" fill="${SKIN}"/>`;
  // outfit: mint top + flared aqua skirt
- s+=`<rect x="98" y="146" width="14" height="16" fill="${SKIN}"/><path d="M80 162 Q105 152 130 162 L134 200 L76 200Z" fill="#99f6e4" stroke="#0f766e" stroke-width="3"/>
- <path d="M76 198 L134 198 L156 238 Q105 252 54 238Z" fill="${skirt}" stroke="#0f766e" stroke-width="3"/>
+ s+=`<rect x="98" y="146" width="14" height="16" fill="${SKIN}"/><path d="M80 162 Q105 152 130 162 L134 200 L76 200Z" fill="#fbcfe8" stroke="#9d174d" stroke-width="3"/>
+ <path d="M76 198 L134 198 L156 238 Q105 252 54 238Z" fill="${skirt}" stroke="#9d174d" stroke-width="3"/>
  <path d="M62 236 Q80 228 92 240 Q105 230 118 240 Q130 228 148 236" stroke="#fff" stroke-width="3" fill="none" opacity=".8"/>
- <text x="96" y="186" font-size="18" fill="#0f766e">♪</text><text x="70" y="226" font-size="11" fill="#fff">✦</text><text x="128" y="222" font-size="10" fill="#fff">✦</text>`;
+ <text x="96" y="186" font-size="18" fill="#be185d">♪</text><text x="70" y="226" font-size="11" fill="#fff">✦</text><text x="128" y="222" font-size="10" fill="#fff">✦</text>`;
  if(o==='superstar')s+=`<g fill="#fff"><polygon points="${starPts(84,222,6,2.5)}"/><polygon points="${starPts(124,232,6,2.5)}"/><polygon points="${starPts(105,214,5,2)}"/></g>`;
- if(eq.badge==='karaoke')s+=`<circle cx="120" cy="176" r="11" fill="#fff" stroke="#0f766e" stroke-width="2"/><polygon points="${starPts(120,176,9,4)}" fill="url(#g-gold)" stroke="#b45309" stroke-width="1.2"/>`;
+ if(eq.badge==='karaoke')s+=`<circle cx="120" cy="176" r="11" fill="#fff" stroke="#9d174d" stroke-width="2"/><polygon points="${starPts(120,176,9,4)}" fill="url(#g-gold)" stroke="#b45309" stroke-width="1.2"/>`;
  // puffs (behind head)
  s+=`<g fill="${HAIR}"><circle cx="52" cy="44" r="27"/>${curls(52,44,25,8,0,350,30)}<circle cx="158" cy="44" r="27"/>${curls(158,44,25,8,0,350,30)}</g>`;
  // head
@@ -507,6 +592,54 @@ function sageSVG(eq,cls){eq=eq||{};const o=eq.outfit,skirt=o==='tutu'?'url(#g-rb
  if(eq.hand==='mic')s+=`<line x1="54" y1="214" x2="38" y2="186" stroke="#475569" stroke-width="6" stroke-linecap="round"/><circle cx="35" cy="180" r="11" fill="#e2e8f0" stroke="#64748b" stroke-width="2.5"/><path d="M27 176 h16 M26 181 h18 M27 186 h16" stroke="#94a3b8" stroke-width="1.5"/><text x="12" y="168" font-size="10" fill="#f43f5e">✦</text>`;
  if(eq.doll)s+=dollSVG(eq.doll,eq.dollfit);
  return s+'</svg>';}
+
+/* Eshon: brown skin, short small locs, big smile, white T-shirt with green accents, pencil behind his ear */
+function buddySVG(t){/* doodle creatures in marker-outline style, around x 172, y 225 */
+ const k='stroke="#1f2937" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"';
+ const eyes=(x1,x2,y)=>`<circle cx="${x1}" cy="${y}" r="3.2" fill="#fff" ${k}/><circle cx="${x2}" cy="${y}" r="3.2" fill="#fff" ${k}/><circle cx="${x1+.8}" cy="${y}" r="1.3" fill="#1f2937"/><circle cx="${x2+.8}" cy="${y}" r="1.3" fill="#1f2937"/>`;
+ if(t==='squiggle')return `<g><path d="M158 250 q-14 -6 -8 -20 q6 8 12 4" fill="#86efac" ${k}/><path d="M160 254 q-4 -30 10 -40 q16 -6 22 8 q6 18 -6 32z" fill="#4ade80" ${k}/><path d="M168 214 l2 -9 l4 7 l4 -8 l3 9" fill="#fde047" ${k}/><path d="M182 226 l12 -8 l-2 12z" fill="#bbf7d0" ${k}/>${eyes(168,180,222)}<path d="M170 232 q5 4 10 0" fill="none" ${k}/><path d="M166 254 v6 M182 254 v6" ${k}/></g>`;
+ if(t==='bloop')return `<g><path d="M156 256 q-6 -26 6 -38 q10 -10 20 0 q12 12 6 38 q-4 -5 -8 0 q-4 -5 -8 0 q-4 -5 -8 0 q-4 -5 -8 0z" fill="#c084fc" ${k}/><circle cx="164" cy="228" r="3.6" fill="#fff" ${k}/><circle cx="174" cy="224" r="4.4" fill="#fff" ${k}/><circle cx="184" cy="229" r="3.6" fill="#fff" ${k}/><circle cx="164.6" cy="228" r="1.4" fill="#1f2937"/><circle cx="174.6" cy="224" r="1.7" fill="#1f2937"/><circle cx="184.6" cy="229" r="1.4" fill="#1f2937"/><path d="M164 240 q10 8 20 0" fill="#fff" ${k}/></g>`;
+ if(t==='zigzag')return `<g><path d="M161 211 l4 -9 l5 9z M178 211 l5 -9 l4 9z" fill="#94a3b8" ${k}/><rect x="158" y="210" width="32" height="24" rx="5" fill="#cbd5e1" ${k}/><path d="M174 202 v-8" ${k}/><circle cx="174" cy="192" r="3" fill="#ef4444" ${k}/>${eyes(166,182,221)}<path d="M166 229 l4 -3 l4 3 l4 -3 l4 3" fill="none" ${k}/><rect x="162" y="234" width="24" height="18" rx="4" fill="#94a3b8" ${k}/><path d="M168 252 v7 M180 252 v7 M186 240 q12 -2 8 -14" fill="none" ${k}/><path d="M168 240 l12 0 M168 246 l8 0" stroke="#22c55e" stroke-width="2.5"/></g>`;
+ return `<g><path d="M156 248 q-10 -2 -8 -12 q-6 -10 4 -16 q2 -12 14 -10 q8 -10 18 -2 q12 -2 12 10 q10 6 4 16 q2 12 -10 12z" fill="#fff" stroke="#38bdf8" stroke-width="2.5" stroke-linejoin="round"/><path d="M158 214 q-8 -2 -6 10 M188 212 q8 -2 6 10" fill="#e0f2fe" stroke="#38bdf8" stroke-width="2.5"/>${eyes(166,182,228)}<ellipse cx="174" cy="236" rx="3" ry="2" fill="#1f2937"/><path d="M170 240 q4 3 8 0" fill="none" ${k}/><path d="M160 248 v6 M188 248 v6" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/></g>`;}
+function locs(){let g='';const cx=105,cy=98;
+ for(let a=192;a<=348;a+=11){const r=a*Math.PI/180,x=cx+57*Math.cos(r),y=cy+57*Math.sin(r),len=a<215||a>325?26:19,rot=a+90;
+  g+=`<g transform="rotate(${rot} ${x.toFixed(1)} ${y.toFixed(1)})"><rect x="${(x-5).toFixed(1)}" y="${(y-len+4).toFixed(1)}" width="10" height="${len}" rx="5" fill="${HAIR}"/><rect x="${(x-4).toFixed(1)}" y="${(y-len+5).toFixed(1)}" width="8" height="6" rx="4" fill="#7c4a26"/><path d="M${(x-4).toFixed(1)} ${(y-len/2+3).toFixed(1)} h8 M${(x-4).toFixed(1)} ${(y-2).toFixed(1)} h8" stroke="#4a2c17" stroke-width="1.6"/></g>`;}
+ for(let i=0;i<5;i++){const x=78+i*13.5,y=44+Math.abs(i-2)*3;g+=`<rect x="${x-5}" y="${y-14}" width="10" height="20" rx="5" fill="${HAIR}" transform="rotate(${(i-2)*8} ${x} ${y})"/>`;}
+ return g;}
+function eshonSVG(eq,cls){eq=eq||{};
+ let s=`<svg class="hero eshon ${cls||'idle'}" viewBox="0 0 210 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Eshon">${DEFS}`;
+ if(eq.stage==='easel')s+=`<g><path d="M14 262 L40 112 M70 262 L44 112 M42 120 L42 262" stroke="#92400e" stroke-width="5" stroke-linecap="round"/><rect x="6" y="104" width="74" height="62" rx="3" fill="#fff" stroke="#92400e" stroke-width="4"/>
+  <path d="M16 150 q10 -26 22 -8 q10 14 22 -14" stroke="#16a34a" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="62" cy="120" r="7" fill="#facc15"/><path d="M14 158 h60" stroke="#22c55e" stroke-width="3"/><rect x="10" y="166" width="66" height="6" rx="2" fill="#b45309"/></g>`;
+ if(eq.back==='cape')s+=`<path d="M80 164 L42 252 Q105 266 168 252 L130 164Z" fill="#16a34a" stroke="#14532d" stroke-width="3"/><g><circle cx="62" cy="236" r="6" fill="#facc15"/><circle cx="148" cy="234" r="5" fill="#38bdf8"/><circle cx="105" cy="252" r="5" fill="#f472b6"/><circle cx="80" cy="250" r="4" fill="#fff"/></g>`;
+ // legs + green sneakers
+ s+=`<rect x="88" y="226" width="14" height="26" rx="6" fill="${SKIN}"/><rect x="108" y="226" width="14" height="26" rx="6" fill="${SKIN}"/>
+ <path d="M80 252 h26 a6 6 0 0 1 0 12 h-26z" fill="#22c55e" stroke="#14532d" stroke-width="2"/><path d="M104 252 h26 a6 6 0 0 1 0 12 h-26z" fill="#22c55e" stroke="#14532d" stroke-width="2"/><rect x="80" y="260" width="26" height="5" rx="2" fill="#fff"/><rect x="104" y="260" width="26" height="5" rx="2" fill="#fff"/>`;
+ // arms
+ s+=`<path d="M80 170 Q58 190 54 210" stroke="${SKIN}" stroke-width="13" stroke-linecap="round" fill="none"/><path d="M130 170 Q152 190 156 206" stroke="${SKIN}" stroke-width="13" stroke-linecap="round" fill="none"/><circle cx="54" cy="212" r="8" fill="${SKIN}"/><circle cx="156" cy="208" r="8" fill="${SKIN}"/>`;
+ // white T-shirt, green collar + sleeves, green doodle on chest, green shorts
+ s+=`<rect x="98" y="148" width="14" height="16" fill="${SKIN}"/><path d="M74 166 Q105 154 136 166 L142 212 L68 212Z" fill="#fff" stroke="#15803d" stroke-width="3"/>
+ <path d="M74 166 L62 184 L76 190Z" fill="#22c55e" stroke="#15803d" stroke-width="2.5"/><path d="M136 166 L148 184 L134 190Z" fill="#22c55e" stroke="#15803d" stroke-width="2.5"/>
+ <path d="M92 160 Q105 170 118 160" stroke="#22c55e" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <circle cx="103" cy="192" r="11" fill="#bbf7d0" stroke="#16a34a" stroke-width="2.5"/><circle cx="99" cy="190" r="1.8" fill="#14532d"/><circle cx="107" cy="190" r="1.8" fill="#14532d"/><path d="M98 196 q5 4 10 0" stroke="#14532d" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M95 182 l-3 -5 M111 182 l3 -5" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"/>
+ <rect x="118" y="174" width="14" height="14" rx="2" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+ <rect x="70" y="208" width="70" height="24" rx="6" fill="#15803d"/><line x1="105" y1="214" x2="105" y2="232" stroke="#14532d" stroke-width="3"/>`;
+ if(eq.pocket==='colors')s+=`<g stroke="#1f2937" stroke-width="1"><rect x="119" y="164" width="3.5" height="13" fill="#ef4444"/><rect x="123" y="162" width="3.5" height="15" fill="#facc15"/><rect x="127" y="165" width="3.5" height="12" fill="#3b82f6"/></g>`;
+ if(eq.pocket==='neon')s+=`<g stroke="#1f2937" stroke-width="1"><rect x="119" y="163" width="4" height="14" rx="1.5" fill="#ec4899"/><rect x="123.5" y="161" width="4" height="16" rx="1.5" fill="#22d3ee"/><rect x="128" y="164" width="4" height="13" rx="1.5" fill="#a3e635"/></g>`;
+ // locs behind head top, head, face
+ s+=`<circle cx="44" cy="104" r="10" fill="${SKIN}"/><circle cx="166" cy="104" r="10" fill="${SKIN}"/><circle cx="105" cy="98" r="60" fill="${SKIN}"/>`;
+ s+=`<g>${locs()}</g><path d="M50 92 C46 50 76 38 105 38 C134 38 164 50 160 92 C154 70 140 64 105 66 C70 64 56 70 50 92Z" fill="${HAIR}"/>`;
+ s+=`<path d="M76 84 Q86 79 96 84 M114 84 Q124 79 134 84" stroke="${HAIR}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+ s+=face(85,125,102,28);
+ // pencil behind right ear
+ s+=`<g transform="rotate(28 170 92)"><rect x="165" y="62" width="10" height="44" fill="#facc15" stroke="#a16207" stroke-width="2"/><rect x="165" y="56" width="10" height="8" rx="2" fill="#f9a8d4" stroke="#a16207" stroke-width="2"/><path d="M165 106 L170 118 L175 106Z" fill="#fde68a" stroke="#a16207" stroke-width="2"/><path d="M168.5 114 L170 118 L171.5 114Z" fill="#1f2937"/></g>`;
+ if(eq.head==='beret')s+=`<ellipse cx="96" cy="42" rx="54" ry="18" fill="#16a34a" stroke="#14532d" stroke-width="3" transform="rotate(-10 96 42)"/><path d="M96 24 q3 -10 9 -8" stroke="#14532d" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="74" cy="44" r="4" fill="#facc15"/><circle cx="118" cy="38" r="3.5" fill="#f472b6"/>`;
+ // hand items (left hand ~54,212)
+ if(eq.hand==='pencil')s+=`<g transform="rotate(-35 54 212)"><rect x="49" y="166" width="10" height="46" fill="#22c55e" stroke="#14532d" stroke-width="2"/><rect x="49" y="160" width="10" height="8" rx="2" fill="#f9a8d4" stroke="#14532d" stroke-width="2"/><path d="M49 212 L54 226 L59 212Z" fill="#fde68a" stroke="#14532d" stroke-width="2"/><path d="M52.5 221 L54 226 L55.5 221Z" fill="#16a34a"/></g><text x="12" y="186" font-size="14" fill="#22c55e">✦</text><text x="22" y="170" font-size="10" fill="#facc15">✦</text>`;
+ if(eq.hand==='palette')s+=`<path d="M22 214 q-6 -26 22 -30 q30 -2 26 22 q-2 10 -12 8 q-8 -2 -8 6 q0 10 -12 8 q-14 -2 -16 -14z" fill="#fde68a" stroke="#92400e" stroke-width="2.5"/><circle cx="34" cy="196" r="4.5" fill="#ef4444"/><circle cx="46" cy="191" r="4.5" fill="#22c55e"/><circle cx="58" cy="196" r="4.5" fill="#3b82f6"/><circle cx="30" cy="208" r="4.5" fill="#facc15"/><circle cx="38" cy="214" r="3" fill="#fff" stroke="#92400e" stroke-width="1.5"/>`;
+ if(eq.hand==='golden')s+=`<g transform="rotate(-30 54 212)"><rect x="47" y="168" width="14" height="44" rx="3" fill="url(#g-gold)" stroke="#a16207" stroke-width="2"/><path d="M47 168 L54 154 L61 168Z" fill="#facc15" stroke="#a16207" stroke-width="2"/><rect x="47" y="184" width="14" height="5" fill="#fff" opacity=".7"/></g><text x="16" y="178" font-size="14" fill="#f59e0b">✦</text>`;
+ if(eq.buddy)s+=buddySVG(eq.buddy);
+ return s+'</svg>';}
+function buddyFx(t){return `<svg viewBox="140 186 64 78" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;overflow:visible">${buddySVG(t)}</svg>`;}
 const $=id=>document.getElementById(id);
 const rand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
 const pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -517,14 +650,15 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;',
 /* ---------- save (each hero has its own progress) ---------- */
 const SKEY='ttq-save-v2';
 function freshProfile(id){return {name:HEROES[id].name,stars:{},hist:{},rewards:[],eq:{},prologue:false};}
-function freshSave(){return {muted:false,narrator:true,hero:null,profiles:{emi:freshProfile('emi'),blu:freshProfile('blu'),sage:freshProfile('sage')}};}
+function freshSave(){return {muted:false,narrator:true,hero:null,profiles:{emi:freshProfile('emi'),blu:freshProfile('blu'),sage:freshProfile('sage'),eshon:freshProfile('eshon')}};}
 function loadSave(){const f=freshSave();try{const s=JSON.parse(localStorage.getItem(SKEY));if(s&&s.profiles){const o=Object.assign(f,s);Object.keys(HEROES).forEach(id=>{o.profiles[id]=Object.assign(freshProfile(id),s.profiles[id]||{});});if(o.hero&&!HEROES[o.hero])o.hero=null;return o;}}catch(e){}return f;}
 function persist(){try{localStorage.setItem(SKEY,JSON.stringify(save));}catch(e){}}
 let save=loadSave();
 const P=()=>save.profiles[save.hero];
 const H=()=>HEROES[save.hero];
 const sibId=()=>SIBS[save.hero][0];
-const sib2Id=()=>SIBS[save.hero][1];
+const teamIds=()=>[save.hero,...SIBS[save.hero]];
+function teamNames(){const a=teamIds().map(nm);return a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
 const HS=()=>HSTYLE[save.hero];
 function heroSfx(){SFX[HS().sfx]();}
 const nm=id=>(save.profiles[id]&&save.profiles[id].name)||HEROES[id].name;
@@ -533,7 +667,7 @@ function totalStars(){return save.hero?ORDER.reduce((s,n)=>s+(P().stars[n]||0),0
 function updateStatus(){$('status').textContent='⭐ '+totalStars();$('muteBtn').textContent=save.muted?'🔇':'🔊';
  $('narrBtn').classList.toggle('off',!save.narrator);$('narrBtn').title=save.narrator?'Narrator voice: ON':'Narrator voice: OFF (captions only)';
  const cb=$('closetBtn');if(save.hero){cb.classList.remove('hidden');cb.textContent=H().closetE;cb.title=H().closet;$('topTitle').textContent=H().title;}else{cb.classList.add('hidden');$('topTitle').textContent='Times Table Quest';}
- document.body.className=save.hero?'theme-'+save.hero:'';}
+ document.body.className=save.hero?'theme-'+save.hero:'';const tc=document.querySelector('meta[name=theme-color]');if(tc)tc.setAttribute('content',{emi:'#a78bfa',sage:'#f472b6',blu:'#60a5fa',eshon:'#4ade80'}[save.hero]||'#f9a8d4');}
 
 /* ---------- sound ---------- */
 let actx=null;
@@ -555,6 +689,8 @@ const SFX={
  chime:()=>{tone(1568,.3,'sine',.12);tone(2093,.4,'sine',.1,.08);},
  sing:()=>{[659,784,880,784,1046].forEach((f,i)=>singNote(f,.22,i*.15));},
  singNote:i=>singNote(PENTA[i%PENTA.length],.2,0),
+ sketch:()=>{[0,1,2,3].forEach(i=>tone(900+rand(0,500),.05,'sawtooth',.05,i*.06));tone(1320,.12,'triangle',.16,.28);tone(1760,.18,'triangle',.14,.38);},
+ scribble:i=>{tone(700+(i%7)*90,.05,'sawtooth',.05);tone(1046+(i%5)*60,.08,'triangle',.1,.05);},
  shield:()=>{tone(440,.2,'sine',.15);tone(660,.3,'sine',.15,.08);tone(880,.35,'sine',.12,.16);}
 };
 const INSTR={drum:{w:'square',n:[110,110,165,110,220],d:.1,g:.14},guitar:{w:'sawtooth',n:[196,247,294,392,294],d:.25,g:.12},trumpet:{w:'square',n:[523,659,784,659,1046],d:.18,g:.16},
@@ -579,8 +715,15 @@ const cv=$('confetti'),cx=cv.getContext('2d');let parts=[],confRAF=0;
 function confetti(){cv.width=innerWidth;cv.height=innerHeight;const pal=(save.hero&&HS().conf)||COLORS;for(let i=0;i<180;i++)parts.push({x:innerWidth/2+rand(-100,100),y:innerHeight/3,vx:(Math.random()-.5)*16,vy:-Math.random()*14-4,s:rand(6,12),c:pick(pal),r:Math.random()*6,vr:(Math.random()-.5)*.4,life:180});if(!confRAF)confRAF=requestAnimationFrame(confStep);}
 function confStep(){cx.clearRect(0,0,cv.width,cv.height);parts.forEach(p=>{p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life--;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);cx.restore();});parts=parts.filter(p=>p.life>0&&p.y<cv.height+40);if(parts.length)confRAF=requestAnimationFrame(confStep);else{confRAF=0;cx.clearRect(0,0,cv.width,cv.height);}}
 function fxBurst(el,chars,n){if(!el)return;const r=el.getBoundingClientRect();n=n||8;for(let i=0;i<n;i++){const s=document.createElement('span');s.className='fx';s.textContent=pick(chars);s.style.left=(r.left+r.width/2-15)+'px';s.style.top=(r.top+r.height/3)+'px';s.style.setProperty('--dx',rand(-120,120)+'px');s.style.setProperty('--dy',rand(-160,-40)+'px');s.style.animationDelay=(i*0.04)+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),1500);}}
-function react(sel,cls){const e=document.querySelector(sel+' svg.hero');if(!e)return;e.classList.remove('idle','cheer','sad','dance','strut');void e.getBoundingClientRect();e.classList.add(cls);clearTimeout(e._t);e._t=setTimeout(()=>{e.classList.remove(cls);e.classList.add('idle');},1300);}
-function heroRight(sel){const h=H();fxBurst(document.querySelector(sel),h.fx,9);react(sel,HS().right);heroSfx();}
+function react(sel,cls){const e=document.querySelector(sel+' svg.hero');if(!e)return;e.classList.remove('idle','cheer','sad','dance','strut','sing','draw');void e.getBoundingClientRect();e.classList.add(cls);clearTimeout(e._t);e._t=setTimeout(()=>{e.classList.remove(cls);e.classList.add('idle');},1300);}
+function heroRight(sel){const h=H();fxBurst(document.querySelector(sel),h.fx,9);react(sel,HS().right);heroSfx();if(save.hero==='eshon')doodleFx(document.querySelector(sel));}
+/* Eshon's pencil draws a sparkly green line and a doodle buddy pops off the page */
+const DOODLE_BUDS=['squiggle','bloop','zigzag','fluff'];
+function doodleFx(el){try{if(!el)return;const r=el.getBoundingClientRect(),w=Math.min(260,innerWidth-20),x=Math.max(10,Math.min(innerWidth-w-10,r.left+r.width/2-w/2)),y=Math.max(10,r.top+r.height*.25);
+ const d=document.createElement('div');d.className='doodlefx';d.style.left=x+'px';d.style.top=y+'px';d.style.width=w+'px';d.style.height='120px';
+ const pts=[];for(let i=0;i<=8;i++)pts.push((i*w/8).toFixed(0)+' '+(60+(i%2?-1:1)*rand(18,38)));
+ d.innerHTML=`<svg width="${w}" height="120" style="position:absolute;left:0;top:0;overflow:visible"><path d="M${pts.join(' L')}" fill="none" stroke="#22c55e" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M${pts.join(' L')}" fill="none" stroke="#bbf7d0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><text x="${w-14}" y="30" font-size="20">✨</text><text x="6" y="24" font-size="16">✨</text></svg><div class="bud" style="left:${(w/2-32).toFixed(0)}px;top:10px">${buddyFx(pick(DOODLE_BUDS))}</div>`;
+ document.body.appendChild(d);setTimeout(()=>d.remove(),1500);}catch(e){}}
 function heroWrong(sel){react(sel,'sad');}
 
 /* ---------- rendering helpers ---------- */
@@ -596,7 +739,7 @@ const cheer=()=>pick(CHEERS);
 
 /* ---------- story scenes ---------- */
 let SC=null;
-function fillT(t,who){const sp=who==='hero'?save.hero:who==='sib'?sibId():who==='sib2'?sib2Id():null;t=String(t);if(sp&&sp!==save.hero)t=t.replace(/\{rel\}/g,relTo(sp,save.hero)).replace(/\{myrel\}/g,relTo(save.hero,sp)).replace(/\{me\}/g,nm(sp));t=t.replace(/\{rel\}/g,'friend').replace(/\{place\}/g,S?placeOf(S.n).name:'kingdom');return t.replace(/\{hero\}/g,nm(save.hero)).replace(/\{sib2\}/g,nm(sib2Id())).replace(/\{sib\}/g,nm(sibId())).replace(/\{title\}/g,H().title).replace(/\{n\}/g,S?S.n:'').replace(/\{boss\}/g,S?BOSSES[S.n][1]:'');}
+function fillT(t,who){const sp=who==='hero'?save.hero:who==='sib'?sibId():HEROES[who]?who:null;t=String(t);if(sp&&sp!==save.hero)t=t.replace(/\{rel\}/g,relTo(sp,save.hero)).replace(/\{myrel\}/g,relTo(save.hero,sp)).replace(/\{me\}/g,nm(sp));t=t.replace(/\{rel\}/g,'friend').replace(/\{place\}/g,S?placeOf(S.n).name:'kingdom');return t.replace(/\{hero\}/g,nm(save.hero)).replace(/\{team\}/g,teamNames()).replace(/\{sib\}/g,nm(sibId())).replace(/\{title\}/g,H().title).replace(/\{n\}/g,S?S.n:'').replace(/\{boss\}/g,S?BOSSES[S.n][1]:'');}
 const L=(who,text)=>({who,text:fillT(text,who)});
 const PROP_ICONS={fruit:['🍓','🍌','🍍','🍉','🍇','🍊','🍒'],flower:['🌸','🌷','🌻','🌺','🌼'],star:['⭐']};
 function playScene(sc,done){stopSpeech();SC=Object.assign({i:0,woke:0},sc,{done});renderScene();showLine();}
@@ -605,15 +748,15 @@ function renderScene(){const pl=SC.place,props=SC.props||pl.props;
  const ph=props.map((t,i)=>{const [x,y]=spots[i%spots.length];const ic=t==='flower'?'🌱':t==='star'?'⭐':pick(PROP_ICONS.fruit);return `<span class="prop ${t}" data-kind="${t}" style="left:${x+rand(-1,1)}%;top:${y+rand(-1,1)}%" onclick="tapProp(this)">${ic}</span>`;}).join('');
  show(`<div class="scene" id="scene" style="background:${pl.bg}"><div class="scenetitle">${esc(SC.title)}</div><div class="props">${ph}</div>
  <div class="owlbox" id="c-owl">${owlSVG()}</div>
- <div class="cast"><div class="castm" id="c-hero">${heroSVG(save.hero,SC.pose||'idle')}</div><div class="castm side" id="c-sib">${heroSVG(sibId(),SC.pose||'idle')}</div>${SC.sib2?`<div class="castm side side2" id="c-sib2">${heroSVG(sib2Id(),SC.pose||'idle')}</div>`:''}${SC.boss?`<div class="castm bossm" id="c-boss"><span class="bob" style="display:inline-block;width:100%">${bossFace(SC.boss)}</span></div>`:''}</div></div>
+ <div class="cast"><div class="castm" id="c-hero">${heroSVG(save.hero,SC.pose||'idle')}</div><div class="castm side" id="c-sib">${heroSVG(sibId(),SC.pose||'idle')}</div>${(SC.extras||[]).map(x=>`<div class="castm side side2" id="c-x-${x}" data-who="${x}">${heroSVG(x,SC.pose||'idle')}</div>`).join('')}${SC.boss?`<div class="castm bossm" id="c-boss"><span class="bob" style="display:inline-block;width:100%">${bossFace(SC.boss)}</span></div>`:''}</div></div>
  <div class="bubble" id="bubble" onclick="nextLine()"><div class="who" id="who"></div><div class="btext" id="btext"></div>
  <div class="brow"><button class="iconbtn" id="replayBtn" title="Hear it again" aria-label="Replay line" onclick="event.stopPropagation();replayLine()">🔁</button><span class="lineno"><span id="lineno"></span> <span class="wake" id="wake">Tap the scene! ✨ 0/${props.length}</span></span>
  <button class="btn green sm" id="contBtn" data-enter onclick="event.stopPropagation();nextLine()">Tap to continue ▶</button></div></div>`);
  if(SC.confetti)setTimeout(confetti,300);}
-function whoName(w){return w==='owl'?'🦉 Professor Hoot':w==='hero'?HSTYLE[save.hero].tag+' '+nm(save.hero):w==='sib'?HSTYLE[sibId()].tag+' '+nm(sibId()):w==='sib2'?HSTYLE[sib2Id()].tag+' '+nm(sib2Id()):'😈 '+(SC.boss?BOSSES[SC.boss][1]:'');}
+function whoName(w){return w==='owl'?'🦉 Professor Hoot':w==='hero'?HSTYLE[save.hero].tag+' '+nm(save.hero):w==='sib'?HSTYLE[sibId()].tag+' '+nm(sibId()):HEROES[w]?HSTYLE[w].tag+' '+nm(w):'😈 '+(SC.boss?BOSSES[SC.boss][1]:'');}
 function showLine(){const l=SC.lines[SC.i];$('who').textContent=whoName(l.who);const bt=$('btext');bt.textContent=l.text;bt.style.animation='none';void bt.offsetWidth;bt.style.animation='';
  $('lineno').textContent=(SC.i+1)+' / '+SC.lines.length;$('contBtn').textContent=SC.i===SC.lines.length-1?(SC.endLabel||"Let's go! ▶"):'Tap to continue ▶';
- document.querySelectorAll('.castm,.owlbox').forEach(e=>e.classList.remove('talk'));const m={owl:'c-owl',hero:'c-hero',sib:'c-sib',sib2:'c-sib2',boss:'c-boss'}[l.who];if(m&&$(m))$(m).classList.add('talk');
+ document.querySelectorAll('.castm,.owlbox').forEach(e=>e.classList.remove('talk'));const m={owl:'c-owl',hero:'c-hero',sib:'c-sib',boss:'c-boss'}[l.who]||(HEROES[l.who]?'c-x-'+l.who:null);if(m&&$(m))$(m).classList.add('talk');
  if(l.who==='boss')SFX.roar();speak(l.text,l.who);}
 function nextLine(){if(!SC)return;SFX.tap();SC.i++;if(SC.i>=SC.lines.length){const d=SC.done;SC=null;stopSpeech();if(d)d();return;}showLine();}
 function replayLine(){if(!SC)return;const l=SC.lines[SC.i];const bt=$('btext');bt.style.animation='none';void bt.offsetWidth;bt.style.animation='';speak(l.text,l.who);if(!save.narrator||!hasTTS())SFX.chime();}
@@ -621,38 +764,45 @@ function tapProp(el){const k=el.dataset.kind;const first=!el.dataset.w;el.datase
  if(k==='flower'){const st=(+el.dataset.s||0)+1;el.dataset.s=st;el.textContent=st===1?'🌷':pick(PROP_ICONS.flower);el.classList.remove('bloom');void el.offsetWidth;el.classList.add('bloom');SFX.bloom();fxBurst(el,['🌸','✨','💖'],4);}
  else if(k==='fruit'){el.classList.add('awake');el.classList.remove('dance');void el.offsetWidth;el.classList.add('dance');[0,1,2].forEach(i=>tone(PENTA[rand(0,6)]/2,.12,'square',.08,i*.12));fxBurst(el,['🎵','🎶'],3);}
  else{el.classList.add('lit');el.textContent='🌟';SFX.chime();fxBurst(el,['✨','⭐'],4);}
- if(first&&SC){SC.woke++;const tot=document.querySelectorAll('.prop').length;$('wake').textContent=SC.woke>=tot?'All awake! 🎉':`✨ ${SC.woke}/${tot}`;if(SC.woke>=tot){SFX.win();react('#c-hero',HS().right);react('#c-sib','cheer');react('#c-sib2','cheer');}}}
+ if(first&&SC){SC.woke++;const tot=document.querySelectorAll('.prop').length;$('wake').textContent=SC.woke>=tot?'All awake! 🎉':`✨ ${SC.woke}/${tot}`;if(SC.woke>=tot){SFX.win();react('#c-hero',HS().right);document.querySelectorAll('.castm.side').forEach(e=>react('#'+e.id,'cheer'));}}}
 function placeOf(n){return PLACES[ORDER.indexOf(n)];}
 function propWords(pl){const m={flower:'flowers',fruit:'fruits',star:'stars'};return [...new Set(pl.props)].map(k=>m[k]).join(' and ');}
-function sib2On(p){return save.hero==='sage'||Math.random()<p;}
-function addSib2(lines,pool,on){if(!on)return lines;const k=lines.findIndex(l=>l.who==='sib');lines.splice(k+1,0,L('sib2',pick(pool[sib2Id()])));return lines;}
+/* extra sidekicks (besides the main sidekick) who join a scene */
+function pickExtras(kind){const h=save.hero,fin=S&&S.n===12,o=SIBS[h].slice(1),r=Math.random;
+ if(kind==='all'||(kind==='outro'&&fin))return o;
+ if(kind==='boss'){if(h==='sage')return ['blu'];if(h==='eshon')return [pick(['emi','blu'])];return fin?['sage']:[];}
+ const pSage=kind==='intro'?.35:.5,pEsh=kind==='intro'?.3:.4;
+ if(h==='sage')return ['blu'].concat(r()<.4?['eshon']:[]);
+ if(h==='eshon')return ['emi'].concat(r()<.6?['blu']:[]);
+ return o.filter(x=>r()<(x==='sage'?pSage:pEsh));}
+function addExtras(lines,pool,ex){const k=lines.findIndex(l=>l.who==='sib');lines.splice(k+1,0,...ex.map(x=>L(x,pick(pool[x]))));return lines;}
 function prologueScene(){const id=save.hero;return {title:'📖 Once upon a time…',place:{bg:'linear-gradient(#fde68a,#f9a8d4 55%,#a78bfa)',props:['flower','fruit','star','flower','fruit','star','star']},lines:[
  L('owl',"Hoo-hoo! Hello, {hero}! I'm Professor Hoot, the storybook owl. 🦉"),
  L('owl',"The Number Kingdom used to be full of colour and music, until the Muddle Monster scrambled all the times tables!"),
  L('owl',"Now the flowers can't bloom, the fruits can't dance, and the stars can't sing."),
  L('hero',HERO_INTRO[id]),
- L('sib',SIB_INTRO[sibId()]),L('sib2',SIB_INTRO[sib2Id()]),
- L('hero',id==='sage'?"Team Song Star! Let's save the kingdom together! 🎶":"Yay! Our whole team is here! Let's go! 💪"),
- L('owl',"Beat the Muddle Monster's minions in all 12 chapters to save the kingdom. Tap the things up there to wake them, then let's begin!")],sib2:true,endLabel:'Open the map 🗺️'};}
-function introScene(){const i=ORDER.indexOf(S.n),pl=placeOf(S.n),id=save.hero,on=sib2On(.35);let lines;
+ L('sib',SIB_INTRO[sibId()]),...SIBS[id].slice(1).map(x=>L(x,SIB_INTRO[x])),
+ L('hero',HERO_TEAM[id]),
+ L('owl',"Beat the Muddle Monster's minions in all 12 chapters to save the kingdom. Tap the things up there to wake them, then let's begin!")],extras:SIBS[id].slice(1),endLabel:'Open the map 🗺️'};}
+function introScene(){const i=ORDER.indexOf(S.n),pl=placeOf(S.n),id=save.hero,ex=pickExtras('intro');let lines;
  if(S.attempt>1)lines=[L('owl',pick(RETRY_OWL)),L('hero',pick(RETRY_HERO[id])),L('sib',pick(SIDE[sibId()])),L('owl',`Tap the ${propWords(pl)} for luck, then let's learn the ×{n} table again with brand-new numbers!`)];
  else lines=[L('owl',`Chapter ${i+1}: the ${pl.name}! ${pl.desc}`),L('owl',`But the Muddle Monster scrambled the ×{n} table, and ${pl.lost}.`),L('hero',pl[id]),L('sib',pick(SIDE[sibId()])),L('owl',`Tap the ${propWords(pl)} to wake them up! Then let's learn the ×{n} table, {hero}.`)];
- return {title:`Chapter ${i+1} · ${pl.e} ${pl.name}`,place:pl,props:shuffle(pl.props),lines:addSib2(lines,SIDE,on),sib2:on,endLabel:'Start learning 📚'};}
-function midScene(){const pl=placeOf(S.n),fin=S.n===12,on=save.hero==='sage'||fin;
- return {title:`${pl.e} ${pl.name} · Boss time!`,place:pl,boss:S.n,sib2:on,lines:addSib2([
+ return {title:`Chapter ${i+1} · ${pl.e} ${pl.name}`,place:pl,props:shuffle(pl.props),lines:addExtras(lines,SIDE,ex),extras:ex,endLabel:'Start learning 📚'};}
+function midScene(){const pl=placeOf(S.n),fin=S.n===12,ex=pickExtras('boss');
+ return {title:`${pl.e} ${pl.name} · Boss time!`,place:pl,boss:S.n,extras:ex,lines:addExtras([
   L('owl',fin?"The ground shakes... The MUDDLE MONSTER himself appears! This is the final showdown!":"Uh-oh! {boss}, a sneaky minion of the Muddle Monster, jumps out!"),
   L('boss',fin?"I am the MUDDLE MONSTER! I scrambled EVERY table in the kingdom! Mwa-ha-ha!":pick(TAUNTS)),
   L('sib',pick(SIDE[sibId()])),L('hero',pick(BRAVE[save.hero])),
-  L('owl',`Get ${bossHP(S.n)} answers right to win${fin?', and watch out: he uses numbers from every chapter':''}. You have ${HEARTS} hearts. Use your ${H().power}! Go, {hero}!`)],SIDE,on),endLabel:'⚔️ Fight!'};}
-function outroScene(reward){const pl=placeOf(S.n),fin=S.n===12,h=H(),on=fin||sib2On(.5);const lines=addSib2([
+  L('owl',`Get ${bossHP(S.n)} answers right to win${fin?', and watch out: he uses numbers from every chapter':''}. You have ${HEARTS} hearts. Use your ${H().power}! Go, {hero}!`)],SIDE,ex),endLabel:'⚔️ Fight!'};}
+function outroScene(reward){const pl=placeOf(S.n),fin=S.n===12,h=H(),ex=pickExtras('outro');const lines=addExtras([
  L('owl',fin?"You did it! The Muddle Monster is defeated, and "+pl.back+"!":`Hooray! {boss} is defeated, and ${pl.back}!`),
- L('hero',pick(VICTORY[save.hero])),L('sib',pick(SIB_PROUD[sibId()])),L('owl',OWL_WIN[save.hero])],SIB_PROUD,on);
+ L('hero',pick(VICTORY[save.hero])),L('sib',pick(SIB_PROUD[sibId()])),L('owl',OWL_WIN[save.hero])],SIB_PROUD,ex);
  if(reward)lines.push(L('owl',`You earned a new treasure: ${reward.e} ${reward.name}! Find it in your ${h.closet}.`));
- if(fin)lines.push(L('owl',"The Number Kingdom is saved! {hero}, {sib} and {sib2} are true Times Table Champions! 🏆"));
- return {title:`${pl.e} ${pl.name} · Saved!`,place:pl,lines,sib2:on,pose:HS().win,confetti:true,endLabel:'Yay! ▶'};}
-function loseScene(){const pl=placeOf(S.n),on=save.hero==='sage';return {title:`${pl.e} ${pl.name}`,place:pl,boss:S.n,sib2:on,lines:addSib2([
+ if(fin)lines.push(L('owl',"The Number Kingdom is saved! {team} are true Times Table Champions! 🏆"));
+ return {title:`${pl.e} ${pl.name} · Saved!`,place:pl,lines,extras:ex,pose:HS().win,confetti:true,endLabel:'Yay! ▶'};}
+function loseScene(){const pl=placeOf(S.n),ex=pickExtras('boss');return {title:`${pl.e} ${pl.name}`,place:pl,boss:S.n,extras:ex,lines:addExtras([
  L('owl',"Oh no! {boss} won this round. But every mistake helps your brain grow stronger!"),L('sib',pick(LOSE_SIB[sibId()])),L('hero',pick(LOSE_HERO[save.hero])),
- L('owl',"The Muddle Monster shuffled the numbers. Let's train again from the start with new ones!")],LOSE_SIB,on),endLabel:'🔁 Train again'};}
+ L('owl',"The Muddle Monster shuffled the numbers. Let's train again from the start with new ones!")],LOSE_SIB,ex),endLabel:'🔁 Train again'};}
 
 /* ---------- title / hero select / map ---------- */
 function titleScreen(){S=null;SC=null;stopSpeech();save.hero=null;persist();
@@ -671,7 +821,7 @@ function mapScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SC
  ORDER.forEach((n,i)=>{const locked=i>u,st=pf.stars[n]||0,isNext=i===u,pl=PLACES[i];
   h+=`<button class="lvl ${locked?'locked':''} ${st?'done':''} ${isNext?'next':''} ${n===12?'final':''}" data-level="${n}" ${locked?'disabled':''} onclick="openLevel(${n})">${isNext?'<span class="tag">PLAY!</span>':''}<div class="lch">Chapter ${i+1}</div><div class="lnum">×${n}</div><div class="lboss">${locked?'🔒':(n===12?monsterSVG():BOSSES[n][0])}</div><div class="lplace">${pl.e} ${pl.name}</div><div class="lstars">${starStr(st)}</div></button>`;});
  h+='</div>';
- if(all)h+=`<div class="card center"><div class="winheroes"><div class="w1">${heroSVG(save.hero,HS().win)}</div><div class="w2">${heroSVG(sibId(),'cheer')}</div><div class="w3">${heroSVG(sib2Id(),'cheer')}</div></div><h2>🏆 Times Table Champion!</h2><p class="big">The Number Kingdom is saved! Replay chapters to collect all ${ORDER.length*3} stars.</p></div>`;
+ if(all)h+=`<div class="card center"><div class="winheroes"><div class="w1">${heroSVG(save.hero,HS().win)}</div>${SIBS[save.hero].map((x,i)=>`<div class="w${i+2>3?4:i+2}">${heroSVG(x,'cheer')}</div>`).join('')}</div><h2>🏆 Times Table Champion!</h2><p class="big">The Number Kingdom is saved! Replay chapters to collect all ${ORDER.length*3} stars.</p></div>`;
  h+=`<div class="center" style="margin-top:18px"><button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn gray sm" onclick="titleScreen()">🔄 Switch hero</button><button class="btn gray sm" onclick="pickHero(save.hero)">✏️ Change name</button><button class="btn gray sm" onclick="resetProgress()">🗑️ Reset ${esc(pf.name)}</button></div>`;
  show(h);}
 function resetProgress(){if(!confirm('Reset all of '+P().name+"'s stars, chapters and treasures? This cannot be undone."))return;const id=save.hero,nmv=P().name;save.profiles[id]=freshProfile(id);save.profiles[id].name=nmv;persist();mapScreen();}
@@ -681,9 +831,29 @@ function closetScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null
  show(`<div class="card center"><h2>${h.closetE} ${esc(pf.name)}'s ${h.closet}</h2><div class="closethero" id="ch" onclick="posePlay()">${heroSVG(id)}</div>
  <p class="big" style="font-size:18px">${HSTYLE[id].closetHelp}</p></div>
  <div class="items">${list.map((r,i)=>{const got=pf.rewards.includes(r.id),on=pf.eq[r.slot]===r.id;return `<button class="item ${got?'':'locked'} ${on?'on':''}" data-item="${r.id}" ${got?`onclick="toggleItem('${r.id}')"`:'disabled'}><div class="ie">${got?r.e:'🔒'}</div><div class="in">${got?r.name:'Beat Chapter '+(i+1)}</div><div class="is">${got?(on?'✅ Wearing':SLOTNAMES[r.slot]):''}</div></button>`;}).join('')}</div>
- <div class="center" style="margin-top:14px"><button class="btn blue" data-enter onclick="mapScreen()">🗺️ Back to map</button></div>`);}
+ ${id==='eshon'?padHTML():''}<div class="center" style="margin-top:14px"><button class="btn blue" data-enter onclick="mapScreen()">🗺️ Back to map</button></div>`);if(id==='eshon')initPad();}
+/* ---------- Eshon's Doodle Pad ---------- */
+const PKEY='ttq-doodle-eshon';let PAD={col:'#16a34a',img:null};
+function padColors(){const pf=save.profiles.eshon;return PAD_COLORS.map(p=>Object.assign({ok:!p.need||pf.rewards.includes(p.need)},p));}
+function padHTML(){const cs=padColors();if(!cs.find(p=>p.ok&&p.c===PAD.col))PAD.col='#16a34a';
+ return `<div class="card center padwrap" id="padcard"><h2>✏️ Doodle Pad</h2><p class="big" style="font-size:17px">Draw your own character with your finger! Win treasures to unlock more colours.</p>
+ <canvas id="pad-c" width="600" height="400" aria-label="Doodle pad"></canvas><div class="swatches">${cs.map(p=>`<button class="sw ${p.ok?'':'lockd'} ${p.c===PAD.col?'on':''}" data-col="${p.c}" title="${p.ok?p.n:p.n+' (locked)'}" aria-label="${p.n}" style="background:${p.c}" ${p.ok?`onclick="padCol('${p.c}')"`:'disabled'}>${p.ok?'':'🔒'}</button>`).join('')}</div>
+ <button class="btn gray sm" id="padClear" onclick="padClear()">🧽 Clear</button></div>`;}
+function padCol(c){PAD.col=c;document.querySelectorAll('.sw').forEach(b=>b.classList.toggle('on',b.dataset.col===c));SFX.tap();}
+function padSave(cv){try{PAD.img=cv.toDataURL('image/png');localStorage.setItem(PKEY,PAD.img);}catch(e){}}
+function padClear(){const cv=$('pad-c');if(!cv)return;cv.getContext('2d').clearRect(0,0,cv.width,cv.height);PAD.img=null;try{localStorage.removeItem(PKEY);}catch(e){}SFX.chime();}
+function initPad(){const cv=$('pad-c');if(!cv||!cv.getContext)return;const g=cv.getContext('2d');if(!g)return;
+ let src=PAD.img;if(!src){try{src=localStorage.getItem(PKEY);}catch(e){}}
+ if(src){const im=new Image();im.onload=()=>{try{g.drawImage(im,0,0);}catch(e){}};im.src=src;PAD.img=src;}
+ let down=false,last=null,cnt=0;
+ const pos=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*cv.width/r.width,(e.clientY-r.top)*cv.height/r.height];};
+ const dot=(p)=>{g.fillStyle=PAD.col;g.beginPath();g.arc(p[0],p[1],5,0,Math.PI*2);g.fill();};
+ cv.addEventListener('pointerdown',e=>{e.preventDefault();down=true;try{cv.setPointerCapture(e.pointerId);}catch(_){}last=pos(e);dot(last);});
+ cv.addEventListener('pointermove',e=>{if(!down)return;e.preventDefault();const p=pos(e);g.strokeStyle=PAD.col;g.lineWidth=10;g.lineCap='round';g.lineJoin='round';g.beginPath();g.moveTo(last[0],last[1]);g.lineTo(p[0],p[1]);g.stroke();last=p;if(++cnt%6===0)SFX.scribble(cnt);});
+ const up=e=>{if(!down)return;down=false;last=null;padSave(cv);};
+ cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);cv.addEventListener('pointerleave',up);}
 function toggleItem(rid){const r=REWARDS[save.hero].find(x=>x.id===rid),pf=P();if(!r||!pf.rewards.includes(rid))return;if(pf.eq[r.slot]===rid)delete pf.eq[r.slot];else pf.eq[r.slot]=rid;persist();
- const y=window.scrollY;closetScreen();window.scrollTo(0,y);if(r.snd)playInstrument(r.snd);else if(save.hero==='emi')SFX.bloom();else if(save.hero==='sage')SFX.sing();else SFX.chime();fxBurst($('ch'),H().fx,6);react('#ch',HS().win);}
+ const y=window.scrollY;closetScreen();window.scrollTo(0,y);if(r.snd)playInstrument(r.snd);else if(save.hero==='emi')SFX.bloom();else if(save.hero==='sage')SFX.sing();else if(save.hero==='eshon')SFX.sketch();else SFX.chime();fxBurst($('ch'),H().fx,6);react('#ch',HS().win);}
 function posePlay(){react('#ch',HS().win);const pf=P();const r=REWARDS.blu.find(x=>x.id===pf.eq.hand);if(save.hero==='blu')(r&&r.snd)?playInstrument(r.snd):SFX.melody();else heroSfx();fxBurst($('ch'),H().fx,6);}
 
 /* ---------- session (fresh random content per attempt) ---------- */
@@ -751,7 +921,7 @@ function learnBuild(){S.built=0;S.locked=false;const n=S.n,k=S.learnK,h=H(),pl=p
  <div class="row"><button id="addbtn" class="btn purple" data-enter onclick="addRow()">${h.verb} ${n} ${th}</button>
  <button id="nextbtn" class="btn green hidden" data-enter onclick="learnTrick()">Next: a trick! ▶</button></div>
  <p style="color:#64748b">Tip: tap any block to make it jump! Counting by ${n}s is called <b>skip counting</b>.</p></div>`);}
-function addRow(){const n=S.n,k=S.learnK;if(S.built>=k)return;S.built++;if(save.hero==='blu')SFX.boop(S.built+2);else if(save.hero==='sage')SFX.singNote(S.built);else SFX.note(S.built);
+function addRow(){const n=S.n,k=S.learnK;if(S.built>=k)return;S.built++;if(save.hero==='blu')SFX.boop(S.built+2);else if(save.hero==='sage')SFX.singNote(S.built);else if(save.hero==='eshon')SFX.scribble(S.built);else SFX.note(S.built);
  $('build').innerHTML=gridHTML(S.built,n,{labels:true,size:blockSize(k,n)});
  $('skip').textContent='Skip count: '+range(1,S.built).map(i=>i*n).join(', ');
  if(S.built===k){$('addbtn').classList.add('hidden');$('nextbtn').classList.remove('hidden');
@@ -800,7 +970,7 @@ function hintHTML(q,full){const T=TRICKS[q.n];
 function showHint(full){const h=$('hint');h.innerHTML='💡 '+hintHTML(S.cur,full);h.classList.remove('hidden');if(!full)SFX.tap();}
 function practiceNext(){if(!S)return;if(S.pi>=S.practice.length-1){practiceDone();return;}S.pi++;renderPractice();}
 function practiceDone(){S.locked=false;S.cur=null;
- show(`${stageBar('practice')}<div class="card center"><div class="winheroes"><div class="w1" id="mh">${heroSVG(save.hero,'cheer')}</div><div class="w2">${heroSVG(sibId())}</div>${save.hero==='sage'?`<div class="w3">${heroSVG(sib2Id())}</div>`:''}</div><h2>Practice done!</h2><p class="big">You got <b>${S.pScore} out of ${S.practice.length}</b>. ${S.pScore>=4?'You are ready!':'Good try! Remember the tricks you learned!'}</p>
+ show(`${stageBar('practice')}<div class="card center"><div class="winheroes"><div class="w1" id="mh">${heroSVG(save.hero,'cheer')}</div><div class="w2">${heroSVG(sibId())}</div>${pickExtras('boss').map(x=>`<div class="w3">${heroSVG(x)}</div>`).join('')}</div><h2>Practice done!</h2><p class="big">You got <b>${S.pScore} out of ${S.practice.length}</b>. ${S.pScore>=4?'You are ready!':'Good try! Remember the tricks you learned!'}</p>
  <p class="big">But wait... something is coming... ${S.n===12?'🌀':BOSSES[S.n][0]}</p><button class="btn" data-enter onclick="playScene(midScene(),bossStart)">📖 Continue the story</button>
  <button class="btn gray sm" onclick="learnBuild()">📚 Learn again</button></div>`);}
 
@@ -819,19 +989,19 @@ function renderBoss(){const q=S.boss[S.bi],name=BOSSES[S.n][1],max=bossHP(S.n);i
    $('fb').className='fb good';$('fb').textContent=`${H().power}! ${cheer()}`;setTimeout(()=>{if(!S||S.cur!==q)return;if(S.hp<=0)bossWin();else{S.bi++;renderBoss();}},1000);}
   else{S.hearts--;SFX.bad();heroWrong('#pv');$('hearts').textContent=heartStr();$('qbox').classList.add('shake');
    if(save.hero==='blu'||true){const sh=document.createElement('div');sh.className='shield';sh.textContent=HS().shield;$('pv').appendChild(sh);setTimeout(SFX.shield,200);}
-   const hlp=save.hero==='sage'?pick(SIBS.sage):sibId(),enc=`${nm(hlp)}: ${ENC[hlp]}`;
+   const hlp=(save.hero==='emi'||save.hero==='blu')?sibId():pick(SIBS[save.hero]),enc=`${nm(hlp)}: ${ENC[hlp]}`;
    $('fb').className='fb bad';$('fb').innerHTML=`Ouch! ${explain(q)}<div style="font-size:18px;color:#7c3aed">${esc(enc)}</div>`;setTimeout(()=>{if(!S||S.cur!==q)return;if(S.hearts<=0)bossLose();else{S.bi++;renderBoss();}},2200);}};}
 function bossWin(){const n=S.n,stars=S.hearts,pf=P(),i=ORDER.indexOf(n);const prev=pf.stars[n]||0;pf.stars[n]=Math.max(prev,stars);
  const r=REWARDS[save.hero][i];let newR=null;if(r&&!pf.rewards.includes(r.id)){pf.rewards.push(r.id);newR=r;}persist();SFX.win();confetti();
  playScene(outroScene(newR),()=>winScreen(stars,newR));}
 function winScreen(stars,newR){const n=S.n,name=BOSSES[n][1],i=ORDER.indexOf(n),nxt=ORDER[i+1];confetti();
- show(`<div class="card center"><div class="winheroes"><div class="w1" id="wh">${heroSVG(save.hero,HS().win)}</div><div class="w2">${heroSVG(sibId(),'cheer')}</div>${save.hero==='sage'?`<div class="w3">${heroSVG(sib2Id(),'cheer')}</div>`:''}</div><h1>You WIN!</h1>
+ show(`<div class="card center"><div class="winheroes"><div class="w1" id="wh">${heroSVG(save.hero,HS().win)}</div><div class="w2">${heroSVG(sibId(),'cheer')}</div>${pickExtras('boss').map(x=>`<div class="w3">${heroSVG(x,'cheer')}</div>`).join('')}</div><h1>You WIN!</h1>
  <div class="starsbig">${[0,1,2].map(j=>`<span class="${j<stars?'':'off'}" style="animation-delay:${.2+j*.25}s">★</span>`).join('')}</div>
  <p class="big">${esc(nm(save.hero))}, you beat <b>${name}</b>! You're a <b>×${n} master</b>!<br>${stars===3?'Perfect! Not a single heart lost! 🌟':'Play again to earn all 3 stars!'}</p>
  ${newR?`<div class="reward">New treasure: ${newR.e} ${newR.name}</div><br>`:''}
  ${nxt?`<button class="btn green" data-enter onclick="openLevel(${nxt})">Next: Chapter ${i+2} ▶</button>`:'<p class="big">🎉 You saved the whole Number Kingdom! 🎉</p>'}
  <button class="btn pink" onclick="closetScreen()">${H().closetE} ${H().closet}</button><button class="btn blue" ${nxt?'':'data-enter'} onclick="mapScreen()">🗺️ Map</button></div>`);
- if(save.hero==='blu')SFX.melody();else if(save.hero==='sage')SFX.sing();}
+ if(save.hero==='blu')SFX.melody();else if(save.hero==='sage')SFX.sing();else if(save.hero==='eshon')SFX.sketch();}
 function bossLose(){SFX.lose();playScene(loseScene(),retryLevel);}
 function retryLevel(){const n=S.n;S=makeSession(n,S);playScene(introScene(),learnBuild);}
 
@@ -844,7 +1014,7 @@ document.addEventListener('keydown',e=>{
  else if(e.key==='Backspace'&&pad){padDel();e.preventDefault();}
  else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(pad&&S&&!S.locked&&inp)padOK();else clickEnter();}
 });
-app.addEventListener('click',e=>{const b=e.target.closest('.blk');if(b&&!b.closest('.opt')){b.classList.remove('tap');void b.offsetWidth;b.classList.add('tap');if(save.hero==='blu')SFX.boop(rand(0,6));else if(save.hero==='sage')SFX.singNote(rand(0,6));else SFX.tap();}});
+app.addEventListener('click',e=>{const b=e.target.closest('.blk');if(b&&!b.closest('.opt')){b.classList.remove('tap');void b.offsetWidth;b.classList.add('tap');if(save.hero==='blu')SFX.boop(rand(0,6));else if(save.hero==='sage')SFX.singNote(rand(0,6));else if(save.hero==='eshon')SFX.scribble(rand(0,6));else SFX.tap();}});
 $('homeBtn').onclick=()=>{SFX.tap();save.hero?mapScreen():titleScreen();};
 $('closetBtn').onclick=()=>{SFX.tap();closetScreen();};
 $('muteBtn').onclick=()=>{save.muted=!save.muted;persist();updateStatus();if(!save.muted)SFX.tap();};
