@@ -1862,7 +1862,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='16';
+const APP_VERSION='17';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -3073,9 +3073,9 @@ function playNow(){SFX.tap();withHero(()=>{const ls=P().lastSubj||save.lastSubj;
 function chName(sid,c){if(sid==='mult'){const n=ORDER[c-1];return n?`Ch.${c} · ×${n} table`:`Ch.${c}`;}const ch=SUBJ_BY[sid]&&SUBJ_BY[sid].ch[c-1];return ch?`Ch.${c} · ${ch.t}`:`Ch.${c}`;}
 /* ---------- home (splash + hero select) ---------- */
 function titleScreen(){S=null;SS=null;SC=null;stopSpeech();stopConfetti();if(save.hero)save.lastHero=save.hero;save.hero=null;persist();
- const lh=save.lastHero&&HEROES[save.lastHero]?save.lastHero:null,main=lh||'emi',team=(SIBS[main]||[]).slice(0,2);
+ const lh=save.lastHero&&HEROES[save.lastHero]?save.lastHero:null,main='emi',team=['blu','sage'];/* v17: one fixed hero order on every device */
  const pf0=lh?save.profiles[lh]:null;
- const chars=`<div class="chars" aria-hidden="true"><div class="c">${heroSVGeq(team[0]||'blu',save.profiles[team[0]||'blu'].eq||{},'idle')}</div><div class="c">${heroSVGeq(main,save.profiles[main].eq||{},'cheer')}</div><div class="c">${heroSVGeq(team[1]||'sage',save.profiles[team[1]||'sage'].eq||{},'idle')}</div></div>`;
+ const chars=`<div class="chars" aria-hidden="true"><div class="c" data-h="${team[0]||'blu'}">${heroSVGeq(team[0]||'blu',save.profiles[team[0]||'blu'].eq||{},'idle')}</div><div class="c" data-h="${main}">${heroSVGeq(main,save.profiles[main].eq||{},'cheer')}</div><div class="c" data-h="${team[1]||'sage'}">${heroSVGeq(team[1]||'sage',save.profiles[team[1]||'sage'].eq||{},'idle')}</div></div>`;
  const scards=SUBJ.map(sb=>{const st=pf0?sStars(sb.id,pf0):0,N=sCount(sb.id);return `<button class="scard" type="button" data-qsubj="${sb.id}" onclick="SFX.tap();withHero(()=>openSubject('${sb.id}'))"><span class="so" style="background:${QCOL[sb.id]}" aria-hidden="true">${sb.op}</span><b>${sb.name}</b><small>${sb.realm}${pf0?`<br>⭐ ${st}/${N*3}`:''}</small></button>`;}).join('');
  const realms=SUBJ.map(sb=>`<button class="realm" type="button" onclick="SFX.tap();withHero(()=>openSubject('${sb.id}'))" aria-label="Explore ${sb.realm}">${realmArt(sb.id)}<span>${sb.realm}</span></button>`).join('');
  show(`<div class="home">
@@ -3084,9 +3084,9 @@ function titleScreen(){S=null;SS=null;SC=null;stopSpeech();stopConfetti();if(sav
    <div class="hplay"><button class="btn play" type="button" id="playNowD" onclick="playNow()">▶ Play now</button></div></div>
   ${chars}
  </section>
- <div class="hplay mob"><button class="btn play" type="button" id="playBtn" onclick="playNow()">▶ Play</button><button class="btn blue" type="button" id="levelsBtn" onclick="SFX.tap();withHero(subjectScreen)">🧭 Levels</button><button class="btn purple" type="button" id="practiceBtn" onclick="SFX.tap();withHero(practiceHub)">🎯 Practice</button></div>
- <div class="tiles mob" role="group" aria-label="Realm shortcuts"><button class="tile" type="button" onclick="SFX.tap();withHero(closetScreen)" aria-label="Rewards and treasures"><span class="ti" aria-hidden="true">🎁</span>Rewards</button><button class="tile" type="button" onclick="SFX.tap();withHero(subjectScreen)" aria-label="Realm map"><span class="ti" aria-hidden="true">🗺️</span>Map</button><button class="tile" type="button" onclick="SFX.tap();progressScreen()" aria-label="Your progress"><span class="ti" aria-hidden="true">📈</span>Progress</button><button class="tile" type="button" onclick="SFX.tap();withHero(profileScreen)" aria-label="Hero profile"><span class="ti" aria-hidden="true">👤</span>Profile</button><button class="tile" type="button" onclick="SFX.tap();settingsScreen()" aria-label="Settings"><span class="ti" aria-hidden="true">⚙️</span>Settings</button></div>
- <h2 class="hsec dsk">Choose your quest</h2><div class="subjcards dsk">${scards}</div>
+ <div class="hplay under"><button class="btn play" type="button" id="playBtn" onclick="playNow()">▶ Play now</button></div>
+ <div class="tiles" role="group" aria-label="Realm shortcuts"><button class="tile" type="button" onclick="SFX.tap();withHero(closetScreen)" aria-label="Rewards and treasures"><span class="ti" aria-hidden="true">🎁</span>Rewards</button><button class="tile" type="button" onclick="SFX.tap();withHero(subjectScreen)" aria-label="Realm map"><span class="ti" aria-hidden="true">🗺️</span>Map</button><button class="tile" type="button" onclick="SFX.tap();progressScreen()" aria-label="Your progress"><span class="ti" aria-hidden="true">📈</span>Progress</button><button class="tile" type="button" onclick="SFX.tap();withHero(profileScreen)" aria-label="Hero profile"><span class="ti" aria-hidden="true">👤</span>Profile</button><button class="tile" type="button" onclick="SFX.tap();settingsScreen()" aria-label="Settings"><span class="ti" aria-hidden="true">⚙️</span>Settings</button></div>
+ <h2 class="hsec quest">Choose your quest</h2><div class="subjcards">${scards}</div>
  <h2 class="hsec">Explore the realm</h2><div class="realms">${realms}</div>
  <section class="herosec" id="heroes" aria-label="Choose your hero"><h2 class="hsec">Choose your hero</h2><div class="subtitle" style="text-align:center;color:#FFE08A">✨ The Muddle Monster ✨</div><p class="hintro">The Muddle Monster scrambled all the numbers! Adding, taking away, times tables, sharing, fractions and mixed-up puzzles. Pick your hero to save NumiRealm.</p><p class="hintro hidden" id="heroTip" role="status"><b>👇 Pick your hero first, then press Play!</b></p>
  <div class="herocards">${HERO_ORDER.map(id=>{const h=HEROES[id],pf=save.profiles[id],st=allStars(pf);
@@ -3881,6 +3881,21 @@ function v16Tap(id,touch){if(V16.swiped)return;if(!touch&&V16.tapT&&Date.now()-V
 {const _p=heroPickScreen;heroPickScreen=function(){_p.apply(this,arguments);v16Car();};SCR.pick=heroPickScreen;}
 heroPrompt=function(){if(!$('heroes'))titleScreen();const h=$('heroes'),t=$('heroTip');if(t)t.classList.remove('hidden');if(h)h.scrollIntoView({behavior:RM()?'auto':'smooth',block:'start'});v16Focus();};
 window.addEventListener('resize',()=>{clearTimeout(V16.rt);V16.rt=setTimeout(v16Fit,120);});
+/* v17: one Home layout for desktop and phone (phone = responsive version of desktop) */
+(function(){const st=document.createElement('style');st.textContent=`
+.logo .li{display:inline-block;background:inherit;background-origin:border-box;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.logo{font-size:clamp(34px,10.5vw,92px)}
+.hplay.under{display:none}
+.subjcards{display:grid}
+@media (max-width:899px){
+ .hplay.under{display:flex;margin:12px auto 4px;max-width:520px;padding:0 12px}
+ .hplay.under .btn{flex:1;width:100%;min-height:56px;font-size:20px}
+ .subjcards{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;padding:4px 12px 10px;-webkit-overflow-scrolling:touch}
+ .subjcards>*{flex:0 0 min(46%,220px);scroll-snap-align:start}
+}
+@media (max-width:520px){.subjcards>*{flex-basis:62%}}
+@media (max-width:380px){#topTitle{font-size:clamp(13px,5vw,18px)!important;letter-spacing:0!important}}
+`;document.head.appendChild(st);})();
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
 </script>
