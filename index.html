@@ -229,7 +229,7 @@ svg.hero.sing{animation:sing .55s ease-in-out 3}
  .castm.side2{width:66px}.winheroes .w1{width:120px}.winheroes .w2,.winheroes .w3{width:84px}
 }
 
-/* ---- v4: Eshon + signature colours (Emi purple, Sage pink, Blú blue, Eshon green) ---- */
+/* ---- v4: Eshon + signature colors (Emi purple, Sage pink, Blú blue, Eshon green) ---- */
 body.theme-eshon{background:linear-gradient(160deg,#f0fdf4 0%,#bbf7d0 42%,#d9f99d 75%,#fef9c3 100%);background-attachment:fixed}
 .herocard.emi{background:linear-gradient(#f5f3ff,#ede9fe);box-shadow:0 7px 0 #8b5cf6}
 .herocard.blu{background:linear-gradient(#eff6ff,#dbeafe);box-shadow:0 7px 0 #3b82f6}
@@ -318,7 +318,7 @@ svg.hero.flip{animation:zflip .8s cubic-bezier(.3,1.3,.5,1) 2;transform-origin:5
 .critterfx span{position:absolute;bottom:0;animation:crhop 1.5s ease-out forwards;opacity:0}
 @keyframes crhop{0%{transform:translate(0,0) scale(.4);opacity:0}20%{opacity:1}50%{transform:translate(12px,-90px) rotate(20deg)}100%{transform:translate(-6px,-140px) rotate(-10deg) scale(1.1);opacity:0}}
 .prop.critter.dance{animation:dance2 .5s ease-in-out 3}
-/* 7 heroes: centre the last lonely card */
+/* 7 heroes: center the last lonely card */
 @media (min-width:561px) and (max-width:699px){.herocards .herocard:last-child:nth-child(2n+1){grid-column:1/-1;justify-self:center;width:calc(50% - 7px)}}
 @media (min-width:700px){.herocards .herocard:last-child:nth-child(3n+1){grid-column:2}}
 @media (prefers-reduced-motion:reduce){svg.hero.flip,.critterfx span{animation:none!important}}
@@ -394,7 +394,7 @@ svg.hero.flip{animation:zflip .8s cubic-bezier(.3,1.3,.5,1) 2;transform-origin:5
 .cube{width:12px;height:12px;background:#22c55e;border:2px solid #15803d;border-radius:2px}
 .cube.gone{opacity:.25}.cube.new{background:#fbbf24;border-color:#b45309}
 .b10gap{width:10px}.b10lab{font-size:16px;font-weight:800;color:#475569;margin:4px 0}
-/* column maths */
+/* column math */
 .colm{margin:6px auto;border-collapse:collapse;font-size:34px;font-weight:900;font-family:ui-monospace,Menlo,Consolas,monospace;color:#1e1b4b}
 .colm td{width:1.05em;height:1.2em;text-align:center;padding:0;border-radius:6px}
 .colm td.op{color:#7c3aed}
@@ -745,30 +745,30 @@ const REWARDS={
 };
 const SLOTNAMES={head:'Head',outfit:'Outfit',hand:'Hand',back:'Back',neck:'Neck',feet:'Shoes',badge:'Badge'};
 const PLACES=[
- {name:'Flower Garden',e:'🌷',bg:'linear-gradient(#bae6fd,#bbf7d0 60%,#4ade80)',props:['flower','flower','flower','fruit','flower','star','flower'],desc:'Usually it smells like roses and sunshine.',lost:'every flower forgot how to bloom',back:'the flowers are blooming in every colour again',
+ {name:'Flower Garden',e:'🌷',bg:'linear-gradient(#bae6fd,#bbf7d0 60%,#4ade80)',props:['flower','flower','flower','fruit','flower','star','flower'],desc:'Usually it smells like roses and sunshine.',lost:'every flower forgot how to bloom',back:'the flowers are blooming in every color again',
   emi:"My poor flowers! Don't worry, little buds. My Bloom Power will help you grow!",blu:"The bees are so quiet... I'll play a happy tune so the garden can smile again!"},
  {name:'Fruit Disco',e:'🍓',bg:'linear-gradient(#f0abfc,#c084fc 60%,#818cf8)',props:['fruit','fruit','star','fruit','fruit','fruit','star'],desc:'The fruits here dance all night under the disco ball.',lost:'the fruits are frozen and the disco went silent',back:'the fruits are dancing to the beat again',
-  emi:"Frozen fruit is NOT a fashion statement! Let's get them grooving in style!",blu:"Dancing fruits are my favourite! Let's bring back the beat!"},
+  emi:"Frozen fruit is NOT a fashion statement! Let's get them grooving in style!",blu:"Dancing fruits are my favorite! Let's bring back the beat!"},
  {name:'Star Stage',e:'⭐',bg:'linear-gradient(#1e1b4b,#4c1d95 70%,#7c3aed)',props:['star','star','star','star','star','fruit','star'],desc:'This is where the stars sing their sparkly songs.',lost:'the stars stopped twinkling',back:'the stars are twinkling and singing',
   emi:"A stage with no sparkle? I'll make it shine like a runway!",blu:"The stars are my friends! I'll protect their sparkle!"},
- {name:'Runway Castle',e:'🏰',bg:'linear-gradient(#fbcfe8,#f9a8d4 60%,#e879f9)',props:['star','flower','star','flower','star','flower','fruit'],desc:'The fanciest fashion shows happen here!',lost:'the runway lights went dark and all the dresses turned grey',back:'the runway lights are flashing pink and purple',
-  emi:"MY runway! Grey dresses?! Not on my watch, darling!",blu:"Emi loves this place. I'll protect it for her, and add music to the show!"},
+ {name:'Runway Castle',e:'🏰',bg:'linear-gradient(#fbcfe8,#f9a8d4 60%,#e879f9)',props:['star','flower','star','flower','star','flower','fruit'],desc:'The fanciest fashion shows happen here!',lost:'the runway lights went dark and all the dresses turned gray',back:'the runway lights are flashing pink and purple',
+  emi:"MY runway! Gray dresses?! Not on my watch, darling!",blu:"Emi loves this place. I'll protect it for her, and add music to the show!"},
  {name:'Melody Meadow',e:'🎵',bg:'linear-gradient(#a7f3d0,#fde68a)',props:['flower','star','flower','fruit','flower','star','flower'],desc:'The grass here hums little songs when the wind blows.',lost:'the meadow forgot its melody',back:'the meadow is humming its song again',
   emi:"I'll plant singing sunflowers all over this meadow!",blu:"A meadow that sings? I'll help it remember the tune!"},
  {name:'Sparkle Lake',e:'💎',bg:'linear-gradient(#a5f3fc,#67e8f9 50%,#3b82f6)',props:['star','fruit','star','flower','star','fruit','star'],desc:'Its water glitters like a million gems.',lost:'the water turned muddy and dull',back:'the lake is sparkling like diamonds',
   emi:"Sparkles are my specialty! Let's make this lake glitter!",blu:"I'll guard the fish while we clean up this muddle!"},
- {name:'Rainbow Bridge',e:'🌈',bg:'linear-gradient(#fecaca,#fde68a,#bbf7d0,#bfdbfe,#ddd6fe)',props:['star','flower','fruit','star','flower','fruit','star'],desc:'It joins all of NumiRealm together with seven bright colours.',lost:'the colours got scrambled and the bridge is wobbling',back:'all seven colours shine on the bridge again',
-  emi:"Seven colours! That's the perfect outfit for a bridge!",blu:"Hold my hand, everyone! I'll keep you safe on the bridge!"},
+ {name:'Rainbow Bridge',e:'🌈',bg:'linear-gradient(#fecaca,#fde68a,#bbf7d0,#bfdbfe,#ddd6fe)',props:['star','flower','fruit','star','flower','fruit','star'],desc:'It joins all of NumiRealm together with seven bright colors.',lost:'the colors got scrambled and the bridge is wobbling',back:'all seven colors shine on the bridge again',
+  emi:"Seven colors! That's the perfect outfit for a bridge!",blu:"Hold my hand, everyone! I'll keep you safe on the bridge!"},
  {name:'Butterfly Greenhouse',e:'🦋',bg:'linear-gradient(#d9f99d,#86efac 60%,#34d399)',props:['flower','flower','flower','flower','star','flower','flower'],desc:'Butterflies and flowers grow up together here.',lost:'the butterflies are hiding because the flowers wilted',back:'the butterflies are fluttering around fresh flowers',
   emi:"I'll grow the prettiest garden bed so the butterflies come home!",blu:"I'll hum a gentle song so the butterflies aren't scared!"},
- {name:'Candy Cloud Carnival',e:'🍭',bg:'linear-gradient(#fbcfe8,#ddd6fe 50%,#bae6fd)',props:['fruit','star','fruit','flower','fruit','star','fruit'],desc:'Rides made of cotton candy float in the sky.',lost:'the rides stopped and the candy lost its colours',back:'the carnival rides are spinning and the music is playing',
-  emi:"Cotton candy pink is my colour! Let's bring it back!",blu:"A carnival needs music and dancing fruit! Let's go!"},
+ {name:'Candy Cloud Carnival',e:'🍭',bg:'linear-gradient(#fbcfe8,#ddd6fe 50%,#bae6fd)',props:['fruit','star','fruit','flower','fruit','star','fruit'],desc:'Rides made of cotton candy float in the sky.',lost:'the rides stopped and the candy lost its colors',back:'the carnival rides are spinning and the music is playing',
+  emi:"Cotton candy pink is my color! Let's bring it back!",blu:"A carnival needs music and dancing fruit! Let's go!"},
  {name:'Moonlight Drum Jungle',e:'🥁',bg:'linear-gradient(#064e3b,#065f46 60%,#1e3a8a)',props:['star','fruit','star','flower','fruit','star','fruit'],desc:'At night the jungle plays drums: boom, boom, tap!',lost:'the drums are silent and the jungle is too dark',back:'the jungle drums are booming under the moon',
   emi:"I'll grow glowing moonflowers to light the way!",blu:"Boom, boom, tap! I know this rhythm! Let's wake the drums!"},
  {name:'Crystal Ballroom',e:'💃',bg:'linear-gradient(#e0e7ff,#c7d2fe 50%,#f5d0fe)',props:['star','flower','star','fruit','star','flower','star'],desc:'The grandest party in NumiRealm happens here.',lost:'the dancers froze in the middle of their dance',back:'everyone is dancing in the Crystal Ballroom',
   emi:"A ballroom party? I was BORN for this! Let's unfreeze them!",blu:"Let's make them smile and dance again!"},
- {name:'Muddle Tower',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','fruit','flower','star','fruit','flower','star'],desc:'The spooky, swirly home of the Muddle Monster himself!',lost:'all the stolen colour and music are trapped inside',back:'all the colour and music burst out over all of NumiRealm',
-  emi:"You took our colours, Muddle Monster! Time to give them back, with love!",blu:"I'm not scared. I'll protect everyone. Let's finish this together!"}
+ {name:'Muddle Tower',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','fruit','flower','star','fruit','flower','star'],desc:'The spooky, swirly home of the Muddle Monster himself!',lost:'all the stolen color and music are trapped inside',back:'all the color and music burst out over all of NumiRealm',
+  emi:"You took our colors, Muddle Monster! Time to give them back, with love!",blu:"I'm not scared. I'll protect everyone. Let's finish this together!"}
 ];
 const SIDE={emi:["I'm right here, {hero}! Hugs from me give you extra power! 💖","You can do it, {rel}! I love you to the moon and back!","I'll cheer the loudest, {hero}! Go, go, go! 🌸"],
  blu:["Don't worry, {hero}! My star shield will keep you safe! ⭐","I'll protect you, {rel}! You do the math magic! 🛡️","I'll play you a brave song, {hero}! 🎵"]};
@@ -780,7 +780,7 @@ const LOSE_SIB={emi:["I love you no matter what, {hero}. Let's try again togethe
 const LOSE_HERO={emi:["I'm not giving up! A true star keeps shining!","Okay! Deep breath... and bloom again!"],blu:["I'm not giving up! Guardians never quit!","Let's turn up the music and try again!"]};
 const RETRY_OWL=["Whoosh! The Muddle Monster mixed up the numbers again, but {hero} is braver now!","Hoo-hoo! Back for more? The Muddle Monster moved everything around. Look closely!","A fresh start, {hero}! New numbers, same super brain!"];
 const RETRY_HERO={emi:["This time I'll grow an even bigger garden!","Practice makes perfect, darling! Let's go again! 💅"],blu:["I'm ready! This time my star shield is extra strong!","New numbers? No problem! Let's rock! 🎸"]};
-const TAUNTS=["Muddle, muddle, numbers in a puddle! You'll never solve my ×{n} riddles!","Hee hee! I scrambled the ×{n} table! Try and fix it!","Grrr! No colours, no music, only muddles!"];
+const TAUNTS=["Muddle, muddle, numbers in a puddle! You'll never solve my ×{n} riddles!","Hee hee! I scrambled the ×{n} table! Try and fix it!","Grrr! No colors, no music, only muddles!"];
 const CTX=[
  {e:'🍎',one:'apple',many:'apples',g1:'basket',gs:'baskets'},{e:'⭐',one:'star',many:'stars',g1:'box',gs:'boxes'},
  {e:'🔋',one:'battery',many:'batteries',g1:'robot',gs:'robots'},{e:'🍪',one:'cookie',many:'cookies',g1:'plate',gs:'plates'},
@@ -816,7 +816,7 @@ HEROES.emi.sib='blu';HEROES.blu.sib='emi';
 /* who helps whom: first = main sidekick, second = extra sidekick */
 const SIBS={emi:['blu','sage','eshon'],blu:['emi','sage','eshon'],sage:['emi','blu','eshon'],eshon:['sage','emi','blu']};
 const HERO_ORDER=['sage','emi','blu','eshon'];
-/* per-hero style + behaviour */
+/* per-hero style + behavior */
 const HSTYLE={
  emi:{tag:'💜',right:'cheer',win:'strut',sfx:'bloom',pow:'🌸',shield:'💖',conf:['#a78bfa','#c084fc','#7c3aed','#fde047','#fff','#ddd6fe'],
   learn:(k,n,th,pl)=>`Let's plant <b>${k} garden rows</b> with <b>${n} ${th}</b> in each row to help the ${pl.name}!`,
@@ -831,23 +831,23 @@ const HSTYLE={
 /* what b is to a. Emi & Blú are sister and brother; Melrose & Cayden are sister and brother; every other pair is cousins. */
 function relTo(a,b){if(a==='melrose'&&b==='cayden')return 'big brother';if(a==='cayden'&&b==='melrose')return 'little sister';if(a==='emi'&&b==='blu')return 'little brother';if(a==='blu'&&b==='emi')return 'big sister';return 'cousin';}
 const SIB_INTRO={emi:"And I'm {me}, your {myrel}! I'll cheer for you with all my love! 🌸",blu:"And I'm {me}, your {myrel}! My star shield will keep you safe! ⭐",sage:"And I'm {me}, your {myrel}! I'll sing you brave songs all the way! 🎤"};
-const HERO_INTRO={emi:"I'm {title}! I'll bring back the colours with my big, loving heart! 💖",blu:"I'm {title}! I'll protect everyone and bring back the music! 🎵",sage:"I'm {title}! My singing voice will bring the music back to all of NumiRealm! 🎤"};
+const HERO_INTRO={emi:"I'm {title}! I'll bring back the colors with my big, loving heart! 💖",blu:"I'm {title}! I'll protect everyone and bring back the music! 🎵",sage:"I'm {title}! My singing voice will bring the music back to all of NumiRealm! 🎤"};
 SIDE.sage=["You've got this, {rel}! I'll sing you a brave song! 🎤","Cousin {me} is right here, {hero}! Let's be brave together! 💚","La la la! That's my cheer song for you, {hero}! 🎶"];
 BRAVE.sage=["Mic on! Song Star, ready! 🎤","My voice is my power! Let's sing this muddle away! 🎶"];
 VICTORY.sage=["Take a bow! That was my best song ever! 🎤","Encore! Encore! NumiRealm is singing again! 🎶","Sparkly notes for everyone! 🌟"];
 SIB_PROUD.sage=["I'm SO proud of you, {hero}! You're a superstar! 🌟","That calls for a happy song! La la la! 🎶"];
-LOSE_SIB.sage=["It's okay, {hero}. Even pop stars practise a lot! Let's try again! 🎤","I believe in you, {rel}! Big hug, then we try again! 💚"];
-LOSE_HERO.sage=["Singers practise every day. I'll practise too!","Deep breath... and sing it again!"];
+LOSE_SIB.sage=["It's okay, {hero}. Even pop stars practice a lot! Let's try again! 🎤","I believe in you, {rel}! Big hug, then we try again! 💚"];
+LOSE_HERO.sage=["Singers practice every day. I'll practice too!","Deep breath... and sing it again!"];
 RETRY_HERO.sage=["Second verse, even better than the first! 🎶","I'm warming up my voice. Let's try again!"];
 const OWL_WIN={emi:"{hero}'s big heart made the {place} bloom!",blu:"{hero}'s music made everyone at the {place} smile!",sage:"{hero}'s song filled the {place} with sparkly music!"};
 const ENC={emi:"\"You've got this!\" 💖",blu:"\"Star shield up! Keep going!\" ⭐",sage:"\"Keep going, you can do it!\" 🎶"};
 const SAGE_LINES=["Flowers love music! I'll sing them a wake-up song!",
  "A disco with no music? I'll sing the best disco song ever!",
- "A stage! That's my favourite place! Let's make the stars sing with me!",
+ "A stage! That's my favorite place! Let's make the stars sing with me!",
  "I'll sing a song for Emi's fashion show! My dolls want to watch too!",
  "The meadow forgot its song? I know lots of songs! I'll teach it!",
  "My song can make the water sparkle again! La la la!",
- "I'll sing one note for every colour! Red, orange, yellow, green...",
+ "I'll sing one note for every color! Red, orange, yellow, green...",
  "I'll sing very softly so the butterflies feel safe.",
  "Carnival songs are the best! Let's get the rides spinning!",
  "Blú can play the drums and I'll sing! Boom, boom, la la!",
@@ -871,16 +871,16 @@ HSTYLE.eshon={tag:'✏️',right:'draw',win:'draw',sfx:'sketch',pow:'✏️',shi
  learn:(k,n,th,pl)=>`Let's draw <b>${k} rows</b> with <b>${n} ${th}</b> in each row on a sketchbook page for the ${pl.name}!`,
  closetHelp:'Tap a treasure to use it or wear it. Tap a doodle buddy to bring it to life! Tap Eshon to see him draw! ✏️'};
 SIB_INTRO.eshon="And I'm {me}, your {myrel}! I'll draw you brave doodle buddies to help! ✏️";
-HERO_INTRO.eshon="I'm {title}! My drawings come to life, and I'll draw the colours back into NumiRealm! ✏️💚";
+HERO_INTRO.eshon="I'm {title}! My drawings come to life, and I'll draw the colors back into NumiRealm! ✏️💚";
 const HERO_TEAM={emi:"Yay! Our whole crew is here! Let's go! 💪",blu:"Yay! Our whole crew is here! Let's go! 💪",sage:"Cousin crew, let's go! Team Song Star will save NumiRealm! 🎶",eshon:"Cousin crew, let's go! I'll draw us a brave plan! ✏️"};
 SIDE.eshon=["Go, {hero}! I drew a picture of you winning! 🖍️","I'm drawing you a super-strong doodle buddy, {hero}! ✏️","You can do it, {rel}! Every great artist starts with one line! 💚"];
 BRAVE.eshon=["Pencil ready! Sketch Master, go! ✏️","I'll draw a brave plan and beat this minion! 💚"];
-VICTORY.eshon=["Ta-da! My doodles are dancing off the page! ✏️","That's a masterpiece! Green is the colour of winning! 💚","Doodle buddies, high five! We did it! 🖍️"];
+VICTORY.eshon=["Ta-da! My doodles are dancing off the page! ✏️","That's a masterpiece! Green is the color of winning! 💚","Doodle buddies, high five! We did it! 🖍️"];
 SIB_PROUD.eshon=["Awesome, {hero}! I'm drawing a picture of you as a superhero! 🖍️","Cousin crew wins again! High five, {hero}! ✋"];
 LOSE_SIB.eshon=["Oops is okay! Artists use erasers all the time, {hero}! ✏️","Let's start a fresh page and try again, {hero}! 💚"];
 LOSE_HERO.eshon=["Mistakes are just practice lines. I'll draw it again!","I'll flip to a new page and try again!"];
 RETRY_HERO.eshon=["New page, new numbers! My pencil is ready! ✏️","I'll sketch it better this time! Let's go!"];
-OWL_WIN.eshon="{hero}'s drawings came to life and filled the {place} with colour!";
+OWL_WIN.eshon="{hero}'s drawings came to life and filled the {place} with color!";
 ENC.eshon="\"Keep drawing, you've got this!\" ✏️";
 const ESHON_LINES=["I'll draw a whole garden of happy flowers! Then they'll pop off the page and bloom!",
  "A disco needs dancers! I'll draw fruits with funny faces and they'll dance!",
@@ -888,7 +888,7 @@ const ESHON_LINES=["I'll draw a whole garden of happy flowers! Then they'll pop 
  "I'll draw a cool outfit for Emi's fashion show! It'll be green, of course!",
  "I'll draw a band of doodle buddies to play the meadow's song!",
  "I'll draw sparkles on the water with my magic pencil! Swish, swish!",
- "A rainbow needs every colour! I'll colour it in, one stripe at a time!",
+ "A rainbow needs every color! I'll color it in, one stripe at a time!",
  "I'll draw a hundred butterflies and they'll fly off my page!",
  "I'll draw a roller coaster! Can a drawing go loop-the-loop? Let's find out!",
  "I'll draw a doodle drum for Blú! Boom, boom, scribble!",
@@ -906,7 +906,7 @@ REWARDS.eshon=[{id:'pencil',name:'Magic Green Pencil',e:'✏️',slot:'hand'},{i
  {id:'easel',name:'Giant Easel',e:'🖼️',slot:'stage'},{id:'neon',name:'Glow Marker Pack',e:'🌈',slot:'pocket'},
  {id:'fluff',name:'Captain Fluffernoodle the Cloud Pup',e:'☁️',slot:'buddy'},{id:'golden',name:'Golden Crayon',e:'🌟',slot:'hand'}];
 Object.assign(SLOTNAMES,{buddy:'Doodle Buddy',pocket:'Pocket'});
-/* Doodle Pad colours: green and black always; more unlock with prizes */
+/* Doodle Pad colors: green and black always; more unlock with prizes */
 const PAD_COLORS=[{c:'#16a34a',n:'Green'},{c:'#1f2937',n:'Black'},{c:'#ef4444',n:'Red',need:'colors'},{c:'#f97316',n:'Orange',need:'colors'},{c:'#facc15',n:'Yellow',need:'colors'},{c:'#3b82f6',n:'Blue',need:'colors'},{c:'#a855f7',n:'Purple',need:'colors'},
  {c:'#ec4899',n:'Glow Pink',need:'neon'},{c:'#22d3ee',n:'Glow Blue',need:'neon'},{c:'#a3e635',n:'Glow Lime',need:'neon'},{c:'#eab308',n:'Gold',need:'golden'}];
 /* ---------- v8: Melrose the Mermaid Fairy (8) + her big brother Cayden the Slam Dunk Hero (10) ---------- */
@@ -931,7 +931,7 @@ HERO_INTRO.cayden="I'm {title}! I'm fast like an anime hero and I never miss a d
 HERO_TEAM.melrose="Family crew, let's go! My big brother, my cousins and me: Team Mermaid Fairy will save NumiRealm! 🧚💜";
 HERO_TEAM.cayden="Huddle up, family! Little sister, cousins, on three: one, two, three, TEAM! 🏀🏈";
 SIDE.melrose=["Go, big brother! I'm sending fairy sparkles your way! ✨","You can do it, {rel}! Even mermaids learn one wave at a time! 🧜‍♀️","{me} believes in you, {hero}! Flutter, flutter, brave wings! 🧚"];
-SIDE.cayden=["Big brother's got your back, {hero}! Eyes on the ball! 🏀","Let's go, {rel}! Every champion practises first! 💪","Power up, {hero}! I can see your speed lines already! ⚡"];
+SIDE.cayden=["Big brother's got your back, {hero}! Eyes on the ball! 🏀","Let's go, {rel}! Every champion practices first! 💪","Power up, {hero}! I can see your speed lines already! ⚡"];
 BRAVE.melrose=["Wings out, tail ready! Sparkle Splash, go! ✨","I'll splash this minion with a wave of glitter! 🧜‍♀️"];
 BRAVE.cayden=["Game face on! Slam Dunk Power, ACTIVATE! 💥","I'll juke left, spin right and dunk on this minion! 🏀"];
 VICTORY.melrose=["Splash! The sea is sparkling again! 🧜‍♀️","Fairy dance time! Twirl, twirl, sparkle! 🧚","We did it! That deserves a brand-new crown! 👑"];
@@ -939,9 +939,9 @@ VICTORY.cayden=["SWISH! Nothing but net! 🏀","Touchdown! Do the victory dance!
 SIB_PROUD.melrose=["Yay, {hero}! Best big brother ever! You shine brighter than a pearl! 🦪","Sparkly high five, {hero}! ✨✋"];
 SIB_PROUD.cayden=["MVP! MVP! That's my little sister! 🏆","Great teamwork, {hero}! Fist bump! 👊"];
 LOSE_SIB.melrose=["It's okay, {hero}! Even fairies need practice flying! 🧚","Let's dive back in and try again, {hero}! 🫧"];
-LOSE_SIB.cayden=["That's just halftime, {hero}! We come back stronger! 🏀","Shake it off, {hero}! Champions keep practising! 💪"];
+LOSE_SIB.cayden=["That's just halftime, {hero}! We come back stronger! 🏀","Shake it off, {hero}! Champions keep practicing! 💪"];
 LOSE_HERO.melrose=["My wings got a bit wobbly. I'll flutter back and try again!","Oops, that wave knocked me over! I'll swim right back!"];
-LOSE_HERO.cayden=["That was just a missed shot. I'll practise and come back!","Every champion loses sometimes. Rematch time!"];
+LOSE_HERO.cayden=["That was just a missed shot. I'll practice and come back!","Every champion loses sometimes. Rematch time!"];
 RETRY_HERO.melrose=["New numbers, new sparkles! Here I come! ✨","I've polished my tail and my wings. Let's try again! 🧜‍♀️"];
 RETRY_HERO.cayden=["New game, new numbers! Let's go! 🏀","I trained super hard! Round two! ⚡"];
 OWL_WIN.melrose="{hero}'s Sparkle Splash made the whole {place} shimmer again!";
@@ -955,11 +955,11 @@ const HPLACES={
    melrose:"Don't worry, little fairies! I'll flutter in and wake up every flower!"},
   {name:'Seashell Shore',e:'🐚',bg:'linear-gradient(#e9d5ff,#fbcfe8 50%,#fde68a)',props:['shell','shell','star','shell','shell','shell','star'],desc:'The shells here sing when the waves tickle them.',lost:'the shells went silent and the waves stopped dancing',back:'the shells are singing with the waves again',
    melrose:"Listen... the shells stopped singing! I'll help them hum their wave song again!"},
-  {name:'Mermaid Lagoon',e:'🧜‍♀️',bg:'linear-gradient(#f0abfc,#a5f3fc 45%,#0ea5e9)',props:['shell','star','shell','shell','star','shell','shell'],desc:'Mermaids swim here in a lagoon as bright as a rainbow.',lost:'the water turned grey and the mermaids hid',back:'the lagoon is glittering pink, purple and blue again',
-   melrose:"This is my favourite place in the whole sea! Flip, flip, here comes my tail!"},
+  {name:'Mermaid Lagoon',e:'🧜‍♀️',bg:'linear-gradient(#f0abfc,#a5f3fc 45%,#0ea5e9)',props:['shell','star','shell','shell','star','shell','shell'],desc:'Mermaids swim here in a lagoon as bright as a rainbow.',lost:'the water turned gray and the mermaids hid',back:'the lagoon is glittering pink, purple and blue again',
+   melrose:"This is my favorite place in the whole sea! Flip, flip, here comes my tail!"},
   {name:'Dress-Up Boutique',e:'👗',bg:'linear-gradient(#fdf2f8,#f5d0fe 55%,#d8b4fe)',props:['star','flower','star','shell','star','flower','star'],desc:'A magic shop full of gowns, crowns and wings for every adventure.',lost:'every outfit lost its sparkle',back:'every dress and crown is sparkling again',
    melrose:"Gowns, wings and crowns! I'll make every outfit sparkle again!"},
-  {name:'Coral Reef',e:'🪸',bg:'linear-gradient(#a5f3fc,#f9a8d4 55%,#c026d3)',props:['shell','flower','shell','shell','flower','shell','star'],desc:'The coral here glows in a hundred colours.',lost:'the coral lost its glow',back:'the coral is glowing in every colour again',
+  {name:'Coral Reef',e:'🪸',bg:'linear-gradient(#a5f3fc,#f9a8d4 55%,#c026d3)',props:['shell','flower','shell','shell','flower','shell','star'],desc:'The coral here glows in a hundred colors.',lost:'the coral lost its glow',back:'the coral is glowing in every color again',
    melrose:"The coral looks so sad! A little Sparkle Splash will bring back its glow!"},
   {name:'Pearl Grotto',e:'🦪',bg:'linear-gradient(#ddd6fe,#a78bfa 50%,#6d28d9)',props:['shell','star','shell','star','shell','star','shell'],desc:'A secret cave where oysters keep their shiniest pearls.',lost:'the pearls stopped shining',back:'the grotto is full of shining pearls again',
    melrose:"Oysters, open up! I'll help you polish your pearls until they shine!"},
@@ -971,7 +971,7 @@ const HPLACES={
    melrose:"Pop, pop, oh no! I'll blow new bubbles to fix the castle walls!"},
   {name:'Pixie Toadstool Village',e:'🍄',bg:'linear-gradient(#fce7f3,#f9a8d4 50%,#86efac)',props:['flower','flower','star','flower','flower','star','flower'],desc:'Tiny pixies live in spotted toadstool houses.',lost:'the pixies lost their wings',back:'the pixies are flying around the toadstools again',
    melrose:"Pixies, don't be scared! I'll share my wing sparkles with you!"},
-  {name:'Mermaid Masquerade',e:'🎭',bg:'linear-gradient(#fdf4ff,#e879f9 50%,#9333ea)',props:['star','shell','star','flower','star','shell','star'],desc:'The fanciest dress-up party under the sea!',lost:'the masks and gowns turned grey',back:'the whole party is shimmering and dancing again',
+  {name:'Mermaid Masquerade',e:'🎭',bg:'linear-gradient(#fdf4ff,#e879f9 50%,#9333ea)',props:['star','shell','star','flower','star','shell','star'],desc:'The fanciest dress-up party under the sea!',lost:'the masks and gowns turned gray',back:'the whole party is shimmering and dancing again',
    melrose:"It's dress-up time! Masks, gowns and sparkles for everyone!"},
   {name:'Muddle Whirlpool Tower',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','shell','flower','star','shell','flower','star'],desc:"A spinning whirlpool tower, the hideout of the Muddle Monster himself!",lost:'all the stolen sparkles are trapped inside',back:'sparkles burst out over all of NumiRealm and the sea',
    melrose:"Muddle Monster, give back our sparkles! Fairy wings, mermaid tail, let's finish this!"}],
@@ -988,17 +988,17 @@ const HPLACES={
    cayden:"Time for training! Focus... breathe... POWER UP! ⚡"},
   {name:'Skyline Rooftop Court',e:'🌆',bg:'linear-gradient(#fdba74,#f472b6 45%,#3b82f6)',props:['ball','star','ball','ball','star','ball','star'],desc:'A basketball court on top of the tallest building in the city.',lost:'the hoop blew away in a muddle storm',back:'the rooftop court is ready for sky-high dunks again',
    cayden:"A court in the sky! I'll jump so high I'll dunk on a cloud!"},
-  {name:'Comic Hero City',e:'💥',bg:'linear-gradient(#fef9c3,#fca5a5 50%,#60a5fa)',props:['star','star','ball','star','star','ball','star'],desc:'A city drawn like a comic book, with POW and ZOOM everywhere.',lost:'all the comic colours turned grey',back:'the city is bursting with POW, ZOOM and colour again',
-   cayden:"Every hero here needs their colours back! Let's power up the city!"},
+  {name:'Comic Hero City',e:'💥',bg:'linear-gradient(#fef9c3,#fca5a5 50%,#60a5fa)',props:['star','star','ball','star','star','ball','star'],desc:'A city drawn like a comic book, with POW and ZOOM everywhere.',lost:'all the comic colors turned gray',back:'the city is bursting with POW, ZOOM and color again',
+   cayden:"Every hero here needs their colors back! Let's power up the city!"},
   {name:'Thunder Training Temple',e:'🏯',bg:'linear-gradient(#1e1b4b,#1d4ed8 55%,#ef4444)',props:['star','ball','star','star','ball','star','star'],desc:'An ancient temple where heroes learn the Thunder Pass.',lost:'the thunder drums went silent',back:'thunder drums are booming in the temple again',
    cayden:"I'll learn the Thunder Pass! Throw fast, throw true, BOOM!"},
   {name:'Night Game Stadium',e:'🌙',bg:'linear-gradient(#0f172a,#1e3a8a 55%,#dc2626)',props:['ball','star','ball','star','ball','star','ball'],desc:'The stadium lights up the night for the biggest game of the season.',lost:'the stadium lights went out',back:'the stadium lights are shining bright again',
    cayden:"Lights out? No problem! My power moves glow in the dark!"},
   {name:'All-Star Locker Room',e:'🎽',bg:'linear-gradient(#eff6ff,#bfdbfe 50%,#ef4444)',props:['ball','ball','star','ball','ball','star','ball'],desc:'Where every team gets ready before the big game.',lost:'all the jerseys got mixed up',back:'every jersey is back on its hook, ready to play',
-   cayden:"Let's sort these jerseys! Every team needs its colours!"},
+   cayden:"Let's sort these jerseys! Every team needs its colors!"},
   {name:'Championship Court',e:'🏆',bg:'linear-gradient(#fef08a,#f87171 50%,#2563eb)',props:['star','ball','star','ball','star','ball','star'],desc:'The court where the final championship is played.',lost:'the championship trophy lost its shine',back:'the trophy is shining and the fans are cheering again',
    cayden:"This is the championship! Let's play the best game ever!"},
-  {name:'Muddle Mega-Dome',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','ball','star','ball','star','ball','star'],desc:"A spooky, swirly dome, the home court of the Muddle Monster himself!",lost:'all the stolen cheers are trapped inside',back:'cheers and colour burst out over all of NumiRealm',
+  {name:'Muddle Mega-Dome',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','ball','star','ball','star','ball','star'],desc:"A spooky, swirly dome, the home court of the Muddle Monster himself!",lost:'all the stolen cheers are trapped inside',back:'cheers and color burst out over all of NumiRealm',
    cayden:"Muddle Monster, it's game time! My whole crew is here. Let's win this!"}]};
 /* themed minions per hero (chapter 12 is always the Muddle Monster) */
 const HBOSS={
@@ -1007,7 +1007,7 @@ const HBOSS={
  cayden:{1:['🏀','Bouncy the Dribble Minion'],2:['🏈','The Fumble Twins'],10:['🎾','Ten-Serve Tennis Ball'],5:['🥎','Fastball Five'],3:['🏐','Triple Spike'],4:['🎳','Four-Strike Bowler'],
   9:['🏉','Nine-Yard Ned'],6:['⚽','Spinner Six'],7:['🏓','Ping-Pong Seven'],8:['🎱','Behind-the-Eight Ball'],11:['🥅','Captain Fumble the Goalie']}};
 const HTAUNTS={melrose:["Bubble, bubble, numbers in trouble! You'll never solve my ×{n} riddles!","Hee hee! I tangled the ×{n} table in seaweed!","No sparkles, no songs, only muddles!"],
- cayden:["Bounce, bounce! I scrambled the ×{n} table! Try and catch it!","You can't score on me! My ×{n} defence is too strong!","Fumble, fumble! No cheering, only muddles!"]};
+ cayden:["Bounce, bounce! I scrambled the ×{n} table! Try and catch it!","You can't score on me! My ×{n} defense is too strong!","Fumble, fumble! No cheering, only muddles!"]};
 function bossOf(n){const o=(save&&save.hero)?HBOSS[save.hero]:null;return (o&&o[n])||BOSSES[n];}
 HCTX.melrose=[{e:'🐚',one:'seashell',many:'seashells',g1:'sand bucket',gs:'sand buckets'},{e:'🦪',one:'pearl',many:'pearls',g1:'treasure chest',gs:'treasure chests'},
  {e:'🧚',one:'fairy',many:'fairies',g1:'flower',gs:'flowers'},{e:'👑',one:'crown',many:'crowns',g1:'dress-up box',gs:'dress-up boxes'},
@@ -1035,8 +1035,8 @@ SIBS.cayden=['melrose','eshon','blu'];
 HERO_ORDER.push('melrose','cayden');
 /* ---------- v14: Zea the Critter Flip Star (6) ---------- */
 /* Designed only from a text description (no photos). Zea is cousin to Emi, Blú, Sage, Eshon, Melrose and Cayden.
-   Easy-to-change defaults live in ZEA_CFG (age, look). */
-const ZEA_CFG={age:7,look:'Warm brown skin, brown eyes and a high puffy ponytail with a bow. She wears a sparkly purple gymnastics leotard.'};
+   Easy-to-change defaults live in ZEA_CFG (age). */
+const ZEA_CFG={age:7};
 NEWH.push('zea');
 HEROES.zea={id:'zea',name:'Zea',title:'Zea the Critter Flip Star',sib:'eshon',closet:'Gym Bag',closetE:'🎒',fx:['🤸‍♀️','🐞','💜','✨','🦋','💚'],power:'Critter Flip Power',
  palette:['#8b5cf6','#f59e0b','#a78bfa','#00c2ff','#c4b5fd','#fbbf24','#7c3aed','#10b981','#ddd6fe','#fde68a','#6d28d9','#38bdf8'],icons:['🐞','🐛','🦋','🐌'],
@@ -1053,13 +1053,13 @@ VICTORY.zea=["Perfect ten! I stuck the landing! 🤸‍♀️","Runway twirl! Lo
 SIB_PROUD.zea=["Perfect ten, {hero}! Cousin high five! ✋💜","Even my critter pals are clapping their tiny feet! 🐞"];
 LOSE_SIB.zea=["Wobbles happen, {hero}! Every gymnast falls off the beam sometimes! 🤸‍♀️","Chalk up your hands and try again, {hero}! 💪"];
 LOSE_HERO.zea=["Oops, I wobbled off the beam! I'll climb back on and try again!","That flip was a flop! Practice makes perfect, so here I go again!"];
-RETRY_HERO.zea=["New numbers, new routine! Here I flip! 🤸‍♀️","I practised my cartwheels and my times facts. Let's go again! 🐞"];
+RETRY_HERO.zea=["New numbers, new routine! Here I flip! 🤸‍♀️","I practiced my cartwheels and my times facts. Let's go again! 🐞"];
 OWL_WIN.zea="{hero}'s Critter Flip Power made every bug, mouse and snake in the {place} wiggle with joy!";
 ENC.zea="\"Point your toes, you've got this!\" 🤸‍♀️";
 HPLACES.zea=[
  {name:'Tumble Town Gym',e:'🤸‍♀️',bg:'linear-gradient(#ede9fe,#c4b5fd 55%,#fde68a)',props:['ball','star','critter','ball','star','critter','star'],desc:'A bouncy gym with springy mats, where every gymnast learns to roll.',lost:'the mats went flat and nobody can tumble',back:'the mats are springy and everyone is tumbling again',
-  zea:"My favourite gym! I'll bounce on these mats until they're springy again! Boing!"},
- {name:'Bug Buddy Garden',e:'🐞',bg:'linear-gradient(#fef3c7,#fde68a 55%,#a78bfa)',props:['critter','flower','critter','critter','flower','critter','star'],desc:'Ladybugs, caterpillars and snails all live together in this cosy garden.',lost:'the bugs got muddled and hid under the leaves',back:'the bugs are wiggling and waving in the garden again',
+  zea:"My favorite gym! I'll bounce on these mats until they're springy again! Boing!"},
+ {name:'Bug Buddy Garden',e:'🐞',bg:'linear-gradient(#fef3c7,#fde68a 55%,#a78bfa)',props:['critter','flower','critter','critter','flower','critter','star'],desc:'Ladybugs, caterpillars and snails all live together in this cozy garden.',lost:'the bugs got muddled and hid under the leaves',back:'the bugs are wiggling and waving in the garden again',
   zea:"Come out, little bug buddies! I won't let the Muddle Monster scare you!"},
  {name:'Balance Beam Bridge',e:'🌉',bg:'linear-gradient(#e0e7ff,#a78bfa 55%,#f59e0b)',props:['star','critter','star','star','critter','star','star'],desc:'A long, smooth beam bridge over a sparkly purple stream.',lost:'the bridge got wobbly and nobody can cross',back:'the beam is steady and everyone is crossing again',
   zea:"Arms out, toes pointed, eyes forward. I'll balance all the way across!"},
@@ -1593,7 +1593,7 @@ function pickExtras(kind){const h=save.hero,fin=S&&S.n===12,o=SIBS[h].slice(1),r
 function addExtras(lines,pool,ex){const k=lines.findIndex(l=>l.who==='sib');lines.splice(k+1,0,...ex.map(x=>L(x,pick(pool[x]))));return lines;}
 function prologueScene(){const id=save.hero;return {title:'📖 Once upon a time…',place:{bg:'linear-gradient(#fde68a,#f9a8d4 55%,#a78bfa)',props:['flower','fruit','star','flower','fruit','star','star']},lines:[
  L('owl',"Hoo-hoo! Hello, {hero}! I'm Professor Hoot, the storybook owl. 🦉"),
- L('owl',"NumiRealm used to be full of colour and music, until the Muddle Monster scrambled all the numbers: adding, taking away, times tables, sharing and even fractions!"),
+ L('owl',"NumiRealm used to be full of color and music, until the Muddle Monster scrambled all the numbers: adding, taking away, times tables, sharing and even fractions!"),
  L('owl',"Now the flowers can't bloom, the fruits can't dance, and the stars can't sing."),
  L('hero',HERO_INTRO[id]),
  L('sib',SIB_INTRO[sibId()]),...SIBS[id].slice(1).map(x=>L(x,SIB_INTRO[x])),
@@ -1673,7 +1673,7 @@ function closetScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null
 const PKEY='ttq-doodle-eshon';let PAD={col:'#16a34a',img:null};
 function padColors(){const pf=save.profiles.eshon;return PAD_COLORS.map(p=>Object.assign({ok:!p.need||pf.rewards.includes(p.need)},p));}
 function padHTML(){const cs=padColors();if(!cs.find(p=>p.ok&&p.c===PAD.col))PAD.col='#16a34a';
- return `<div class="card center padwrap" id="padcard"><h2>✏️ Doodle Pad</h2><p class="big" style="font-size:17px">Draw your own character with your finger! Win treasures to unlock more colours.</p>
+ return `<div class="card center padwrap" id="padcard"><h2>✏️ Doodle Pad</h2><p class="big" style="font-size:17px">Draw your own character with your finger! Win treasures to unlock more colors.</p>
  <canvas id="pad-c" width="600" height="400" aria-label="Doodle pad"></canvas><div class="swatches">${cs.map(p=>`<button class="sw ${p.ok?'':'lockd'} ${p.c===PAD.col?'on':''}" data-col="${p.c}" title="${p.ok?p.n:p.n+' (locked)'}" aria-label="${p.n}" style="background:${p.c}" ${p.ok?`onclick="padCol('${p.c}')"`:'disabled'}>${p.ok?'':'🔒'}</button>`).join('')}</div>
  <button class="btn gray sm" id="padClear" onclick="padClear()">🧽 Clear</button></div>`;}
 function padCol(c){PAD.col=c;document.querySelectorAll('.sw').forEach(b=>b.classList.toggle('on',b.dataset.col===c));SFX.tap();}
@@ -1862,7 +1862,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='14';
+const APP_VERSION='15';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -1895,7 +1895,7 @@ function mixH(w,n,d){return `<span class="mixd"><b>${w}</b>${frH(n,d)}</span>`;}
 const FRW={2:['half','halves'],3:['third','thirds'],4:['fourth','fourths'],5:['fifth','fifths'],6:['sixth','sixths'],7:['seventh','sevenths'],8:['eighth','eighths'],9:['ninth','ninths'],10:['tenth','tenths'],12:['twelfth','twelfths']};
 function frSay(n,d){const w=FRW[d];return w?`${n} ${n===1?w[0]:w[1]}`:`${n} over ${d}`;}
 const stripH=s=>String(s).replace(/<span class="fr[^"]*"><span class="fn">(\d+)<\/span><span class="fd">(\d+)<\/span><\/span>/g,(m,n,d)=>' '+frSay(+n,+d)+' ').replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim();
-/* ten-frames: a cells colour A, b cells colour B; x = how many of the A cells are crossed out (take-away) */
+/* ten-frames: a cells color A, b cells color B; x = how many of the A cells are crossed out (take-away) */
 function frames(a,b,x){b=b||0;x=x||0;const tot=Math.max(10,Math.ceil((a+b)/10)*10);let h='<div class="tfs">';
  for(let f=0;f<tot;f+=10){h+='<div class="tf">';for(let i=f;i<f+10;i++){const c=i<a?'a':i<a+b?'b':'';h+=`<span class="tfc"><i class="${c}${(x&&i<a&&i>=a-x)?' x':''}"></i></span>`;}h+='</div>';}
  return h+'</div>';}
@@ -2063,7 +2063,7 @@ const SUB=[
   tip:'Start at the big number and hop BACK one at a time.',
   learn(){const a=rand(12,18),b=rand(3,4);return [{t:`${a} − ${b}: start at ${a} on the number line.`,v:nline(a-10,a,a,[])},{t:`Hop back ${b} times: ${range(1,b).map(i=>a-i).join(', ')}.`,v:nline(a-10,a,a,Array(b).fill(-1))},{t:`You land on ${a-b}. So ${a} − ${b} = <b>${a-b}</b>!`,v:`<div class="eq">${a} − ${b} = ${a-b}</div>`}];},
   gen(k){const a=rand(6,20),b=rand(1,4),lo=Math.max(0,a-10);return subQ(a,b,k,{vis:nline(lo,a,a,[]),hint:`Hop back ${b} from ${a}:`+nline(lo,a,a,Array(b).fill(-1),{endq:true})});}},
- {t:'Fact Families',e:'👨‍👩‍👧',skill:'fact families',place:{name:'Fact Family Cavern',e:'🏠',desc:'Number families live together in cosy crystal houses.'},boss:['🕷️','Family-Tangle Spider'],
+ {t:'Fact Families',e:'👨‍👩‍👧',skill:'fact families',place:{name:'Fact Family Cavern',e:'🏠',desc:'Number families live together in cozy crystal houses.'},boss:['🕷️','Family-Tangle Spider'],
   tip:'If you know an adding fact, you know two taking-away facts too!',
   learn(){const a=rand(3,8),b=rand(2,7),c=a+b;return [{t:`${a}, ${b} and ${c} are a family.`,v:bondH(c,a,b)},{t:`Adding: ${a} + ${b} = ${c} and ${b} + ${a} = ${c}.`,v:frames(a,b)},{t:`Taking away: ${c} − ${b} = ${a} and ${c} − ${a} = ${b}. Four facts, one family!`,v:`<div class="eq">${c} − ${b} = ${a} · ${c} − ${a} = ${b}</div>`}];},
   gen(k){const a=rand(2,9),b=rand(2,9),c=a+b;if(k==='p'&&Math.random()<.3){const good=`${c} − ${a} = ${b}`,bad=shuffle([`${a} − ${b} = ${c}`,`${c} + ${a} = ${b}`,`${b} − ${c} = ${a}`,`${c} − ${b} = ${a+1}`]).slice(0,2);const o=shuffle([good].concat(bad));return Qmc(`Which fact belongs to the family ${a}, ${b}, ${c}?`,o.map(x=>({h:x})),o.indexOf(good),{m:{op:'mcfact',opts:o},sig:`fam:${a}:${b}`,lead:'Fact family! 👨‍👩‍👧',vis:bondH(c,a,b),explain:`${good} is in the family.`,hint:`The biggest number (${c}) comes first when you take away.`});}
@@ -2155,7 +2155,7 @@ const DIV=[
   learn(){return [];},
   gen(k){const d=rand(2,9);let Q,n,r;do{Q=Math.random()<.35?rand(1,9)*100+rand(0,9)+0:rand(Math.ceil(100/d),Math.floor(999/d));if(Q>=100&&Math.random()<.4)Q=Math.floor(Q/100)*100+Q%10;r=Math.random()<.5?0:rand(1,d-1);n=d*Q+r;}while(n<100||n>999||Q<10);
    if(k==='p')return ldQ(n,d);return r?remQ(n,d,k):divQ(n,d,k,{mc:false,hint:'Use the steps: Divide, Multiply, Subtract, Bring down. Write 0 when it does not go.'});}},
- {t:'Division Word Problems',e:'📖',skill:'division story problems',place:{name:'Harbor Festival',e:'🎏',desc:'Boats from every dock gather for the big harbour festival.'},boss:['🌀','The Muddle Monster'],final:true,
+ {t:'Division Word Problems',e:'📖',skill:'division story problems',place:{name:'Harbor Festival',e:'🎏',desc:'Boats from every dock gather for the big harbor festival.'},boss:['🌀','The Muddle Monster'],final:true,
   tip:'Sharing or grouping? Both mean divide. Then decide what the remainder means in the story!',
   learn(){const d=4,n=rand(5,8)*4+rand(1,3),Q=Math.floor(n/d),R=n%d;return [{t:`${n} kids go to the boat ride. Each boat holds 4. How many boats do they need?`,v:counters(Math.min(n,30),'🧒')},{t:`${n} ÷ 4 = ${Q} R ${R}. ${Q} boats are full and ${R} ${R===1?'kid is':'kids are'} still waiting!`,v:groupsH(Math.min(Q,8),4,'🧒',{left:R})},{t:`So they need <b>${Q+1}</b> boats. Always check what the remainder means!`,v:`<div class="eq">${Q} full boats + 1 more = ${Q+1}</div>`}];},
   gen(k){const r=Math.random(),it=itm(),H=nm(save.hero),d=rand(3,8);if(r<.3){const Q=rand(3,12);return divQ(d*Q,d,'a');}if(r<.55){const Q=rand(2,9),R=rand(1,d-1);return remQ(d*Q+R,d,'a');}
@@ -2180,7 +2180,7 @@ const FR=[
    return frPicQ(n,d,k,{pizza:k==='b'?null:true});}},
  {t:'Numerator & Denominator',e:'🥧',skill:'naming fractions',place:{name:'Pie Shop',e:'🥧',desc:'The baker writes a fraction on every pie box.'},boss:['🦝','Pie-Snatch Raccoon'],
   tip:'The bottom number (denominator) says how many equal parts. The top (numerator) says how many we have.',
-  learn(){const d=rand(5,8),n=rand(2,d-1);return [{t:`This bar has ${d} equal parts. That's the DENOMINATOR, the bottom number.`,v:fbar(0,d)},{t:`${n} parts are coloured. That's the NUMERATOR, the top number.`,v:fbar(n,d)},{t:`So the fraction is ${frH(n,d)}: ${frSay(n,d)}.`,v:fbar(n,d,{lab:true})}];},
+  learn(){const d=rand(5,8),n=rand(2,d-1);return [{t:`This bar has ${d} equal parts. That's the DENOMINATOR, the bottom number.`,v:fbar(0,d)},{t:`${n} parts are colored. That's the NUMERATOR, the top number.`,v:fbar(n,d)},{t:`So the fraction is ${frH(n,d)}: ${frSay(n,d)}.`,v:fbar(n,d,{lab:true})}];},
   gen(k){const d=rand(3,10),n=rand(1,d-1);const r=Math.random();if(k==='p'&&r<.3){const top=Math.random()<.5;return Qp(`In ${frH(n,d)}, what is the ${top?'numerator (top)':'denominator (bottom)'}?`,top?n:d,{m:{op:'frpart',n,d,top},sig:`frpart:${n}/${d}:${top}`,lead:'Name the parts! 🥧',vis:fbar(n,d),explain:`The ${top?'numerator':'denominator'} is ${top?n:d}.`,hint:'Numerator on top, denominator at the bottom (D for Down!).'});}
    return frBuildQ(n,d,k);}},
  {t:'Fractions on a Number Line',e:'🥖',skill:'fractions on a number line',place:{name:'Baguette Bridge',e:'🥖',desc:'A giant baguette stretches from 0 to 1, marked in equal pieces.'},boss:['🐜','Crumb-Line Ant'],
@@ -2258,8 +2258,8 @@ const HSUB={
   blu:["Count backwards with the drum: boom… boom… boom! 🥁","Stars in the dark cave! I'll find them! ⭐"],
   eshon:["I'll draw the crystals, then rub some out to see what's left! ✏️","Every cave needs a map. I'll draw one! 🗺️"],
   melrose:["Even mermaids explore caves! Splash, here I come! 🧜‍♀️","When the tide takes shells away, I count what's left. 🐚"],
-  cayden:["We're ahead on the scoreboard. Subtract to find out by how much! 🏆","Defence time! Take those muddles away! 🛡️"]},
- mult:{sage:["Times tables are my favourite song! 2, 4, 6, 8! 🎤","Let's sing our way through the castle! 🎶"],
+  cayden:["We're ahead on the scoreboard. Subtract to find out by how much! 🏆","Defense time! Take those muddles away! 🛡️"]},
+ mult:{sage:["Times tables are my favorite song! 2, 4, 6, 8! 🎤","Let's sing our way through the castle! 🎶"],
   emi:["Rows and rows of flowers: that's multiplying! 🌷","Equal rows in my garden! Let's go! 🌸"],
   blu:["Beats in groups! Boom-boom, boom-boom! 🥁","Stars in rows! ⭐"],
   eshon:["I'll draw arrays of characters, row after row! ✏️","Multiplying is like copying a drawing again and again! 🖍️"],
@@ -2269,7 +2269,7 @@ const HSUB={
   emi:["Let's put the same number of flowers in every vase! 💐","Sharing is caring! 🌸"],
   blu:["One for you, one for me! ⭐","Boats and stars! Boom! 🥁"],
   eshon:["I'll draw circles for groups and share the dots! ✏️","Every pirate needs a fair share! I'll draw the treasure map! 🗺️"],
-  melrose:["The docks are by the sea, my favourite place! 🧜‍♀️","Mermaids always share their pearls fairly! 🦪"],
+  melrose:["The docks are by the sea, my favorite place! 🧜‍♀️","Mermaids always share their pearls fairly! 🦪"],
   cayden:["Coach always splits us into equal teams. That's dividing! 🏀","Fair teams make a fair game! ⚖️"]},
  frac:{sage:["Half notes and quarter notes: music has fractions! 🎤","Let's sing while we bake! 🎶"],
   emi:["Fair slices for everyone! 🍰","I'll decorate every slice with a flower! 🌸"],
@@ -2316,7 +2316,7 @@ const STAUNTS={add:["Muddle, muddle! I mixed up all the adding so nothing grows!
  frac:["I cut every cake into wobbly pieces! Nobody gets a fair slice!","Crumbs and muddles, crumbs and muddles!"]};
 const SFINAL={add:"I am the MUDDLE MONSTER! I scrambled every sum in the meadow, and now I'll mix up your stories too!",
  sub:"I am the MUDDLE MONSTER! I stole every crystal in the caves! Come and take them back, if you can!",
- div:"I am the MUDDLE MONSTER! I'll never share the harbour treasure! Mwa-ha-ha!",
+ div:"I am the MUDDLE MONSTER! I'll never share the harbor treasure! Mwa-ha-ha!",
  frac:"I am the MUDDLE MONSTER! I'll eat the WHOLE cake, not just a fraction! Mwa-ha-ha!"};
 const REALM_OWL={add:"Welcome to Addition Meadow! Here we put numbers together, from counting on all the way to adding hundreds.",
  sub:"Welcome to the Subtraction Caves! Here we take away, count back, and learn to borrow.",
@@ -2508,10 +2508,10 @@ function oopQ(lv,k){let f,a,b,c,ans,text;const R=rand;
   if(t===49){f='(a+b)*c';a=3;b=4;c=2;ans=14;}}
  text=f.replace(/a/g,a).replace(/b/g,b).replace(/c/g,c).replace(/\*/g,' × ').replace(/\//g,' ÷ ').replace(/\+/g,' + ').replace(/-/g,' − ').replace(/\( /g,'(').replace(/ \)/g,')')+' = ?';
  const first=/\(/.test(f)?f.match(/\(([^)]+)\)/)[1]:(f.match(/[a-c][*\/][a-c]/)||[f])[0];const fs=first.replace(/a/g,a).replace(/b/g,b).replace(/c/g,c).replace(/\*/g,' × ').replace(/\//g,' ÷ ').replace(/\+/g,' + ').replace(/-/g,' − ');
- const q=Qp(text,ans,{m:{op:'oop',f,a,b,c,first:fs,br:/\(/.test(f)},lv,sig:`oop:${f}:${a}:${b}:${c}`,lead:/\(/.test(f)?'Brackets first! ( )':'× and ÷ before + and −!',explain:`Do ${fs} first. ${text.replace('?',ans)}`,hint:/\(/.test(f)?`Work out (${fs}) first.`:`Do ${fs} first, then the rest.`});
+ const q=Qp(text,ans,{m:{op:'oop',f,a,b,c,first:fs,br:/\(/.test(f)},lv,sig:`oop:${f}:${a}:${b}:${c}`,lead:/\(/.test(f)?'Parentheses first! ( )':'× and ÷ before + and −!',explain:`Do ${fs} first. ${text.replace('?',ans)}`,hint:/\(/.test(f)?`Work out (${fs}) first.`:`Do ${fs} first, then the rest.`});
  if(k!=='a'&&Math.random()<.2){const parts=[fs];const other=text.replace(' = ?','');
   const wrongs=[];const L=text.replace(' = ?','').replace(/[()]/g,'');const toks=L.split(' ');for(let i=1;i<toks.length;i+=2){const p=`${toks[i-1]} ${toks[i]} ${toks[i+1]}`;if(p!==fs&&!wrongs.includes(p))wrongs.push(p);}
-  if(wrongs.length){const opts=shuffle(parts.concat(wrongs.slice(0,2)));return Qmc(`${other}: which part do you work out FIRST?`,opts.map(h=>({h})),opts.indexOf(fs),{m:{op:'oopmc',f,first:fs,br:/\(/.test(f)},lv,sig:`oopmc:${f}:${a}:${b}:${c}`,lead:'Order of operations 🧗',explain:`${/\(/.test(f)?'Brackets':'× and ÷'} come first: ${fs}.`});}}
+  if(wrongs.length){const opts=shuffle(parts.concat(wrongs.slice(0,2)));return Qmc(`${other}: which part do you work out FIRST?`,opts.map(h=>({h})),opts.indexOf(fs),{m:{op:'oopmc',f,first:fs,br:/\(/.test(f)},lv,sig:`oopmc:${f}:${a}:${b}:${c}`,lead:'Order of operations 🧗',explain:`${/\(/.test(f)?'Parentheses':'× and ÷'} come first: ${fs}.`});}}
  return q;}
 /* two-step word problems */
 function multiQ(lv,k){const it=itm(),H=nm(save.hero),T=tN(),O=oN(),R=rand;let a,b,c,ans,text,s1,s2,op1;const t=pick([0,1,2,3,4]);
@@ -2540,9 +2540,9 @@ const MIX=[
   tip:'Use the opposite! Missing part in + → subtract. Missing whole in − → add. Missing factor → divide. Missing whole in ÷ → multiply.',
   learn(){return [{t:'Every operation has an opposite. Plus and minus are a family. Times and divide are a family.',v:'<div class="eq">➕ ↔ ➖ &nbsp; ✖️ ↔ ➗</div>'},{t:'<b>? + 7 = 13</b> → 13 − 7 = <b>6</b>.',v:balHTML('? + 7',13)},{t:'<b>8 × ? = 56</b> → 56 ÷ 8 = <b>7</b>.',v:hvEq(56,8,null)},{t:'<b>? ÷ 6 = 7</b> → 7 × 6 = <b>42</b>. Always check by putting it back!'}];},
   gen(k){const op=pick(WOPS),lv=k==='p'?rand(0,1):k==='a'?1:pick([0,1,1,2]);return missQ(op,lv,k);}},
- {t:'Brackets First',e:'🧗',skill:'order of operations with brackets',ramp:true,place:{name:'Bracket Bridge',e:'🌉',desc:'A rope bridge held up by brackets. Cross it in the right order!'},boss:['🐊','Order Gator'],
-  tip:'1️⃣ Brackets ( ) first. 2️⃣ Then × and ÷. 3️⃣ Then + and −.',
-  learn(){return [{t:'When there is more than one sign, the ORDER matters!',v:oopChart()},{t:'<b>(3 + 4) × 2</b>: brackets first: 3 + 4 = 7. Then 7 × 2 = <b>14</b>.'},{t:'<b>3 + 4 × 2</b>: no brackets, so × first: 4 × 2 = 8. Then 3 + 8 = <b>11</b>.'},{t:'Same numbers, different answers! The brackets tell you what to do first.'}];},
+ {t:'Parentheses First',e:'🧗',skill:'order of operations with parentheses',ramp:true,place:{name:'Parentheses Bridge',e:'🌉',desc:'A rope bridge held up by parentheses. Cross it in the right order!'},boss:['🐊','Order Gator'],
+  tip:'1️⃣ Parentheses ( ) first. 2️⃣ Then × and ÷. 3️⃣ Then + and −.',
+  learn(){return [{t:'When there is more than one sign, the ORDER matters!',v:oopChart()},{t:'<b>(3 + 4) × 2</b>: parentheses first: 3 + 4 = 7. Then 7 × 2 = <b>14</b>.'},{t:'<b>3 + 4 × 2</b>: no parentheses, so × first: 4 × 2 = 8. Then 3 + 8 = <b>11</b>.'},{t:'Same numbers, different answers! The parentheses tell you what to do first.'}];},
   gen(k){const lv=k==='p'?rand(0,1):k==='a'?1:pick([0,1,2,2]);return oopQ(lv,k);}},
  {t:'Multi-Step Stories',e:'🪜',skill:'two-step word problems',ramp:true,place:{name:'Story Spire',e:'📚',desc:'The top of the tower is full of books, and every story has two steps!'},boss:['🐲','Two-Step Dragon'],
   tip:'Two steps! Find the first answer, then use it for step two. Underline the numbers and the clue words.',
@@ -2550,7 +2550,7 @@ const MIX=[
   gen(k){return multiQ(k==='p'?0:1,k);}},
  {t:'Grand Final: The Muddle Monster',e:'🌀',skill:'everything mixed together',final:true,ramp:true,place:{name:'Top of Muddle Tower',e:'⚡',desc:'Lightning crackles at the very top of the tower. All seven heroes are here!'},boss:['🌀','The Muddle Monster'],
   tip:'Slow down, read the sign or the clue words, choose your method, then check your answer.',
-  learn(){return [{t:'This is it! Everything you learned in the tower, all mixed up.',v:'<div class="eq">➕ ➖ ✖️ ➗ ( ) ?</div>'},{t:'1. Read carefully. 2. Find the sign or the clue words. 3. Brackets first. 4. Check your answer makes sense.',v:oopChart()},{t:'All six heroes are with you. Let\'s unmuddle NumiRealm for good!'}];},
+  learn(){return [{t:'This is it! Everything you learned in the tower, all mixed up.',v:'<div class="eq">➕ ➖ ✖️ ➗ ( ) ?</div>'},{t:'1. Read carefully. 2. Find the sign or the clue words. 3. Parentheses first. 4. Check your answer makes sense.',v:oopChart()},{t:'All seven heroes are with you. Let\'s unmuddle NumiRealm for good!'}];},
   gen(k){const r=Math.random();if(r<.2)return mixFact(1,k);if(r<.4)return wopQ(1,k);if(r<.6)return missQ(pick(WOPS),pick([1,2]),k);if(r<.8)return oopQ(pick([1,2]),k);return multiQ(1,k);}}];
 function wopChart(){return `<div class="wopchart" role="img" aria-label="clue words for each operation">${WOPS.map(o=>`<div class="wc"><b>${OPN[o].e} ${OPN[o].w}</b><span>${{'+':'in all · more · altogether','-':'left · fewer · how many more','*':'each · groups of · rows of','/':'share equally · split · each get'}[o]}</span></div>`).join('')}</div>`;}
 function oopChart(){return `<div class="oopchart" role="img" aria-label="order of operations"><span>First: ( )</span><span>Next: × ÷</span><span>Last: + −</span></div>`;}
@@ -2565,9 +2565,9 @@ HSUB.mix={sage:["Mixed songs are the best songs: a bit of everything! 🎤","Plu
  eshon:["I'll draw a comic where every panel uses a different sign! ✏️","Muddle Tower? I'll sketch a map to the top! 🖍️"],
  melrose:["Every seashell has a sign on it. Let's sort them! 🐚✨","Fairy magic works best when the signs are in order! 🧚"],
  cayden:["Game time! Every play needs a different move! 🏀","Coach says: read the play, then make your move! 🏈"]};
-TEAM_SUB.mix={emi:["Read the sign first, {rel}, like reading a seed packet! 🌷","Brackets are like a flower pot: do what's inside first, {rel}! 🌸"],
+TEAM_SUB.mix={emi:["Read the sign first, {rel}, like reading a seed packet! 🌷","Parentheses are like a flower pot: do what's inside first, {rel}! 🌸"],
  blu:["Listen for the clue words, {rel}, like listening for the beat! 🥁","Two steps, like a two-beat drum roll, {rel}! 👏"],
- sage:["I'll sing the order song, {rel}: brackets, times, then plus! 🎤","Clue words are like song lyrics, {rel}: they tell you what to do! 🎶"],
+ sage:["I'll sing the order song, {rel}: parentheses, times, then plus! 🎤","Clue words are like song lyrics, {rel}: they tell you what to do! 🎶"],
  eshon:["Draw it first, {rel}! A quick picture shows the sign! ✏️","I'll draw a bar for each step of the story, {rel}! 🖍️"],
  melrose:["Fairy rule, {rel}: check your answer by putting it back! 🧚","The tide goes out and comes back, {rel}: every sign has an opposite! 🌊"],
  cayden:["Read the play, {rel}: which move do we need? 🏀","Step one, step two, then score, {rel}! 🏈"]};
@@ -2796,14 +2796,14 @@ function hvLine(from,hops,o){o=o||{};let cur=from;const pts=[from];hops.forEach(
  (o.marks||[]).forEach(v=>{s+=`<text x="${X(v)}" y="106" text-anchor="middle" font-size="16" font-weight="800" fill="#0A1F44">${v}</text>`;});
  if(hops.length&&o.endQ!==false)s+=`<circle cx="${X(cur)}" cy="80" r="11" fill="#F59E0B" stroke="#fff" stroke-width="2"/><text x="${X(cur)}" y="85" text-anchor="middle" font-size="15" font-weight="900" fill="#0A1F44">?</text>`;
  return s+'</svg>';}
-/* skip-count line 0..total: two labelled jumps then "keep going" */
+/* skip-count line 0..total: two labeled jumps then "keep going" */
 function hvSkip(total,step){const W=Math.min(600,Math.max(280,total*8+60)),X=v=>30+v*(W-60)/total;let s=`<svg class="hv nline" viewBox="0 0 ${W} 110" style="max-width:${W}px" role="img" aria-label="skip counting model">`;
  s+=`<line x1="12" y1="80" x2="${W-12}" y2="80" stroke="#334155" stroke-width="3" stroke-linecap="round"/>`;
  const n=Math.min(2,Math.floor(total/step)-1);for(let k=0;k<n;k++){const x1=X(k*step),x2=X((k+1)*step),mx=(x1+x2)/2;s+=`<path d="M${x1} 74 Q${mx} 34 ${x2} 74" fill="none" stroke="#10B981" stroke-width="3"/><text x="${mx}" y="30" text-anchor="middle" font-size="14" font-weight="800" fill="#047857">+${step}</text>`;}
  const xs=X(Math.max(0,n)*step),xe=X(total);s+=`<path d="M${xs} 74 Q${(xs+xe)/2} 30 ${xe} 74" fill="none" stroke="#94A3B8" stroke-width="3" stroke-dasharray="5 6"/><text x="${(xs+xe)/2}" y="30" text-anchor="middle" font-size="15" font-weight="800" fill="#475569">keep jumping…</text>`;
  s+=`<circle cx="${X(0)}" cy="80" r="7" fill="#8B5CF6"/><text x="${X(0)}" y="106" text-anchor="middle" font-size="16" font-weight="800" fill="#0A1F44">0</text><circle cx="${xe}" cy="80" r="7" fill="#F59E0B"/><text x="${xe}" y="106" text-anchor="middle" font-size="16" font-weight="800" fill="#0A1F44">${total}</text>`;
  return s+'</svg>';}
-/* block array; the first `split` columns in one colour (no numbers) */
+/* block array; the first `split` columns in one color (no numbers) */
 function hvArray(r,c,split){const cs=Math.max(9,Math.min(22,Math.floor(260/Math.max(r,c)))),g=2,W=c*(cs+g)+(split&&split<c?8:0)+4,Hh=r*(cs+g)+4;let s=`<svg class="hv" viewBox="0 0 ${W} ${Hh}" width="${W}" style="max-width:100%" role="img" aria-label="block array model">`;
  for(let i=0;i<r;i++)for(let j=0;j<c;j++){const x=2+j*(cs+g)+(split&&j>=split?8:0);s+=`<rect x="${x}" y="${2+i*(cs+g)}" width="${cs}" height="${cs}" rx="${cs/4}" fill="${split&&j>=split?'#F59E0B':'#00C2FF'}" stroke="#0A1F44" stroke-opacity=".35"/>`;}
  return s+'</svg>';}
@@ -2956,8 +2956,8 @@ function v13Hint(q,sid,ctx){const m=q.m||{},c=v13Ctx(q,ctx);
  if(op==='mixf'||op==='wopst'){const {o,a,b}=m;const story=op==='wopst';
   const t1=story&&q.input!=='wop'?'Find the two numbers and the clue words. Do you put together, take away, make equal groups or share?':o==='+'?'Start at the bigger number and count on. Or add the tens, then the ones.':o==='-'?`Count back from ${a}, or count up from ${b} to ${a}.`:o==='*'?`Equal groups! Skip-count by ${Math.max(a,b)}, ${Math.min(a,b)} times.`:`Think of a times fact: ${b} × ? = ${a}.`;
   return {t1,t2:(opBar(o,a,b,'res')||'')+cap(o==='+'?'Two parts make the whole.':o==='-'?'Take a part away from the whole.':o==='*'?'Equal boxes make the whole.':'Share the whole into equal boxes.')};}
- if(op==='oop'||op==='oopmc'){const t1=m.br?'Brackets first! Work out what is inside the ( ) before anything else.':'No brackets here, so do × and ÷ before + and −.';
-  if(op==='oopmc')return {t1,t2:oopChart()+cap('Check the rule from the top: brackets, then × ÷, then + −.')};
+ if(op==='oop'||op==='oopmc'){const t1=m.br?'Parentheses first! Work out what is inside the ( ) before anything else.':'No parentheses here, so do × and ÷ before + and −.';
+  if(op==='oopmc')return {t1,t2:oopChart()+cap('Check the rule from the top: parentheses, then × ÷, then + −.')};
   const ex=q.text.replace(' = ?','').replace(m.first,'▢').replace('(▢)','▢');return {t1,t2:oopChart()+`<div class="hvchip">${q.text.replace(' = ?','')} → ${ex.replace('▢','?')} = ?</div>`+cap('Work out the ? part first, then finish.')};}
  if(op==='two')return {t1:'Two steps! Find the answer to the first part of the story, then use it in the second part.',t2:`<div class="twostep"><span>First: ${m.s1} = ?</span><span>Then: ? ${m.s2} = ?</span></div>`+cap('Use your first answer in the second step.')};
  return null;}
@@ -3109,7 +3109,7 @@ function progressScreen(id){stopConfetti();S=null;SS=null;SC=null;stopSpeech();
  <h2>📚 Subjects</h2>${rows}</div>
  <div class="card" id="lanStats"><h2>🏮 Guide lanterns</h2><p class="big" style="font-size:17px">Lanterns give a clue about <b>how</b> to think, never the answer. Using them is smart!</p>
  <div class="pstat"><div><b id="hUsed">${hUsed}</b><span>lanterns used</span></div><div><b>${hQs}</b><span>questions helped</span></div><div><b>${hOk}</b><span>solved after a clue</span></div></div>
- ${sup.length?`<h3 style="margin:8px 0 4px">🌱 Chapters to practise again</h3><ul style="margin:0;padding-left:20px;line-height:1.7">${sup.map(x=>`<li>${SUBJ_BY[x.sid].e} ${esc(chName(x.sid,x.c))}: ${x.n} lanterns</li>`).join('')}</ul>`:`<p style="color:#475569;margin:4px 0 0">${hUsed?'No chapter needed lots of clues. Great thinking!':'No lanterns used yet.'}</p>`}</div>
+ ${sup.length?`<h3 style="margin:8px 0 4px">🌱 Chapters to practice again</h3><ul style="margin:0;padding-left:20px;line-height:1.7">${sup.map(x=>`<li>${SUBJ_BY[x.sid].e} ${esc(chName(x.sid,x.c))}: ${x.n} lanterns</li>`).join('')}</ul>`:`<p style="color:#475569;margin:4px 0 0">${hUsed?'No chapter needed lots of clues. Great thinking!':'No lanterns used yet.'}</p>`}</div>
  <div class="center"><button class="btn blue" type="button" onclick="SFX.tap();save.hero?subjectScreen():titleScreen()">↩ Back</button></div>`,'progress');}
 /* ---------- settings ---------- */
 function setTog(k){if(k==='sound')save.muted=!save.muted;else save[k]=!save[k];persist();if(k==='narrator'&&!save.narrator)stopSpeech();if(!save.muted)SFX.tap();settingsScreen();const b=$('tg-'+k);if(b)b.focus();}
@@ -3222,7 +3222,7 @@ window.TTQ_V11={HINT_MAX,hintFor,hintCtx,useHint,lanLeft:()=>{const c=hintCtx();
 .hpname{font-family:var(--tfont);font-size:44px;line-height:1;margin:0;color:#0A1F44}.hptitle{font-family:var(--tfont);font-size:22px;font-weight:800;color:color-mix(in srgb,var(--c1) 50%,#000)}
 .hpnick{font-weight:800;font-style:italic;color:#334155}.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.chips span{background:#fff;border-radius:999px;padding:4px 10px;font-weight:800;font-size:14px;border:2px solid var(--c1)}
 .cols{display:flex;flex-wrap:wrap;gap:10px;font-weight:700;font-size:14px}.col{display:inline-flex;align-items:center;gap:5px}.col i{width:20px;height:20px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #0004}
-.hpers{font-size:17px;margin:8px 0 4px}.hlook,.hloves{margin:4px 0;font-size:15px;color:#1e293b}.hpbtns{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:6px}
+.hpers{font-size:17px;margin:8px 0 4px}.hloves{margin:4px 0;font-size:15px;color:#1e293b}.hpbtns{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:6px}
 .more summary{cursor:pointer;font-weight:800;color:#1E3A8A;min-height:44px;display:flex;align-items:center;list-style-position:inside}.more p{font-size:16px}
 .powers{display:grid;gap:10px}@media (min-width:760px){.powers{grid-template-columns:repeat(3,1fr)}}
 .power{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:start;background:#fff;border-radius:18px;padding:10px;border:2px solid color-mix(in srgb,var(--c1,#8B5CF6) 45%,#fff);animation:v12in .5s ease both;animation-delay:var(--d,0s)}
@@ -3248,50 +3248,50 @@ body.calm .spark{display:none}body.calm .stone.current{animation:none}
 `;document.head.appendChild(st);})();
 /* ---------- v12: Heroes Hall data (built only from the text descriptions; designs unchanged) ---------- */
 const HERO12={
- emi:{nick:'The Fashionista Who Loves Hard',age:6,cols:[['Purple','#8B5CF6'],['Lilac','#C4B5FD'],['Violet','#6D28D9']],look:'Lighter skin, a wavy chin-length bob and round blue glasses.',
-  loves:['fashion','flowers','gardening','modeling','Barbies'],pers:'Kind, stylish and full of love. Emi always notices when a friend needs a hug.',
+ emi:{nick:'The Fashionista Who Loves Hard',age:6,cols:[['Purple','#8B5CF6'],['Lilac','#C4B5FD'],['Violet','#6D28D9']],
+  loves:['fashion & modeling','flowers & gardening','Barbies'],pers:'Kind, stylish and full of love. Emi always notices when a friend needs a hug.',
   origin:'When the Muddle Monster froze the Flower Garden, Emi pushed up her glasses and promised every little bud: "My Bloom Power will help you grow!"',
   more:'Emi is Blú\'s big sister. Her secret? Flowers planted in neat, equal rows are just times tables in disguise! Every chapter she wins adds a treasure to her Closet, from the Flower Crown all the way to the Bloom Star Gala Gown.',
   powers:[{n:'Petal Power',e:'🌸',math:'Times tables & arrays',d:'Plants flowers in equal rows, so 3 rows of 4 bloom into 12!',love:'gardening'},
    {n:'Bloom Power',e:'🌼',math:'Adding & making 10',d:'Two little flower beds join up to make one big bouquet.',love:'flowers'},
    {n:'Runway Strut',e:'💃',math:'Skip counting',d:'Struts down the runway counting 2, 4, 6, 8 in style!',love:'fashion & modeling'}],
   stats:{Speed:6,Strategy:7,Teamwork:9,Creativity:10},fav:'add',combo:'blu',comboName:'Bloom & Beat',comboLine:'Emi plants the flowers and her little brother Blú plays the music that makes them dance!'},
- blu:{nick:'The Littlest Protector',age:1,cols:[['Blue','#3B82F6'],['Sky blue','#60A5FA'],['Deep blue','#1D4ED8']],look:'',realName:'Khílo',
-  loves:['music','sounds','making people smile','protecting everyone','dancing fruits and stars'],pers:'Tiny, brave and giggly. Blú protects his family and loves to make everyone smile.',
+ blu:{nick:'The Littlest Protector',age:1,cols:[['Blue','#3B82F6'],['Sky blue','#60A5FA'],['Deep blue','#1D4ED8']],realName:'Khílo',
+  loves:['music & sounds','making people smile','dancing fruits & stars'],pers:'Tiny, brave and giggly. Blú protects his family and loves to make everyone smile.',
   origin:'When the Muddle Monster made NumiRealm go quiet, little Blú raised his star shield and said: "I\'ll protect everyone and bring back the music!"',
   more:'His first name is Khílo, but everyone calls him Blú. He is Emi\'s little brother and the youngest hero in NumiRealm. He fills his Music Box with instruments and star badges, and his dancing fruits help everyone count.',
   powers:[{n:'Star Blast',e:'⭐',math:'Counting & adding',d:'Blasts stars into little groups so you can count them all up.',love:'dancing stars'},
    {n:'Star Shield',e:'🛡️',math:'Checking your answer',d:'Guards you from silly slips: look again before you tap!',love:'being a protector'},
    {n:'Bongo Beat',e:'🥁',math:'Skip counting patterns',d:'Every drum beat is a count: 5, 10, 15, 20!',love:'music & sounds'}],
   stats:{Speed:7,Strategy:5,Teamwork:10,Creativity:8},fav:'mult',combo:'emi',comboName:'Beat & Bloom',comboLine:'Blú keeps the beat while his big sister Emi makes the whole garden bloom!'},
- sage:{nick:'The Superstar Singer',age:7,cols:[['Pink','#EC4899'],['Rose','#F472B6'],['Bubblegum','#F9A8D4']],look:'',
-  loves:['singing','dolls'],pers:'Bright, brave and full of music. Sage turns every hard moment into a happy song.',
+ sage:{nick:'The Superstar Singer',age:7,cols:[['Pink','#EC4899'],['Rose','#F472B6'],['Bubblegum','#F9A8D4']],
+  loves:['singing','dolls','happy songs'],pers:'Bright, brave and full of music. Sage turns every hard moment into a happy song.',
   origin:'When the Muddle Monster stole the music, Sage grabbed her mic and sang: "My singing voice will bring the music back to all of NumiRealm!"',
   more:'Sage is cousin to Emi, Blú and Eshon. She knows that songs help you remember, so she sings her times tables and number facts until they stick. Her Doll House fills up with dolls and outfits as she wins.',
   powers:[{n:'Song Power',e:'🎤',math:'Times-table songs',d:'Sings the tables so they get stuck in your head, in a good way!',love:'singing'},
    {n:'Echo Count',e:'🎶',math:'Counting back & taking away',d:'Her voice echoes back through the caves: 10, 9, 8, 7…',love:'singing'},
    {n:'Doll Squad',e:'🪆',math:'Sharing fairly',d:'Shares dolls into equal groups so every friend gets the same.',love:'dolls'}],
   stats:{Speed:6,Strategy:7,Teamwork:9,Creativity:9},fav:'sub',combo:'emi',comboName:'Song & Bloom',comboLine:'Cousins Sage and Emi: one sings, one makes flowers bloom, and the meadow cheers!'},
- eshon:{nick:'The Character Inventor',age:6,cols:[['Green','#22C55E'],['Leaf green','#16A34A'],['Mint','#86EFAC']],look:'Small locs.',
-  loves:['drawing','inventing his own characters'],pers:'Creative, clever and always sketching. Eshon invents brand-new characters for every problem.',
-  origin:'When the Muddle Monster smudged all the colours, Eshon picked up his pencil: "I\'ll draw the colours back into NumiRealm!"',
+ eshon:{nick:'The Character Inventor',age:6,cols:[['Green','#22C55E'],['Leaf green','#16A34A'],['Mint','#86EFAC']],
+  loves:['drawing','inventing his own characters','sketching'],pers:'Creative, clever and always sketching. Eshon invents brand-new characters for every problem.',
+  origin:'When the Muddle Monster smudged all the colors, Eshon picked up his pencil: "I\'ll draw the colors back into NumiRealm!"',
   more:'Eshon is cousin to Sage, Emi and Blú. His drawings come to life, so he draws doodle buddies to help him think. Drawing a quick picture is one of the best ways to solve a math problem, and Eshon does it every time.',
   powers:[{n:'Doodle Power',e:'✏️',math:'Arrays & pictures',d:'Draws rows of shapes so you can SEE the times table.',love:'drawing'},
    {n:'Doodle Buddies',e:'🖍️',math:'Fractions & equal parts',d:'Draws a buddy for each equal slice: halves, thirds, fourths!',love:'inventing characters'},
    {n:'Brave Plan',e:'📝',math:'Story problems',d:'Sketches a plan: what do we know, and what do we need to find?',love:'drawing'}],
   stats:{Speed:5,Strategy:9,Teamwork:7,Creativity:10},fav:'frac',combo:'sage',comboName:'Sketch & Song',comboLine:'Cousins Eshon and Sage: he draws the plan and she sings everyone into action!'},
- melrose:{nick:'Melrose the Mermaid Fairy',age:8,cols:[['Pink','#EC4899'],['Purple','#A855F7'],['Orchid','#D946EF']],look:'Tan skin, green eyes and curly hair.',
-  loves:['fairies','dress up','mermaids'],pers:'Sparkly, caring and full of imagination. Melrose has fairy wings AND a mermaid tail!',
+ melrose:{nick:'The Fairy With a Mermaid Tail',age:8,cols:[['Pink','#EC4899'],['Purple','#A855F7'],['Orchid','#D946EF']],
+  loves:['fairies','dress-up','mermaids'],pers:'Sparkly, caring and full of imagination. Melrose has fairy wings AND a mermaid tail!',
   origin:'When the Muddle Monster muddied the seas, Melrose spread her wings and flicked her tail: "My Sparkle Splash will wash the muddles away!"',
   more:'Melrose is Cayden\'s little sister and cousin to Emi, Blú, Sage and Eshon. She loves to dress up, so her Dress-Up Closet fills with wings, tails and crowns. Mermaids share their treasure fairly, and that is what division is all about.',
   powers:[{n:'Sparkle Splash',e:'✨',math:'Dividing & sharing fairly',d:'Splashes treasure into equal piles so every mermaid gets the same.',love:'mermaids'},
    {n:'Shell Rows',e:'🐚',math:'Times tables',d:'Lines up seashells on the sand in rows: 4 rows of 3 is 12!',love:'mermaids'},
    {n:'Fairy Flutter',e:'🧚',math:'Fractions',d:'Flutters over a cake and slices it into fair, equal pieces.',love:'fairies & dress up'}],
   stats:{Speed:7,Strategy:8,Teamwork:9,Creativity:9},fav:'div',combo:'cayden',comboName:'Splash & Dunk',comboLine:'Melrose and her big brother Cayden: sparkles plus speed equals an unstoppable team!'},
- cayden:{nick:'Cayden the Slam Dunk Hero',age:10,cols:[['Red','#EF4444'],['Blue','#2563EB'],['Navy','#1E3A8A']],look:'Tan skin, green eyes, short curly hair and glasses.',
+ cayden:{nick:'The Coach Who Never Gives Up',age:10,cols:[['Red','#EF4444'],['Blue','#2563EB'],['Navy','#1E3A8A']],
   loves:['football','basketball','anime'],pers:'Fast, focused and a great coach. Cayden is the big brother who never gives up.',
   origin:'When the Muddle Monster silenced the cheering, Cayden laced up and said: "I\'m fast like an anime hero and I never miss a dunk!"',
-  more:'Cayden is Melrose\'s big brother and cousin to Emi, Blú, Sage and Eshon. He practises like a champion, and his Sports Locker fills with gear as he wins. In long division he runs the same play every time: Divide, Multiply, Subtract, Bring down.',
+  more:'Cayden is Melrose\'s big brother and cousin to Emi, Blú, Sage and Eshon. He practices like a champion, and his Sports Locker fills with gear as he wins. In long division he runs the same play every time: Divide, Multiply, Subtract, Bring down.',
   powers:[{n:'Slam Dunk Power',e:'💥',math:'Fast times facts',d:'Dunks times facts so fast they leave speed lines!',love:'basketball'},
    {n:'Speed Lines',e:'⚡',math:'Mental math',d:'Zooms through adding and taking away in his head, anime-style.',love:'anime'},
    {n:'Playbook',e:'🏈',math:'Long division steps',d:'Runs the play: Divide, Multiply, Subtract, Bring down. Touchdown!',love:'football'}],
@@ -3303,7 +3303,7 @@ const MUDDLE={name:'The Muddle Monster',title:'Scrambler of Numbers',pers:'Grump
  powers:[{n:'Number Scramble',e:'🌀',d:'Jumbles digits so 12 looks like 21.'},{n:'Muddle Fog',e:'🌫️',d:'Makes problems look harder than they really are.'},{n:'Rush Trick',e:'⏩',d:'Tries to make you hurry and guess.'}],
  weak:'Careful thinking, hint lanterns, and teamwork. Every right answer shrinks it!'};
 const REALM_LINE={add:'Sunny meadows where flowers bloom every time numbers join together.',sub:'Glittering crystal caves where taking away lights up the dark.',
- mult:'A tall castle with twelve towers, one for every times table.',div:'A busy harbour where boats share their cargo fairly so everyone can sail.',frac:'A sweet-smelling bakery where every cake and pie is cut into fair pieces.'};
+ mult:'A tall castle with twelve towers, one for every times table.',div:'A busy harbor where boats share their cargo fairly so everyone can sail.',frac:'A sweet-smelling bakery where every cake and pie is cut into fair pieces.'};
 const DRILL_WHY={add:'so adding feels quick and easy',sub:'so taking away feels quick and easy',mult:'so times facts pop straight into your head',div:'so sharing and grouping make sense',frac:'so fair pieces and parts make sense'};
 /* ---------- v12: every home button opens its own screen ---------- */
 /* navigation stack + browser back */
@@ -3387,7 +3387,7 @@ function chapterDetail(sid,c){stopConfetti();S=null;SS=null;SC=null;const sb=SUB
  <div class="chdbox ex"><h3>✏️ Example</h3>${ex?`<div class="qcard sq"><div class="qeq">${ex.text}</div>${ex.vis?`<div class="qvis">${ex.vis}</div>`:''}</div><p class="small">You'll solve ones like this in the chapter.</p>`:`<p>${ci.tip}</p>`}</div>
  <div class="chdbox"><h3>🧭 How it goes</h3><ol class="flow"><li>📚 Learn</li><li>🎯 Practice</li><li>👾 Boss: ${ci.boss[0]} ${esc(ci.boss[1])}</li></ol>${ci.place&&ci.place.name?`<p class="small">${ci.place.e||''} ${esc(ci.place.name)}</p>`:''}</div></div>
  <div class="center">${state==='locked'?`<button class="btn" type="button" id="playCh" onclick="go('chapter','${sid}',${u+1})">▶ See Chapter ${u+1} instead</button>`:`<button class="btn play" type="button" id="playCh" data-enter onclick="playChapter('${sid}',${c})">▶ Play this chapter${hn?` as ${hn}`:''}</button>`}
- <button class="btn purple sm" type="button" onclick="go('training',null,'${sid}')">🎯 Practise this skill</button></div></div>${backBtn('Realm Map')}`,'quest');
+ <button class="btn purple sm" type="button" onclick="go('training',null,'${sid}')">🎯 Practice this skill</button></div></div>${backBtn('Realm Map')}`,'quest');
  speak(`Chapter ${c}: ${stripH(ci.t)}. You will learn ${ci.skill}.`,'owl');}
 function playChapter(sid,c){SFX.tap();const id=vHero();playWith(()=>{const pf=P();if(c>uIdx(sid,pf)+1)return chapterDetail(sid,c);save.lastSubj=sid;pf.lastSubj=sid;lastMap=sid;SP(sid).intro=true;persist();
  if(sid==='mult')openLevel(ORDER[c-1]);else openChapter(sid,c);},id);}
@@ -3441,7 +3441,7 @@ function drRender(q,it){SS.cur=q;SS.locked=false;sInpReset(q);const sb=SUBJ_BY[i
 function drillDone(){drStop();if(!DR)return training();if(SS&&SS.lanP!=null)DR.lan=SS.lanP;const d=DR,pf=P();SS=null;S=null;pf.drills=(pf.drills||0)+1;noteDay();persist();SFX.win&&SFX.win();
  const left=save.hero?weakList(pf).length:0;
  show(`<div class="card center" id="drDone"><div class="winheroes"><div class="w1" id="mh">${heroSVG(save.hero,'cheer')}</div></div><h2>${d.over?"⏰ Time's up!":'Round done!'}</h2><p class="big">You got <b>${d.score} right</b> out of ${d.total}.</p>
- <p class="big" style="font-size:17px">🏮 Lanterns left: ${d.lan}/${HINT_MAX.practice}${d.mix?` · 🌱 Cleared: ${d.cleared} · Still to practise: ${left}`:''}</p><p>${d.total&&d.score/d.total>=.8?'Super sharp! Your brain is getting faster.':'Every try makes your brain stronger!'}</p>
+ <p class="big" style="font-size:17px">🏮 Lanterns left: ${d.lan}/${HINT_MAX.practice}${d.mix?` · 🌱 Cleared: ${d.cleared} · Still to practice: ${left}`:''}</p><p>${d.total&&d.score/d.total>=.8?'Super sharp! Your brain is getting faster.':'Every try makes your brain stronger!'}</p>
  <button class="btn" type="button" data-enter id="drAgain" onclick="drillGo(DR_LAST.items,DR_LAST.mix)">🔁 Go again</button><button class="btn purple sm" type="button" onclick="go('training')">🎯 Training Grounds</button><button class="btn blue sm" type="button" onclick="titleScreen()">🏠 Home</button></div>`,'practice');
  DR_LAST={items:d.items,mix:d.mix};DR=null;}
 let DR_LAST=null;
@@ -3483,7 +3483,7 @@ function heroCards(){stopConfetti();S=null;SS=null;SC=null;const act=vHero();con
  show(`<h1 class="questh">👤 Hero Profiles</h1><div class="pcards">${ids.map(id=>{const pf=save.profiles[id],h=HEROES[id],fr=favRealm(id),g=gradeOf(pf.grade);
   return `<section class="card pcard ${id}" data-pcard="${id}"><div class="pctop"><div class="pcav" aria-hidden="true">${heroSVG(id,'idle')}</div><div><h2>${esc(pf.name)}${id===act?' <span class="acttag">Playing</span>':''}</h2><div class="ht">${h.title}</div></div></div>
   <dl class="pcl"><div><dt>🎂 Age</dt><dd>${AGES.includes(pf.age)?pf.age:'Not set'}</dd></div><div><dt>🎒 Grade</dt><dd>${g?(/^\d$/.test(g[0])?g[1]+' grade':g[1]):'Not set'}</dd></div>
-  <div><dt>💖 Favourite realm</dt><dd>${fr?SUBJ_BY[fr].e+' '+SUBJ_BY[fr].realm:'Not picked yet'}</dd></div><div><dt>⭐ Total stars</dt><dd>${allStars(pf)}</dd></div>
+  <div><dt>💖 Favorite realm</dt><dd>${fr?SUBJ_BY[fr].e+' '+SUBJ_BY[fr].realm:'Not picked yet'}</dd></div><div><dt>⭐ Total stars</dt><dd>${allStars(pf)}</dd></div>
   <div><dt>🔥 Streak</dt><dd>${streakOf(pf)} day${streakOf(pf)===1?'':'s'}</dd></div><div><dt>🏮 Lanterns used</dt><dd>${hintUsed(pf)}</dd></div></dl>
   <div class="center"><button class="btn purple sm" type="button" data-editabout="${id}" onclick="editAbout('${id}')" aria-label="Edit About Me for ${esc(pf.name)}">✏️ Edit About Me</button><button class="btn gray sm" type="button" onclick="go('hero','${id}')">🦸 Hero page</button></div></section>`;}).join('')}</div>${backBtn()}`,'profile');}
 function editAbout(id){SFX.tap();save.hero=id;save.lastHero=id;persist();aboutScreen(()=>{runScr({n:'profile',a:[]});},true);}
@@ -3500,15 +3500,15 @@ function heroPage(id){if(!HERO12[id])return heroesHall();stopConfetti();S=null;S
  const sp=Array.from({length:8},(_,k)=>`<i style="--x:${[8,86,18,74,4,92,40,62][k]}%;--y:${[12,8,70,78,40,44,2,92][k]}%;--d:${k*.35}s">${['✨','⭐','💫','✨','🌟','✨','⭐','💫'][k]}</i>`).join('');
  show(`<div class="hpage ${id}${still}" data-hpage="${id}" style="--c1:${d.cols[0][1]};--c2:${d.cols[1][1]};--c3:${d.cols[2][1]}">${topBack()}
  <div class="card hphero"><div class="hpport"><span class="hpglow" aria-hidden="true"></span><span class="spark" aria-hidden="true">${sp}</span><div class="hpsvg" id="hpSvg" role="img" aria-label="${esc(h.name)}">${heroSVG(id,'cheer')}</div></div>
- <div class="hpinfo"><h1 class="hpname">${h.name}</h1><div class="hptitle">${h.title}</div>${d.nick!==h.title?`<div class="hpnick">“${d.nick}”</div>`:''}
- <div class="chips"><span>🎂 Age ${d.age}</span>${d.realName?`<span>Real name: ${d.realName}</span>`:''}${pf.name!==h.name?`<span>Player name: ${esc(pf.name)}</span>`:''}</div>
- <div class="cols" aria-label="Colours">${d.cols.map(c=>`<span class="col"><i style="background:${c[1]}" aria-hidden="true"></i>${c[0]}</span>`).join('')}</div>
- <p class="hpers">${d.pers}</p>${d.look?`<p class="hlook">👀 ${d.look}</p>`:''}<p class="hloves">💖 Loves: ${d.loves.join(', ')}</p>
+ <div class="hpinfo"><h1 class="hpname">${h.name}</h1><div class="hptitle">${h.title}</div><div class="hpnick">“${d.nick}”</div>
+ <div class="chips"><span>🎂 Age ${d.age}</span></div>
+ <div class="cols" aria-label="Colors">${d.cols.map(c=>`<span class="col"><i style="background:${c[1]}" aria-hidden="true"></i>${c[0]}</span>`).join('')}</div>
+ <p class="hpers">${d.pers}</p><p class="hloves">💖 Loves: ${d.loves.join(', ')}</p>
  <div class="hpbtns"><button class="btn play" type="button" id="playAs" data-enter onclick="playAs('${id}')">▶ Play as ${h.name}</button><button class="btn blue sm" type="button" id="readBio" onclick="readBio('${id}')" aria-label="Read ${h.name}'s story out loud">🔊 Read my story</button></div></div></div>
  <div class="card"><h2>📖 Origin story</h2><p class="big" style="font-size:17px">${d.origin}</p><details class="more"><summary>Read more</summary><p>${d.more}</p></details></div>
  <div class="card"><h2>⚡ Superpowers</h2><div class="powers">${d.powers.map((p,k)=>`<div class="power" style="--d:${k*.12}s"><span class="pe" aria-hidden="true">${p.e}</span><div><b>${p.n}</b><div class="pmath">🧮 ${p.math}</div><p>${p.d}</p><small>Because ${h.name} loves ${p.love}</small></div></div>`).join('')}</div></div>
  <div class="card"><h2>📊 Power stats</h2><div class="stats">${statBars(d.stats,`linear-gradient(90deg,${d.cols[0][1]},${d.cols[1][1]})`)}</div></div>
- <div class="hp2"><div class="card"><h2>💖 Favourite realm</h2><p class="big" style="font-size:18px"><span aria-hidden="true">${fr.e}</span> <b>${fr.realm}</b></p><p>${REALM_LINE[fr.id]}</p><button class="btn gray sm" type="button" onclick="go('realms')">🗺️ See the map</button></div>
+ <div class="hp2"><div class="card"><h2>💖 Favorite realm</h2><p class="big" style="font-size:18px"><span aria-hidden="true">${fr.e}</span> <b>${fr.realm}</b></p><p>${REALM_LINE[fr.id]}</p><button class="btn gray sm" type="button" onclick="go('realms')">🗺️ See the map</button></div>
  <div class="card"><h2>🤝 Best team combo</h2><div class="combo"><span class="cav" aria-hidden="true">${heroSVGeq(id,{},'idle')}</span><b aria-hidden="true">+</b><span class="cav" aria-hidden="true">${heroSVGeq(mate,{},'idle')}</span></div><p><b>${d.comboName}</b>: ${h.name} + ${HEROES[mate].name} (${HEROES[mate].name} is ${h.name}'s ${relW}).</p><p>${d.comboLine}</p><button class="btn gray sm" type="button" onclick="go('hero','${mate}')">Meet ${HEROES[mate].name}</button></div></div>
  <div class="card catch"><h2>📣 Catchphrase</h2><p class="cphrase">“${BRAVE[id][0]}”</p></div>
  <div class="row center hpnav"><button class="btn gray sm" type="button" onclick="runScr({n:'hero',a:['${prev}']})" aria-label="Previous hero: ${HEROES[prev].name}">◀ ${HEROES[prev].name}</button><button class="btn gray sm" type="button" onclick="runScr({n:'hero',a:['${next}']})" aria-label="Next hero: ${HEROES[next].name}">${HEROES[next].name} ▶</button></div>${backBtn('Heroes Hall')}</div>`,'heroes');
@@ -3527,9 +3527,9 @@ function setVoice(v){save.voiceName=v||null;persist();pickVoice();if(!save.voice
 setTog=function(k){if(k==='sound')save.muted=!save.muted;else save[k]=!save[k];persist();if(k==='narrator'&&!save.narrator)stopSpeech();if(!save.muted)SFX.tap();runScr({n:'settings',a:[]});const b=$('tg-'+k);if(b)b.focus();};
 function settingsV12(){stopSpeech();const tg=(k,on,l,d)=>`<div class="setrow"><span class="sl" id="tl-${k}">${l}<small>${d}</small></span><button type="button" class="tog" id="tg-${k}" role="switch" aria-checked="${on}" aria-labelledby="tl-${k}" onclick="setTog('${k}')"></button></div>`;
  const vs=enVoices(),ask=V12.ask,msg=V12.msg;V12.msg='';
- const voice=!hasTTS()?`<p class="small" id="noVoices">This browser has no read-aloud voices.</p>`:vs.length?`<div class="setrow"><label class="sl" for="voiceSel">Narrator voice choice<small>Pick the voice that reads to you</small></label><select id="voiceSel" class="vsel" onchange="setVoice(this.value)"><option value="">Automatic</option>${vs.map(v=>`<option value="${esc(v.name)}" ${save.voiceName===v.name?'selected':''}>${esc(v.name)}</option>`).join('')}</select></div><div class="center"><button class="btn gray sm" type="button" onclick="speak('Hoo-hoo! This is my voice.','owl')">🔊 Test voice</button></div>`:`<p class="small" id="noVoices">Voices are still loading, or this device has only one voice.</p>`;
+ const voice=!hasTTS()?`<p class="small" id="noVoices">This browser has no read-aloud voices.</p>`:vs.length?`<div class="setrow"><label class="sl" for="voiceSel">Narrator voice choice<small>Pick the voice that reads to you</small></label><select id="voiceSel" class="vsel" onchange="setVoice(this.value)"><option value="">Automatic (${esc(VOICE?voiceLabel(VOICE):'best voice')})</option>${vs.map(v=>`<option value="${esc(v.name)}" ${save.voiceName===v.name?'selected':''}>${esc(voiceLabel(v))}</option>`).join('')}</select></div><div class="center"><button class="btn gray sm" type="button" id="testVoice" onclick="testVoice()">🔊 Test voice</button></div>`:`<p class="small" id="voiceLoading">Loading voices…</p><div class="center"><button class="btn gray sm" type="button" id="testVoice" onclick="testVoice()">🔊 Test voice</button></div>`;
  show(`<h1 class="questh">⚙️ Settings</h1><div class="card"><h2>🔊 Sound and voice</h2>
- ${tg('sound',!save.muted,'Sound effects','Boops, cheers and music')}${tg('narrator',!!save.narrator,'Narrator voice','The owl reads the story, questions and lantern clues out loud')}${voice}</div>
+ ${tg('sound',!save.muted,'Sound effects','Boops, cheers and music')}${tg('narrator',!!save.narrator,'Narrator voice','The owl reads the story, questions and lantern clues out loud')}${voice}<p class="small sndnote" id="sndNote">No sound? Check your phone's volume and silent switch.</p></div>
  <div class="card"><h2>👀 Comfort</h2>${tg('calm',!!save.calm,'Reduced motion','Fewer moving, bouncing and sparkly things')}${tg('bigText',!!save.bigText,'Bigger text','Makes words and buttons larger')}</div>
  <div class="card" id="resetCard"><h2>🗑️ Reset one hero</h2><p>Erases one hero's stars, chapters, treasures and needs-work list. Their name and About Me are kept. Other heroes are not touched.</p>
  ${msg?`<p class="okmsg" role="status" id="resetMsg">✅ ${esc(msg)}</p>`:''}
@@ -3540,9 +3540,9 @@ function settingsV12(){stopSpeech();const tg=(k,on,l,d)=>`<div class="setrow"><s
 function resetAsk(id){SFX.tap();V12.ask=id;runScr({n:'settings',a:[]});if(!id){const r=$('resetCard');if(r)r.scrollIntoView({block:'nearest'});}}
 function resetDo(id){const old=save.profiles[id],keep={name:old.name,age:old.age,grade:old.grade,prologue:old.prologue};save.profiles[id]=freshProfile(id);Object.keys(keep).forEach(k=>{if(keep[k]!=null)save.profiles[id][k]=keep[k];});persist();
  V12.ask=null;V12.msg=`${old.name} was reset.`;SFX.tap();runScr({n:'settings',a:[]});const m=$('resetMsg');if(m)m.focus&&m.setAttribute('tabindex','-1');}
-/* ---------- PROGRESS: a "what to practise next" tip for parents ---------- */
+/* ---------- PROGRESS: a "what to practice next" tip for parents ---------- */
 function practiceTip(id){const pf=save.profiles[id],wl=weakList(pf);
- if(wl.length){const w=wl[0],sb=SUBJ_BY[w.sid];return {sid:w.sid,t:`Practise <b>${esc(chName(w.sid,w.c))}</b> in ${sb.realm}. ${esc(pf.name)} ${w.m?`missed ${w.m} question${w.m===1?'':'s'} here`:''}${w.m&&w.h?' and ':''}${w.h?`used ${w.h} lantern${w.h===1?'':'s'} here`:''}. Try the Needs-work mix in Training Grounds.`};}
+ if(wl.length){const w=wl[0],sb=SUBJ_BY[w.sid];return {sid:w.sid,t:`Practice <b>${esc(chName(w.sid,w.c))}</b> in ${sb.realm}. ${esc(pf.name)} ${w.m?`missed ${w.m} question${w.m===1?'':'s'} here`:''}${w.m&&w.h?' and ':''}${w.h?`used ${w.h} lantern${w.h===1?'':'s'} here`:''}. Try the Needs-work mix in Training Grounds.`};}
  const log=pf.hintLog||{};let hs=null,hm=0;SUBJ.forEach(sb=>{const u=(log[sb.id]||{}).used||0;if(u>hm){hm=u;hs=sb.id;}});
  if(hs)return {sid:hs,t:`${esc(pf.name)} used the most lanterns in <b>${SUBJ_BY[hs].realm}</b> (${hm}). A short ${SUBJ_BY[hs].name} drill will help.`};
  let ws=null,wr=4;SUBJ.forEach(sb=>{const d=sDone(sb.id,pf);if(d){const r=sStars(sb.id,pf)/d;if(r<wr){wr=r;ws=sb.id;}}});
@@ -3550,7 +3550,7 @@ function practiceTip(id){const pf=save.profiles[id],wl=weakList(pf);
  const rec=SUBJ.find(sb=>hasAbout(pf)&&sb.grades.includes(pf.grade))||SUBJ[0];
  return {sid:rec.id,t:ws?`Great work so far! Next, start a new chapter in <b>${rec.realm}</b>.`:`No games played yet. <b>${rec.realm}</b> is a great place to start${hasAbout(pf)?` for ${esc(gradeOf(pf.grade)[2])}`:''}.`};}
 {const _pg=progressScreen;SCR.progress=function(id){_pg(id);const pid=id&&HEROES[id]?id:(save.hero||save.lastHero||HERO_ORDER[0]),tp=practiceTip(pid);
- const card=document.querySelector('#app .card');if(card)card.insertAdjacentHTML('afterend',`<div class="card tipcard" id="parentTip"><h2>🧑‍🏫 For grown-ups: what to practise next</h2><p class="big" style="font-size:17px">${tp.t}</p><div class="center"><button class="btn purple sm" type="button" id="tipGo" onclick="go('training',null,'${tp.sid}')">🎯 Open Training Grounds</button></div></div>`);
+ const card=document.querySelector('#app .card');if(card)card.insertAdjacentHTML('afterend',`<div class="card tipcard" id="parentTip"><h2>🧑‍🏫 For grown-ups: what to practice next</h2><p class="big" style="font-size:17px">${tp.t}</p><div class="center"><button class="btn purple sm" type="button" id="tipGo" onclick="go('training',null,'${tp.sid}')">🎯 Open Training Grounds</button></div></div>`);
  const bs=document.querySelectorAll('#app > .center .btn');const b=bs[bs.length-1];if(b&&/Back/.test(b.textContent)){b.setAttribute('onclick','goBack()');b.id='backBtn';}
  document.querySelectorAll('.pgtab').forEach(t=>{const h=(t.getAttribute('onclick')||'').match(/'(\w+)'/);if(h)t.setAttribute('onclick',`runScr({n:'progress',a:['${h[1]}']})`);});};
  progressScreen=track('progress',SCR.progress);}
@@ -3748,15 +3748,60 @@ TEAM_SUB.sub.zea=["Hop back along the beam, {rel}: one step back for each one we
 TEAM_SUB.mult.zea=["Bugs in rows, {rel}! 4 rows of 6 ladybugs is 24. That's an array! 🐞","Big numbers? Split them like a routine, {rel}: multiply the tens, then the ones, then add them up! 🤸‍♀️"];
 TEAM_SUB.div.zea=["Let's share the beetles into equal groups, {rel}, one for each leaf! 🪲","Dividing is like making fair gym teams, {rel}: same number on every team! 🤸‍♀️"];
 TEAM_SUB.frac.zea=["Fold the ribbon into equal parts, {rel}: halves, thirds, fourths! 🎀","Equal parts, like a balance beam, {rel}: both sides the same! 💜"];
-TEAM_SUB.mix.zea=["Check the sign before you flip, {rel}: plus, minus, times or share? 🤸‍♀️","Brackets are like the gym mat, {rel}: do what's inside first! 💚"];
-HERO12.zea={nick:'The Critter Flip Star',age:ZEA_CFG.age,cols:[['Violet','#7C3AED'],['Golden sparkle','#F59E0B'],['Silver','#CBD5E1']],look:ZEA_CFG.look,
- loves:['gymnastics','fashion','spiders, mice & snakes'],pers:'Bouncy, brave and stylish. Zea can do a cartwheel AND design an outfit, and she thinks every creepy-crawly is amazing.',
+TEAM_SUB.mix.zea=["Check the sign before you flip, {rel}: plus, minus, times or share? 🤸‍♀️","Parentheses are like the gym mat, {rel}: do what's inside first! 💚"];
+HERO12.zea={nick:'The Critter Flip Star',age:ZEA_CFG.age,cols:[['Violet','#7C3AED'],['Golden sparkle','#F59E0B'],['Silver','#CBD5E1']],
+ loves:['gymnastics','fashion','spiders, mice & snakes'],pers:'Bouncy, brave and stylish. Zea can do a cartwheel AND design an outfit!',
  origin:'When the Muddle Monster scrambled the gym and scattered the critters, Zea tightened her bow and said: "Stick the landing, strike a pose! Critter Flip, GO!"',
  more:'Zea is cousin to Emi, Blú, Sage, Eshon, Melrose and Cayden. Her critter pals Webby the spider, Squeak the mouse and Noodle the snake cheer her on, and her Gym Bag fills with bows, ribbons and medals as she wins. Bugs line up in neat rows, so Zea sees times tables everywhere.',
  powers:[{n:'Critter Count',e:'🐞',math:'Times tables & arrays',d:'Lines up ladybugs in rows: 3 rows of 5 bugs is 15!',love:'creepy-crawlies'},
   {n:'Balance Beam',e:'🤸‍♀️',math:'Sharing fairly & equal parts',d:'Keeps both sides equal, so every group gets the same.',love:'gymnastics'},
   {n:'Runway Patterns',e:'👗',math:'Skip counting & patterns',d:'Struts down the runway in steps: 2, 4, 6, 8… strike a pose!',love:'fashion'}],
  stats:{Speed:8,Strategy:7,Teamwork:9,Creativity:9},fav:'mult',combo:'eshon',comboName:'Flip & Sketch',comboLine:'Cousins Zea and Eshon: he draws critter buddies and she flips them into a routine!'};
+/* ---------- v15: iOS-safe audio + narrator voice ---------- */
+const AUD={unlocked:false,el:null,warm:false,utts:[],voices:[],poll:null};
+const NOVELTY=/^(albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|kathy|ralph|grandma|grandpa|eddy|flo|reed|rocko|sandy|shelley|deranged|hysterical|pipe organ)\b/i;
+const VREGION={'en-US':'US','en-GB':'UK','en-AU':'Australia','en-IE':'Ireland','en-ZA':'South Africa','en-IN':'India','en-CA':'Canada','en-NZ':'New Zealand','en-SC':'Scotland'};
+function silentWav(){const n=800,b=new Uint8Array(44+n*2),d=new DataView(b.buffer),w=(o,s)=>{for(let i=0;i<s.length;i++)b[o+i]=s.charCodeAt(i);};
+ w(0,'RIFF');d.setUint32(4,36+n*2,true);w(8,'WAVE');w(12,'fmt ');d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,1,true);d.setUint32(24,8000,true);d.setUint32(28,16000,true);d.setUint16(32,2,true);d.setUint16(34,16,true);w(36,'data');d.setUint32(40,n*2,true);
+ let s='';for(const x of b)s+=String.fromCharCode(x);return 'data:audio/wav;base64,'+btoa(s);}
+function ensureAC(){try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;if(!actx||actx.state==='closed')actx=new C();
+ if(actx.state==='suspended'||actx.state==='interrupted'){const r=actx.resume();r&&r.catch&&r.catch(()=>{});}return actx;}catch(e){return null;}}
+function audioUnlock(){try{if(navigator.audioSession)navigator.audioSession.type='playback';}catch(e){}
+ const c=ensureAC();if(c){try{const buf=c.createBuffer(1,1,22050),src=c.createBufferSource();src.buffer=buf;src.connect(c.destination);src.start(0);}catch(e){}}
+ if(!AUD.el){try{const a=document.createElement('audio');a.src=silentWav();a.loop=true;a.setAttribute('playsinline','');a.preload='auto';a.volume=0.01;AUD.el=a;}catch(e){}}
+ if(AUD.el&&AUD.el.paused){try{const p=AUD.el.play();p&&p.catch&&p.catch(()=>{});}catch(e){}}
+ if(!AUD.warm&&hasTTS()){AUD.warm=true;try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;u.lang='en-US';AUD.utts.push(u);speechSynthesis.speak(u);}catch(e){}}
+ AUD.unlocked=!!(c&&c.state==='running')||AUD.unlocked;}
+['touchend','click','pointerup','keydown'].forEach(ev=>document.addEventListener(ev,audioUnlock,{capture:true,passive:true}));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){ensureAC();if(AUD.el&&AUD.el.paused&&AUD.warm){try{const p=AUD.el.play();p&&p.catch&&p.catch(()=>{});}catch(e){}}}});
+/* every sound goes through ensureAC so a suspended/interrupted context is resumed first */
+{const _t=tone,_s=singNote;tone=function(...a){if(save.muted)return;ensureAC();return _t(...a);};singNote=function(...a){if(save.muted)return;ensureAC();return _s(...a);};}
+/* voices: English only, no novelty voices, friendly labels */
+function niceVoices(){try{if(!hasTTS())return [];return (speechSynthesis.getVoices()||[]).filter(v=>/^en/i.test(v.lang||'')&&!NOVELTY.test(v.name));}catch(e){return [];}}
+enVoices=niceVoices;
+function voiceLabel(v){const lang=(v.lang||'').replace('_','-');const reg=VREGION[lang]||lang.replace(/^en-?/i,'')||'English';const nm=v.name.replace(/\s*\(.*?\)\s*/g,' ').replace(/(Microsoft|Google|Apple)\s*/i,'').replace(/\s+(Online|Natural|Enhanced|Premium|Compact)\b/gi,'').replace(/\s+-.*$/,'').trim()||v.name;
+ return nm+' ('+reg+(/enhanced|premium|natural/i.test(v.name)?', clear':'')+')';}
+pickVoice=function(){try{const en=niceVoices();VOICE=null;if(save.voiceName&&NOVELTY.test(save.voiceName)){save.voiceName=null;persist();}
+ if(save.voiceName){const v=en.find(v=>v.name===save.voiceName);if(v){VOICE=v;return;}}
+ const us=en.filter(v=>/en[-_]US/i.test(v.lang));
+ const pref=[/^samantha/i,/(aria|jenny|ava|emma).*natural/i,/^(ava|allison|susan|zoe|nicky)/i,/google us english/i,/aria|jenny/i];
+ for(const r of pref){const v=us.find(v=>r.test(v.name))||null;if(v){VOICE=v;return;}}
+ VOICE=us.find(v=>v.localService)||us[0]||en.find(v=>/samantha|karen|moira|tessa|serena|female/i.test(v.name))||en[0]||null;}catch(e){VOICE=null;}};
+function onVoices(){const n=niceVoices().length,had=AUD.voices.length;AUD.voices=niceVoices();pickVoice();if(n&&!had&&typeof CUR!=='undefined'&&CUR&&CUR.n==='settings'&&$('voiceLoading'))runScr(CUR);}
+if(hasTTS()){try{speechSynthesis.addEventListener?speechSynthesis.addEventListener('voiceschanged',onVoices):(speechSynthesis.onvoiceschanged=onVoices);}catch(e){}onVoices();
+ let tries=0;AUD.poll=setInterval(()=>{tries++;onVoices();if(AUD.voices.length||tries>40)clearInterval(AUD.poll);},250);}
+/* speak: synchronous, keeps references so iOS doesn't garbage-collect the utterance mid-sentence */
+function speakNow(text,who){try{if(!hasTTS())return false;const t=speakClean(text);if(!t)return false;const ss=window.speechSynthesis;
+ if(ss.speaking||ss.pending)ss.cancel();if(ss.paused)ss.resume();if(!VOICE)pickVoice();
+ const u=new SpeechSynthesisUtterance(t);if(VOICE){u.voice=VOICE;u.lang=VOICE.lang;}else u.lang='en-US';
+ u.rate=who==='boss'?.9:.95;u.pitch=who==='boss'?.6:who==='owl'?1.05:1.35;u.volume=1;
+ AUD.utts.push(u);if(AUD.utts.length>8)AUD.utts.splice(0,AUD.utts.length-8);u.onend=u.onerror=()=>{const i=AUD.utts.indexOf(u);if(i>=0)AUD.utts.splice(i,1);};
+ ss.speak(u);return true;}catch(e){return false;}}
+speak=function(text,who){if(!save.narrator)return;speakNow(text,who);};
+/* Test voice works even when the narrator toggle is off, called straight from the tap */
+function testVoice(){audioUnlock();speakNow('Hoo-hoo! This is my voice.','owl');}
+setVoice=function(v){save.voiceName=v||null;persist();pickVoice();speakNow('Hoo-hoo! This is my voice.','owl');};
+setTog=function(k){if(k==='sound')save.muted=!save.muted;else save[k]=!save[k];persist();if(k==='narrator'){if(!save.narrator)stopSpeech();else speakNow('Narrator is on.','owl');}if(!save.muted)SFX.tap();runScr({n:'settings',a:[]});const b=$('tg-'+k);if(b)b.focus();};
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
 </script>
