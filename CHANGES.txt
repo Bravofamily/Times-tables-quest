@@ -1,0 +1,40 @@
+v21 (local preview, not published)
+- Worked example ("How to solve it", 2-3 steps) after a wrong answer in practice and skill drills; covers every question type (53,100 generated questions checked). Hints still never give the answer.
+- Review queue in Practice: cleared needs-work skills come back after 1, 3, 7 and 14 days; a miss sends a skill back to needs-work.
+- Mastery check per realm: 8 questions from finished chapters, no lanterns, 7 right passes; Realm Master badges in the Trophy Room under the Star Path.
+- Mixed Math review: only chapters with 2+ stars, starts with 2 skills and mixes in one more after 2 right in a row; normal difficulty.
+- Offline play: sw.js (cache numirealm-v<APP_VERSION>, page network-first, version.json never cached, old caches removed); offline notice.
+- APP_VERSION and version.json 21. Save key ttq-save-v2 unchanged; v20 saves load intact.
+
+NumiRealm repo cleanup plan for v20 (proposed only; nothing pushed)
+Baseline: GitHub main @ 71363f6 (v19) contains ONLY: .nojekyll, README.md, index.html, version.json
+
+FINDING
+  The old copies (index-v1..v14.html), test_*.py and the PNG screenshots were never committed.
+  They exist only in the local working folder (/workspace/times-tables-quest), so there is
+  nothing to delete on GitHub. The local folder can be tidied separately (backup kept at
+  /workspace/ttq-v19-site-backup).
+
+MODIFY (same path; the live game loads these, so they are NOT moved)
+  index.html            v19 -> v20 build
+  version.json          {"version":"19"} -> {"version":"20"}
+  README.md             rewritten (six realms, 7 heroes, saves, Built vs. future, layout, releases)
+  .nojekyll             unchanged
+
+ADD
+  CHANGES.txt
+  tests/run_all.sh
+  tests/test_game_v9.py tests/test_friends_v9.py tests/test_subjects_v9.py tests/test_about_v9.py
+  tests/test_version_v20.py tests/test_v10_save.py tests/test_v11_hints.py tests/test_v11_layout.py
+  tests/test_v12_screens.py tests/test_v12_layout.py tests/test_v13.py tests/test_v14.py tests/test_v15.py
+  tests/test_v16.py tests/test_v17.py tests/test_v18.py tests/test_v19.py tests/test_v20.py
+  docs/screenshots/{home,settings-progress-code,import-preview,recovery-notice}-{390,1280}.png
+
+MOVE (old -> new; local working folder only, these are not in git)
+  times-tables-quest/test_*.py      -> tests/test_*.py  (paths now relative: D = repo root)
+  v20shots/*.png (selected)          -> docs/screenshots/
+
+DELETE
+  (none in the repo)
+  Local-only clutter that should not be committed: index-v1..v14.html, other test_*.py versions
+  (test_version_v10..v19), *.png in the site root, *.log

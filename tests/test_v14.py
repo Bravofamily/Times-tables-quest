@@ -1,7 +1,7 @@
 # v14: Zea the Critter Flip Star (7th hero): select, About Me, story, Heroes Hall, rewards, banter, Grand Final, migration, hints, generator, layout.
 import json,os,sys,re
 from playwright.sync_api import sync_playwright
-import os; D=os.path.dirname(os.path.dirname(os.path.abspath(__file__))); URL='file://'+D+'/index.html'
+D='/workspace/times-tables-quest'; URL='file://'+D+'/index.html'
 errs=[];fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m,flush=True)
@@ -30,8 +30,8 @@ with sync_playwright() as p:
     pg.on('console',lambda m: errs.append(m.text) if m.type=='error' else None); pg.on('pageerror',lambda e: errs.append(str(e)))
     pg.on('dialog',lambda d: d.accept())
     load(pg,None)
-    ck(pg.evaluate("APP_VERSION")=='20','APP_VERSION is 20')
-    ck(json.load(open(D+'/version.json'))=={"version":"20"},'version.json is {"version":"20"}')
+    ck(pg.evaluate("APP_VERSION")=='21','APP_VERSION is 21')
+    ck(json.load(open(D+'/version.json'))=={"version":"21"},'version.json is {"version":"21"}')
     # ---------- data ----------
     d=pg.evaluate("""()=>({order:HERO_ORDER.join(),title:HEROES.zea.title,cfg:ZEA_CFG,rew:REWARDS.zea.length,pl:HPLACES.zea.length,plok:HPLACES.zea.every(p=>p.zea&&p.name&&p.desc&&p.lost&&p.back&&p.props.length===7),
       boss:Object.keys(HBOSS.zea).length,sibs:SIBS.zea,rel:HERO_ORDER.filter(x=>x!=='zea').map(x=>relTo('zea',x)+'/'+relTo(x,'zea')),

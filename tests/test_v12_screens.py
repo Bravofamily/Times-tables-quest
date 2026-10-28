@@ -3,7 +3,7 @@
 # play-as), Settings reset-confirm, Progress parent tip, Back + browser back, no console errors.
 import json, os, copy, re
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.dirname(os.path.abspath(__file__))); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
+D=os.path.dirname(os.path.abspath(__file__)); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m, flush=True); fails.append(m) if not c else None
 SEED={"muted":True,"narrator":False,"hero":None,"lastHero":"cayden","lastSubj":"div","voice":"","profiles":{
@@ -23,7 +23,7 @@ with sync_playwright() as p:
     pg.on('console',lambda m: errs.append(m.text) if m.type=='error' else None); pg.on('pageerror',lambda e: errs.append(str(e)))
     pg.on('dialog',lambda d: d.accept())
     load(pg)
-    ck(pg.evaluate("APP_VERSION")=='20','APP_VERSION is 20')
+    ck(pg.evaluate("APP_VERSION")=='21','APP_VERSION is 21')
     ck(pg.evaluate("HUB")=='home' and pg.evaluate("save.hero") is None,'seed with no active hero boots to home')
     # ---- every home control goes to its own screen ----
     targets=[('#bnQuest:visible, #navLevels:visible','realms'),('#bnPractice:visible, #navPractice:visible','training'),('[data-tile=trophies]','trophies'),('[data-tile=guide]','guide'),('[data-tile=heroes]','heroes'),

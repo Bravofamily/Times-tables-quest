@@ -1,7 +1,7 @@
 # v10: a v9 save (with subject progress) loads unchanged; title/name checks; title screenshots.
 import json, os, sys
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.dirname(os.path.abspath(__file__))); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
+D=os.path.dirname(os.path.abspath(__file__)); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m); fails.append(m) if not c else None
 V9={"muted":True,"narrator":False,"hero":"melrose","lastSubj":"frac","profiles":{
@@ -18,7 +18,7 @@ with sync_playwright() as p:
     ck(pg.get_attribute('meta[name=apple-mobile-web-app-title]','content')=='NumiRealm' and pg.get_attribute('meta[name=application-name]','content')=='NumiRealm','home-screen meta names')
     ck(pg.inner_text('#topTitle').lower()=='numirealm' and pg.inner_text('h1').lower()=='numirealm' and pg.get_attribute('h1','aria-label')=='NumiRealm','header + logo heading (logo is CSS-uppercased; aria-label keeps NumiRealm)')
     body=pg.inner_text('body'); ck('Times Table Quest' not in body and 'Kingdom' not in body,'no old names on title screen')
-    ck(pg.evaluate("APP_VERSION")=='20' if pg.evaluate("typeof APP_VERSION!=='undefined'") else pg.evaluate("TTQ_VERSION.app")=='20','APP_VERSION 20 (v20 release)')
+    ck(pg.evaluate("APP_VERSION")=='21' if pg.evaluate("typeof APP_VERSION!=='undefined'") else pg.evaluate("TTQ_VERSION.app")=='21','APP_VERSION 20 (v21 release)')
     pg.screenshot(path=os.path.join(D,'v10-title.png')); c.close()
     c=b.new_context(viewport={'width':375,'height':812},device_scale_factor=2,is_mobile=True,has_touch=True); pg=c.new_page(); att(pg,'mobile')
     pg.goto(URL); pg.wait_for_selector('.herocard'); ck(pg.evaluate("document.documentElement.scrollWidth")<=375,'mobile title no overflow')

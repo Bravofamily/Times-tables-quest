@@ -1,7 +1,7 @@
 # v11: guide-lantern hints — limit enforced, never contains the answer, refill on retry / new chapter, usage saved + shown on Progress.
 import json, os, re
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.dirname(os.path.abspath(__file__))); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
+D=os.path.dirname(os.path.abspath(__file__)); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m); fails.append(m) if not c else None
 SAVE={"muted":True,"narrator":False,"hero":"emi","profiles":{"emi":{"name":"Emi","stars":{"1":3},"hist":{},"rewards":[],"eq":{},"prologue":True,"age":6,"grade":"1",

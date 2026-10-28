@@ -1,6 +1,6 @@
 import json,threading,http.server,functools,time,sys
 from playwright.sync_api import sync_playwright
-import os; D=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+D='/workspace/times-tables-quest'
 srv=http.server.ThreadingHTTPServer(('127.0.0.1',8781),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D))
 srv.RequestHandlerClass.log_message=lambda *a:None
 threading.Thread(target=srv.serve_forever,daemon=True).start()
@@ -13,7 +13,7 @@ def ck(c,m):
 with sync_playwright() as p:
     b=p.chromium.launch()
     def ctx(remote):
-        c=b.new_context(); c.add_init_script("if(!localStorage.getItem('ttq-test-seeded')){localStorage.setItem('ttq-test-seeded','1');localStorage.setItem('ttq-save-v2',%s)}"%json.dumps(json.dumps(SAVE)))
+        c=b.new_context(service_workers='block'); c.add_init_script("if(!localStorage.getItem('ttq-test-seeded')){localStorage.setItem('ttq-test-seeded','1');localStorage.setItem('ttq-save-v2',%s)}"%json.dumps(json.dumps(SAVE)))
         st={'v':remote,'hits':0}
         def h(route):
             st['hits']+=1

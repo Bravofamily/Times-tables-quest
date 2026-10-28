@@ -2,7 +2,7 @@ import json,threading,http.server,functools,re,sys,os
 from playwright.sync_api import sync_playwright
 # box-local GStreamer plugins so headless WebKit has an audio sink (otherwise AudioContext can never run here)
 os.environ.setdefault('GST_PLUGIN_PATH','/workspace/wkdeps/root/usr/lib/x86_64-linux-gnu/gstreamer-1.0')
-import os; D=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+D='/workspace/times-tables-quest'
 srv=http.server.ThreadingHTTPServer(('127.0.0.1',8795),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D))
 srv.RequestHandlerClass.log_message=lambda *a:None
 threading.Thread(target=srv.serve_forever,daemon=True).start()
@@ -18,12 +18,12 @@ OLD={"muted":False,"narrator":True,"voiceName":"Fred","hero":"emi","profiles":{"
 for w in ['practise','colour','favourite','Lighter skin','Brackets','behaviour','centre','harbour','cosy','defence','All six heroes']:
     ck(w.lower() not in HTML.lower(),'no "%s" in index.html'%w)
 ck("No sound? Check your phone's volume and silent switch." in HTML,'silent-switch note present')
-ck("const APP_VERSION='20'" in HTML and json.load(open(D+'/version.json'))['version']=='20','APP_VERSION and version.json are 20')
+ck("const APP_VERSION='21'" in HTML and json.load(open(D+'/version.json'))['version']=='21','APP_VERSION and version.json are 21')
 with sync_playwright() as p:
     b=p.chromium.launch()
     c=b.new_context(viewport={'width':390,'height':844})
     c.add_init_script("if(!sessionStorage.getItem('s')){sessionStorage.setItem('s','1');localStorage.setItem('ttq-save-v2',%s)}"%json.dumps(json.dumps(OLD)))
-    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"20"}'))
+    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
     pg=c.new_page(); pg.on('pageerror',lambda e:errs.append(str(e))); pg.on('console',lambda m: errs.append(m.text) if m.type=='error' else None)
     pg.goto(URL); pg.wait_for_timeout(1200)
     sv=pg.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2'))")
@@ -84,7 +84,7 @@ with sync_playwright() as p:
     # ---- WebKit iPhone emulation ----
     wk=p.webkit.launch()
     c=wk.new_context(**p.devices['iPhone 13'])
-    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"20"}'))
+    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
     c.add_init_script("""
       window.__spoken=[];
       const FV=[{name:'Fred',lang:'en-US',localService:true,default:false,voiceURI:'Fred'},{name:'Samantha',lang:'en-US',localService:true,default:true,voiceURI:'Samantha'},{name:'Daniel',lang:'en-GB',localService:true,default:false,voiceURI:'Daniel'},{name:'Thomas',lang:'fr-FR',localService:true,default:false,voiceURI:'Thomas'}];

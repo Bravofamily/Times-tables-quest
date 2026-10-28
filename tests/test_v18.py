@@ -1,7 +1,7 @@
 # v18: NumiRealm branding sweep, Star Path unlocks + migration, unlock UI, hero identity tokens, selection state
 import json,os,re,sys,threading,http.server,functools
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.dirname(os.path.abspath(__file__)));PORT=8800;URL=f'http://127.0.0.1:{PORT}/index.html'
+D=os.path.dirname(os.path.abspath(__file__));PORT=8800;URL=f'http://127.0.0.1:{PORT}/index.html'
 srv=http.server.ThreadingHTTPServer(('127.0.0.1',PORT),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D));srv.RequestHandlerClass.log_message=lambda *a:None
 threading.Thread(target=srv.serve_forever,daemon=True).start()
 FAILS=[]
@@ -15,7 +15,7 @@ SAVE={"muted":True,"narrator":False,"lastHero":"emi","profiles":{
 def ctx(p,save,w=1280,rm=False):
     c=p.chromium.launch().new_context(viewport={'width':w,'height':800},reduced_motion='reduce' if rm else 'no-preference')
     c.add_init_script("if(!sessionStorage.getItem('seeded')){localStorage.setItem('ttq-save-v2',%s);sessionStorage.setItem('seeded','1')}"%json.dumps(json.dumps(save)))
-    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"20"}'))
+    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
     pg=c.new_page();errs=[];pg.on('pageerror',lambda e:errs.append(str(e)));pg.goto(URL);pg.wait_for_timeout(1400);return c,pg,errs
 with sync_playwright() as p:
     # ---------- 1. branding ----------

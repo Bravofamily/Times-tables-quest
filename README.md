@@ -82,3 +82,7 @@ docs/screenshots/   phone (390px) and desktop (1280px) screenshots
 3. Commit both files together on `main`. GitHub Pages serves them, and open games pick up the new version on their next check.
 
 Saves are never touched by an update.
+
+
+## Offline play (v21)
+`sw.js` must be published next to `index.html`. It caches the game after the first visit. `index.html` is always fetched from the network first and `version.json` is never cached, so auto-update keeps working. Each release gets its own cache (`numirealm-v<APP_VERSION>`), and older caches are deleted.
