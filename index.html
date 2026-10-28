@@ -1862,7 +1862,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='15';
+const APP_VERSION='16';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -3802,6 +3802,85 @@ speak=function(text,who){if(!save.narrator)return;speakNow(text,who);};
 function testVoice(){audioUnlock();speakNow('Hoo-hoo! This is my voice.','owl');}
 setVoice=function(v){save.voiceName=v||null;persist();pickVoice();speakNow('Hoo-hoo! This is my voice.','owl');};
 setTog=function(k){if(k==='sound')save.muted=!save.muted;else save[k]=!save[k];persist();if(k==='narrator'){if(!save.narrator)stopSpeech();else speakNow('Narrator is on.','owl');}if(!save.muted)SFX.tap();runScr({n:'settings',a:[]});const b=$('tg-'+k);if(b)b.focus();};
+/* ---------- v16: centered 3-up hero carousel (Home + "Who is playing?") ---------- */
+(function(){const st=document.createElement('style');st.id='v16css';st.textContent=`
+.hcar{position:relative;max-width:860px;margin:10px auto 0;padding:0 4px;outline:none}
+.hcar-vp{position:relative;overflow:hidden;touch-action:pan-y;padding:18px 0 22px;-webkit-user-select:none;user-select:none}
+.hcar .herocards.hcar-track{display:block;position:relative;max-width:none;margin:0;--cw:260px;--step:300px}
+.hcar .hslide{position:absolute;left:50%;top:0;width:var(--cw);transform:translateX(calc(-50% + var(--o,0) * var(--step))) scale(var(--s,.8));opacity:var(--a,0);z-index:var(--z,0);transition:transform .45s cubic-bezier(.22,.8,.3,1),opacity .35s ease,filter .35s ease;filter:saturate(var(--sat,.75));pointer-events:var(--pe,none)}
+.hcar .hslide[data-off="0"]{--s:1.06;--a:1;--z:3;--sat:1;--pe:auto}
+.hcar .hslide[data-off="-1"],.hcar .hslide[data-off="1"]{--s:.84;--a:.62;--z:2;--pe:auto}
+.hcar .hslide[data-off="-1"]{--o:-1}.hcar .hslide[data-off="1"]{--o:1}
+.hcar .hslide[data-off="-2"],.hcar .hslide[data-off="-3"]{--o:-2}.hcar .hslide[data-off="2"],.hcar .hslide[data-off="3"]{--o:2}
+.hcar .herocard{display:block;width:100%;height:100%;text-align:center;padding:14px 14px 16px;box-sizing:border-box;font-family:var(--tfont)}
+.hcar .herocard .hsv{width:min(160px,100%);margin:0 auto;grid-row:auto}
+.hcar .herocard .hn{font-size:24px}.hcar .herocard .ht{font-size:16px}.hcar .herocard .hl{font-size:14px;margin-top:4px;font-family:Poppins,system-ui,sans-serif}
+.hcar .hslide[data-off="0"] .herocard{box-shadow:0 0 0 4px var(--hc),0 0 30px 6px color-mix(in srgb,var(--hc) 60%,transparent),0 7px 0 var(--hc)}
+.hcar .herocard:focus-visible{outline:4px solid #FFE08A;outline-offset:4px}
+.hcar-arr{position:absolute;top:calc(50% - 30px);z-index:5;width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;font:900 30px/1 var(--tfont);color:#fff;background:linear-gradient(#8b5cf6,#6d28d9);box-shadow:0 5px 0 #4c1d95;display:flex;align-items:center;justify-content:center;padding:0 0 4px}
+.hcar-arr:active{transform:translateY(3px);box-shadow:0 2px 0 #4c1d95}
+.hcar-arr.prev{left:0}.hcar-arr.next{right:0}
+.hcar-dots{display:flex;justify-content:center;gap:0;margin:0 0 4px;flex-wrap:wrap}
+.hcar-dot{width:44px;height:44px;border:none;background:none;cursor:pointer;padding:0;position:relative;-webkit-tap-highlight-color:transparent}
+.hcar-dot::before{content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;box-sizing:border-box;border:3px solid #fff8;background:var(--hc);opacity:.55;transition:transform .25s,opacity .25s}
+.hcar-dot[aria-current="true"]::before{opacity:1;transform:scale(1.4);border-color:#fff}
+.hcar-dot:focus-visible{outline:3px solid #FFE08A;outline-offset:-6px;border-radius:50%}
+.hcar-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:560px){.hcar .herocards.hcar-track{--cw:min(56vw,230px);--step:calc(var(--cw) * .98)}
+ .hcar .hslide[data-off="-1"],.hcar .hslide[data-off="1"]{--s:.82;--a:.55}
+ .hcar-arr{width:44px;height:44px;font-size:24px;top:calc(50% - 27px)}.hcar-arr.prev{left:-2px}.hcar-arr.next{right:-2px}
+ .hcar{padding:0}.hcar .herocard .hsv{width:min(120px,100%)}.hcar .herocard .hn{font-size:22px}.hcar .herocard .hl{font-size:13px}}
+.hcar.rm .hslide,.hcar.rm .hcar-dot::before{transition:none}
+@media (prefers-reduced-motion:reduce){.hcar .hslide,.hcar .hcar-dot::before{transition:none}}
+`;document.head.appendChild(st);})();
+const V16={};
+const V16C={sage:'#ec4899',emi:'#8b5cf6',blu:'#3b82f6',eshon:'#22c55e',melrose:'#d946ef',cayden:'#ef4444',zea:'#6d28d9'};/* each hero's own card-accent color */
+const v16c=id=>V16C[id]||HERO12[id].cols[0][1];
+function v16Car(){const tr=document.querySelector('#app .herocards:not(.hcar-track)');if(!tr)return;
+ const n=HERO_ORDER.length,wrap=document.createElement('div');wrap.className='hcar'+(RM()?' rm':'');
+ if(tr.id){wrap.id=tr.id;tr.removeAttribute('id');}
+ wrap.setAttribute('role','region');wrap.setAttribute('aria-roledescription','carousel');wrap.setAttribute('aria-label','Choose your hero');
+ tr.parentNode.insertBefore(wrap,tr);tr.classList.add('hcar-track');tr.setAttribute('aria-live','off');
+ wrap.innerHTML=`<button type="button" class="hcar-arr prev" aria-label="Previous hero" onclick="v16Step(-1)">‹</button><div class="hcar-vp"></div><button type="button" class="hcar-arr next" aria-label="Next hero" onclick="v16Step(1)">›</button><div class="hcar-dots" role="group" aria-label="Pick a hero">${HERO_ORDER.map((id,i)=>`<button type="button" class="hcar-dot" data-dot="${id}" style="--hc:${v16c(id)}" aria-label="Show ${esc(save.profiles[id].name)}" onclick="v16Go('${id}')"></button>`).join('')}</div><div class="hcar-sr" role="status" aria-live="polite" id="hcarLive"></div>`;
+ wrap.querySelector('.hcar-vp').appendChild(tr);
+ [...tr.querySelectorAll('.herocard')].forEach(b=>{const id=b.dataset.hero,i=HERO_ORDER.indexOf(id),h=HEROES[id];
+  b.querySelectorAll('.abmini').forEach(x=>x.remove());
+  const hl=[...b.querySelectorAll('.hl')];if(hl.length<2){const d=document.createElement('div');d.className='hl';d.innerHTML=h.blurb;b.querySelector('.ht').after(d);}
+  b.setAttribute('onclick',`v16Tap('${id}')`);
+  const sl=document.createElement('div');sl.className='hslide';sl.dataset.slide=id;sl.style.setProperty('--hc',v16c(id));
+  sl.setAttribute('role','group');sl.setAttribute('aria-roledescription','slide');sl.setAttribute('aria-label',`Hero ${i+1} of ${n}: ${save.profiles[id].name}`);
+  b.parentNode.insertBefore(sl,b);sl.appendChild(b);});
+ const vp=wrap.querySelector('.hcar-vp');let x0=null,y0=0;
+ /* mouse/pen drag; touch is handled below so a tap selects even when the browser skips its synthetic click */
+ vp.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')return;x0=e.clientX;y0=e.clientY;V16.swiped=false;});
+ vp.addEventListener('pointerup',e=>{if(x0==null||e.pointerType==='touch')return;const dx=e.clientX-x0,dy=e.clientY-y0;x0=null;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){V16.swiped=true;v16Step(dx<0?1:-1);setTimeout(()=>V16.swiped=false,350);}});
+ vp.addEventListener('pointercancel',()=>{x0=null;});
+ let tx=null,ty=0;
+ vp.addEventListener('touchstart',e=>{if(e.touches.length>1){tx=null;return;}const t=e.touches[0];tx=t.clientX;ty=t.clientY;},{passive:true});
+ vp.addEventListener('touchend',e=>{if(tx==null)return;const t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;tx=null;
+  if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){V16.swiped=true;v16Step(dx<0?1:-1);setTimeout(()=>V16.swiped=false,350);return;}
+  if(Math.abs(dx)<12&&Math.abs(dy)<12){const c=e.target.closest&&e.target.closest('.herocard');if(c&&c.dataset.hero){e.preventDefault();V16.tapT=Date.now();v16Tap(c.dataset.hero,true);}}},{passive:false});
+ vp.addEventListener('touchcancel',()=>{tx=null;});
+ wrap.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();v16Step(e.key==='ArrowRight'?1:-1,true);}
+  else if(e.key==='Home'||e.key==='End'){e.preventDefault();v16Go(HERO_ORDER[e.key==='Home'?0:n-1],true);}});
+ let c=save.hero||save.lastHero;if(!HEROES[c])c='sage';V16.i=HERO_ORDER.indexOf(c);v16Lay(false);v16Fit();}
+function v16Fit(){const tr=document.querySelector('.hcar-track');if(!tr)return;const cs=[...tr.querySelectorAll('.herocard')];cs.forEach(c=>c.style.minHeight='');
+ const m=Math.max(...cs.map(c=>c.offsetHeight));cs.forEach(c=>c.style.minHeight=m+'px');tr.style.height=Math.ceil(m*1.06)+'px';}
+function v16Lay(say){const w=document.querySelector('.hcar');if(!w)return;const n=HERO_ORDER.length;
+ HERO_ORDER.forEach((id,j)=>{let o=((j-V16.i)%n+n)%n;if(o>n/2)o-=n;const sl=w.querySelector(`[data-slide="${id}"]`);if(!sl)return;sl.dataset.off=o;
+  const b=sl.querySelector('.herocard');b.tabIndex=o===0?0:-1;sl.setAttribute('aria-hidden',Math.abs(o)>1?'true':'false');
+  b.setAttribute('aria-label',(o===0?'Play as ':'Show ')+save.profiles[id].name+', '+HEROES[id].title);});
+ w.querySelectorAll('.hcar-dot').forEach(d=>d.setAttribute('aria-current',d.dataset.dot===HERO_ORDER[V16.i]?'true':'false'));
+ const id=HERO_ORDER[V16.i];w.dataset.center=id;if(say){const l=$('hcarLive');if(l)l.textContent=`Hero ${V16.i+1} of ${n}: ${save.profiles[id].name}`;}}
+function v16Step(d,focus){const n=HERO_ORDER.length;V16.i=((V16.i+d)%n+n)%n;try{SFX.tap();}catch(e){}v16Lay(true);if(focus)v16Focus();}
+function v16Go(id,focus){const i=HERO_ORDER.indexOf(id);if(i<0)return;V16.i=i;v16Lay(true);if(focus)v16Focus();}
+function v16Focus(){const b=document.querySelector('.hcar .hslide[data-off="0"] .herocard');if(b)try{b.focus({preventScroll:true});}catch(e){}}
+function v16Center(){return HERO_ORDER[V16.i];}
+function v16Tap(id,touch){if(V16.swiped)return;if(!touch&&V16.tapT&&Date.now()-V16.tapT<700)return;if(id!==HERO_ORDER[V16.i]){try{SFX.tap();}catch(e){}v16Go(id);return;}pickHero(id);}
+{const _h=v12Home;v12Home=function(){_h.apply(this,arguments);v16Car();};}
+{const _p=heroPickScreen;heroPickScreen=function(){_p.apply(this,arguments);v16Car();};SCR.pick=heroPickScreen;}
+heroPrompt=function(){if(!$('heroes'))titleScreen();const h=$('heroes'),t=$('heroTip');if(t)t.classList.remove('hidden');if(h)h.scrollIntoView({behavior:RM()?'auto':'smooth',block:'start'});v16Focus();};
+window.addEventListener('resize',()=>{clearTimeout(V16.rt);V16.rt=setTimeout(v16Fit,120);});
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
 </script>
