@@ -10,7 +10,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap">
-<title>NumiRealm: The Muddle Monster</title>
+<title>NumiRealm – Home</title>
+<meta name="description" content="NumiRealm: Enter the realm. Master the math.">
+<meta property="og:title" content="NumiRealm">
+<meta property="og:description" content="Enter the realm. Master the math.">
 <meta name="application-name" content="NumiRealm">
 <meta name="apple-mobile-web-app-title" content="NumiRealm">
 <style>
@@ -1862,7 +1865,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='17';
+const APP_VERSION='18';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -3490,7 +3493,7 @@ function editAbout(id){SFX.tap();save.hero=id;save.lastHero=id;persist();aboutSc
 /* ---------- HEROES HALL ---------- */
 function heroesHall(){stopConfetti();S=null;SS=null;SC=null;const still=RM()?' still':'';
  show(`<h1 class="questh">🦸 Heroes Hall</h1><div class="card v12intro hallintro"><p class="big" style="font-size:18px">Meet the family who will save NumiRealm! Tap a hero to see their <b>superpowers</b>.</p></div>
- <div class="hall${still}" id="hall">${HERO_ORDER.map((id,i)=>{const h=HEROES[id],d=HERO12[id];return `<button type="button" class="hallcard ${id}" data-hall="${id}" style="--d:${i*.08}s;--c1:${d.cols[0][1]};--c2:${d.cols[1][1]}" onclick="go('hero','${id}')" aria-label="${esc(h.name)}, ${esc(h.title)}, age ${d.age}"><span class="hglow" aria-hidden="true"></span><span class="hpic" aria-hidden="true">${heroSVGeq(id,{},'idle')}</span><b>${h.name}</b><small>${h.title}</small><span class="hage">Age ${d.age} · ${d.powers[0].e} ${d.powers[0].n}</span></button>`;}).join('')}
+ <div class="hall${still}" id="hall">${HERO_ORDER.map((id,i)=>{const h=HEROES[id],d=HERO12[id];return `<button type="button" class="hallcard ${id}" data-hall="${id}" style="--d:${i*.08}s;--c1:${d.cols[0][1]};--c2:${d.cols[1][1]}" onclick="go('hero','${id}')" aria-label="${esc(h.name)}, ${esc(h.title)}, age ${d.age}"><span class="hglow" aria-hidden="true"></span><span class="hpic" aria-hidden="true">${heroSVG(id,'idle')}</span><b>${h.name}</b><small>${h.title}</small><span class="hage">Age ${d.age} · ${d.powers[0].e} ${d.powers[0].n}</span></button>`;}).join('')}
  <button type="button" class="hallcard villain" data-hall="muddle" style="--d:${HERO_ORDER.length*.08}s" onclick="go('villain')" aria-label="The Muddle Monster, the villain"><span class="hpic" aria-hidden="true">${monsterSVG()}</span><b>The Muddle Monster</b><small>The villain</small><span class="hage">🌀 Scrambler of Numbers</span></button></div>${backBtn()}`,'heroes');
  SFX.chime&&SFX.chime();}
 function statBars(st,col){return Object.entries(st).map(([k,v])=>`<div class="stat"><span>${k}</span><div class="sbarv" role="progressbar" aria-label="${k}" aria-valuemin="0" aria-valuemax="10" aria-valuenow="${v}"><i style="--w:${v*10}%;background:${col}"></i></div><b>${v}</b></div>`).join('');}
@@ -3509,7 +3512,7 @@ function heroPage(id){if(!HERO12[id])return heroesHall();stopConfetti();S=null;S
  <div class="card"><h2>⚡ Superpowers</h2><div class="powers">${d.powers.map((p,k)=>`<div class="power" style="--d:${k*.12}s"><span class="pe" aria-hidden="true">${p.e}</span><div><b>${p.n}</b><div class="pmath">🧮 ${p.math}</div><p>${p.d}</p><small>Because ${h.name} loves ${p.love}</small></div></div>`).join('')}</div></div>
  <div class="card"><h2>📊 Power stats</h2><div class="stats">${statBars(d.stats,`linear-gradient(90deg,${d.cols[0][1]},${d.cols[1][1]})`)}</div></div>
  <div class="hp2"><div class="card"><h2>💖 Favorite realm</h2><p class="big" style="font-size:18px"><span aria-hidden="true">${fr.e}</span> <b>${fr.realm}</b></p><p>${REALM_LINE[fr.id]}</p><button class="btn gray sm" type="button" onclick="go('realms')">🗺️ See the map</button></div>
- <div class="card"><h2>🤝 Best team combo</h2><div class="combo"><span class="cav" aria-hidden="true">${heroSVGeq(id,{},'idle')}</span><b aria-hidden="true">+</b><span class="cav" aria-hidden="true">${heroSVGeq(mate,{},'idle')}</span></div><p><b>${d.comboName}</b>: ${h.name} + ${HEROES[mate].name} (${HEROES[mate].name} is ${h.name}'s ${relW}).</p><p>${d.comboLine}</p><button class="btn gray sm" type="button" onclick="go('hero','${mate}')">Meet ${HEROES[mate].name}</button></div></div>
+ <div class="card"><h2>🤝 Best team combo</h2><div class="combo"><span class="cav" aria-hidden="true">${heroSVG(id,'idle')}</span><b aria-hidden="true">+</b><span class="cav" aria-hidden="true">${heroSVG(mate,'idle')}</span></div><p><b>${d.comboName}</b>: ${h.name} + ${HEROES[mate].name} (${HEROES[mate].name} is ${h.name}'s ${relW}).</p><p>${d.comboLine}</p><button class="btn gray sm" type="button" onclick="go('hero','${mate}')">Meet ${HEROES[mate].name}</button></div></div>
  <div class="card catch"><h2>📣 Catchphrase</h2><p class="cphrase">“${BRAVE[id][0]}”</p></div>
  <div class="row center hpnav"><button class="btn gray sm" type="button" onclick="runScr({n:'hero',a:['${prev}']})" aria-label="Previous hero: ${HEROES[prev].name}">◀ ${HEROES[prev].name}</button><button class="btn gray sm" type="button" onclick="runScr({n:'hero',a:['${next}']})" aria-label="Next hero: ${HEROES[next].name}">${HEROES[next].name} ▶</button></div>${backBtn('Heroes Hall')}</div>`,'heroes');
  try{SFX[HSTYLE[id].sfx]();}catch(e){}if(!RM())fxBurst($('hpSvg'),h.fx,10);speak(heroBio(id),'owl');}
@@ -3895,6 +3898,177 @@ window.addEventListener('resize',()=>{clearTimeout(V16.rt);V16.rt=setTimeout(v16
 }
 @media (max-width:520px){.subjcards>*{flex-basis:62%}}
 @media (max-width:380px){#topTitle{font-size:clamp(13px,5vw,18px)!important;letter-spacing:0!important}}
+`;document.head.appendChild(st);})();
+/* ===== v18: NumiRealm brand, Star Path unlocks, hero identity + selection ===== */
+/* ---- 3. one identity token per hero (single source of truth) ---- */
+const HERO_ID={
+ sage:{c:'#EC4899',a:'#FDE68A',e:'🎤',col:'Pink + gold'},
+ emi:{c:'#8B5CF6',a:'#C4B5FD',e:'🌸',col:'Purple + lilac'},
+ blu:{c:'#3B82F6',a:'#FACC15',e:'⭐',col:'Blue + star yellow'},
+ eshon:{c:'#22C55E',a:'#86EFAC',e:'✏️',col:'Green + mint'},
+ melrose:{c:'#C026D3',a:'#14B8A6',e:'🧜‍♀️',col:'Fuchsia + teal'},
+ cayden:{c:'#EF4444',a:'#1E3A8A',e:'🏀',col:'Red + navy'},
+ zea:{c:'#5B21B6',a:'#F59E0B',e:'🐞',col:'Violet + gold'}};
+HERO_ORDER.forEach(id=>{const t=HERO_ID[id];t.title=HEROES[id].title;t.name=HEROES[id].name;V16C[id]=t.c;if(HSTYLE[id])HSTYLE[id].tag=t.e;});
+const tok=id=>HERO_ID[id]||{c:'#FFD166',a:'#00C2FF',e:'✨',title:'',name:''};
+const selHero=()=>save.hero||(save.lastHero&&HEROES[save.lastHero]?save.lastHero:null);
+const NR_TAG='Enter the realm. Master the math.';
+function nrBrand(sz){return `<div class="nrbrand ${sz||''}" data-brand><span class="nrword" role="img" aria-label="NumiRealm">Num<span class="li">i</span>Realm</span><span class="nrtag">${NR_TAG}</span></div>`;}
+/* ---- 2. Star Path ---- */
+const famStars=()=>HERO_ORDER.reduce((s,id)=>s+allStars(save.profiles[id]),0);
+const SPATH=[
+ {k:'f-lanterns',scope:'family',need:10,e:'🏮',kind:'Map decoration',n:'Lantern Path',d:'Glowing lanterns line the Levels map.'},
+ {k:'f-silver',scope:'family',need:30,e:'🥈',kind:'Badge frame',n:'Silver Badge Frames',d:'Earned badges get a silver frame.'},
+ {k:'f-shower',scope:'family',need:60,e:'🌠',kind:'Celebration effect',n:'Star Shower',d:'A shower of stars on every win.'},
+ {k:'f-teamup',scope:'family',need:100,e:'🤝',kind:'Story scene',n:'The Family Team-Up',d:'A bonus story with the whole family.'},
+ {k:'f-gold',scope:'family',need:150,e:'🥇',kind:'Badge frame',n:'Gold Badge Frames',d:'Earned badges get a gold frame.'},
+ {k:'f-rainbow',scope:'family',need:200,badge:'grand',e:'🌈',kind:'Map decoration',n:'Rainbow Bridge',d:'A rainbow bridge across the Levels map.'},
+ {k:'h-shiny',scope:'hero',need:5,e:'💫',kind:'Hero accessory',n:'Shiny Emblem',d:'Your hero emblem sparkles gold.'},
+ {k:'h-sparkle',scope:'hero',need:15,e:'🎆',kind:'Celebration effect',n:'Victory Sparkles',d:'Your emblem bursts out on every win.'},
+ {k:'h-crown',scope:'hero',need:30,e:'👑',kind:'Hero accessory',n:'Golden Star Crown',d:'A crown on your hero portrait everywhere.'},
+ {k:'h-riddle',scope:'hero',need:45,badge:'finisher',e:'🗝️',kind:'Secret challenge',n:"Muddle's Riddle Room",d:'A secret mixed challenge from every realm you have opened.'}];
+const BADGE_NAME={grand:'Grand Final Champion (any hero)',finisher:'Realm Finisher'};
+function v18Pf(pf){if(!pf.v18||typeof pf.v18!=='object')pf.v18={run:0,bestRun:0,noLan:0};return pf.v18;}
+function badgeGot(id,k){const b=badgesOf(id).find(x=>x.k===k);return !!(b&&b.got);}
+function spState(m,id){const st=m.scope==='family'?famStars():allStars(save.profiles[id]);const bOk=!m.badge||(m.scope==='family'?HERO_ORDER.some(h=>badgeGot(h,m.badge)):badgeGot(id,m.badge));
+ return {st,need:m.need,bOk,ok:st>=m.need&&bOk};}
+function spOn(k,id){const m=SPATH.find(x=>x.k===k);return !!m&&!!(m.scope==='family'||id)&&spState(m,id).ok;}
+function spKeys(){const a=[];SPATH.forEach(m=>{if(m.scope==='family'){if(spState(m).ok)a.push(m.k);}else HERO_ORDER.forEach(id=>{if(spState(m,id).ok)a.push(m.k+':'+id);});});return a;}
+function spReq(m,id){const s=spState(m,id);return s.ok?'Unlocked!':`${Math.min(s.st,s.need)}/${s.need} ⭐ to unlock`+(m.badge&&!s.bOk?` + 🏅 ${BADGE_NAME[m.badge]}`:'');}
+function spNext(id){const c=SPATH.filter(m=>m.scope==='family'||id).map(m=>({m,s:spState(m,id)})).filter(x=>!x.s.ok).sort((a,b)=>(a.s.need-a.s.st)-(b.s.need-b.s.st));return c[0]||null;}
+function nextHTML(id){const x=spNext(id);if(!x)return `<div class="nextunlock" id="nextUnlock">🌟 Every Star Path unlock is open. Amazing!</div>`;const {m,s}=x,pc=Math.round(100*Math.min(1,s.st/s.need));
+ return `<div class="nextunlock" id="nextUnlock" data-next="${m.k}"><span class="nu-i" aria-hidden="true">🔒 ${m.e}</span><div class="nu-t"><b>Next unlock: ${m.n}</b> <small>(${m.kind}${m.scope==='family'?', family stars':id?`, ${esc(nm(id))}'s stars`:''})</small><div class="spbar" role="progressbar" aria-valuemin="0" aria-valuemax="${s.need}" aria-valuenow="${Math.min(s.st,s.need)}" aria-label="${m.n} progress"><i style="width:${pc}%"></i></div><small class="nu-r">${spReq(m,id)}</small></div><button class="btn sm purple" type="button" onclick="SFX.tap();go('trophies')">⭐ Star Path</button></div>`;}
+function spItem(m,id){const s=spState(m,id),pc=Math.round(100*Math.min(1,s.st/s.need));let act='';
+ if(s.ok&&m.k==='f-teamup')act=`<button class="btn sm green" type="button" id="playTeamUp" onclick="teamUpScene()">▶ Watch</button>`;
+ if(s.ok&&m.k==='h-riddle')act=`<button class="btn sm green" type="button" id="playRiddle" onclick="riddleRoom('${id}')">▶ Play</button>`;
+ return `<div class="spitem ${s.ok?'got':'lock'}" data-sp="${m.k}" data-need="${m.need}"><span class="te" aria-hidden="true">${s.ok?m.e:'🔒'}</span><b>${m.n}</b><small class="spk">${m.e} ${m.kind}</small><small>${m.d}</small><div class="spbar" role="progressbar" aria-valuemin="0" aria-valuemax="${s.need}" aria-valuenow="${Math.min(s.st,s.need)}" aria-label="${m.n} progress"><i style="width:${pc}%"></i></div><small class="spreq">${s.ok?'✅ Unlocked!':'🔒 '+spReq(m,id)}</small>${act}</div>`;}
+function starPathHTML(id){const f=famStars();return `<div class="card starpath" id="starPath"><h2>⭐ Star Path</h2><p class="sphow">Stars come from beating chapter bosses (up to 3 per chapter: one for every heart you keep). Each milestone unlocks extra content. Rewards are just for fun: they never make problems easier.</p>
+ <h3>👨‍👩‍👧‍👦 Family Star Path <small>(${f} ⭐ total, all heroes)</small></h3><div class="tgrid spgrid" id="spFamily">${SPATH.filter(m=>m.scope==='family').map(m=>spItem(m)).join('')}</div>
+ <h3 data-tok="${id}">${tok(id).e} ${esc(nm(id))}'s Star Path <small>(${allStars(save.profiles[id])} ⭐)</small></h3><div class="tgrid spgrid" id="spHero">${SPATH.filter(m=>m.scope==='hero').map(m=>spItem(m,id)).join('')}</div></div>`;}
+/* learning badges (not just star counts) */
+const _bo17=badgesOf;badgesOf=function(id){const pf=save.profiles[id],L=_bo17(id),v=v18Pf(pf);
+ const keys={'Realm Explorer':'explorer','Mystery Solver':'mystery','Mixed Math Whiz':'mixwhiz','Long Multiplier':'longmult'};L.forEach(b=>{if(!b.k)b.k=keys[b.n]||null;});
+ const tabs=ORDER.filter((n,i)=>chStars('mult',i+1,pf)>=3).length,fin=SUBJ.filter(sb=>sDone(sb.id,pf)>=sCount(sb.id)).length,mys=mysteryChs().filter(([s,c])=>chStars(s,c,pf)>=3).length,grand=chStars('mix',sCount('mix'),pf)>0;
+ return L.concat([
+  {k:'finisher',e:'🏁',n:'Realm Finisher',got:fin>=1,how:`Finish every chapter in one realm (${fin}/1)`},
+  {k:'tables',e:'✖️',n:'Times Table Master',got:tabs>=3,how:`Get 3 stars on 3 times tables (${Math.min(tabs,3)}/3)`},
+  {k:'nolan',e:'🕯️',n:'No-Lantern Hero',got:(v.noLan||0)>=3,how:`Beat 3 chapters without using a lantern (${Math.min(v.noLan||0,3)}/3)`},
+  {k:'streak10',e:'⚡',n:'Hot Streak',got:(v.bestRun||0)>=10,how:`Answer 10 in a row right on the first try (best ${Math.min(v.bestRun||0,10)}/10)`},
+  {k:'missing',e:'🔎',n:'Missing-Number Master',got:mys>=4,how:`3 stars on Mystery Missing Numbers in 4 realms (${mys}/4)`},
+  {k:'grand',e:'🌀',n:'Grand Final Champion',got:grand,how:'Beat the Mixed Math Grand Final in Muddle Tower'}]);};
+/* tracking for the new learning badges */
+const _noteAns17=noteAns;noteAns=function(sid,c,q,ok,errs){_noteAns17.apply(this,arguments);if(!save.hero)return;const v=v18Pf(P());v.run=ok&&!(errs>0)?(v.run||0)+1:0;if(v.run>(v.bestRun||0))v.bestRun=v.run;persist();};
+const _openLevel17=openLevel;openLevel=function(){if(save.hero)v18Pf(P()).h0=hintUsed(P());return _openLevel17.apply(this,arguments);};
+const _makeSS17=makeSS;makeSS=function(){const r=_makeSS17.apply(this,arguments);if(save.hero&&SS&&!SS.drill)v18Pf(P()).h0=hintUsed(P());return r;};
+function v18NoLan(){const v=v18Pf(P());if(v.h0!=null&&hintUsed(P())===v.h0)v.noLan=(v.noLan||0)+1;v.h0=null;}
+const _bossWin17=bossWin;bossWin=function(){v18NoLan();return _bossWin17.apply(this,arguments);};
+const _sBossWin17=sBossWin;sBossWin=function(){if(!(SS&&SS.drill))v18NoLan();return _sBossWin17.apply(this,arguments);};
+/* migration: credit what existing saves already earned, celebrate only new unlocks */
+function v18Migrate(){HERO_ORDER.forEach(id=>{const pf=save.profiles[id];if(!pf)return;const fresh=!pf.v18;const v=v18Pf(pf);
+  if(fresh&&!save.spv){const done=SUBJ.reduce((s,sb)=>s+sDone(sb.id,pf),0);if(done&&hintUsed(pf)===0)v.noLan=done;}});
+ if(!save.spv){save.spSeen=spKeys();save.spv=18;persist();}if(!Array.isArray(save.spSeen))save.spSeen=[];}
+v18Migrate();
+function spLabel(key){const [k,id]=key.split(':'),m=SPATH.find(x=>x.k===k);return m?`${m.e} ${m.n}${id?` for ${nm(id)}`:''}`:key;}
+function spFresh(){const now=spKeys(),seen=new Set(save.spSeen||[]),nw=now.filter(k=>!seen.has(k));if(nw.length){save.spSeen=now;persist();}return nw;}
+/* ---- unlock celebration on the results screen (inline, never blocks buttons) ---- */
+function v18Win(){const card=document.querySelector('#app > .card.center');if(!card)return;card.classList.add('nrresult');document.title='NumiRealm – Level complete';card.insertAdjacentHTML('afterbegin',nrBrand('sm'));
+ const st=card.querySelector('.starsbig');const nw=spFresh();const id=save.hero;
+ const html=(nw.length?`<div class="spcele${RM()?' still':''}" id="spCele" role="status"><b>🎉 New unlock${nw.length>1?'s':''}!</b> ${nw.map(k=>`<span class="spnew">${spLabel(k)}</span>`).join(' ')}</div>`:'')+nextHTML(id);
+ if(st)st.insertAdjacentHTML('afterend',html);else card.insertAdjacentHTML('beforeend',html);
+ if(!RM()){const wh=$('wh');if(spOn('f-shower'))fxBurst(st||card,['⭐','🌟','✨'],14);if(id&&spOn('h-sparkle',id))fxBurst(wh||card,[tok(id).e,'✨'],10);if(nw.length)setTimeout(()=>{try{confetti();}catch(e){}},400);}}
+{const _w=winScreen;winScreen=function(){_w.apply(this,arguments);v18Win();};const _sw=sWinScreen;sWinScreen=function(){_sw.apply(this,arguments);v18Win();};}
+/* ---- extra content ---- */
+function teamUpScene(){SFX.tap();const id=selHero()||'emi';playWith(()=>{const others=HERO_ORDER.filter(x=>x!==save.hero&&x!==sibId());
+ playScene({title:'🤝 The Family Team-Up',place:{bg:'linear-gradient(#0A1F44,#3BA7FF 60%,#FFD166)',props:['star','star','flower','fruit','star','shell','ball']},extras:others.slice(0,3),confetti:!RM(),lines:[
+  L('owl',"Hoo-hoo! The whole family earned so many stars that NumiRealm is glowing!"),
+  L('owl',"Sage, Emi, Blú, Eshon, Melrose, Cayden and cousin Zea: this one is for all of you."),
+  ...HERO_ORDER.map(x=>L(x,`${tok(x).e} ${HEROES[x].name} here! Together we are stronger than any muddle!`)),
+  L('hero',"Let's hold hands and shout it: Enter the realm. Master the math!"),
+  L('owl',"Keep going, heroes. More stars light up more of NumiRealm.")]},()=>go('trophies'));},id);}
+function riddleRoom(id){SFX.tap();if(!spOn('h-riddle',id))return go('trophies');const pf=save.profiles[id],items=[];
+ SUBJ.forEach(sb=>{const u=Math.min(uIdx(sb.id,pf)+1,sCount(sb.id));for(let c=Math.max(1,u-2);c<=u;c++)items.push({sid:sb.id,c});});
+ playWith(()=>drillGo(items,true),id);}
+/* ---- painting: tokens, selection, crowns, brand strips, decorations ---- */
+function v18Paint(){const sel=selHero();
+ document.querySelectorAll('#app .herocard[data-hero]').forEach(b=>{const id=b.dataset.hero,on=id===sel;b.classList.toggle('sel',on);b.setAttribute('aria-pressed',String(on));
+  const pic=b.querySelector('.hsv');if(!pic)return;
+  if(!pic.querySelector('.hemb'))pic.insertAdjacentHTML('afterbegin',`<span class="hemb${spOn('h-shiny',id)?' shiny':''}" aria-hidden="true">${tok(id).e}</span>`);
+  pic.querySelectorAll('.selbadge').forEach(x=>x.remove());if(on)pic.insertAdjacentHTML('afterbegin',`<span class="selbadge">✓ Playing as</span>`);if(pic&&spOn('h-crown',id)&&!pic.querySelector('.spcrown'))pic.insertAdjacentHTML('beforeend','<span class="spcrown" aria-hidden="true">👑</span>');});
+ document.querySelectorAll('#app .hallcard[data-hall]').forEach(b=>{const id=b.dataset.hall;if(!HEROES[id])return;const on=id===sel;b.classList.toggle('sel',on);if(on)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');
+  const pic=b.querySelector('.hpic');if(!pic)return;
+  if(!pic.querySelector('.hemb'))pic.insertAdjacentHTML('afterbegin',`<span class="hemb${spOn('h-shiny',id)?' shiny':''}" aria-hidden="true">${tok(id).e}</span>`);
+  if(on&&!pic.querySelector('.selbadge'))pic.insertAdjacentHTML('afterbegin',`<span class="selbadge">✓ Playing as</span>`);
+  if(spOn('h-crown',id)&&!pic.querySelector('.spcrown'))pic.insertAdjacentHTML('beforeend','<span class="spcrown" aria-hidden="true">👑</span>');
+  if(on){const l=b.getAttribute('aria-label')||'';if(!/Playing as/.test(l))b.setAttribute('aria-label',l+'. Playing as this hero');}});
+ document.querySelectorAll('#app .pgtab[data-vhero]').forEach(b=>{if(!b.querySelector('.hemb'))b.insertAdjacentHTML('afterbegin',`<span class="hemb" aria-hidden="true">${tok(b.dataset.vhero).e}</span>`);if(b.classList.contains('on'))b.setAttribute('aria-current','true');});
+ document.querySelectorAll('#app .pcard[data-pcard]').forEach(b=>{const t=b.querySelector('h2');if(t&&!t.querySelector('.hemb'))t.insertAdjacentHTML('afterbegin',`<span class="hemb" aria-hidden="true">${tok(b.dataset.pcard).e}</span> `);});
+ const wh=$('wh');if(wh&&save.hero){wh.dataset.tok=save.hero;if(spOn('h-crown',save.hero)&&!wh.querySelector('.spcrown'))wh.insertAdjacentHTML('beforeend','<span class="spcrown" aria-hidden="true">👑</span>');}}
+const SCRT={home:'Home',realms:'Levels',chapter:'Chapter',training:'Practice',trophies:'Star Path & Rewards',guide:'How NumiRealm works',profile:'Hero profiles',heroes:'Heroes Hall',villain:'The Muddle Monster',settings:'Settings',progress:'Progress',pick:'Who is playing?',subjectScreen:'Choose your quest',mapScreen:'Times Table Castle'};
+function v18Where(){if(SC)return {t:'Story',sid:SS?SS.sid:S?'mult':null};if(SS&&SS.sid)return {t:SS.drill?'Practice':SUBJ_BY[SS.sid].realm,sid:SS.sid};if(S)return {t:'Times Table Castle',sid:'mult'};
+ const n=CUR&&CUR.n,a=(CUR&&CUR.a)||[];if(n==='hero'&&HEROES[a[0]])return {t:HEROES[a[0]].name};if(n==='smapScreen'&&SUBJ_BY[a[0]])return {t:SUBJ_BY[a[0]].realm,sid:a[0]};if(n==='chapter'&&SUBJ_BY[a[0]])return {t:SUBJ_BY[a[0]].realm,sid:a[0]};if(n==='mapScreen')return {t:'Times Table Castle',sid:'mult'};
+ return {t:SCRT[n]||'Home'};}
+const _us17=updateStatus;updateStatus=function(){_us17.apply(this,arguments);const tt=$('topTitle');if(tt){tt.classList.add('nrmini');}
+ const w=v18Where();document.title='NumiRealm – '+w.t;document.body.dataset.realm=w.sid||'';
+ const id=selHero(),c=$('heroChip');if(tt){tt.innerHTML='<span class="ttb">NumiRealm</span>'+(id?`<span class="tth" aria-hidden="true">${tok(id).e} ${esc(nm(id))}</span>`:'');if(id)tt.dataset.tok=id;else delete tt.dataset.tok;}if(c){if(id){const t=tok(id);c.classList.remove('hidden');c.dataset.tok=id;c.innerHTML=`<span aria-hidden="true">${t.e}</span><span class="hcn">${esc(nm(id))}</span>`;c.setAttribute('aria-label',`Playing as ${nm(id)}, ${t.title}. Open hero page`);c.title=`Playing as ${nm(id)}`;}else c.classList.add('hidden');if(id)document.body.dataset.hero18=id;else delete document.body.dataset.hero18;}
+ const np=$('navProfile');if(np){if(np.dataset.al==null)np.dataset.al=np.getAttribute('aria-label')||'Profiles';if(id){np.setAttribute('aria-label',`${np.dataset.al} (playing as ${nm(id)})`);np.dataset.tok=id;np.dataset.emb=tok(id).e;np.title=`Playing as ${nm(id)}`;}else{np.setAttribute('aria-label',np.dataset.al);delete np.dataset.tok;delete np.dataset.emb;np.removeAttribute('title');}}};
+{const tt=$('topTitle');if(tt&&!$('heroChip'))tt.insertAdjacentHTML('afterend','<button class="iconbtn herochip hidden" id="heroChip" type="button" onclick="SFX.tap();go(\'hero\',selHero())"></button>');}
+const _show17=show;show=function(html,hub){_show17(html,hub);try{v18Paint();v18Strips();}catch(e){console.error(e);}};
+function v18Strips(){const n=CUR&&CUR.n,app=$('app');if(SC||S||SS)return;const w=v18Where();
+ if(['realms','chapter','smapScreen','subjectScreen','mapScreen'].includes(n)&&!app.querySelector('.nrstrip')){app.insertAdjacentHTML('afterbegin',`<div class="nrstrip"${w.sid?` style="--racc:${QCOL[w.sid]||'#FFD166'}"`:''}>${nrBrand('xs')}</div>`);}
+ if(w.sid)app.style.setProperty('--racc',QCOL[w.sid]||'#FFD166');else app.style.removeProperty('--racc');
+ if(n==='realms'){const h=app.querySelector('h1.questh');const deco=(spOn('f-lanterns')?'<span class="spdeco" data-deco="lanterns" aria-label="Lantern Path decoration">🏮 ✨ 🏮 ✨ 🏮</span>':'')+(spOn('f-rainbow')?'<span class="spdeco" data-deco="rainbow" aria-label="Rainbow Bridge decoration">🌈</span>':'');if(h&&deco)h.insertAdjacentHTML('afterend',`<div class="center spdecos">${deco}</div>`);}}
+/* Rewards screen: Star Path on top + badge frames */
+{const _tr=SCR.trophies;SCR.trophies=function(){_tr.apply(this,arguments);const id=vHero()||HERO_ORDER[0],h1=document.querySelector('#app h1.questh');if(h1)h1.innerHTML='🏆 Trophy Room &amp; Star Path';
+ const c=document.querySelector('#app .card.v12intro');if(c)c.insertAdjacentHTML('afterend',starPathHTML(id));
+ const b=$('badges');if(b){b.classList.toggle('frame-gold',spOn('f-gold'));b.classList.toggle('frame-silver',spOn('f-silver')&&!spOn('f-gold'));}
+ if(spFresh().length)try{if(!RM())confetti();}catch(e){}};}
+/* Home + Progress: next unlock hint */
+{const _hm=v12Home;v12Home=function(){_hm.apply(this,arguments);const t=document.querySelector('#app .tiles');if(t&&!$('nextUnlock'))t.insertAdjacentHTML('afterend',nextHTML(selHero()));};}
+{const _pr=SCR.progress;SCR.progress=function(id){_pr.apply(this,arguments);const pid=id&&HEROES[id]?id:selHero()||HERO_ORDER[0],c=document.querySelector('#app .card');if(c&&!$('nextUnlock'))c.insertAdjacentHTML('afterend',nextHTML(pid));};progressScreen=track('progress',SCR.progress);}
+/* story bubbles: speaker in their hero color */
+{const _sl=showLine;showLine=function(){_sl.apply(this,arguments);try{const l=SC&&SC.lines[SC.i],b=$('bubble');if(!l||!b)return;const w=l.who,id=w==='hero'?save.hero:w==='sib'?sibId():HEROES[w]?w:null;if(id)b.dataset.tok=id;else delete b.dataset.tok;}catch(e){}};}
+/* splash: full wordmark + tagline, never blocks input */
+(function(){const s=document.createElement('div');s.id='nrSplash';s.setAttribute('aria-hidden','true');s.innerHTML=nrBrand('lg');document.body.appendChild(s);setTimeout(()=>s.classList.add('out'),RM()?0:700);setTimeout(()=>s.remove(),RM()?50:1300);})();
+/* ---- CSS ---- */
+(function(){const g='linear-gradient(180deg,#FFF3B0 0%,#FFD166 30%,#F59E0B 55%,#3BA7FF 78%,#00C2FF 100%)';const st=document.createElement('style');
+ st.textContent=HERO_ORDER.map(id=>`[data-hero=${id}],[data-hall=${id}],[data-pcard=${id}],[data-h=${id}],[data-slide=${id}],[data-vhero=${id}],[data-dot=${id}],[data-tok=${id}]{--hc:${HERO_ID[id].c};--ha:${HERO_ID[id].a}}`).join('\n')+`
+.nrword{font-family:var(--tfont,inherit);font-weight:800;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;display:inline-block;background:${g};-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(1px 0 0 #0A1F44) drop-shadow(-1px 0 0 #0A1F44) drop-shadow(0 1px 0 #0A1F44) drop-shadow(0 -1px 0 #0A1F44) drop-shadow(0 3px 0 #0A1F44)}
+.nrword .li{display:inline-block;background:inherit;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.nrbrand{display:flex;flex-direction:column;align-items:center;gap:4px;margin:0 auto 8px;text-align:center}
+.nrbrand .nrword{font-size:clamp(26px,8vw,44px)}.nrbrand.xs .nrword{font-size:clamp(20px,6vw,30px)}.nrbrand.sm .nrword{font-size:clamp(24px,7vw,36px)}.nrbrand.lg .nrword{font-size:clamp(40px,12vw,96px)}
+.nrtag{display:inline-block;background:linear-gradient(#8B5A2B,#6B3F1D);color:#FFF3B0;font-weight:700;font-size:13px;padding:4px 12px;border-radius:8px;border:2px solid #0A1F44;box-shadow:0 2px 0 #0A1F44}
+.nrbrand.xs .nrtag{font-size:11px;padding:2px 8px}
+.nrstrip{border-bottom:4px solid var(--racc,#FFD166);margin:0 0 10px;padding-bottom:6px}
+#topTitle.nrmini{background:${g};-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-transform:uppercase;letter-spacing:1px;flex:0 1 auto}
+#top{border-bottom:3px solid var(--racc-top,#00C2FF)}
+${Object.entries(QCOL).map(([k,c])=>`body[data-realm=${k}] #top{--racc-top:${c}}`).join('')}body[data-realm=mix] #top{--racc-top:#14B8A6}
+.herochip{width:auto;min-width:44px;padding:0 10px;display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:15px;border:3px solid var(--hc);box-shadow:0 0 0 2px var(--ha),0 3px 0 #0003;background:#fff;color:#0A1F44}
+#topTitle .tth{display:none}@media (max-width:600px){#topTitle.nrmini{font-size:15px;letter-spacing:0;text-transform:none;line-height:1.05}#topTitle .ttb{display:block;overflow:hidden;text-overflow:ellipsis}body[data-hero18] #heroChip{display:none}body[data-hero18] #topTitle .tth{display:block;font-size:12px;font-family:inherit;-webkit-text-fill-color:var(--hc);color:var(--hc);background:#fff;border-radius:999px;padding:1px 6px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 0 0 2px var(--hc)}}@media (max-width:420px){#topTitle.nrmini{font-size:14px!important}#topTitle .tth{font-size:11px}}@media (max-width:360px){body[data-hero18] #status{padding-left:4px;padding-right:4px;min-width:44px;font-size:14px;gap:2px}#topTitle.nrmini{font-size:12px!important}#topTitle .tth{font-size:10px;padding:1px 4px}}
+h1.questh{display:flex;align-items:center;justify-content:center;gap:10px;padding-bottom:6px;border-bottom:4px solid var(--racc,#FFD166);margin-bottom:12px}
+.hemb{position:absolute;top:6px;left:6px;z-index:3;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:17px;background:var(--hc);box-shadow:0 0 0 3px var(--ha);line-height:1}
+.hemb.shiny{box-shadow:0 0 0 3px #FFD166,0 0 12px #FFD166}
+.pcard h2 .hemb,.pgtab .hemb{position:static;display:inline-grid;width:24px;height:24px;font-size:14px;vertical-align:middle}
+.herocard,.hallcard{position:relative}
+.herocard.sel,.hallcard.sel{box-shadow:0 0 0 6px var(--hc),0 0 0 9px var(--ha),0 14px 30px color-mix(in srgb,var(--hc) 60%,transparent)!important;translate:0 -6px}
+.selbadge{position:absolute;top:-2px;left:50%;transform:translateX(-50%);z-index:4;white-space:nowrap;background:var(--hc);color:#fff;font-weight:800;font-size:13px;padding:3px 10px;border-radius:999px;border:2px solid #fff;box-shadow:0 2px 0 #0003}
+.hcar .hslide[data-off="0"] .herocard:not(.sel){outline:3px dashed color-mix(in srgb,var(--hc) 70%,#fff);outline-offset:3px}
+.pgtab.on{box-shadow:0 0 0 4px var(--hc)}.pgtab.on::after{content:" ✓"}
+.bubble[data-tok]{border:4px solid var(--hc);box-shadow:0 0 0 3px var(--ha)}.bubble[data-tok] .who{color:var(--hc)}
+#wh[data-tok]{filter:drop-shadow(0 0 10px var(--hc))}
+.hsv,.hpic,#wh{position:relative}.spcrown{position:absolute;top:-6px;left:50%;transform:translateX(-50%);font-size:26px;z-index:3}
+.nextunlock{display:flex;align-items:center;gap:12px;flex-wrap:wrap;max-width:760px;margin:12px auto;padding:10px 14px;border-radius:16px;background:#0A1F44cc;color:#FFF3B0;border:2px solid #FFD166;text-align:left}
+.nextunlock .nu-i{font-size:24px}.nextunlock .nu-t{flex:1;min-width:180px}.nextunlock small{color:#e0e7ff}
+.spbar{height:10px;border-radius:6px;background:#ffffff33;overflow:hidden;margin:4px 0}.spbar i{display:block;height:100%;background:linear-gradient(90deg,#FFD166,#F59E0B)}
+.spgrid .spitem{display:flex;flex-direction:column;gap:3px;padding:10px;border-radius:14px;background:#f8fafc;border:2px solid #e2e8f0;text-align:center}
+.spitem .spk{display:inline-block;align-self:center;border:0!important;outline:0;border-radius:999px;background:#E0E7FF;color:#312E81;padding:1px 8px;font-weight:700;font-size:12px!important;line-height:1.4}.spitem.got{border-color:#F59E0B;background:#FFFBEB}.spitem.lock{opacity:.85}.spitem .te{font-size:28px}.spitem .spbar{background:#e2e8f0}.spitem .btn{margin-top:4px}
+.starpath h3{margin:14px 0 6px}.sphow{font-size:15px}
+#badges.frame-silver .troph.got{border:3px solid #CBD5E1;box-shadow:0 0 0 2px #94A3B8}#badges.frame-gold .troph.got{border:3px solid #F59E0B;box-shadow:0 0 0 2px #FFD166,0 0 12px #FFD16688}
+.spcele{margin:10px auto;padding:10px 14px;border-radius:16px;background:linear-gradient(90deg,#FFD166,#F59E0B);color:#0A1F44;font-weight:800;max-width:520px;animation:spPop .6s ease-out both}.spcele.still,body.calm .spcele{animation:none}
+.spnew{display:inline-block;background:#fff;border-radius:999px;padding:2px 10px;margin:2px}
+@keyframes spPop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.spcele{animation:none}#nrSplash{transition:none}}
+.spdecos{margin:-4px 0 8px;font-size:22px;letter-spacing:4px}
+#nrSplash{position:fixed;inset:0;z-index:999;display:grid;place-items:center;background:radial-gradient(circle,#173a7a,#0A1F44);pointer-events:none;transition:opacity .5s}#nrSplash.out{opacity:0}
 `;document.head.appendChild(st);})();
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
