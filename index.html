@@ -1124,6 +1124,21 @@ SIBS.zea=['eshon','sage','emi'];
 /* Zea also cartwheels in as a cousin teammate for Melrose and Cayden (their sibling stays first). */
 SIBS.melrose.push('zea');SIBS.cayden.push('zea');
 HERO_ORDER.push('zea');
+/* ===== v20: THE realm list. Every screen reads names, emoji, order, colors and counts from here. ===== */
+const REALM_DEFS=Object.freeze([
+ {id:'add', name:'Addition',      realm:'Addition Meadow',    the:false,e:'🌼',op:'+',accent:'#10B981'},
+ {id:'sub', name:'Subtraction',   realm:'Subtraction Caves',  the:true, e:'💎',op:'−',accent:'#EF4444'},
+ {id:'mult',name:'Multiplication',realm:'Times Table Castle', the:false,e:'🏰',op:'×',accent:'#F97316'},
+ {id:'div', name:'Division',      realm:'Division Docks',     the:true, e:'⚓',op:'÷',accent:'#2563EB'},
+ {id:'frac',name:'Fractions',     realm:'Fraction Bakery',    the:true, e:'🧁',op:'½',accent:'#8B5CF6'},
+ {id:'mix', name:'Mixed Math',    realm:'Muddle Tower',       the:false,e:'🗼',op:'±',accent:'#0F766E',finale:true}].map(Object.freeze));
+const RD=Object.fromEntries(REALM_DEFS.map(r=>[r.id,r]));
+const REALM_IDS=REALM_DEFS.map(r=>r.id);
+const REALM_COUNT=REALM_DEFS.length;
+const NUM_WORDS=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'];
+function realmCountWord(cap){const w=NUM_WORDS[REALM_COUNT]||String(REALM_COUNT);return cap?w[0].toUpperCase()+w.slice(1):w;}
+function realmBase(id){const r=RD[id];return {id:r.id,name:r.name,realm:r.realm,e:r.e,op:r.op};}
+function realmListText(){const a=REALM_DEFS.map(r=>(r.the?'the ':'')+r.realm);return a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
 /* ---------- original cartoon SVG characters ---------- */
 const SKIN='#8d5524',EMI_SKIN='#c98d63',SKIN_L='#a0643a',HAIR='#2b1a10';
 function starPts(cx,cy,R,r){let p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r:R;p.push((cx+rr*Math.cos(a)).toFixed(1)+','+(cy+rr*Math.sin(a)).toFixed(1));}return p.join(' ');}
@@ -1463,8 +1478,36 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;',
 const SKEY='ttq-save-v2';
 function freshProfile(id){return {name:HEROES[id].name,stars:{},hist:{},rewards:[],eq:{},prologue:false};}
 function freshSave(){return {muted:false,narrator:true,hero:null,profiles:Object.fromEntries(Object.keys(HEROES).map(id=>[id,freshProfile(id)]))};}
-function loadSave(){const f=freshSave();try{const s=JSON.parse(localStorage.getItem(SKEY));if(s&&s.profiles){const o=Object.assign(f,s);Object.keys(HEROES).forEach(id=>{o.profiles[id]=Object.assign(freshProfile(id),s.profiles[id]||{});});if(o.hero&&!HEROES[o.hero])o.hero=null;return o;}}catch(e){}return f;}
-function persist(){try{localStorage.setItem(SKEY,JSON.stringify(save));}catch(e){}}
+/* v20: structured save store — load → validate → migrate → save, with a backup copy and an in-memory fallback */
+const SBKEY=SKEY+'-backup',SCKEY=SKEY+'-corrupt';
+const NRStore=(function(){const mem={};let ok=true,notice=null,raw=null,src='none';
+ function get(k){try{const v=localStorage.getItem(k);return v==null&&k in mem?mem[k]:v;}catch(e){ok=false;return k in mem?mem[k]:null;}}
+ function set(k,v){mem[k]=v;try{localStorage.setItem(k,v);return true;}catch(e){ok=false;return false;}}
+ try{const t='ttq-probe';localStorage.setItem(t,'1');localStorage.removeItem(t);}catch(e){ok=false;}
+ const isObj=o=>!!o&&typeof o==='object'&&!Array.isArray(o);
+ function parse(str){if(typeof str!=='string'||!str)return null;try{const o=JSON.parse(str);return isObj(o)&&isObj(o.profiles)?o:null;}catch(e){return null;}}
+ function cleanProfile(id,p){const f=freshProfile(id);if(!isObj(p))return f;const o=Object.assign({},p);
+  o.name=typeof p.name==='string'&&p.name.trim()?p.name.slice(0,40):f.name;
+  for(const k of ['stars','hist','eq'])o[k]=isObj(p[k])?p[k]:{};
+  o.stars=Object.fromEntries(Object.entries(o.stars).filter(([k,v])=>typeof v==='number'&&isFinite(v)));
+  o.rewards=Array.isArray(p.rewards)?p.rewards.filter(x=>typeof x==='string'||typeof x==='number'):[];
+  o.prologue=!!p.prologue;return o;}
+ /* safe defaults per field; unknown fields from newer/older versions are kept, never dropped */
+ function validate(s){const f=freshSave();if(!isObj(s)||!isObj(s.profiles))return null;const o=Object.assign(freshSave(),s);
+  o.muted=typeof s.muted==='boolean'?s.muted:f.muted;o.narrator=typeof s.narrator==='boolean'?s.narrator:f.narrator;
+  o.profiles=Object.assign({},s.profiles);Object.keys(HEROES).forEach(id=>{o.profiles[id]=cleanProfile(id,s.profiles[id]);});
+  if(o.hero&&!HEROES[o.hero])o.hero=null;if(o.lastHero&&!HEROES[o.lastHero])o.lastHero=null;return o;}
+ function load(){const m=get(SKEY),b=get(SBKEY);let p=parse(m);
+  if(p){src='main';raw=p;return validate(p);}
+  const pb=parse(b);
+  if(m){set(SCKEY,m);}                       /* keep the damaged copy, never wipe silently */
+  if(pb){src='backup';raw=pb;notice='recovered';set(SKEY,b);return validate(pb);}
+  if(m){src='reset';notice='unreadable';}
+  if(!ok&&!notice)notice='storage';return freshSave();}
+ function save(o){const str=JSON.stringify(o);const w=set(SKEY,str);if(w&&parse(str))set(SBKEY,str);else if(!w&&!notice)notice='storage';return w;}
+ return {load,save,validate,parse,get raw(){return raw},get source(){return src},get ok(){return ok},get notice(){return notice},clearNotice(){notice=null;},mem};})();
+function loadSave(){try{return NRStore.load();}catch(e){return freshSave();}}
+function persist(){try{NRStore.save(save);}catch(e){}}
 let save=loadSave();
 const P=()=>save.profiles[save.hero];
 const H=()=>HEROES[save.hero];
@@ -1623,7 +1666,7 @@ function prologueScene(){const id=save.hero;return {title:'📖 Once upon a time
  L('hero',HERO_INTRO[id]),
  L('sib',SIB_INTRO[sibId()]),...SIBS[id].slice(1).map(x=>L(x,SIB_INTRO[x])),
  L('hero',HERO_TEAM[id]),
- L('owl',"There are five realms to save: Addition Meadow, the Subtraction Caves, Times Table Castle, the Division Docks and the Fraction Bakery. Tap the things up there to wake them, then pick a realm!")],extras:SIBS[id].slice(1),endLabel:'Pick a realm 🗺️'};}
+ L('owl',`There are ${realmCountWord()} realms to save: ${realmListText()}. Tap the things up there to wake them, then pick a realm!`)],extras:SIBS[id].slice(1),endLabel:'Pick a realm 🗺️'};}
 function introScene(){const i=ORDER.indexOf(S.n),pl=placeOf(S.n),id=save.hero,ex=pickExtras('intro');let lines;
  if(S.attempt>1)lines=[L('owl',pick(RETRY_OWL)),L('hero',pick(RETRY_HERO[id])),L('sib',pick(SIDE[sibId()])),L('owl',`Tap the ${propWords(pl)} for luck, then let's learn the ×{n} table again with brand-new numbers!`)];
  else lines=[L('owl',`Chapter ${i+1}: the ${pl.name}! ${pl.desc}`),L('owl',`But the Muddle Monster scrambled the ×{n} table, and ${pl.lost}.`),L('hero',pl[id]),L('sib',pick(SIDE[sibId()])),L('owl',`Tap the ${propWords(pl)} to wake them up! Then let's learn the ×{n} table, {hero}.`)];
@@ -1887,7 +1930,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='19';
+const APP_VERSION='20';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -2257,17 +2300,17 @@ const FR=[
   gen(k){const d=pick([2,3,4,5,6,8,10]),g=rand(2,6),N=d*g,n=rand(1,d-1);const q=Qp(`${frH(n,d)} of ${N} = ?`,n*g,{m:{op:'frof',n,d,N},sig:`frof:${n}/${d}:${N}`,lead:'Fraction of a number! 🏆',vis:N<=30?groupsH(d,g,'🍪'):'',explain:`${N} ÷ ${d} = ${g}, then ${g} × ${n} = ${n*g}`,hint:`Divide ${N} by ${d}, then multiply by ${n}.`});
    if(k==='a'||(k==='b'&&Math.random()<.3)){const it=itm();q.text=`${nm(save.hero)} baked ${N} ${it.many} ${it.e}. ${tN()} gets ${frH(n,d)} of them. How many ${it.many} does ${tN()} get?`;q.lead=STORY;q.sig+=':s';}return q;}}
 ];
-/* ---------- the five realms of NumiRealm ---------- */
+/* ---------- realms of NumiRealm (names/emoji/order from REALM_DEFS) ---------- */
 const SUBJ=[
- {id:'add',name:'Addition',op:'+',realm:'Addition Meadow',e:'🌼',col:'#22c55e',col2:'#bbf7d0',bg:'linear-gradient(#bbf7d0,#fef08a 60%,#86efac)',props:['flower','flower','fruit','flower','star','flower'],ch:ADD,grades:['none','prek','k','1','2'],
+ {...realmBase('add'),col:'#22c55e',col2:'#bbf7d0',bg:'linear-gradient(#bbf7d0,#fef08a 60%,#86efac)',props:['flower','flower','fruit','flower','star','flower'],ch:ADD,grades:['none','prek','k','1','2'],
   lost:'the meadow forgot how to put things together, so nothing can grow',back:'flowers are blooming all over the meadow again',champ:'Addition Champions'},
- {id:'sub',name:'Subtraction',op:'−',realm:'Subtraction Caves',e:'💎',col:'#6366f1',col2:'#c7d2fe',bg:'linear-gradient(#c4b5fd,#818cf8 55%,#a5b4fc)',props:['star','shell','star','shell','star','star'],ch:SUB,grades:['1','2'],
+ {...realmBase('sub'),col:'#6366f1',col2:'#c7d2fe',bg:'linear-gradient(#c4b5fd,#818cf8 55%,#a5b4fc)',props:['star','shell','star','shell','star','star'],ch:SUB,grades:['1','2'],
   lost:'the crystals forgot how to take away, so the caves went dark',back:'the crystals are glowing all through the caves again',champ:'Subtraction Champions'},
- {id:'mult',name:'Multiplication',op:'×',realm:'Times Table Castle',e:'🏰',col:'#f59e0b',col2:'#fde68a',bg:'linear-gradient(#fde68a,#f9a8d4 55%,#a78bfa)',props:['star','flower','fruit','star','flower','star'],grades:['2','3','4'],
+ {...realmBase('mult'),col:'#f59e0b',col2:'#fde68a',bg:'linear-gradient(#fde68a,#f9a8d4 55%,#a78bfa)',props:['star','flower','fruit','star','flower','star'],grades:['2','3','4'],
   lost:'all twelve times tables are scrambled',back:'every times table is in order again',champ:'Times Table Champions'},
- {id:'div',name:'Division',op:'÷',realm:'Division Docks',e:'⚓',col:'#0ea5e9',col2:'#bae6fd',bg:'linear-gradient(#bae6fd,#38bdf8 60%,#fde68a)',props:['shell','shell','fruit','star','shell','shell'],ch:DIV,grades:['3','4','5','6'],
+ {...realmBase('div'),col:'#0ea5e9',col2:'#bae6fd',bg:'linear-gradient(#bae6fd,#38bdf8 60%,#fde68a)',props:['shell','shell','fruit','star','shell','shell'],ch:DIV,grades:['3','4','5','6'],
   lost:'the boats cannot share their cargo fairly, so nobody can sail',back:'boats are sailing and sharing fairly again',champ:'Division Champions'},
- {id:'frac',name:'Fractions',op:'½',realm:'Fraction Bakery',e:'🧁',col:'#ec4899',col2:'#fbcfe8',bg:'linear-gradient(#fecdd3,#fde68a 60%,#fbcfe8)',props:['fruit','star','flower','fruit','star','fruit'],ch:FR,grades:['3','4','5','6'],
+ {...realmBase('frac'),col:'#ec4899',col2:'#fbcfe8',bg:'linear-gradient(#fecdd3,#fde68a 60%,#fbcfe8)',props:['fruit','star','flower','fruit','star','fruit'],ch:FR,grades:['3','4','5','6'],
   lost:'every cake, pie and pizza is cut into wobbly, unfair pieces',back:'every treat is sliced into fair, equal pieces again',champ:'Fraction Champions'}];
 const SUBJ_BY=Object.fromEntries(SUBJ.map(s=>[s.id,s]));
 /* what each hero says when they arrive in a realm / start a chapter */
@@ -2579,7 +2622,7 @@ const MIX=[
   gen(k){const r=Math.random();if(r<.2)return mixFact(1,k);if(r<.4)return wopQ(1,k);if(r<.6)return missQ(pick(WOPS),pick([1,2]),k);if(r<.8)return oopQ(pick([1,2]),k);return multiQ(1,k);}}];
 function wopChart(){return `<div class="wopchart" role="img" aria-label="clue words for each operation">${WOPS.map(o=>`<div class="wc"><b>${OPN[o].e} ${OPN[o].w}</b><span>${{'+':'in all · more · altogether','-':'left · fewer · how many more','*':'each · groups of · rows of','/':'share equally · split · each get'}[o]}</span></div>`).join('')}</div>`;}
 function oopChart(){return `<div class="oopchart" role="img" aria-label="order of operations"><span>First: ( )</span><span>Next: × ÷</span><span>Last: + −</span></div>`;}
-SUBJ.push({id:'mix',name:'Mixed Math',op:'±',realm:'Muddle Tower',e:'🗼',col:'#0f766e',col2:'#99f6e4',bg:'linear-gradient(#99f6e4,#a5b4fc 55%,#f0abfc)',props:['star','shell','star','fruit','star','flower'],ch:MIX,grades:['2','3','4','5','6'],
+SUBJ.push({...realmBase('mix'),col:'#0f766e',col2:'#99f6e4',bg:'linear-gradient(#99f6e4,#a5b4fc 55%,#f0abfc)',props:['star','shell','star','fruit','star','flower'],ch:MIX,grades:['2','3','4','5','6'],
  lost:'every sign is jumbled, so nobody knows whether to add, take away, times or share',back:'every sign is back where it belongs',champ:'Mixed Math Masters'});
 SUBJ_BY.mix=SUBJ[SUBJ.length-1];
 if(!SUBJ_BY.mult.grades.includes('5'))SUBJ_BY.mult.grades.push('5');
@@ -2613,7 +2656,7 @@ function nextReward(){const pf=P();return REWARDS[save.hero].find(r=>!pf.rewards
 function gradeBadge(sb,pf){if(!hasAbout(pf)||!sb.grades.includes(pf.grade))return '';const g=gradeOf(pf.grade);
  return /^\d$/.test(g[0])?`⭐ Recommended for ${g[1]} grade`:g[0]==='k'?'⭐ Recommended for Kindergarten':g[0]==='prek'?'⭐ Recommended for Pre-K':'⭐ A great place to start';}
 function subjectScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SS=null;SC=null;stopSpeech();lastMap=null;if(save.lastSubj){save.lastSubj=null;persist();}const pf=P();
- let h=`<h1 class="questh">Choose your quest</h1><div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>Where to, ${esc(pf.name)}?</h2><div class="big" style="font-size:18px">The Muddle Monster scrambled all six realms of NumiRealm! Pick one to explore. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(subjectScreen,true)">✏️ About me</button></div></div></div></div><div class="subjects" id="subjects">`;
+ let h=`<h1 class="questh">Choose your quest</h1><div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>Where to, ${esc(pf.name)}?</h2><div class="big" style="font-size:18px">The Muddle Monster scrambled all ${realmCountWord()} realms of NumiRealm! Pick one to explore. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="abedit" id="abEdit" onclick="aboutScreen(subjectScreen,true)">✏️ About me</button></div></div></div></div><div class="subjects" id="subjects">`;
  SUBJ.forEach(sb=>{const N=sCount(sb.id),d=sDone(sb.id,pf),st=sStars(sb.id,pf),bd=gradeBadge(sb,pf);
   h+=`<button class="stile ${bd?'rec':''}" data-subject="${sb.id}" style="--sc:${sb.col};--sc2:${sb.col2}" onclick="openSubject('${sb.id}')"><div class="se">${sb.e}</div><div class="sop">${sb.op}</div><div class="sname">${sb.name}</div><div class="srealm">${sb.realm}</div>
   <div class="sbar"><i style="width:${Math.round(d/N*100)}%"></i></div><div class="sprog"><span>📖 ${d}/${N} chapters</span><span>⭐ ${st}/${N*3}</span></div>${bd?`<div class="sbadge">${bd}</div>`:''}</button>`;});
@@ -3087,7 +3130,7 @@ function realmArt(k){const W=(i,b)=>`<svg viewBox="0 0 200 110" aria-hidden="tru
  if(k==='mult')return W('<stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#F9A8D4"/>',`<path d="M0 92Q100 70 200 92V110H0Z" fill="#10B981"/><g stroke="#312E81" stroke-width="2.5"><rect x="70" y="46" width="60" height="50" fill="#E0E7FF"/><rect x="56" y="34" width="20" height="62" fill="#E0E7FF"/><rect x="124" y="34" width="20" height="62" fill="#E0E7FF"/><path d="M52 36l14-24 14 24zM120 36l14-24 14 24z" fill="#1E3A8A"/><path d="M90 96V78a10 10 0 0 1 20 0v18z" fill="#7C2D12"/></g><rect x="62" y="48" width="8" height="12" rx="4" fill="#FFD166"/><rect x="130" y="48" width="8" height="12" rx="4" fill="#FFD166"/>${sym(30,28,'×','#F97316')}`);
  if(k==='div')return W('<stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#FDE68A"/>',`<path d="M0 74h200v36H0z" fill="#0284C7"/><path d="M0 80q25 -6 50 0t50 0 50 0 50 0" stroke="#BAE6FD" stroke-width="3" fill="none"/><path d="M110 72h86v8h-86z" fill="#92400E"/><path d="M120 80v24M150 80v24M184 80v24" stroke="#78350F" stroke-width="5"/><path d="M30 70h60l-10 14H40z" fill="#B45309"/><path d="M58 70V30l26 34z" fill="#fff"/><path d="M58 30v40" stroke="#78350F" stroke-width="3"/>${sym(170,28,'÷','#2563EB')}`);
  return W('<stop offset="0" stop-color="#FBCFE8"/><stop offset="1" stop-color="#FEF3C7"/>',`<rect x="40" y="40" width="120" height="70" fill="#FFF7ED" stroke="#9D174D" stroke-width="2.5"/><path d="M32 42l68-30 68 30z" fill="#EC4899" stroke="#9D174D" stroke-width="2.5"/><path d="M40 52h120" stroke="#F9A8D4" stroke-width="8" stroke-dasharray="12 8"/><rect x="88" y="72" width="24" height="38" fill="#9D174D"/><circle cx="62" cy="84" r="12" fill="#FDE68A" stroke="#B45309" stroke-width="2"/><path d="M62 72v24M50 84h24" stroke="#B45309" stroke-width="2"/><circle cx="138" cy="84" r="12" fill="#FDE68A" stroke="#B45309" stroke-width="2"/><path d="M138 84V72M138 84l10 7M138 84l-10 7" stroke="#B45309" stroke-width="2"/>${sym(30,24,'½','#8B5CF6')}`);}
-const QCOL={add:'#10B981',sub:'#EF4444',mult:'#F97316',div:'#2563EB',frac:'#8B5CF6'};
+const QCOL=Object.fromEntries(REALM_DEFS.map(r=>[r.id,r.accent]));
 function shieldSVG(){return `<svg viewBox="0 0 132 146" aria-hidden="true"><defs><linearGradient id="shg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3B0"/><stop offset=".45" stop-color="#FFD166"/><stop offset="1" stop-color="#D97706"/></linearGradient></defs><path d="M66 6L122 24V70C122 106 96 128 66 140C36 128 10 106 10 70V24Z" fill="url(#shg)" stroke="#1E3A8A" stroke-width="7" stroke-linejoin="round"/><path d="M66 18L110 32V70C110 98 90 116 66 126C42 116 22 98 22 70V32Z" fill="none" stroke="#fff" stroke-width="2" opacity=".6"/><path d="M66 8l5 10 11 1-8 7 2 11-10-6-10 6 2-11-8-7 11-1z" fill="#00C2FF" stroke="#0A1F44" stroke-width="1.5"/></svg>`;}
 /* ---------- helpers ---------- */
 function withHero(fn){if(save.hero)return fn();const id=save.lastHero;
@@ -3397,7 +3440,7 @@ function realmMap(focus){stopConfetti();S=null;SS=null;SC=null;const id=vHero(),
   return `<section class="card rcard" data-realm="${sb.id}" style="--sc:${QCOL[sb.id]}"><div class="rtop"><div class="rart" aria-hidden="true">${realmArt(sb.id)}</div><div><h2><span class="rop" aria-hidden="true">${sb.op}</span> ${sb.realm}</h2><p class="rline">${REALM_LINE[sb.id]}</p>
   <div class="rmeta"><span>🎒 ${realmGrades(sb)}</span><span>⭐ ${st}/${N*3}</span><span>📖 ${pf?sDone(sb.id,pf):0}/${N} done</span></div></div></div>
   <div class="stones" role="group" aria-label="${sb.realm} chapters, easy to hard"><span class="sedge" aria-hidden="true">Easy</span>${stones}<span class="sedge" aria-hidden="true">Hard</span></div></section>`;}).join('');
- show(`<h1 class="questh">🗺️ Realm Map</h1><div class="card v12intro"><p class="big" style="font-size:17px">Six realms, each with chapters from <b>easy to hard</b>. Tap a stepping stone to see what it teaches.</p>${id?`<p class="vfor">Showing ${esc(pf.name)}'s stars</p>${vTabs('realms',id)}`:'<p class="vfor">No hero yet: you will pick one when you press Play.</p>'}
+ show(`<h1 class="questh">🗺️ Realm Map</h1><div class="card v12intro"><p class="big" style="font-size:17px">${realmCountWord(true)} realms, each with chapters from <b>easy to hard</b>. Tap a stepping stone to see what it teaches.</p>${id?`<p class="vfor">Showing ${esc(pf.name)}'s stars</p>${vTabs('realms',id)}`:'<p class="vfor">No hero yet: you will pick one when you press Play.</p>'}
  <div class="legend" aria-hidden="true"><span class="stone done mini"><span class="sn">✓</span></span> done <span class="stone current mini"><span class="sn">1</span></span> play next <span class="stone locked mini"><span class="sn">🔒</span></span> locked</div></div>${realms}${backBtn()}`,'quest');
  if(focus&&SUBJ_BY[focus]){const r=document.querySelector(`[data-realm="${focus}"]`);if(r){r.scrollIntoView({block:'start'});const f=r.querySelector('.stone.current')||r.querySelector('.stone');if(f)try{f.focus({preventScroll:true});}catch(e){}}}}
 function exampleQ(sid,c){const keep=save.hero,keepSS=SS;try{if(!save.hero)save.hero=vHero()||'emi';
@@ -3487,7 +3530,7 @@ function trophyRoom(){stopConfetti();S=null;SS=null;SC=null;const id=vHero()||HE
  <div class="center"><button class="btn pink" type="button" id="openCloset" onclick="playWith(closetScreen,'${id}')">${h.closetE} Open ${esc(pf.name)}'s ${h.closet}</button></div></div>${backBtn()}`,'home');}
 /* ---------- MAP: How NumiRealm Works ---------- */
 const GUIDE=[
- {id:'story',e:'📖',h:'The story',t:['The Muddle Monster scrambled every number in NumiRealm!','Professor Hoot the owl needs your help.','Pick a hero, team up with family, and save all six realms.']},
+ {id:'story',e:'📖',h:'The story',t:['The Muddle Monster scrambled every number in NumiRealm!','Professor Hoot the owl needs your help.','Pick a hero, team up with family, and save all '+realmCountWord()+' realms.']},
  {id:'flow',e:'🧭',h:'How a chapter works',t:['📚 Learn: see the idea with pictures.','🎯 Practice: try a few, then story problems.','👾 Boss: answer to beat the minion and unlock the next chapter!']},
  {id:'stars',e:'⭐',h:'Stars',t:['You start each boss with 3 hearts.','Hearts left at the end = stars won: 1, 2 or 3.','Replay any chapter to get all 3 stars.']},
  {id:'lan',e:'🏮',h:'Hint lanterns',t:['3 lanterns in practice, 1 in a boss fight.','First tap: a clue about how to think. Second tap: a picture clue.','Lanterns NEVER give the answer. Using them is smart!']},
@@ -3733,7 +3776,7 @@ mapScreen=track('mapScreen',SCR.mapScreen);
 const _smap12=SCR.smapScreen;SCR.smapScreen=function(sid){if(sid==='mult')return SCR.mapScreen();return _smap12.apply(this,arguments);};
 smapScreen=track('smapScreen',SCR.smapScreen);
 /* ---- realm look ---- */
-QCOL.mix='#0F766E';
+
 const _realmArt12=realmArt;realmArt=function(k){if(k!=='mix')return _realmArt12(k);
  const sym=(x,y,c,col)=>`<circle cx="${x}" cy="${y}" r="13" fill="${col}" stroke="#fff" stroke-width="2.5"/><text x="${x}" y="${y+6}" text-anchor="middle" font-size="17" font-weight="800" fill="#fff" font-family="Baloo 2,Nunito,sans-serif">${c}</text>`;
  return `<svg viewBox="0 0 200 110" aria-hidden="true"><defs><linearGradient id="ramix" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5EEAD4"/><stop offset="1" stop-color="#FDE68A"/></linearGradient></defs><rect width="200" height="110" fill="url(#ramix)"/><path d="M0 96Q100 82 200 96V110H0Z" fill="#14B8A6"/>
@@ -3758,7 +3801,7 @@ function v13MigratePf(pf){Object.keys(V12_TITLES).forEach(sid=>{const m=v13Map(s
   if(pf.weak&&typeof pf.weak==='object'){const w={};Object.keys(pf.weak).forEach(k=>{const p=k.split(':');w[p[0]===sid&&m[+p[1]]?`${sid}:${m[+p[1]]}`:k]=pf.weak[k];});pf.weak=w;}
   if(pf.hintLog&&pf.hintLog[sid]&&pf.hintLog[sid].ch)pf.hintLog[sid].ch=rk(pf.hintLog[sid].ch);});}
 function v13Migrate(sv){if(!sv||!sv.profiles||sv.chv>=13)return false;Object.values(sv.profiles).forEach(pf=>{if(pf)v13MigratePf(pf);});sv.chv=13;return true;}
-(function(){let raw=null;try{raw=JSON.parse(localStorage.getItem(SKEY)||'null');}catch(e){}
+(function(){const raw=NRStore.raw;
  if(raw&&raw.profiles){if(!(raw.chv>=13)){save.chv=undefined;v13Migrate(save);persist();}}else save.chv=13;})();
 const _freshSave12=freshSave;freshSave=function(){const s=_freshSave12();s.chv=13;return s;};
 /* ===== v14: Zea the Critter Flip Star joins every realm, the Heroes Hall and the Grand Final ===== */
@@ -4109,6 +4152,83 @@ function nrSplashDone(){const s=document.getElementById('nrSplash');if(!s||s.dat
 /* app is ready once boot has rendered (next tick) and the brand font is in, capped so it never waits longer than ~1.2s total */
 setTimeout(()=>{const f=document.fonts&&document.fonts.ready;Promise.race([f||Promise.resolve(),new Promise(r=>setTimeout(r,600))]).then(()=>setTimeout(nrSplashDone,250));},0);
 setTimeout(nrSplashDone,1200);
+/* ===== v20: realm list checks, save notices, progress code (copy / load) ===== */
+/* the realm list is the one source: SUBJ must follow REALM_DEFS exactly */
+if(SUBJ.map(s=>s.id).join()!==REALM_IDS.join()||SUBJ.some(s=>s.realm!==RD[s.id].realm||s.e!==RD[s.id].e))console.error('NumiRealm: SUBJ is out of step with REALM_DEFS');
+
+/* ---------- gentle save notices ---------- */
+const NR_NOTE={recovered:'We found a problem with the saved game, so we brought back your last backup. Your stars are safe!',
+ unreadable:'The saved game could not be read, so a fresh game started. A copy of the old save was kept on this device.',
+ storage:'This browser is not letting NumiRealm save right now (private browsing can do this). You can keep playing, but progress lasts only until this tab closes. Grown-ups: use Copy my progress in Settings to keep it.'};
+function nrNotice(kind){kind=kind||NRStore.notice;if(!kind||!NR_NOTE[kind]||$('nrNote'))return;
+ const d=document.createElement('div');d.id='nrNote';d.className='nrnote';d.dataset.kind=kind;d.setAttribute('role','status');
+ d.innerHTML=`<span aria-hidden="true">${kind==='storage'?'💾':'🛟'}</span><p>${NR_NOTE[kind]}</p><button type="button" class="btn sm gray" id="nrNoteOk" onclick="nrNoteClose()">OK</button>`;
+ document.body.appendChild(d);}
+function nrNoteClose(){const d=$('nrNote');if(d)d.remove();NRStore.clearNotice();}
+const _persist20=persist;persist=function(){_persist20();if(NRStore.notice==='storage')nrNotice('storage');};
+setTimeout(()=>nrNotice(),0);
+
+/* ---------- progress code: NR1.<z|j>.<base64url data>.<crc32 of the JSON> ---------- */
+const PC_VER='NR1';
+const CRC_T=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+function crc32(str){const b=new TextEncoder().encode(str);let c=0xFFFFFFFF;for(const x of b)c=CRC_T[(c^x)&255]^(c>>>8);return ((c^0xFFFFFFFF)>>>0).toString(16).padStart(8,'0');}
+const b64u={enc:u8=>{let s='';for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');},
+ dec:s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}};
+async function pipeBytes(u8,T){const s=new Blob([u8]).stream().pipeThrough(new T('deflate-raw'));return new Uint8Array(await new Response(s).arrayBuffer());}
+async function pcMake(){const json=JSON.stringify({v:1,app:APP_VERSION,at:new Date().toISOString(),save});const raw=new TextEncoder().encode(json);let mode='j',data=raw;
+ if(typeof CompressionStream==='function'){try{data=await pipeBytes(raw,CompressionStream);mode='z';}catch(e){data=raw;mode='j';}}
+ return [PC_VER,mode,b64u.enc(data),crc32(json)].join('.');}
+async function pcRead(code){const c=String(code||'').replace(/\s+/g,'');const p=c.split('.');
+ if(p.length!==4||p[0]!==PC_VER||!/^[zj]$/.test(p[1])||!/^[0-9a-f]{8}$/.test(p[3])||!/^[A-Za-z0-9_-]+$/.test(p[2]))throw new Error('format');
+ let u8;try{u8=b64u.dec(p[2]);}catch(e){throw new Error('format');}
+ if(p[1]==='z'){if(typeof DecompressionStream!=='function')throw new Error('browser');try{u8=await pipeBytes(u8,DecompressionStream);}catch(e){throw new Error('damaged');}}
+ const json=new TextDecoder().decode(u8);if(crc32(json)!==p[3])throw new Error('checksum');
+ let o;try{o=JSON.parse(json);}catch(e){throw new Error('damaged');}
+ const s=o&&o.v===1?NRStore.validate(o.save):null;if(!s)throw new Error('schema');return {save:s,app:o.app,at:o.at};}
+function pcPreview(s){return HERO_ORDER.map(id=>{const pf=s.profiles[id];let st=0;try{st=allStars(pf);}catch(e){}return {id,name:pf.name,stars:st,tr:(pf.rewards||[]).length};});}
+const PC={code:'',msg:'',err:'',prev:null,inp:''};
+const PC_ERR={format:"That code doesn't look like a NumiRealm progress code. Check that you copied all of it, from NR1 to the end.",checksum:'That code is incomplete or was changed (the check number does not match). Copy it again.',
+ damaged:'That code is damaged and cannot be opened. Copy it again.',schema:'That code opened, but the progress inside is not valid.',browser:'This browser cannot open compressed codes. Try a newer browser.'};
+function pcCard(){const p=PC.prev,canShare=!!navigator.share;
+ return `<div class="card pccard" id="progressCard"><h2>💾 Copy my progress <span class="gu" id="pcGrown">For grown-ups</span></h2>
+ <p class="pcwhere" id="pcWhere">NumiRealm keeps progress <b>only on this device</b>, in this browser. There are no accounts and no cloud copy. To move progress to another device or browser, copy the progress code here and load it there.</p>
+ <div class="pcbtns"><button class="btn blue sm" type="button" id="pcCopy" onclick="pcDoCopy()">📋 Copy my progress</button>${canShare?`<button class="btn gray sm" type="button" id="pcShare" onclick="pcDoShare()">📤 Share code</button>`:''}<button class="btn gray sm" type="button" id="pcDl" onclick="pcDownload()">⬇️ Download backup</button></div>
+ ${PC.code?`<label class="pclab" for="pcOut">Progress code (all heroes)</label><textarea id="pcOut" class="pcta" readonly rows="3" onfocus="this.select()">${esc(PC.code)}</textarea>`:''}
+ ${PC.msg?`<p class="okmsg" role="status" id="pcMsg">✅ ${esc(PC.msg)}</p>`:''}
+ <h3>📥 Load progress</h3><p class="small">Paste a progress code from another device. You will see what is inside before anything changes.</p>
+ <textarea id="pcIn" class="pcta" rows="3" placeholder="NR1.…" aria-label="Progress code to load">${esc(PC.inp)}</textarea>
+ ${PC.err?`<p class="errmsg" role="alert" id="pcErr">⚠️ ${esc(PC.err)}</p>`:''}
+ ${p?`<div class="confirm" role="alertdialog" aria-labelledby="pcT" aria-describedby="pcD" id="pcConfirm"><h3 id="pcT">Load this progress?</h3>
+  <ul class="pcprev" id="pcPrev">${pcPreview(p.save).map(r=>`<li data-ph="${r.id}"><span aria-hidden="true">${tok(r.id).e}</span> <b>${esc(r.name)}</b> ⭐ ${r.stars} · ${r.tr} treasures</li>`).join('')}</ul>
+  <p id="pcD">${p.at?`Made ${esc(new Date(p.at).toLocaleDateString('en-US'))} (NumiRealm v${esc(p.app||'?')}). `:''}This <b>replaces</b> the progress for every hero on this device. Download a backup first if you might want today's progress back.</p>
+  <div class="pcbtns"><button class="btn gray sm" type="button" id="pcBackupFirst" onclick="pcDownload()">⬇️ Download a backup first</button></div>
+  <div class="center"><button class="btn gray" type="button" id="pcNo" onclick="pcCancel()">✖ Cancel</button><button class="btn green" type="button" id="pcYes" onclick="pcApply()">✅ Yes, load it</button></div></div>`
+ :`<div class="pcbtns"><button class="btn blue sm" type="button" id="pcCheck" onclick="pcCheck()">🔎 Check code</button></div>`}</div>`;}
+function pcRedraw(f){const c=$('progressCard');if(c)c.outerHTML=pcCard();if(f&&$(f))$(f).focus();}
+async function pcEnsure(){PC.code=await pcMake();return PC.code;}
+async function pcDoCopy(){SFX.tap();await pcEnsure();let ok=false;try{await navigator.clipboard.writeText(PC.code);ok=true;}catch(e){}
+ PC.msg=ok?'Code copied. Paste it into NumiRealm on the other device (Settings → Load progress).':'Select the code below and copy it.';PC.err='';pcRedraw(ok?'pcMsg':'pcOut');if(!ok&&$('pcOut'))$('pcOut').select();}
+async function pcDoShare(){SFX.tap();await pcEnsure();try{await navigator.share({title:'NumiRealm progress code',text:PC.code});}catch(e){}pcRedraw();}
+async function pcDownload(){SFX.tap();await pcEnsure();const d=new Date().toISOString().slice(0,10);const a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob(['NumiRealm progress code ('+d+'). Load it in Settings → Load progress.\n\n'+PC.code+'\n'],{type:'text/plain'}));a.download=`numirealm-progress-${d}.txt`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+ PC.msg='Backup file downloaded.';pcRedraw();}
+async function pcCheck(){SFX.tap();PC.inp=($('pcIn')||{}).value||'';PC.err='';PC.prev=null;PC.msg='';
+ if(!PC.inp.trim()){PC.err='Paste a progress code first.';pcRedraw('pcIn');return;}
+ try{PC.prev=await pcRead(PC.inp);}catch(e){PC.err=PC_ERR[e.message]||PC_ERR.format;}pcRedraw(PC.prev?'pcNo':'pcIn');}
+function pcCancel(){SFX.tap();PC.prev=null;pcRedraw('pcIn');}
+function pcApply(){if(!PC.prev)return;const s=PC.prev.save;s.hero=null;save=s;persist();PC.prev=null;PC.inp='';PC.code='';PC.msg='Progress loaded! Pick a hero to keep playing.';
+ try{sessionStorage.setItem('nr-loaded','1');}catch(e){}SFX.chime&&SFX.chime();location.reload();}
+const _set20=SCR.settings;SCR.settings=function(){_set20.apply(this,arguments);const r=$('resetCard');if(r&&!$('progressCard'))r.insertAdjacentHTML('beforebegin',pcCard());};
+settingsScreen=track('settings',SCR.settings);
+setTimeout(()=>{let l=null;try{l=sessionStorage.getItem('nr-loaded');sessionStorage.removeItem('nr-loaded');}catch(e){}if(l){const d=document.createElement('div');d.id='nrNote';d.className='nrnote';d.setAttribute('role','status');d.innerHTML='<span aria-hidden="true">✅</span><p>Progress loaded on this device.</p><button type="button" class="btn sm gray" onclick="nrNoteClose()">OK</button>';document.body.appendChild(d);}},0);
+(function(){const st=document.createElement('style');st.textContent=`
+.nrnote{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:900;width:min(560px,calc(100% - 24px));display:flex;gap:10px;align-items:center;background:#F1F5F9;color:#0A1F44;border:3px solid #00C2FF;border-radius:16px;padding:10px 12px;box-shadow:0 8px 24px #0008;font-size:15px}
+.nrnote p{margin:0;flex:1;line-height:1.35}.nrnote>span{font-size:26px}
+.pccard .gu{display:inline-block;vertical-align:middle;font-size:12px;font-weight:800;background:#F59E0B;color:#0A1F44;border-radius:999px;padding:2px 10px;margin-left:6px}
+.pcbtns{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.pcbtns .btn{min-height:44px}
+.pcta{width:100%;box-sizing:border-box;font:13px/1.35 ui-monospace,Menlo,monospace;border-radius:12px;border:2px solid #94a3b8;padding:8px;word-break:break-all;resize:vertical;background:#fff;color:#0A1F44}
+.pclab{display:block;font-weight:700;margin-top:6px}.pcprev{list-style:none;padding:0;margin:8px 0;display:grid;gap:4px}
+.errmsg{color:#B91C1C;font-weight:700}`;document.head.appendChild(st);})();
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
 </script>
