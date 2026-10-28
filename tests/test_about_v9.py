@@ -1,0 +1,91 @@
+import json,threading,http.server,functools,sys,os
+from playwright.sync_api import sync_playwright
+import os; D=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+srv=http.server.ThreadingHTTPServer(('127.0.0.1',8767),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D))
+srv.RequestHandlerClass.log_message=lambda *a:None
+threading.Thread(target=srv.serve_forever,daemon=True).start()
+URL='http://127.0.0.1:8767/index.html'
+errs=[];fails=[]
+def ck(c,m):
+    print(('PASS ' if c else 'FAIL ')+m)
+    if not c: fails.append(m)
+def mk(b,vp=None,seed=None):
+    c=b.new_context(viewport=vp or {'width':1024,'height':800})
+    if seed: c.add_init_script("if(!sessionStorage.getItem('seeded')){sessionStorage.setItem('seeded','1');localStorage.setItem('ttq-save-v2',%s)}"%json.dumps(json.dumps(seed)))
+    pg=c.new_page(); pg.on('console',lambda m: errs.append(m.text) if m.type=='error' else None); pg.on('pageerror',lambda e: errs.append(str(e)))
+    return c,pg
+def sv(pg): return pg.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2'))")
+COL={'emi':'rgb(139, 92, 246)','sage':'rgb(236, 72, 153)','blu':'rgb(59, 130, 246)','eshon':'rgb(22, 163, 74)'}
+with sync_playwright() as p:
+    b=p.chromium.launch()
+    c,pg=mk(b); pg.goto(URL); pg.wait_for_selector('.herocard')
+    pg.evaluate("TTQ.save.narrator=false")
+    pg.evaluate("(s)=>{const b=document.querySelector(s);if(window.v16Go&&b.dataset.hero)v16Go(b.dataset.hero);b.click()}",'[data-hero=emi]'); pg.click('text=Start the adventure'); pg.wait_for_selector('.about [data-age]')
+    ck(True,'first pick shows About Me (age step)')
+    ck(pg.eval_on_selector('.abbtn','e=>getComputedStyle(e).backgroundColor')==COL['emi'],'Emi buttons purple')
+    ck(len(pg.query_selector_all('[data-age]'))==12 and pg.inner_text('.abq').startswith('How old are you, Emi'),'12 age buttons + question')
+    pg.screenshot(path=os.path.join(D,'v9about-about-me.png'))
+    pg.click('[data-age="6"]'); pg.wait_for_selector('[data-grade]')
+    ck(len(pg.query_selector_all('[data-grade]'))==9,'9 grade buttons')
+    pg.screenshot(path=os.path.join(D,'v9about-about-me-grade.png'))
+    pg.click('[data-grade="1"]'); pg.wait_for_selector('#abGo')
+    t=pg.inner_text('.abq'); ck(t=="Nice to meet you, Emi! You're 6 and in 1st grade!",'confirmation: '+t)
+    pg.screenshot(path=os.path.join(D,'v9about-about-me-confirm.png'))
+    s=sv(pg)['profiles']['emi']; ck(s['age']==6 and s['grade']=='1' and 'stars' in s and s['name']=='Emi','saved age 6 / grade "1" in emi profile')
+    pg.click('#abGo'); pg.wait_for_selector('#bubble'); ck(True,"Let's go continues to prologue story")
+    pg.evaluate("while(TTQ.SC)nextLine()"); pg.wait_for_selector('.stile')
+    ck(len(pg.query_selector_all('.stile'))==6,'prologue ends on Subject Select with 6 tiles')
+    ck(pg.inner_text('#abChip')=='🎂 6 · 🎒 1st grade','subject select chip')
+    ck('Recommended for 1st grade' in pg.inner_text('[data-subject=add]') and 'Recommended' not in pg.inner_text('[data-subject=frac]'),'grade badge on Addition for 1st grade, not on Fractions')
+    ck(pg.query_selector('#abEdit') is not None and pg.query_selector('text=Switch hero') is not None,'About edit + Switch hero reachable from subject select')
+    pg.evaluate("mapScreen()"); pg.wait_for_selector('#abChip')
+    ck(pg.inner_text('#abChip')=='🎂 6 · 🎒 1st grade','map chip: '+pg.inner_text('#abChip'))
+    pg.screenshot(path=os.path.join(D,'v9about-about-saved-map.png'))
+    pg.click('text=Switch hero'); pg.wait_for_selector('.herocard')
+    ck(pg.locator('[data-hero=emi] .abmini').count()==0 and '🎒' not in pg.inner_text('.herocards'),'v16: hero cards are uniform (no age/grade chip)')
+    pg.query_selector('.herocards').screenshot(path=os.path.join(D,'v9about-about-saved-herocards.png'))
+    pg.evaluate("(s)=>{const b=document.querySelector(s);if(window.v16Go&&b.dataset.hero)v16Go(b.dataset.hero);b.click()}",'[data-hero=emi]'); pg.click('text=Start the adventure'); pg.wait_for_timeout(500)
+    ck(not pg.query_selector('.about'),'same hero again skips About Me')
+    pg.evaluate("mapScreen()"); pg.click('#abEdit'); pg.wait_for_selector('[data-age="6"].on')
+    ck(True,'edit opens with current age highlighted')
+    pg.click('[data-age="7"]'); pg.wait_for_selector('[data-grade="1"].on'); pg.click('[data-grade="2"]'); pg.wait_for_selector('#abGo')
+    ck('All done' in pg.inner_text('#abGo'),'edit confirm button'); pg.click('#abGo'); pg.wait_for_selector('#abChip')
+    ck(pg.inner_text('#abChip')=='🎂 7 · 🎒 2nd grade','edited chip: '+pg.inner_text('#abChip'))
+    ck(sv(pg)['profiles']['emi']['grade']=='2','edit saved')
+    pg.click('#abEdit'); pg.wait_for_selector('[data-age]'); pg.click('text=Back'); pg.wait_for_selector('#abChip'); ck(pg.inner_text('#abChip')=='🎂 7 · 🎒 2nd grade','edit Back cancels')
+    pg.reload(); pg.wait_for_selector('#abChip'); ck(pg.inner_text('#abChip')=='🎂 7 · 🎒 2nd grade','persists after reload')
+    for h in ('sage','blu','eshon'):
+        pg.evaluate("titleScreen()"); pg.evaluate("(s)=>{const b=document.querySelector(s);if(window.v16Go&&b.dataset.hero)v16Go(b.dataset.hero);b.click()}",f'[data-hero={h}]'); pg.click('text=Start the adventure'); pg.wait_for_selector('[data-age]')
+        ck(pg.eval_on_selector('.abbtn','e=>getComputedStyle(e).backgroundColor')==COL[h],h+' colour ok')
+        if h=='blu':
+            pg.click('[data-age="1"]'); pg.click('[data-grade="none"]'); pg.wait_for_selector('#abGo')
+            ck(pg.inner_text('.abq')=="Nice to meet you, Blú! You're 1 and not in school yet!",'blu confirm: '+pg.inner_text('.abq'))
+        else:
+            pg.click('[data-age="7"]' if h=='sage' else '[data-age="6"]'); pg.click('[data-grade="2"]' if h=='sage' else '[data-grade="1"]'); pg.wait_for_selector('#abGo')
+        pg.click('#abGo'); pg.wait_for_selector('#bubble')
+    s=sv(pg)['profiles']; ck([s[h].get('age') for h in ('sage','emi','blu','eshon')]==[7,7,1,6],'per-hero ages saved separately')
+    c.close()
+    # old (v6) save without age/grade
+    old={"muted":True,"narrator":False,"hero":"sage","profiles":{"sage":{"name":"Sagey","stars":{"2":3,"3":2},"hist":{},"rewards":["r1"],"eq":{},"prologue":True},"emi":{"name":"Emi","stars":{},"hist":{},"rewards":[],"eq":{},"prologue":False}}}
+    c,pg=mk(b,seed=old); pg.goto(URL); pg.wait_for_selector('.stile')
+    ck(not pg.query_selector('#abChip') and pg.query_selector('#abEdit') is not None,'old save: subject select loads, no chip, edit button present')
+    ck('5/57' in pg.inner_text('[data-subject=mult]') and '2/19' in pg.inner_text('[data-subject=mult]'),'old save: multiplication tile shows migrated stars: '+pg.inner_text('[data-subject=mult]').replace('\n',' | '))
+    ck(pg.evaluate("TTQ.save.profiles.sage.stars['3']")==2 and pg.evaluate("TTQ.save.profiles.sage.name")=='Sagey','old save progress intact')
+    pg.click('text=Switch hero'); pg.evaluate("(s)=>{const b=document.querySelector(s);if(window.v16Go&&b.dataset.hero)v16Go(b.dataset.hero);b.click()}",'[data-hero=sage]'); pg.click('text=Start the adventure'); pg.wait_for_selector('[data-age]')
+    ck(True,'old-save hero asked About Me once'); pg.click('[data-age="7"]'); pg.click('[data-grade="2"]'); pg.click('#abGo'); pg.wait_for_selector('#abChip')
+    s=sv(pg)['profiles']['sage']; ck(s['stars']=={"2":3,"3":2} and s['rewards']==['r1'] and s['age']==7,'old save gained age, kept stars/rewards')
+    c.close()
+    # mobile
+    c,pg=mk(b,vp={'width':375,'height':812}); pg.goto(URL); pg.wait_for_selector('.herocard'); pg.evaluate("TTQ.save.narrator=false")
+    pg.evaluate("(s)=>{const b=document.querySelector(s);if(window.v16Go&&b.dataset.hero)v16Go(b.dataset.hero);b.click()}",'[data-hero=emi]'); pg.click('text=Start the adventure'); pg.wait_for_selector('[data-age]')
+    ov=lambda: pg.evaluate("document.documentElement.scrollWidth<=innerWidth+1")
+    bb=[pg.query_selector(f'[data-age="{a}"]').bounding_box() for a in (1,12)]
+    ck(ov() and bb[1]['y']+bb[1]['height']<812 and min(x['height'] for x in bb)>=56,'mobile age step fits, big buttons')
+    pg.screenshot(path=os.path.join(D,'v9about-about-me-mobile.png'))
+    pg.click('[data-age="6"]'); pg.wait_for_selector('[data-grade]'); ck(ov(),'mobile grade step no overflow')
+    pg.screenshot(path=os.path.join(D,'v9about-about-me-mobile-grade.png'))
+    pg.click('[data-grade="1"]'); pg.click('#abGo'); pg.evaluate("subjectScreen()"); pg.wait_for_selector('.stile'); ck(ov(),'mobile subject select no overflow'); pg.evaluate("mapScreen()"); pg.wait_for_selector('#abChip'); ck(ov(),'mobile map with chip no overflow')
+    pg.screenshot(path=os.path.join(D,'v9about-about-saved-mobile-map.png'))
+    c.close(); b.close()
+print('console errors:',errs); ck(not errs,'no console errors')
+print('RESULT','FAIL' if fails else 'ALL PASS'); sys.exit(1 if fails else 0)
