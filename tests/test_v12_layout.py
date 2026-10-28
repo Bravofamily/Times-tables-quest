@@ -1,7 +1,7 @@
 # v12: new screens at 320/360/768/1440 - no horizontal overflow, >=44px tap targets, no console errors; reduced motion stops hero animations.
 import os
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.dirname(os.path.abspath(__file__))); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
+D=os.path.dirname(os.path.abspath(__file__)); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m, flush=True); fails.append(m) if not c else None
 import importlib.util,re

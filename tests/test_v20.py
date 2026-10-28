@@ -1,7 +1,7 @@
 # v20: one realm list drives every count/name; hardened saves (validate, backup, recovery, no-storage fallback); progress code copy/load; honest labels
 import json,os,re,sys,threading,http.server,functools
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.dirname(os.path.abspath(__file__)));PORT=8822;URL=f'http://127.0.0.1:{PORT}/index.html'
+D=os.path.dirname(os.path.abspath(__file__));PORT=8822;URL=f'http://127.0.0.1:{PORT}/index.html'
 srv=http.server.ThreadingHTTPServer(('127.0.0.1',PORT),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D));srv.RequestHandlerClass.log_message=lambda *a:None
 threading.Thread(target=srv.serve_forever,daemon=True).start()
 FAILS=[]
@@ -14,7 +14,7 @@ V19={"muted":True,"narrator":False,"lastHero":"emi","chv":13,"voiceName":"","cal
 NUMW=['zero','one','two','three','four','five','six','seven','eight','nine','ten']
 def newctx(b,w=1280,save=None,init=None,rm=False):
     c=b.new_context(viewport={'width':w,'height':844 if w<500 else 800})
-    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"20"}'))
+    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
     if save is not None:
         c.add_init_script("if(!sessionStorage.getItem('seeded')){localStorage.clear();%s;sessionStorage.setItem('seeded','1')}"%''.join(f"localStorage.setItem({json.dumps(k)},{json.dumps(v)});" for k,v in save.items()))
     if init:c.add_init_script(init)

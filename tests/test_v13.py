@@ -1,7 +1,7 @@
 # v13: long multiplication wing, Mystery Missing Numbers, Muddle Tower (Mixed Math), migration, hints, layout.
 import json,os,sys,re
 from playwright.sync_api import sync_playwright
-import os; D=os.path.dirname(os.path.dirname(os.path.abspath(__file__))); URL='file://'+D+'/index.html'
+D='/workspace/times-tables-quest'; URL='file://'+D+'/index.html'
 errs=[];fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m,flush=True)
@@ -31,8 +31,8 @@ with sync_playwright() as p:
     pg.on('console',lambda m: errs.append(m.text) if m.type=='error' else None); pg.on('pageerror',lambda e: errs.append(str(e)))
     pg.on('dialog',lambda d: d.accept())
     pg.goto(URL); pg.wait_for_timeout(300)
-    ck(pg.evaluate("APP_VERSION")=='20','APP_VERSION is 20')
-    ck(json.load(open(D+'/version.json'))=={"version":"20"},'version.json is {"version":"20"}')
+    ck(pg.evaluate("APP_VERSION")=='21','APP_VERSION is 21')
+    ck(json.load(open(D+'/version.json'))=={"version":"21"},'version.json is {"version":"21"}')
     # ---------- chapter lists ----------
     ch=pg.evaluate("Object.fromEntries(SUBJ.map(s=>[s.id,s.id==='mult'?MLX.map(c=>c.t):s.ch.map(c=>c.t)]))")
     ck(pg.evaluate("sCount('mult')")==19 and ch['mult'][0].startswith('×10') and 'Area' in ch['mult'][1] and 'Carry' in ch['mult'][2] and '3-Digit' in ch['mult'][3] and '2-Digit × 2-Digit' in ch['mult'][4] and 'Mystery' in ch['mult'][5] and 'Word' in ch['mult'][6],'castle: 12 tables + 7 new chapters in order (ch13-19): %s'%ch['mult'])

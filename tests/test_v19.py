@@ -1,7 +1,7 @@
 # v19: one NumiRealm brand — titles/meta, favicon + touch icons, static loading screen, one logo component everywhere
 import json,os,re,sys,base64,threading,http.server,functools,urllib.parse
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.dirname(os.path.abspath(__file__)));PORT=8812;URL=f'http://127.0.0.1:{PORT}/index.html'
+D=os.path.dirname(os.path.abspath(__file__));PORT=8812;URL=f'http://127.0.0.1:{PORT}/index.html'
 srv=http.server.ThreadingHTTPServer(('127.0.0.1',PORT),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D));srv.RequestHandlerClass.log_message=lambda *a:None
 threading.Thread(target=srv.serve_forever,daemon=True).start()
 FAILS=[]
@@ -38,7 +38,7 @@ with sync_playwright() as p:
         for w in [390,1280]:
             for rm in [False,True]:
                 c=b.new_context(viewport={'width':w,'height':844 if w<500 else 800},reduced_motion='reduce' if rm else 'no-preference')
-                c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"20"}'))
+                c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
                 pg=c.new_page();errs=[];pg.on('pageerror',lambda e:errs.append(str(e)))
                 tag=f'{eng} {w}px{" reduced-motion" if rm else ""}'
                 # pass 1: same page with the dismissal held (test-only route patch) so the loading screen can be inspected
@@ -71,7 +71,7 @@ with sync_playwright() as p:
         # game header + save/auto-update unaffected
         c=b.new_context(viewport={'width':390,'height':844})
         c.add_init_script("if(!sessionStorage.getItem('seeded')){localStorage.setItem('ttq-save-v2',%s);sessionStorage.setItem('seeded','1')}"%json.dumps(json.dumps(SAVE)))
-        c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"20"}'))
+        c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
         pg=c.new_page();pg.goto(URL);pg.wait_for_timeout(1500)
         sv=json.loads(pg.evaluate("localStorage.getItem('ttq-save-v2')"))
         ck(sv['profiles']['emi']['stars'].get('2')==3 and sv['profiles']['emi']['name']=='Emi',f'{eng}: v18 save loads unchanged')

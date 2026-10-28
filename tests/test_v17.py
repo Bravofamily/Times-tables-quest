@@ -2,7 +2,7 @@
 import json,threading,http.server,functools,os
 from playwright.sync_api import sync_playwright
 os.environ.setdefault('GST_PLUGIN_PATH','/workspace/wkdeps/root/usr/lib/x86_64-linux-gnu/gstreamer-1.0')
-import os; D=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+D='/workspace/times-tables-quest'
 srv=http.server.ThreadingHTTPServer(('127.0.0.1',8799),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D))
 srv.RequestHandlerClass.log_message=lambda *a:None
 threading.Thread(target=srv.serve_forever,daemon=True).start()
@@ -12,7 +12,7 @@ def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m)
     if not c: fails.append(m)
 HTML=open(D+'/index.html').read()
-ck("const APP_VERSION='20'" in HTML and json.load(open(D+'/version.json'))=={"version":"20"},'APP_VERSION and version.json are 20')
+ck("const APP_VERSION='21'" in HTML and json.load(open(D+'/version.json'))=={"version":"21"},'APP_VERSION and version.json are 21')
 ck('display-mode' not in HTML and 'standalone' not in HTML and 'hplay mob' not in HTML and 'subjcards dsk' not in HTML,'no standalone-only or phone-only Home markup/styles left')
 def save(last):
     return {"muted":True,"narrator":False,"lastHero":last,"profiles":{"emi":{"name":"Emi","stars":{"2":3},"hist":{"2x3":[1,1]},"eq":{},"prologue":True,"age":6,"grade":"1"},
@@ -20,7 +20,7 @@ def save(last):
 def ctx(b,w,h,last='emi',touch=False):
     c=b.new_context(viewport={'width':w,'height':h},has_touch=touch)
     c.add_init_script("if(!sessionStorage.getItem('s')){sessionStorage.setItem('s','1');localStorage.setItem('ttq-save-v2',%s)}"%json.dumps(json.dumps(save(last))))
-    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"20"}'))
+    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
     pg=c.new_page();pg.on('pageerror',lambda e:errs.append(str(e)));pg.goto(URL);pg.wait_for_selector('.hhero');pg.wait_for_timeout(500);return c,pg
 LOGO="""(()=>{const l=document.querySelector('.hhero .logo'),r=l.getBoundingClientRect(),h=document.querySelector('.hhero').getBoundingClientRect(),
  fs=parseFloat(getComputedStyle(l).fontSize),sv=l.querySelector('svg.nrlogo'),tx=sv.querySelector('text'),tb=tx.getBBox();

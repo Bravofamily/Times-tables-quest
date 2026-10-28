@@ -2,7 +2,7 @@
 import json,threading,http.server,functools,os
 from playwright.sync_api import sync_playwright
 os.environ.setdefault('GST_PLUGIN_PATH','/workspace/wkdeps/root/usr/lib/x86_64-linux-gnu/gstreamer-1.0')
-import os; D=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+D='/workspace/times-tables-quest'
 srv=http.server.ThreadingHTTPServer(('127.0.0.1',8798),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D))
 srv.RequestHandlerClass.log_message=lambda *a:None
 threading.Thread(target=srv.serve_forever,daemon=True).start()
@@ -18,7 +18,7 @@ def ctx(b,w,h,save=SAVE,touch=False,rm=None):
     if rm: kw['reduced_motion']=rm
     c=b.new_context(**kw)
     if save is not None: c.add_init_script("if(!sessionStorage.getItem('s')){sessionStorage.setItem('s','1');localStorage.setItem('ttq-save-v2',%s)}"%json.dumps(json.dumps(save)))
-    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"20"}'))
+    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
     pg=c.new_page();pg.on('pageerror',lambda e:errs.append(str(e)));pg.goto(URL);pg.wait_for_selector('.hcar');pg.wait_for_timeout(500);return c,pg
 cen=lambda pg:pg.evaluate("v16Center()")
 def offs(pg): return pg.evaluate("Object.fromEntries([...document.querySelectorAll('.hslide')].map(s=>[s.dataset.slide,+s.dataset.off]))")
@@ -73,7 +73,7 @@ with sync_playwright() as p:
     pg.evaluate("heroPrompt()");pg.wait_for_timeout(300)
     ck('Pick your hero first, then press Play!' in pg.inner_text('#heroTip') and pg.is_visible('#heroTip'),'"Pick your hero first, then press Play!" tip kept')
     ck(pg.evaluate("document.activeElement.dataset.hero")==cen(pg),'heroPrompt focuses centered card')
-    pg.screenshot(path='/tmp/numirealm-t-desk.png')
+    pg.screenshot(path='/workspace/v16tmp/t-desk.png')
     # select centered -> same pick flow
     pg.click('.hslide[data-off="0"] .herocard');pg.wait_for_selector('#nm');ck(pg.evaluate("TTQ.save.hero")=='blu' and pg.is_visible('text=Start the adventure'),'tap center selects Blú -> name/Start screen as before')
     sv=pg.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2'))");e=sv['profiles']['emi']

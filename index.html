@@ -1930,7 +1930,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='20';
+const APP_VERSION='21';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -4229,6 +4229,160 @@ setTimeout(()=>{let l=null;try{l=sessionStorage.getItem('nr-loaded');sessionStor
 .pcta{width:100%;box-sizing:border-box;font:13px/1.35 ui-monospace,Menlo,monospace;border-radius:12px;border:2px solid #94a3b8;padding:8px;word-break:break-all;resize:vertical;background:#fff;color:#0A1F44}
 .pclab{display:block;font-weight:700;margin-top:6px}.pcprev{list-style:none;padding:0;margin:8px 0;display:grid;gap:4px}
 .errmsg{color:#B91C1C;font-weight:700}`;document.head.appendChild(st);})();
+/* ===== v21: worked examples after a miss, spaced review queue, mastery checks, Mixed Math review, offline play ===== */
+const V21={pend:null};
+/* ---------- 1. worked example after a wrong answer (shown only after the attempt, never as a hint) ---------- */
+const W21F=(n,d)=>`<span class="fr"><span class="fn">${n}</span><span class="fd">${d}</span></span>`;
+const w21gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a||1;};
+const w21sym={'+':'+','-':'−','−':'−','*':'×','×':'×','/':'÷','÷':'÷'};
+function w21calc(a,o,b){o=w21sym[o]||o;return o==='+'?a+b:o==='−'?a-b:o==='×'?a*b:a/b;}
+function w21add(a,b){const s=a+b;if(s<=20){const hi=Math.max(a,b),lo=Math.min(a,b);const seq=[];for(let i=1;i<=lo&&i<=6;i++)seq.push(hi+i);
+  return [`Start at the bigger number, ${hi}.`,`Count on ${lo}: ${seq.join(', ')}${lo>6?', …':''}.`,`So ${a} + ${b} = ${s}.`];}
+ const t=Math.floor(a/10)*10+Math.floor(b/10)*10,o=a%10+b%10;return [`Split into tens and ones.`,`Tens: ${Math.floor(a/10)*10} + ${Math.floor(b/10)*10} = ${t}. Ones: ${a%10} + ${b%10} = ${o}.`,`Put them together: ${t} + ${o} = ${s}.`];}
+function w21sub(a,b){const d=a-b;if(a<=20)return [`Start at ${a} and count back ${b}.`,`You land on ${d}.`,`Check: ${d} + ${b} = ${a}.`];
+ return [`Take away the tens, then the ones.`,`${a} − ${Math.floor(b/10)*10} = ${a-Math.floor(b/10)*10}, then − ${b%10} = ${d}.`,`Check: ${d} + ${b} = ${a}.`];}
+function w21mul(a,b){const p=a*b;if(a<=12&&b<=12)return [`${a} × ${b} means ${b} groups of ${a}.`,`Skip count by ${a}: ${Array.from({length:Math.min(b,5)},(_,i)=>a*(i+1)).join(', ')}${b>5?', …':''}.`,`So ${a} × ${b} = ${p}.`];
+ const big=Math.max(a,b),sm=Math.min(a,b);if(sm<10){const T=Math.floor(big/10)*10,O=big%10;return [`Split ${big} into ${T} and ${O}.`,`${T} × ${sm} = ${T*sm} and ${O} × ${sm} = ${O*sm}.`,`Add the parts: ${T*sm} + ${O*sm} = ${p}.`];}
+ const T=Math.floor(b/10)*10,O=b%10;return [`Split ${b} into ${T} and ${O}.`,`${a} × ${T} = ${a*T} and ${a} × ${O} = ${a*O}.`,`Add the rows: ${a*T} + ${a*O} = ${p}.`];}
+function w21div(n,d){const q=Math.floor(n/d),r=n%d;return [`Think multiplication: ${d} × ? = ${n}${r?' (or as close as you can get without going over)':''}.`,`${d} × ${q} = ${d*q}.`,r?`${n} − ${d*q} = ${r} left over, so ${q} R ${r}.`:`So ${n} ÷ ${d} = ${q}.`];}
+function worked21(q){const m=q&&q.m||{};try{switch(m.op){
+ case 'add':{const T=m.terms;if(T.length===2)return w21add(T[0],T[1]);let run=T[0];const st=[];for(let i=1;i<T.length;i++){st.push(`${run} + ${T[i]} = ${run+T[i]}`);run+=T[i];}return [`Add the numbers one at a time.`,st.join(', then ')+'.',`So the total is ${run}.`];}
+ case 'sub':return w21sub(m.a,m.b);
+ case 'eqn':{const v=m.o==='+'?m.r-m.x:m.x-m.r;return m.o==='+'?[`The parts make ${m.r}. One part is ${m.x}.`,`Find the other part: ${m.r} − ${m.x} = ${v}.`,`Check: ${m.x} + ${v} = ${m.r}.`]:[`${m.x} − ? = ${m.r}.`,`Find the jump: ${m.x} − ${m.r} = ${v}.`,`Check: ${m.x} − ${v} = ${m.r}.`];}
+ case 'mcpair':return [`Add each pair and look for ${m.target}.`,m.opts.map(p=>`${p[0]} + ${p[1]} = ${p[0]+p[1]}`).join(' · ')+'.',`The pair that makes ${m.target} is the answer.`];
+ case 'miss':{const o=w21sym[m.o]||m.o,eq=`${m.a} ${o} ${m.b} = ${m.c}`;if(m.pos===2)return o==='+'?w21add(m.a,m.b):o==='−'?w21sub(m.a,m.b):o==='×'?w21mul(m.a,m.b):w21div(m.a,m.b);
+  if(o==='+')return [`A missing part in an addition: whole − known part = missing part.`,`${m.c} − ${m.pos===0?m.b:m.a} = ${m.pos===0?m.a:m.b}.`,`Check: ${eq}.`];
+  if(o==='−')return m.pos===0?[`Missing start: add back what was taken.`,`${m.c} + ${m.b} = ${m.a}.`,`Check: ${eq}.`]:[`How much was taken? Start − end.`,`${m.a} − ${m.c} = ${m.b}.`,`Check: ${eq}.`];
+  if(o==='×')return [`A missing factor: divide the product by the factor you know.`,`${m.c} ÷ ${m.pos===0?m.b:m.a} = ${m.pos===0?m.a:m.b}.`,`Check: ${eq}.`];
+  return m.pos===0?[`Missing number being divided: multiply back.`,`${m.c} × ${m.b} = ${m.a}.`,`Check: ${eq}.`]:[`What do you divide by? Start ÷ answer.`,`${m.a} ÷ ${m.c} = ${m.b}.`,`Check: ${eq}.`];}
+ case 'eqn2':{const v=q.ans,o=w21sym[m.o]||m.o,L=m.l==null?v:m.l,R=m.r==null?v:m.r,eq=`${L} ${o} ${R} = ${m.res}`;
+  if(m.l==null)return o==='+'?[`? + ${m.r} = ${m.res}. Find the missing part.`,`${m.res} − ${m.r} = ${v}.`,`Check: ${eq}.`]:[`? − ${m.r} = ${m.res}. Add back what was taken.`,`${m.res} + ${m.r} = ${v}.`,`Check: ${eq}.`];
+  return o==='+'?[`${m.l} + ? = ${m.res}. Find the missing part.`,`${m.res} − ${m.l} = ${v}.`,`Check: ${eq}.`]:[`${m.l} − ? = ${m.res}. Find the jump.`,`${m.l} − ${m.res} = ${v}.`,`Check: ${eq}.`];}
+ case 'mcfact':{const ns=String(q.text).match(/\d+/g).map(Number),big=Math.max(...ns),o=ns.filter(x=>x!==big);return [`A fact family uses the same three numbers. The biggest, ${big}, is the whole.`,`Facts: ${o[0]} + ${o[1]} = ${big} and ${big} − ${o[0]} = ${o[1]}.`,`A fact where the whole is not the biggest number can't be in the family.`];}
+ case 'x10':{const zb=/0$/.test(String(m.b))&&!/0$/.test(String(m.a)),Z=zb?m.b:m.a,O=zb?m.a:m.b,z=String(Z).match(/0+$/)[0].length,k=Z/Math.pow(10,z);return [`Hide the zero${z>1?'s':''} in ${Z}: ${O} × ${k} = ${O*k}.`,`Put ${z>1?'them':'it'} back on the end: ${O*k}${'0'.repeat(z)}.`,`So ${m.a} × ${m.b} = ${m.a*m.b}.`];}
+ case 'lm':case 'mul':return w21mul(m.a,m.b);
+ case 'div':return w21div(m.n,m.d);
+ case 'divr':return w21div(m.n,m.d);
+ case 'divceil':{const q0=Math.floor(m.n/m.d),r=m.n%m.d;return [`${m.n} ÷ ${m.d} = ${q0} R ${r}.`,`${q0} boxes are full and ${r} are left over.`,`The leftovers need one more box: ${q0} + 1 = ${q0+1}.`];}
+ case 'divfloor':{const q0=Math.floor(m.n/m.d),r=m.n%m.d;return [`${m.n} ÷ ${m.d} = ${q0} R ${r}.`,`Only ${q0} boxes are completely full.`,`The ${r} left over do not fill a box.`];}
+ case 'frname':return [`Count the shaded pieces: ${m.n}. That goes on top.`,`Count all the equal pieces: ${m.d}. That goes on the bottom.`,`So the fraction is ${W21F(m.n,m.d)}.`];
+ case 'frpart':return [`The numerator is the top number: it counts the pieces you have.`,`The denominator is the bottom number: it counts the equal pieces in the whole.`,`In ${W21F(m.n,m.d)} the ${m.top?'numerator is '+m.n:'denominator is '+m.d}.`];
+ case 'frcmp':{const [a,b]=[m.a,m.b];if(a[1]===b[1])return [`Same bottom numbers, so the pieces are the same size.`,`Compare the tops: ${a[0]} and ${b[0]}.`,`More pieces means a bigger fraction.`];
+  if(a[0]===b[0])return [`Same top numbers.`,`A bigger bottom number means smaller pieces.`,`So the fraction with the bigger bottom is smaller.`];
+  return [`Make the bottoms match by cross-multiplying.`,`${a[0]} × ${b[1]} = ${a[0]*b[1]} and ${b[0]} × ${a[1]} = ${b[0]*a[1]}.`,`The bigger product belongs to the bigger fraction.`];}
+ case 'freq':{const k=m.D?m.D/m.d:m.N/m.n;return [`Multiply the top and bottom by the same number.`,m.D?`${m.d} × ${k} = ${m.D}, so the number is ${k}.`:`${m.n} × ${k} = ${m.N}, so the number is ${k}.`,m.D?`Top: ${m.n} × ${k} = ${m.n*k}.`:`Bottom: ${m.d} × ${k} = ${m.d*k}.`];}
+ case 'freqmc':return [`Equal fractions simplify to the same fraction.`,`Simplify each choice by dividing top and bottom by the same number.`,`The one that becomes ${W21F(m.n,m.d)} is equal.`];
+ case 'frsimp':{const g=w21gcd(m.N,m.D);return [`Find the biggest number that divides both ${m.N} and ${m.D}: ${g}.`,`${m.N} ÷ ${g} = ${m.N/g} and ${m.D} ÷ ${g} = ${m.D/g}.`,`So ${W21F(m.N,m.D)} = ${W21F(m.N/g,m.D/g)}.`];}
+ case 'fradd':case 'frsub':{const s=m.op==='fradd',t=s?m.a[0]+m.b[0]:m.a[0]-m.b[0];return [`The bottoms match (${m.a[1]}), so the piece size stays the same.`,`${s?'Add':'Subtract'} the tops: ${m.a[0]} ${s?'+':'−'} ${m.b[0]} = ${t}.`,`Keep the bottom: ${W21F(t,m.a[1])}.`];}
+ case 'fraddu':{const L=m.a[1]*m.b[1]/w21gcd(m.a[1],m.b[1]),x=m.a[0]*L/m.a[1],y=m.b[0]*L/m.b[1];return [`Make the bottoms match: use ${L}.`,`${W21F(m.a[0],m.a[1])} = ${W21F(x,L)} and ${W21F(m.b[0],m.b[1])} = ${W21F(y,L)}.`,`Add the tops: ${x} + ${y} = ${x+y}, so ${W21F(x+y,L)}.`];}
+ case 'toimp':return [`Each whole is ${m.d} pieces: ${m.w} × ${m.d} = ${m.w*m.d}.`,`Add the extra pieces: ${m.w*m.d} + ${m.n} = ${m.w*m.d+m.n}.`,`Keep the bottom: ${W21F(m.w*m.d+m.n,m.d)}.`];
+ case 'tomixed':{const w=Math.floor(m.N/m.d),r=m.N%m.d;return [`How many wholes? ${m.N} ÷ ${m.d} = ${w} R ${r}.`,`${w} whole${w===1?'':'s'}, and ${r} piece${r===1?'':'s'} left over.`,`Write it as ${w} and ${W21F(r,m.d)}.`];}
+ case 'frof':{const x=m.N/m.d;return [`Split ${m.N} into ${m.d} equal groups: ${m.N} ÷ ${m.d} = ${x}.`,`Take ${m.n} of the groups: ${x} × ${m.n} = ${x*m.n}.`,`So ${W21F(m.n,m.d)} of ${m.N} = ${x*m.n}.`];}
+ case 'mixf':case 'wopst':{const o=w21sym[m.o]||m.o,pre=m.op==='wopst'?[`Find the operation in the story: ${o==='+'?'more or together means +':o==='−'?'left, fewer or gave away means −':o==='×'?'equal groups means ×':'sharing equally means ÷'}.`]:[];
+  const b=o==='+'?w21add(m.a,m.b):o==='−'?w21sub(m.a,m.b):o==='×'?w21mul(m.a,m.b):w21div(m.a,m.b);return pre.length?pre.concat(b.slice(-2)):b;}
+ case 'oop':{const f=m.first,v=w21calc(+f.split(' ')[0],f.split(' ')[1],+f.split(' ')[2]);return [m.br?`Parentheses first: ${f} = ${v}.`:`× and ÷ before + and −: ${f} = ${v}.`,`Put ${v} in its place and finish the problem.`,`Answer: ${q.ans}.`];}
+ case 'oopmc':return [`Order of operations: parentheses first.`,`Then × and ÷, from left to right.`,`Then + and −. So the first part here is ${m.first}.`];
+ case 'two':{const p=m.s1.split(' '),v=w21calc(+p[0],p[1],+p[2]);return [`Step 1: ${m.s1} = ${v}.`,`Step 2: ${v} ${m.s2} = ${q.ans}.`,`Answer: ${q.ans}.`];}
+ }}catch(e){}
+ if(q&&q.input==='ld'&&q.L&&q.L.steps&&q.L.steps[0]){const s=q.L.steps[0];return [`Long division repeats four steps: divide, multiply, subtract, bring down.`,`First step: how many times does it fit? ${s.q}. Multiply: ${s.m}. Subtract to get ${s.r}.`,`Bring down the next digit and repeat until no digits are left.`];}
+ return null;}
+function wex21(){const fb=$('fb');if(!fb||!SS||!SS.cur||SS.inBoss||!fb.classList.contains('bad'))return;const q=SS.cur;if(fb.dataset.wexFor===String(SS.pi)+'|'+q.text)return;
+ const st=worked21(q);if(!st)return;fb.dataset.wexFor=String(SS.pi)+'|'+q.text;const old=$('wex');if(old)old.remove();
+ fb.insertAdjacentHTML('afterend',`<div class="wex" id="wex" role="note" aria-label="How to solve it"><b>How to solve it</b><ol>${st.map(s=>`<li>${s}</li>`).join('')}</ol></div>`);}
+new MutationObserver(()=>{try{wex21();const w=$('wex'),fb=$('fb');if(w&&(!fb||!fb.classList.contains('bad')))w.remove();}catch(e){}}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+
+/* ---------- 2. spaced review queue (reuses the needs-work list) ---------- */
+const RV_DAYS=[0,1,3,7,14],DAY21=864e5;
+function rvOf(pf){if(!pf.review||typeof pf.review!=='object')pf.review={};return pf.review;}
+function rvDue(pf,now){now=now||Date.now();const R=rvOf(pf);return Object.entries(R).map(([k,r])=>{const [sid,c]=k.split(':');return {k,sid,c:+c,box:r.box||1,due:r.due||0};})
+ .filter(x=>SUBJ_BY[x.sid]&&x.c>=1&&x.c<=sCount(x.sid));}
+function rvQueue(pf){const now=Date.now(),w=weakList(pf).map(x=>Object.assign({},x,{kind:'weak',dueNow:true})),r=rvDue(pf).filter(x=>!weakOf(pf)[x.k]).map(x=>Object.assign(x,{kind:'rev',dueNow:x.due<=now}));
+ return w.concat(r.sort((a,b)=>a.due-b.due));}
+const _noteAns21=noteAns;noteAns=function(sid,c,q,ok,errs){const pf=save.hero?P():null,key=sid+':'+c,had=pf&&!!weakOf(pf)[key];
+ const r=_noteAns21.apply(this,arguments);if(!pf)return r;const W=weakOf(pf),R=rvOf(pf),good=ok&&(errs||0)<2;
+ if(had&&!W[key]&&good){R[key]={box:1,due:Date.now()+RV_DAYS[1]*DAY21};}
+ else if(!good&&R[key]){delete R[key];}
+ else if(good&&DR&&DR.kind==='review'&&R[key]&&!W[key]&&(R[key].due||0)<=Date.now()){const b=(R[key].box||1)+1;if(b>=RV_DAYS.length){delete R[key];pf.reviewDone=(pf.reviewDone||0)+1;DR.grad=(DR.grad||0)+1;}else R[key]={box:b,due:Date.now()+RV_DAYS[b]*DAY21};DR.moved=(DR.moved||0)+1;}
+ if(DR&&DR.kind==='mixrev'){if(good){DR.run=(DR.run||0)+1;if(DR.run>=2&&DR.stage<DR.all.length){DR.stage++;DR.run=0;DR.grew=(DR.grew||0)+1;}}else DR.run=0;}
+ persist();return r;};
+function rvWhen(x){if(x.kind==='weak')return 'Due now (missed recently)';if(x.dueNow)return 'Due now';const d=Math.ceil((x.due-Date.now())/DAY21);return `Next review in ${d} day${d===1?'':'s'}`;}
+function reviewCard(pf){const qv=pf?rvQueue(pf):[],due=qv.filter(x=>x.dueNow);
+ return `<div class="card rvcard" id="reviewQueue"><h2>🗓️ Review queue</h2><p>Skills come back for a quick review after 1, 3, 7 and 14 days. Spacing practice out like this helps it stick.</p>
+ ${qv.length?`<ul class="nwlist rvlist">${qv.slice(0,6).map(x=>`<li data-rv="${x.sid}-${x.c}" class="${x.dueNow?'due':''}"><span class="po" style="background:${QCOL[x.sid]}" aria-hidden="true">${SUBJ_BY[x.sid].op}</span>${esc(chName(x.sid,x.c))}<small>${rvWhen(x)}${x.kind==='rev'?` · step ${x.box} of 4`:''}</small></li>`).join('')}</ul>`:`<p id="rvEmpty">Nothing to review yet. Missed questions and cleared skills show up here.</p>`}
+ <button class="btn green" type="button" id="rvStart" ${due.length?'':'disabled aria-disabled="true"'} onclick="reviewStart()">▶ Start review${due.length?` (${due.length} due)`:''}</button></div>`;}
+function reviewStart(){SFX.tap();const id=vHero();playWith(()=>{const pf=P(),due=rvQueue(pf).filter(x=>x.dueNow);if(!due.length)return go('training');
+ V21.pend={kind:'review',count:Math.min(10,Math.max(5,due.length*2))};drillGo(due.map(x=>({sid:x.sid,c:x.c,sigs:x.sigs||[],wt:x.kind==='weak'?x.score:2})),true);},id);}
+
+/* ---------- 3. mastery check per realm (8 questions, no lanterns, 7 right to pass) ---------- */
+const MC_N=8,MC_PASS=7;
+function mOf(pf){if(!pf.mastery||typeof pf.mastery!=='object')pf.mastery={};return pf.mastery;}
+function mcDone(sid,pf){return pf?uIdx(sid,pf):0;}
+function masteryCard(pf,sid){const u=mcDone(sid,pf),N=sCount(sid),M=pf?mOf(pf)[sid]:null,sb=SUBJ_BY[sid],ok=u>=2;
+ const st=!M?'Not tried yet.':M.pass&&M.upto>=N?`🏅 Realm Master! Best: ${M.best} of ${MC_N}.`:M.pass?`✓ Passed through chapter ${M.upto}. Best: ${M.best} of ${MC_N}.`:`Best so far: ${M.best} of ${MC_N}. ${MC_PASS} right passes.`;
+ return `<div class="card mccard" id="masteryCard" data-realm="${sid}" style="--sc:${QCOL[sid]}"><h2>📝 Mastery check: ${esc(sb.realm)}</h2>
+ <p>${MC_N} questions from the chapters you have finished (1 to ${Math.max(u,1)}), no lanterns. Get ${MC_PASS} right to pass. Pass after finishing all ${N} chapters to earn the Realm Master badge.</p><p class="mcstat" id="mcStat">${st}</p>
+ ${ok?`<button class="btn purple" type="button" id="mcStart" onclick="masteryStart('${sid}')">📝 Start mastery check</button>`:`<p class="small" id="mcLocked">Finish 2 chapters in ${esc(sb.realm)} to unlock this check.</p>`}</div>`;}
+function masteryStart(sid){SFX.tap();const id=vHero();playWith(()=>{const pf=P(),u=mcDone(sid,pf);if(u<2)return go('training');
+ const cs=[];for(let c=u;c>=1&&cs.length<MC_N;c--)cs.push(c);while(cs.length<MC_N)cs.push(cs[cs.length%Math.max(1,u)]);
+ V21.pend={kind:'mastery',count:MC_N,sid,upto:u,lan:0};drillGo(cs.map(c=>({sid,c})),false);},id);}
+
+/* ---------- 4. Mixed Math review from mastered skills, mixing in one more skill after 2 right in a row ---------- */
+function masteredSkills(pf){const out=[];if(!pf)return out;SUBJ.forEach(s=>{const N=sCount(s.id);for(let c=1;c<=N;c++)if(chStars(s.id,c,pf)>=2)out.push({sid:s.id,c});});return out;}
+function mixOrder(list){const by={};list.forEach(x=>(by[x.sid]=by[x.sid]||[]).push(x));const realms=Object.keys(by).map(k=>by[k].reverse()),out=[];
+ while(realms.some(r=>r.length))realms.forEach(r=>{if(r.length)out.push(r.shift());});return out;}
+function mixCard(pf){const ms=masteredSkills(pf),rs=new Set(ms.map(x=>x.sid));
+ return `<div class="card mxcard" id="mixReview"><h2>🔀 Mixed Math review</h2><p>Questions from chapters with 2 or more stars, across every realm. It starts with 2 skills and mixes in one more each time you get 2 right in a row.</p>
+ <p class="small" id="mxStat">${ms.length} skill${ms.length===1?'':'s'} ready from ${rs.size} realm${rs.size===1?'':'s'}.</p>
+ ${ms.length>=2?`<button class="btn blue" type="button" id="mxStart" onclick="mixStart()">🔀 Start Mixed Math review</button>`:`<p class="small" id="mxLocked">Earn 2 stars in two chapters to unlock this review.</p>`}</div>`;}
+function mixStart(){SFX.tap();const id=vHero();playWith(()=>{const all=mixOrder(masteredSkills(P()));if(all.length<2)return go('training');
+ V21.pend={kind:'mixrev',count:10,all,stage:2,run:0};drillGo(all.slice(0,2),false);},id);}
+
+/* ---------- drill engine hooks: fixed-length rounds for the three new modes ---------- */
+const KIND21={review:'🗓️ Review',mastery:'📝 Mastery check',mixrev:'🔀 Mixed Math review'};
+const _dn21=drillNext;drillNext=function(){if(DR&&V21.pend){const o=V21.pend;V21.pend=null;Object.assign(DR,o);if(o.lan!=null)DR.lan=o.lan;DR.end=Date.now()+DAY21;}
+ if(DR&&DR.count){if(DR.total>=DR.count){DR.over=true;return drillDone();}
+  if(DR.kind==='mastery'&&DR.total>0)DR.items.push(DR.items.shift());
+  if(DR.kind==='mixrev'){const sub=DR.all.slice(0,DR.stage);DR.items=[sub[Math.floor(Math.random()*sub.length)]];}}
+ return _dn21.apply(this,arguments);};
+const _dr21=drRender;drRender=function(q,it){const r=_dr21.apply(this,arguments);if(DR&&DR.kind){const l=document.querySelector('.drlab');if(l)l.textContent=`${KIND21[DR.kind]} · ${SUBJ_BY[it.sid].op} ${chName(it.sid,it.c)}`;
+ const t=$('drTime');if(t){t.textContent=`Question ${Math.min(DR.total+1,DR.count)} of ${DR.count}`;t.setAttribute('role','status');}
+ if(DR.kind==='mixrev'){const n=$('drNote');if(n&&DR.grew&&DR.total>0&&DR.lastGrew!==DR.grew){DR.lastGrew=DR.grew;n.textContent=`New skill mixed in! Now mixing ${DR.stage} skills.`;}}
+ const e=$('drEnd');if(e)e.textContent='⏹ Stop';}return r;};
+const _dt21=drTick;drTick=function(){if(DR&&DR.count&&$('drTime'))return;return _dt21.apply(this,arguments);};
+const _dd21=drillDone;drillDone=function(){const d=DR;const r=_dd21.apply(this,arguments);if(!d||!d.kind)return r;const box=$('drDone');if(!box)return r;const pf=P();let html='';
+ if(d.kind==='mastery'){const M=mOf(pf),prev=M[d.sid]||{},full=d.total>=d.count,pass=full&&d.score>=MC_PASS,N=sCount(d.sid);
+  M[d.sid]={best:Math.max(prev.best||0,d.score),pass:!!(prev.pass||pass),upto:pass?Math.max(prev.upto||0,d.upto):(prev.upto||0),at:Date.now(),tries:(prev.tries||0)+1};persist();
+  html=`<div class="mcres ${pass?'pass':'notyet'}" id="mcResult" role="status"><h3>${pass?(d.upto>=N?'🏅 Realm Master: '+esc(SUBJ_BY[d.sid].realm)+'!':'✓ Mastery check passed!'):'Not yet. Keep training!'}</h3><p>${d.score} of ${d.count} right. ${pass?'':`${MC_PASS} right passes. The review queue and skill drills will help.`}</p></div>`;}
+ else if(d.kind==='review')html=`<p id="rvResult" role="status">🗓️ ${d.moved||0} skill${d.moved===1?'':'s'} moved to a later review${d.grad?` · ${d.grad} finished the review steps`:''}.</p>`;
+ else if(d.kind==='mixrev')html=`<p id="mxResult" role="status">🔀 You mixed ${d.stage} skill${d.stage===1?'':'s'} this round.</p>`;
+ box.querySelector('h2').insertAdjacentHTML('afterend',html);const h=box.querySelector('h2');if(h)h.textContent=KIND21[d.kind]+' done!';
+ const lp=[...box.querySelectorAll('p')].find(p=>/Lanterns left/.test(p.textContent));if(lp&&d.kind==='mastery')lp.remove();
+ const ag=$('drAgain');if(ag)ag.setAttribute('onclick',d.kind==='mastery'?`masteryStart('${d.sid}')`:d.kind==='review'?'reviewStart()':'mixStart()');return r;};
+
+/* ---------- Training Grounds + Trophy Room additions ---------- */
+const _tr21=SCR.training;function training21(){const r=_tr21.apply(this,arguments);try{const id=vHero(),pf=id?save.profiles[id]:null,tr=V12.tRealm&&SUBJ_BY[V12.tRealm]?V12.tRealm:'add',nw=$('needsWork');
+ if(nw){nw.insertAdjacentHTML('beforebegin',reviewCard(pf));nw.insertAdjacentHTML('afterend',mixCard(pf));}const dr=$('drills');if(dr)dr.closest('.card').insertAdjacentHTML('afterend',masteryCard(pf,tr));}catch(e){console.warn('v21 training',e);}return r;}
+SCR.training=training21;training=training21;
+function masteryBadgesHTML(id){const pf=save.profiles[id],M=pf?mOf(pf):{};const n=SUBJ.filter(s=>M[s.id]&&M[s.id].pass&&M[s.id].upto>=sCount(s.id)).length;
+ return `<div class="card mbcard" id="masteryBadges"><h2>🏅 Realm Master badges <small>(${n} of ${SUBJ.length})</small></h2><p class="small">Pass a realm's mastery check (Practice → Mastery check) after finishing all of its chapters.</p><div class="mbgrid">${SUBJ.map(s=>{const m=M[s.id],full=m&&m.pass&&m.upto>=sCount(s.id);
+ return `<div class="mb ${full?'on':m&&m.pass?'part':''}" data-mb="${s.id}" style="--sc:${QCOL[s.id]}"><span aria-hidden="true">${full?'🏅':s.op}</span><b>${esc(s.realm)}</b><small>${full?'Realm Master':m&&m.pass?`Passed through Ch. ${m.upto}`:'Not yet'}</small></div>`;}).join('')}</div></div>`;}
+{const _tp21=SCR.trophies;SCR.trophies=function(){const r=_tp21.apply(this,arguments);try{const id=vHero()||HERO_ORDER[0],sp=$('starPath');if(sp&&!$('masteryBadges'))sp.insertAdjacentHTML('afterend',masteryBadgesHTML(id));}catch(e){}return r;};}
+
+/* ---------- 5. offline play: service worker (cache named by APP_VERSION) + offline notice ---------- */
+function offlineNote(){const off=navigator.onLine===false;let d=$('offNote');if(off&&!d){d=document.createElement('div');d.id='offNote';d.className='offnote';d.setAttribute('role','status');d.textContent='Offline: playing from this device. Progress still saves here.';document.body.appendChild(d);}else if(!off&&d)d.remove();}
+window.addEventListener('online',offlineNote);window.addEventListener('offline',offlineNote);setTimeout(offlineNote,0);
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js?v='+encodeURIComponent(APP_VERSION)).catch(()=>{});});}
+(function(){const st=document.createElement('style');st.textContent=`
+.wex{margin:8px auto 4px;max-width:560px;text-align:left;background:#EEF6FF;border:2px solid #60A5FA;border-radius:14px;padding:8px 14px;color:#0A1F44;font-size:16px;line-height:1.4}
+.wex b{display:block;margin-bottom:2px}.wex ol{margin:0;padding-left:22px}.wex li{margin:2px 0}.wex .fr{font-size:14px}
+.rvlist li.due small{color:#047857;font-weight:700}
+.mccard{border-top:6px solid var(--sc)}.mcstat{font-weight:700}
+.mcres{border-radius:14px;padding:6px 12px;margin:6px 0;background:#F1F5F9;color:#0A1F44}.mcres.pass{background:#DCFCE7}
+.mbgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.mb{border:2px dashed #94a3b8;border-radius:14px;padding:8px;text-align:center;display:flex;flex-direction:column;gap:2px;opacity:.8}
+.mb span{font-size:26px}.mb.part{border-style:solid;opacity:.95}.mb.on{border:3px solid var(--sc);opacity:1;background:#FFFBEB}
+.offnote{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:950;background:#0A1F44;color:#fff;border-radius:999px;padding:6px 14px;font-size:14px;font-weight:700;max-width:calc(100% - 24px);text-align:center}
+#rvStart[disabled]{opacity:.55;cursor:not-allowed}`;document.head.appendChild(st);})();
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
 </script>

@@ -2,7 +2,7 @@
 # a v10 save loads intact; keyboard play on desktop; reduced motion + big text.
 import json, os, copy
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.dirname(os.path.abspath(__file__))); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
+D=os.path.dirname(os.path.abspath(__file__)); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m); fails.append(m) if not c else None
 V10={"muted":True,"narrator":False,"hero":"cayden","lastSubj":"div","voice":"","profiles":{
