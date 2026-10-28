@@ -245,6 +245,7 @@ body[class*=theme-] #top .title{color:var(--hc2)}
 body[class*=theme-] h2{color:var(--hc2)}
 body[class*=theme-] .btn.pink,body[class*=theme-] .btn.purple,body[class*=theme-] .btn.blue,body[class*=theme-] .btn.green{background:var(--hc);box-shadow:0 5px 0 var(--hc2);color:#fff}
 body[class*=theme-] .bubble{border-color:var(--hc)}
+.bubble .btext,.scenetitle{color:#1e293b}
 body[class*=theme-] .lvl{box-shadow:0 6px 0 var(--hc)}
 body[class*=theme-] .tag{background:var(--hc2)}
 body[class*=theme-] .item{box-shadow:0 5px 0 var(--hc)}
@@ -306,6 +307,21 @@ svg.hero.dunk{animation:dunk .7s cubic-bezier(.3,1.4,.5,1) 2}
 .bubblefx span{position:absolute;bottom:0;animation:bubup 1.4s ease-out forwards;opacity:0}
 @keyframes bubup{0%{transform:translateY(0) scale(.4);opacity:0}20%{opacity:1}100%{transform:translateY(-140px) scale(1.1);opacity:0}}
 .prop.ball.dance{animation:dance2 .5s ease-in-out 3}
+/* ---------- v14: Zea (deep violet + golden sparkle + silver, distinct from Emi's lavender) ---------- */
+body.theme-zea{background:linear-gradient(160deg,#f5f3ff 0%,#ddd6fe 40%,#c4b5fd 72%,#fde68a 100%);background-attachment:fixed}
+body.theme-zea{--hc:#7c3aed;--hc2:#5b21b6;--hcl:#f5f3ff}
+.herocard.zea{background:linear-gradient(#ede9fe,#ddd6fe);box-shadow:0 7px 0 #6d28d9}
+.herocard.zea .ht{color:#581c87}
+svg.hero.flip{animation:zflip .8s cubic-bezier(.3,1.3,.5,1) 2;transform-origin:50% 60%}
+@keyframes zflip{0%,100%{transform:translateY(0) rotate(0)}20%{transform:translateY(5px) scale(1.04,.94)}55%{transform:translateY(-30px) rotate(-360deg) scale(1.04)}80%{transform:translateY(3px) rotate(-360deg) scale(1.03,.96)}}
+.critterfx{position:fixed;pointer-events:none;z-index:60}
+.critterfx span{position:absolute;bottom:0;animation:crhop 1.5s ease-out forwards;opacity:0}
+@keyframes crhop{0%{transform:translate(0,0) scale(.4);opacity:0}20%{opacity:1}50%{transform:translate(12px,-90px) rotate(20deg)}100%{transform:translate(-6px,-140px) rotate(-10deg) scale(1.1);opacity:0}}
+.prop.critter.dance{animation:dance2 .5s ease-in-out 3}
+/* 7 heroes: centre the last lonely card */
+@media (min-width:561px) and (max-width:699px){.herocards .herocard:last-child:nth-child(2n+1){grid-column:1/-1;justify-self:center;width:calc(50% - 7px)}}
+@media (min-width:700px){.herocards .herocard:last-child:nth-child(3n+1){grid-column:2}}
+@media (prefers-reduced-motion:reduce){svg.hero.flip,.critterfx span{animation:none!important}}
 /* ===== v9: subjects ===== */
 .subtitle{font-size:22px;font-weight:900;color:#db2777;margin-top:-6px;letter-spacing:1px}
 .subjects{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:6px}
@@ -1017,6 +1033,72 @@ Object.assign(SLOTNAMES,{pet:'Pet Friend'});
 SIBS.melrose=['cayden','emi','sage'];
 SIBS.cayden=['melrose','eshon','blu'];
 HERO_ORDER.push('melrose','cayden');
+/* ---------- v14: Zea the Critter Flip Star (6) ---------- */
+/* Designed only from a text description (no photos). Zea is cousin to Emi, Blú, Sage, Eshon, Melrose and Cayden.
+   Easy-to-change defaults live in ZEA_CFG (age, look). */
+const ZEA_CFG={age:7,look:'Warm brown skin, brown eyes and a high puffy ponytail with a bow. She wears a sparkly purple gymnastics leotard.'};
+NEWH.push('zea');
+HEROES.zea={id:'zea',name:'Zea',title:'Zea the Critter Flip Star',sib:'eshon',closet:'Gym Bag',closetE:'🎒',fx:['🤸‍♀️','🐞','💜','✨','🦋','💚'],power:'Critter Flip Power',
+ palette:['#8b5cf6','#f59e0b','#a78bfa','#00c2ff','#c4b5fd','#fbbf24','#7c3aed','#10b981','#ddd6fe','#fde68a','#6d28d9','#38bdf8'],icons:['🐞','🐛','🦋','🐌'],
+ blurb:'Flipping, fashion-loving cousin who is amazed by every creepy-crawly critter. Her cartwheels make the bugs cheer!',verb:'🤸 Flip',thing:'ladybug',things:'ladybugs'};
+HSTYLE.zea={tag:'🤸‍♀️',right:'flip',win:'flip',sfx:'flip',pow:'💫',shield:'🛡️',conf:['#8b5cf6','#f59e0b','#c4b5fd','#fff','#7c3aed','#00c2ff','#e5e7eb'],
+ learn:(k,n,th,pl)=>`Let's line up <b>${k} rows</b> with <b>${n} ${th}</b> in each row on the gym mats at the ${pl.name}!`,
+ closetHelp:'Tap a treasure in your Gym Bag to wear it or take it off. Mix leotards, bows and critter pals for your own runway look! Tap Zea to see her flip! 🤸‍♀️'};
+SIB_INTRO.zea="And I'm {me}, your {myrel}! I'll cartwheel in with my critter crew! 🤸‍♀️🐞";
+HERO_INTRO.zea="I'm {title}! I flip, I tumble, I strut the runway, and I LOVE every creepy-crawly critter. My Critter Flip Power will untangle the muddles! 🤸‍♀️🐞";
+HERO_TEAM.zea="Cousin crew, line up! Stick the landing, strike a pose: Team Critter Flip Star will save NumiRealm! 🤸‍♀️💜";
+SIDE.zea=["Cartwheel cheer for you, {rel}! You've got this! 🤸‍♀️","My bug buddies are cheering for you, {hero}! Wiggle, wiggle! 🐞","Point your toes and stick the landing, {hero}! 💜"];
+BRAVE.zea=["Stick the landing, strike a pose! Critter Flip, GO! 🤸‍♀️","I'll back-flip right over this minion, and my critters will help! 🐞"];
+VICTORY.zea=["Perfect ten! I stuck the landing! 🤸‍♀️","Runway twirl! Look at my sparkly leotard shine! 💜","The bugs are doing a happy wiggle dance! 🐛"];
+SIB_PROUD.zea=["Perfect ten, {hero}! Cousin high five! ✋💜","Even my critter pals are clapping their tiny feet! 🐞"];
+LOSE_SIB.zea=["Wobbles happen, {hero}! Every gymnast falls off the beam sometimes! 🤸‍♀️","Chalk up your hands and try again, {hero}! 💪"];
+LOSE_HERO.zea=["Oops, I wobbled off the beam! I'll climb back on and try again!","That flip was a flop! Practice makes perfect, so here I go again!"];
+RETRY_HERO.zea=["New numbers, new routine! Here I flip! 🤸‍♀️","I practised my cartwheels and my times facts. Let's go again! 🐞"];
+OWL_WIN.zea="{hero}'s Critter Flip Power made every bug, mouse and snake in the {place} wiggle with joy!";
+ENC.zea="\"Point your toes, you've got this!\" 🤸‍♀️";
+HPLACES.zea=[
+ {name:'Tumble Town Gym',e:'🤸‍♀️',bg:'linear-gradient(#ede9fe,#c4b5fd 55%,#fde68a)',props:['ball','star','critter','ball','star','critter','star'],desc:'A bouncy gym with springy mats, where every gymnast learns to roll.',lost:'the mats went flat and nobody can tumble',back:'the mats are springy and everyone is tumbling again',
+  zea:"My favourite gym! I'll bounce on these mats until they're springy again! Boing!"},
+ {name:'Bug Buddy Garden',e:'🐞',bg:'linear-gradient(#fef3c7,#fde68a 55%,#a78bfa)',props:['critter','flower','critter','critter','flower','critter','star'],desc:'Ladybugs, caterpillars and snails all live together in this cosy garden.',lost:'the bugs got muddled and hid under the leaves',back:'the bugs are wiggling and waving in the garden again',
+  zea:"Come out, little bug buddies! I won't let the Muddle Monster scare you!"},
+ {name:'Balance Beam Bridge',e:'🌉',bg:'linear-gradient(#e0e7ff,#a78bfa 55%,#f59e0b)',props:['star','critter','star','star','critter','star','star'],desc:'A long, smooth beam bridge over a sparkly purple stream.',lost:'the bridge got wobbly and nobody can cross',back:'the beam is steady and everyone is crossing again',
+  zea:"Arms out, toes pointed, eyes forward. I'll balance all the way across!"},
+ {name:'Runway Rainforest',e:'👗',bg:'linear-gradient(#f5f3ff,#bae6fd 50%,#7c3aed)',props:['flower','star','critter','flower','star','critter','flower'],desc:'A leafy rainforest with a sparkly runway, where critters show off their style.',lost:'every outfit lost its sparkle and the runway went dark',back:'the runway lights are on and the critters are strutting again',
+  zea:"Walk, twirl, pose! I'll help every critter rock the runway again!"},
+ {name:'Mouse Hole Boutique',e:'🐭',bg:'linear-gradient(#fdf4ff,#ddd6fe 55%,#fbbf24)',props:['critter','star','critter','flower','critter','star','critter'],desc:'Tiny tailor mice sew the cutest outfits in this little shop.',lost:'the mice lost their tiny needles and threads',back:'the mice are sewing tiny sparkly outfits again',
+  zea:"Hello, little tailor mice! I'll help you find every needle and thread!"},
+ {name:'Vault Valley',e:'🏔️',bg:'linear-gradient(#ddd6fe,#a78bfa 50%,#10b981)',props:['ball','star','ball','star','ball','critter','star'],desc:'Springboards and vaults everywhere, for the highest jumps in NumiRealm.',lost:'the springboards lost their spring',back:'the springboards are boinging gymnasts up high again',
+  zea:"Run, jump, push, FLY! I'll get these springboards bouncing again!"},
+ {name:'Snake Slide Splash Park',e:'🐍',bg:'linear-gradient(#fef3c7,#fbbf24 45%,#8b5cf6)',props:['critter','star','critter','critter','star','critter','flower'],desc:'Friendly snakes curl up into the twistiest water slides.',lost:'the snakes got tangled into knots',back:'the snakes are sliding and smiling again',
+  zea:"Don't worry, snake friends! I'll gently untangle every wiggly knot!"},
+ {name:'Spider Silk Studio',e:'🕸️',bg:'linear-gradient(#f5f3ff,#c4b5fd 55%,#e5e7eb)',props:['critter','star','star','critter','star','star','critter'],desc:'Clever spiders weave silver, sparkly fabric for the fanciest outfits.',lost:'the silky threads got tangled and lost their shine',back:'the spiders are weaving shiny silver silk again',
+  zea:"Spiders are so clever! I'll help them weave their sparkle silk again!"},
+ {name:'Butterfly Ribbon Meadow',e:'🦋',bg:'linear-gradient(#fef9c3,#bae6fd 50%,#c4b5fd)',props:['flower','critter','flower','star','critter','flower','critter'],desc:'Butterflies and twirly ribbons dance together over the flowers.',lost:'the ribbons fell down and the butterflies stopped dancing',back:'ribbons and butterflies are twirling over the meadow again',
+  zea:"Ribbon twirl time! I'll spin so the butterflies want to dance with me!"},
+ {name:'Firefly Night Arena',e:'🌙',bg:'linear-gradient(#0a1f44,#1e3a8a 55%,#8b5cf6)',props:['star','critter','star','star','critter','star','star'],desc:'Glowing fireflies light up a big gymnastics arena at night.',lost:'the fireflies lost their glow',back:'the fireflies are glowing and the arena is bright again',
+  zea:"Glow, fireflies, glow! My sparkly leotard and I will light the way!"},
+ {name:'Grand Gala Gym Show',e:'🏅',bg:'linear-gradient(#fef08a,#c4b5fd 50%,#7c3aed)',props:['star','ball','star','flower','star','critter','star'],desc:'The biggest gymnastics and fashion show in all of NumiRealm!',lost:'the medals lost their shine and the music stopped',back:'the medals are shining and the crowd is cheering again',
+  zea:"Showtime! Flips, twirls and fashion for everyone. Let's make it a perfect ten!"},
+ {name:'Muddle Spin Gym',e:'🌀',bg:'linear-gradient(#4c1d95,#1e1b4b 60%,#0f172a)',props:['star','critter','star','ball','star','critter','star'],desc:"A dizzy, swirly gym, the hideout of the Muddle Monster himself!",lost:'all the stolen sparkles and critter giggles are trapped inside',back:'sparkles and critter giggles burst out over all of NumiRealm',
+  zea:"Muddle Monster, my cousin crew and my critter pals are here. Let's stick this landing together!"}];
+/* friendly, silly minions (never scary) */
+HBOSS.zea={1:['🐌','Slow-Mo Snail'],2:['🦗','Cricket Pair Chirpy'],10:['🐜','Ten-Ant Traffic Jam'],5:['🦎','Lizzy Five-Toes'],3:['🐸','Triple-Hop Frog'],4:['🪲','Four-Flip Beetle'],
+ 9:['🐝','Buzzy Nine'],6:['🐛','Wiggle-Six Caterpillar'],7:['🐞','Spotty Seven'],8:['🕸️','Tangle-Web Eight'],11:['🧶','Knotty Eleven the Yarn Ball']};
+HTAUNTS.zea=["Wobble, wobble! I tangled the ×{n} table so you can't stick the landing!","Hee hee! I mixed up the ×{n} table like a big bowl of bug spaghetti!","No flips, no fashion, only muddles!"];
+HCTX.zea=[{e:'🐞',one:'ladybug',many:'ladybugs',g1:'leaf',gs:'leaves'},{e:'🐭',one:'mouse',many:'mice',g1:'mouse house',gs:'mouse houses'},
+ {e:'🎀',one:'hair bow',many:'hair bows',g1:'gym bag',gs:'gym bags'},{e:'🤸‍♀️',one:'cartwheel',many:'cartwheels',g1:'routine',gs:'routines'},
+ {e:'👗',one:'outfit',many:'outfits',g1:'runway show',gs:'runway shows'},{e:'🐛',one:'caterpillar',many:'caterpillars',g1:'flower bed',gs:'flower beds'},
+ {e:'🏅',one:'medal',many:'medals',g1:'trophy shelf',gs:'trophy shelves'}];
+REWARDS.zea=[{id:'scrunchie',name:'Gold Sparkle Scrunchie',e:'🎀',slot:'head'},{id:'webby',name:'Webby the Spider Pal',e:'🕷️',slot:'pet'},
+ {id:'ribbon',name:'Twirly Gym Ribbon',e:'🎗️',slot:'hand'},{id:'squeak',name:'Squeak the Mouse Pal',e:'🐭',slot:'pet'},
+ {id:'slippers',name:'Silver Sparkle Slippers',e:'🩰',slot:'feet'},{id:'skyleo',name:'Sky Lightning Leotard',e:'⚡',slot:'outfit'},
+ {id:'noodle',name:'Noodle the Snake Pal',e:'🐍',slot:'pet'},{id:'bfcape',name:'Butterfly Runway Cape',e:'🦋',slot:'back'},
+ {id:'medal',name:'Perfect Ten Medal',e:'🥇',slot:'neck'},{id:'crown',name:'Critter Crown',e:'👑',slot:'head'},
+ {id:'purse',name:'Sparkle Gym Bag Purse',e:'👛',slot:'hand'},{id:'gala',name:'Galaxy Gala Leotard',e:'✨',slot:'outfit'}];
+SIBS.zea=['eshon','sage','emi'];
+/* Zea also cartwheels in as a cousin teammate for Melrose and Cayden (their sibling stays first). */
+SIBS.melrose.push('zea');SIBS.cayden.push('zea');
+HERO_ORDER.push('zea');
 /* ---------- original cartoon SVG characters ---------- */
 const SKIN='#8d5524',EMI_SKIN='#c98d63',SKIN_L='#a0643a',HAIR='#2b1a10';
 function starPts(cx,cy,R,r){let p=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r:R;p.push((cx+rr*Math.cos(a)).toFixed(1)+','+(cy+rr*Math.sin(a)).toFixed(1));}return p.join(' ');}
@@ -1084,7 +1166,7 @@ function bluSVG(eq,cls){eq=eq||{};
  const hi={drum:'🥁',guitar:'🎸',trumpet:'🎺',piano:'🎹',violin:'🎻',sax:'🎷'}[eq.hand];
  if(hi)s+=`<text x="170" y="222" font-size="38" text-anchor="middle">${hi}</text>`;
  return s+'</svg>';}
-function heroSVGeq(id,eq,cls){return id==='melrose'?melroseSVG(eq,cls):id==='cayden'?caydenSVG(eq,cls):id==='emi'?emiSVG(eq,cls):id==='sage'?sageSVG(eq,cls):id==='eshon'?eshonSVG(eq,cls):bluSVG(eq,cls);}
+function heroSVGeq(id,eq,cls){return id==='zea'?zeaSVG(eq,cls):id==='melrose'?melroseSVG(eq,cls):id==='cayden'?caydenSVG(eq,cls):id==='emi'?emiSVG(eq,cls):id==='sage'?sageSVG(eq,cls):id==='eshon'?eshonSVG(eq,cls):bluSVG(eq,cls);}
 function heroSVG(id,cls){const eq=(save.profiles[id]&&save.profiles[id].eq)||{};return heroSVGeq(id,eq,cls);}
 function owlSVG(){return `<svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Professor Hoot" style="display:block;width:100%;height:auto;overflow:visible">
  <path d="M30 34 L24 10 L46 26Z M90 34 L96 10 L74 26Z" fill="#7c4a1e"/><ellipse cx="60" cy="78" rx="44" ry="52" fill="#92400e"/><ellipse cx="60" cy="92" rx="29" ry="32" fill="#fde68a"/>
@@ -1285,6 +1367,66 @@ function caydenSVG(eq,cls){eq=eq||{};const o=eq.outfit;
  if(eq.hand==='football')s+=`<g transform="rotate(-30 40 196)"><ellipse cx="40" cy="196" rx="24" ry="14" fill="#92400e" stroke="#451a03" stroke-width="2.5"/><path d="M28 196 h24" stroke="#fff" stroke-width="2.5"/><path d="M32 192 v8 M37 192 v8 M42 192 v8 M47 192 v8" stroke="#fff" stroke-width="2"/></g>`;
  if(eq.hand==='trophy')s+=`<path d="M24 170 h32 v10 q0 18 -16 20 q-16 -2 -16 -20z" fill="url(#g-gold)" stroke="#a16207" stroke-width="2.5"/><path d="M24 174 q-10 0 -8 10 q2 6 10 6 M56 174 q10 0 8 10 q-2 6 -10 6" stroke="#a16207" stroke-width="3" fill="none"/><rect x="36" y="200" width="8" height="8" fill="#ca8a04"/><rect x="28" y="206" width="24" height="7" rx="2" fill="#1d4ed8"/>`;
  return s+'</svg>';}
+/* ---------- v14 SVG: Zea (from the text description only) ---------- */
+/* warm brown skin, brown eyes, no glasses, high puffy ponytail with a bow, sparkly purple gymnastics leotard.
+   Built on the same body, head, face and outline rules as Sage/Emi so she matches the NumiRealm set.
+   Deep violet + golden sparkle + silver (NumiRealm palette) so she reads differently from Emi (pale lilac, bob, blue glasses). */
+const ZEA_SKIN='#94572e',ZEA_HAIR=HAIR,ZEA_GOLD='#F59E0B',ZEA_GOLD_D='#b45309',ZEA_SILVER='#F1F5F9';
+const ZDEFS=`<defs><linearGradient id="g-zea" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset=".45" stop-color="#8B5CF6"/><stop offset="1" stop-color="#6d28d9"/></linearGradient><linearGradient id="g-zsky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bae6fd"/><stop offset=".5" stop-color="#00C2FF"/><stop offset="1" stop-color="#0284c7"/></linearGradient><linearGradient id="g-zgal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1E3A8A"/><stop offset=".55" stop-color="#6d28d9"/><stop offset="1" stop-color="#c4b5fd"/></linearGradient></defs>`;
+/* friendly critter pals (big eyes, smiles, no fangs) */
+function zeaPet(t,x,y){
+ const eyes=(ex,ey,r)=>`<circle cx="${ex-r*1.1}" cy="${ey}" r="${r}" fill="#fff" stroke="#1f2937" stroke-width="1.2"/><circle cx="${ex+r*1.1}" cy="${ey}" r="${r}" fill="#fff" stroke="#1f2937" stroke-width="1.2"/><circle cx="${ex-r*1.1+.6}" cy="${ey+.6}" r="${r*.55}" fill="#1f2937"/><circle cx="${ex+r*1.1+.6}" cy="${ey+.6}" r="${r*.55}" fill="#1f2937"/><circle cx="${ex-r*1.1+1.4}" cy="${ey-.8}" r="${r*.22}" fill="#fff"/><circle cx="${ex+r*1.1+1.4}" cy="${ey-.8}" r="${r*.22}" fill="#fff"/>`;
+ if(t==='webby')return `<g class="zpet webby" transform="translate(${x} ${y})"><g stroke="#a78bfa" stroke-width="3.2" fill="none" stroke-linecap="round">${[-1,1].map(s=>[[-6,-4],[-2,2],[3,6],[8,9]].map(([a,b],i)=>`<path d="M${s*8} ${a} q${s*10} ${-6+i*3} ${s*16} ${b}"/>`).join('')).join('')}</g><circle cx="0" cy="0" r="13" fill="#6d28d9" stroke="#4c1d95" stroke-width="2"/><circle cx="-4" cy="-5" r="3" fill="#a78bfa" opacity=".6"/>${eyes(0,-1,4.2)}<path d="M-4 6 q4 4 8 0" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/><ellipse cx="-9" cy="5" rx="2.6" ry="1.6" fill="#f9a8d4"/><ellipse cx="9" cy="5" rx="2.6" ry="1.6" fill="#f9a8d4"/><path d="M-1 -13 l-7 -5 v8z M1 -13 l7 -5 v8z" fill="${ZEA_GOLD}" stroke="${ZEA_GOLD_D}" stroke-width="1.2"/><circle cx="0" cy="-13" r="2" fill="${ZEA_GOLD_D}"/></g>`;
+ if(t==='squeak')return `<g class="zpet squeak" transform="translate(${x} ${y})"><path d="M14 8 q14 4 10 -8 q-2 -6 4 -8" stroke="#f9a8d4" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="2" cy="4" rx="15" ry="11" fill="#d1d5db" stroke="#6b7280" stroke-width="2"/><circle cx="-10" cy="-10" r="7" fill="#d1d5db" stroke="#6b7280" stroke-width="2"/><circle cx="-10" cy="-10" r="4" fill="#fbcfe8"/><circle cx="6" cy="-11" r="7" fill="#d1d5db" stroke="#6b7280" stroke-width="2"/><circle cx="6" cy="-11" r="4" fill="#fbcfe8"/>${eyes(-2,-1,3.4)}<circle cx="-2" cy="5" r="2.6" fill="#f472b6"/><path d="M-6 5 h-10 M-6 7 l-9 3 M2 5 h10 M2 7 l9 3" stroke="#6b7280" stroke-width="1"/><path d="M-5 9 q3 3 6 0" stroke="#1f2937" stroke-width="1.4" fill="none"/><path d="M8 -18 l6 -4 v7z M8 -18 l-2 -7 l6 2z" fill="#8b5cf6"/></g>`;
+ if(t==='noodle')return `<g class="zpet noodle" transform="translate(${x} ${y})"><path d="M-22 14 C-22 2 -6 4 -6 14 C-6 24 12 24 12 12 C12 2 4 -4 4 -10" stroke="#047857" stroke-width="11" fill="none" stroke-linecap="round"/><path d="M-22 14 C-22 2 -6 4 -6 14 C-6 24 12 24 12 12 C12 2 4 -4 4 -10" stroke="#10B981" stroke-width="8" fill="none" stroke-linecap="round"/><g fill="#8b5cf6"><circle cx="-18" cy="6" r="1.8"/><circle cx="-8" cy="18" r="1.8"/><circle cx="4" cy="20" r="1.8"/><circle cx="11" cy="6" r="1.8"/></g><ellipse cx="4" cy="-14" rx="10" ry="8.5" fill="#10B981" stroke="#047857" stroke-width="2"/>${eyes(4,-16,3.2)}<path d="M0 -9 q4 3 8 0" stroke="#064e3b" stroke-width="1.5" fill="none" stroke-linecap="round"/><ellipse cx="-3" cy="-10" rx="2" ry="1.3" fill="#f9a8d4"/><ellipse cx="11" cy="-10" rx="2" ry="1.3" fill="#f9a8d4"/><path d="M-3 -21 l-6 -4 v7z M-3 -21 l2 -7 l4 5z" fill="#8b5cf6"/></g>`;
+ /* default: a tiny smiling ladybug */
+ return `<g class="zpet lady" transform="translate(${x} ${y})"><ellipse cx="0" cy="0" rx="9" ry="8" fill="#ef4444" stroke="#7f1d1d" stroke-width="1.6"/><path d="M0 -8 V8" stroke="#7f1d1d" stroke-width="1.4"/><circle cx="-4" cy="2" r="1.8" fill="#1f2937"/><circle cx="4" cy="-1" r="1.8" fill="#1f2937"/><circle cx="3" cy="5" r="1.3" fill="#1f2937"/><circle cx="-8" cy="-6" r="5" fill="#1f2937"/><circle cx="-9.5" cy="-7" r="1.4" fill="#fff"/><circle cx="-6.5" cy="-7" r="1.4" fill="#fff"/><path d="M-10 -11 q-2 -5 -5 -5 M-7 -11 q1 -5 4 -6" stroke="#1f2937" stroke-width="1.2" fill="none"/></g>`;}
+function zeaSVG(eq,cls){eq=eq||{};const o=eq.outfit,SK=ZEA_SKIN;
+ const lf=o==='skyleo'?'url(#g-zsky)':o==='gala'?'url(#g-zgal)':'url(#g-zea)',ls=o==='skyleo'?'#075985':'#4c1d95';
+ let s=`<svg class="hero zea ${cls||'idle'}" viewBox="0 0 210 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Zea">${DEFS}${FDEFS}${ZDEFS}`;
+ // butterfly runway cape behind
+ if(eq.back==='bfcape')s+=`<g stroke="#4c1d95" stroke-width="3" opacity=".95"><path d="M88 172 C44 116 8 134 18 170 C24 192 66 192 88 182Z" fill="#a78bfa"/><path d="M122 172 C166 116 202 134 192 170 C186 192 144 192 122 182Z" fill="#a78bfa"/><path d="M88 186 C54 200 40 236 60 242 C78 246 88 214 94 192Z" fill="#c4b5fd"/><path d="M122 186 C156 200 170 236 150 242 C132 246 122 214 116 192Z" fill="#c4b5fd"/></g><g fill="url(#g-gold)" stroke="${ZEA_GOLD_D}" stroke-width="1.5"><circle cx="40" cy="158" r="7"/><circle cx="170" cy="158" r="7"/><circle cx="62" cy="222" r="5"/><circle cx="148" cy="222" r="5"/></g><g fill="#fff"><text x="26" y="186" font-size="10">✦</text><text x="176" y="186" font-size="10">✦</text></g>`;
+ // legs + gym slippers (same leg/shoe geometry as Sage)
+ const sl=eq.feet==='slippers'?ZEA_SILVER:'#ede9fe',sls=eq.feet==='slippers'?'#64748b':'#6d28d9';
+ s+=`<rect x="86" y="222" width="14" height="32" rx="6" fill="${SK}"/><rect x="110" y="222" width="14" height="32" rx="6" fill="${SK}"/>
+ <path d="M78 252 h24 a6 6 0 0 1 0 12 h-24 a6 6 0 0 1 0 -12z" fill="${sl}" stroke="${sls}" stroke-width="2"/><path d="M108 252 h24 a6 6 0 0 1 0 12 h-24 a6 6 0 0 1 0 -12z" fill="${sl}" stroke="${sls}" stroke-width="2"/>
+ <path d="M86 256 l6 3 M118 256 l6 3" stroke="${eq.feet==='slippers'?'#8B5CF6':ZEA_GOLD}" stroke-width="2" stroke-linecap="round"/>`;
+ if(eq.feet==='slippers')s+=`<g fill="#8B5CF6"><text x="70" y="250" font-size="8">✦</text><text x="132" y="250" font-size="8">✦</text></g>`;
+ // arms (same as Sage) with 3/4 sleeves
+ s+=`<path d="M80 168 Q58 190 54 210" stroke="${SK}" stroke-width="13" stroke-linecap="round" fill="none"/><path d="M130 168 Q152 190 158 206" stroke="${SK}" stroke-width="13" stroke-linecap="round" fill="none"/><circle cx="54" cy="212" r="8" fill="${SK}"/><circle cx="158" cy="208" r="8" fill="${SK}"/>
+ <path d="M81 167 Q68 180 62 194" stroke="${ls}" stroke-width="17" stroke-linecap="round" fill="none"/><path d="M81 167 Q68 180 62 194" stroke="${lf}" stroke-width="12" stroke-linecap="round" fill="none"/><path d="M129 167 Q142 180 148 192" stroke="${ls}" stroke-width="17" stroke-linecap="round" fill="none"/><path d="M129 167 Q142 180 148 192" stroke="${lf}" stroke-width="12" stroke-linecap="round" fill="none"/>`;
+ // neck + gala over-skirt (behind leotard)
+ s+=`<rect x="98" y="146" width="14" height="16" fill="${SK}"/>`;
+ if(o==='gala')s+=`<path d="M78 200 L132 200 L162 250 Q105 264 48 250Z" fill="#c4b5fd" fill-opacity=".55" stroke="#6d28d9" stroke-width="2.5"/><g fill="#fff"><text x="58" y="246" font-size="10">✦</text><text x="142" y="246" font-size="10">✦</text><text x="96" y="256" font-size="8">✦</text></g>`;
+ // sparkly leotard: same torso shape as the other heroes' tops, leotard cut at the hips
+ s+=`<path d="M80 162 Q105 152 130 162 L134 204 Q124 208 116 226 L94 226 Q86 208 76 204Z" fill="${lf}" stroke="${ls}" stroke-width="3" stroke-linejoin="round"/>
+ <path d="M86 166 Q96 162 104 162" stroke="#fff" stroke-width="3" fill="none" opacity=".45" stroke-linecap="round"/>`;
+ // short sheer gym skirt (default + sky) for the series silhouette
+ if(o!=='gala')s+=`<path d="M76 200 L134 200 L148 222 Q105 234 62 222Z" fill="${o==='skyleo'?'#bae6fd':'#c4b5fd'}" fill-opacity=".6" stroke="${ls}" stroke-width="2.5" stroke-linejoin="round"/><path d="M68 220 Q84 214 94 223 Q105 215 116 223 Q126 214 142 220" stroke="#fff" stroke-width="2.5" fill="none" opacity=".75"/>`;
+ if(o==='skyleo')s+=`<path d="M112 166 L98 186 L108 186 L96 206 L120 180 L110 180 L118 166Z" fill="#8B5CF6" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/><g fill="#fff"><text x="82" y="190" font-size="10">✦</text><text x="122" y="196" font-size="9">✦</text></g>`;
+ else if(o==='gala')s+=`<g fill="#fde68a"><text x="84" y="184" font-size="11">✦</text><text x="116" y="190" font-size="12">✦</text><text x="96" y="200" font-size="8">✦</text><text x="122" y="214" font-size="8">✦</text><text x="84" y="214" font-size="8">✦</text></g><path d="M80 170 Q105 180 130 170" stroke="#e9d5ff" stroke-width="2.5" fill="none"/>`;
+ else s+=`<path d="M82 176 L93 186 L105 176 L117 186 L128 176" stroke="${ZEA_GOLD_D}" stroke-width="6" fill="none" stroke-linejoin="round" stroke-linecap="round"/><path d="M82 176 L93 186 L105 176 L117 186 L128 176" stroke="url(#g-gold)" stroke-width="3.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/><g fill="#fff"><text x="84" y="202" font-size="10">✦</text><text x="118" y="198" font-size="9">✦</text><text x="101" y="196" font-size="7">✦</text><text x="113" y="170" font-size="6">✦</text></g>`;
+ if(eq.neck==='medal')s+=`<path d="M92 160 L102 176 M118 160 L108 176" stroke="#8B5CF6" stroke-width="5"/><circle cx="105" cy="182" r="9" fill="url(#g-gold)" stroke="${ZEA_GOLD_D}" stroke-width="2.5"/><text x="105" y="186" font-size="9" font-weight="900" text-anchor="middle" fill="#92400e" font-family="Arial,sans-serif">10</text>`;
+ // high puffy ponytail (behind the head; stays inside the frame)
+ s+=`<g fill="${ZEA_HAIR}"><circle cx="105" cy="31" r="20"/>${curls(105,31,19,7.5,0,350,30)}</g><path d="M92 22 Q100 15 110 16 M95 34 q6 4 12 2" stroke="#4a2c17" stroke-width="3" fill="none" opacity=".6" stroke-linecap="round"/>`;
+ // head (same size/placement as Sage, no glasses)
+ s+=`<circle cx="42" cy="104" r="10" fill="${SK}"/><circle cx="168" cy="104" r="10" fill="${SK}"/><circle cx="105" cy="98" r="62" fill="${SK}"/>`;
+ // smooth hair pulled up into the puff
+ s+=`<g fill="${ZEA_HAIR}"><path d="M44 100 C40 48 72 36 105 36 C138 36 170 48 166 100 C160 74 142 60 120 56 Q105 52 90 56 C68 60 50 74 44 100Z"/></g>
+ <path d="M60 80 Q66 64 78 58" stroke="#4a2c17" stroke-width="3" fill="none" opacity=".6"/>`;
+ // ponytail band: default violet bow with a gold knot, or the scrunchie
+ if(eq.head==='scrunchie')s+=`<g fill="url(#g-gold)" stroke="${ZEA_GOLD_D}" stroke-width="2"><ellipse cx="105" cy="46" rx="20" ry="8"/>${[-14,-5,5,14].map(dx=>`<circle cx="${105+dx}" cy="45" r="5.5"/>`).join('')}</g><g fill="#fff"><text x="88" y="46" font-size="7">✦</text><text x="114" y="48" font-size="7">✦</text></g>`;
+ else s+=`<g stroke="#4c1d95" stroke-width="2.5" stroke-linejoin="round"><path d="M105 46 L78 30 L80 62Z" fill="#8B5CF6"/><path d="M105 46 L132 30 L130 62Z" fill="#8B5CF6"/><circle cx="105" cy="46" r="7" fill="url(#g-gold)" stroke="${ZEA_GOLD_D}"/></g><g fill="#fff"><text x="84" y="44" font-size="8">✦</text><text x="118" y="56" font-size="7">✦</text></g>`;
+ if(eq.head==='crown')s+=`<path d="M80 62 L84 44 L94 54 L105 38 L116 54 L126 44 L130 62 Q105 56 80 62Z" fill="url(#g-gold)" stroke="#ca8a04" stroke-width="2.5" stroke-linejoin="round"/><circle cx="105" cy="53" r="4" fill="#ef4444"/><circle cx="104" cy="52" r="1" fill="#1f2937"/><circle cx="91" cy="56" r="2.6" fill="#8B5CF6"/><circle cx="119" cy="56" r="2.6" fill="#8B5CF6"/><path d="M84 44 q-4 -8 -10 -8 M126 44 q4 -8 10 -8" stroke="#ca8a04" stroke-width="2" fill="none"/>`;
+ // shared NumiRealm face (same eyes, lashes, cheeks and smile as Sage)
+ s+=face(84,126,104,25)+`<path d="M73 95 l-5 -4 M76 93 l-3 -5 M137 95 l5 -4 M134 93 l3 -5" stroke="#1f130b" stroke-width="2.5" stroke-linecap="round"/>`;
+ // hand items (left hand ~54,212)
+ if(eq.hand==='ribbon')s+=`<path d="M56 214 L36 174" stroke="#b45309" stroke-width="3.5" stroke-linecap="round"/><path d="M36 174 C10 160 40 140 22 126 C6 114 30 98 18 84" stroke="#8B5CF6" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M36 174 C24 150 52 138 38 118" stroke="#00C2FF" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+ if(eq.hand==='purse')s+=`<path d="M48 212 Q54 196 62 212" stroke="${ZEA_GOLD}" stroke-width="3" fill="none"/><rect x="38" y="212" width="32" height="24" rx="7" fill="#7c3aed" stroke="#4c1d95" stroke-width="2.5"/><path d="M38 222 h32" stroke="#a78bfa" stroke-width="2"/><circle cx="54" cy="222" r="3.5" fill="url(#g-gold)" stroke="${ZEA_GOLD_D}" stroke-width="1.5"/><g fill="#fff"><text x="42" y="234" font-size="7">✦</text><text x="62" y="234" font-size="7">✦</text></g>`;
+ // critter pal (right side) or the little ladybug on her hand
+ if(['webby','squeak','noodle'].includes(eq.pet))s+=zeaPet(eq.pet,180,236);
+ else s+=zeaPet('lady',166,196);
+ return s+'</svg>';}
 const $=id=>document.getElementById(id);
 const rand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
 const pick=a=>a[Math.floor(Math.random()*a.length)];
@@ -1341,6 +1483,8 @@ const SFX={
  splash:()=>{[1047,1319,1568,2093,1760].forEach((f,i)=>tone(f,.16,'sine',.11,i*.07));tone(523,.25,'triangle',.08,.05);},
  bubble:i=>{tone(500+(i%7)*70,.06,'sine',.12);tone(900+(i%7)*90,.08,'sine',.08,.05);},
  swish:()=>{[0,1,2,3,4].forEach(i=>tone(300+i*180,.05,'triangle',.08,i*.03));tone(196,.18,'square',.1,.2);tone(988,.2,'triangle',.14,.32);},
+ flip:()=>{[0,1,2,3].forEach(i=>tone(392+i*131,.07,'triangle',.11,i*.06));tone(1175,.12,'sine',.12,.3);tone(1568,.16,'sine',.1,.38);},
+ hop:i=>{tone(620+(i%6)*60,.05,'triangle',.1);tone(940+(i%6)*70,.05,'sine',.07,.05);},
  bounce:i=>{tone(140+(i%5)*20,.09,'square',.1);tone(260+(i%5)*30,.05,'triangle',.08,.06);},
  sketch:()=>{[0,1,2,3].forEach(i=>tone(900+rand(0,500),.05,'sawtooth',.05,i*.06));tone(1320,.12,'triangle',.16,.28);tone(1760,.18,'triangle',.14,.38);},
  scribble:i=>{tone(700+(i%7)*90,.05,'sawtooth',.05);tone(1046+(i%5)*60,.08,'triangle',.1,.05);},
@@ -1368,8 +1512,8 @@ const cv=$('confetti'),cx=cv.getContext('2d');let parts=[],confRAF=0;
 function confetti(){cv.width=innerWidth;cv.height=innerHeight;const pal=(save.hero&&HS().conf)||COLORS;for(let i=0;i<180;i++)parts.push({x:innerWidth/2+rand(-100,100),y:innerHeight/3,vx:(Math.random()-.5)*16,vy:-Math.random()*14-4,s:rand(6,12),c:pick(pal),r:Math.random()*6,vr:(Math.random()-.5)*.4,life:180});if(!confRAF)confRAF=requestAnimationFrame(confStep);}
 function confStep(){cx.clearRect(0,0,cv.width,cv.height);parts.forEach(p=>{p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life--;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);cx.restore();});parts=parts.filter(p=>p.life>0&&p.y<cv.height+40);if(parts.length)confRAF=requestAnimationFrame(confStep);else{confRAF=0;cx.clearRect(0,0,cv.width,cv.height);}}
 function fxBurst(el,chars,n){if(!el)return;const r=el.getBoundingClientRect();n=n||8;for(let i=0;i<n;i++){const s=document.createElement('span');s.className='fx';s.textContent=pick(chars);s.style.left=(r.left+r.width/2-15)+'px';s.style.top=(r.top+r.height/3)+'px';s.style.setProperty('--dx',rand(-120,120)+'px');s.style.setProperty('--dy',rand(-160,-40)+'px');s.style.animationDelay=(i*0.04)+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),1500);}}
-function react(sel,cls){const e=document.querySelector(sel+' svg.hero');if(!e)return;e.classList.remove('idle','cheer','sad','dance','strut','sing','draw','flutter','dunk');void e.getBoundingClientRect();e.classList.add(cls);clearTimeout(e._t);e._t=setTimeout(()=>{e.classList.remove(cls);e.classList.add('idle');},1300);}
-function heroRight(sel){const h=H();fxBurst(document.querySelector(sel),h.fx,9);react(sel,HS().right);heroSfx();if(save.hero==='eshon')doodleFx(document.querySelector(sel));if(save.hero==='cayden')speedFx(document.querySelector(sel));if(save.hero==='melrose')bubbleFx(document.querySelector(sel));}
+function react(sel,cls){const e=document.querySelector(sel+' svg.hero');if(!e)return;e.classList.remove('idle','cheer','sad','dance','strut','sing','draw','flutter','dunk','flip');void e.getBoundingClientRect();e.classList.add(cls);clearTimeout(e._t);e._t=setTimeout(()=>{e.classList.remove(cls);e.classList.add('idle');},1300);}
+function heroRight(sel){const h=H();fxBurst(document.querySelector(sel),h.fx,9);react(sel,HS().right);heroSfx();if(save.hero==='eshon')doodleFx(document.querySelector(sel));if(save.hero==='cayden')speedFx(document.querySelector(sel));if(save.hero==='melrose')bubbleFx(document.querySelector(sel));if(save.hero==='zea')critterFx(document.querySelector(sel));}
 /* Eshon's pencil draws a sparkly green line and a doodle buddy pops off the page */
 const DOODLE_BUDS=['squiggle','bloop','zigzag','fluff'];
 function doodleFx(el){try{if(!el)return;const r=el.getBoundingClientRect(),w=Math.min(260,innerWidth-20),x=Math.max(10,Math.min(innerWidth-w-10,r.left+r.width/2-w/2)),y=Math.max(10,r.top+r.height*.25);
@@ -1386,6 +1530,10 @@ function speedFx(el){try{if(!el)return;const w=Math.min(280,innerWidth-12),h=150
 function bubbleFx(el){try{if(!el)return;const w=Math.min(220,innerWidth-12),h=160,p=fxBox(el,w,h),d=document.createElement('div');d.className='bubblefx';d.style.left=p.x+'px';d.style.top=p.y+'px';d.style.width=w+'px';d.style.height=h+'px';
  let b='';for(let i=0;i<9;i++)b+=`<span style="left:${rand(5,85)}%;animation-delay:${(i*.08).toFixed(2)}s;font-size:${rand(16,30)}px">${pick(['🫧','✨','💜','💖','🫧'])}</span>`;
  d.innerHTML=b;document.body.appendChild(d);setTimeout(()=>d.remove(),1600);}catch(e){}}
+/* v14: Zea's tumbling critter pals */
+function critterFx(el){try{if(!el)return;const w=Math.min(220,innerWidth-12),h=150,p=fxBox(el,w,h),d=document.createElement('div');d.className='critterfx';d.style.left=p.x+'px';d.style.top=p.y+'px';d.style.width=w+'px';d.style.height=h+'px';
+ let b='';for(let i=0;i<8;i++)b+=`<span style="left:${rand(4,84)}%;animation-delay:${(i*.09).toFixed(2)}s;font-size:${rand(18,30)}px">${pick(['🐞','🦋','🐛','💜','✨','💚','🤸‍♀️'])}</span>`;
+ d.innerHTML=b;document.body.appendChild(d);setTimeout(()=>d.remove(),1700);}catch(e){}}
 function heroWrong(sel){react(sel,'sad');}
 
 /* ---------- rendering helpers ---------- */
@@ -1404,11 +1552,11 @@ const cheer=()=>pick(CHEERS);
 let SC=null;
 function fillT(t,who){const sp=who==='hero'?save.hero:who==='sib'?sibId():HEROES[who]?who:null;t=String(t);if(sp&&sp!==save.hero)t=t.replace(/\{rel\}/g,relTo(sp,save.hero)).replace(/\{myrel\}/g,relTo(save.hero,sp)).replace(/\{me\}/g,nm(sp));t=t.replace(/\{rel\}/g,'friend').replace(/\{place\}/g,S?placeOf(S.n).name:'realm');return t.replace(/\{hero\}/g,nm(save.hero)).replace(/\{team\}/g,teamNames()).replace(/\{sib\}/g,nm(sibId())).replace(/\{title\}/g,H().title).replace(/\{n\}/g,S?S.n:'').replace(/\{boss\}/g,S?bossOf(S.n)[1]:'');}
 const L=(who,text)=>({who,text:fillT(text,who)});
-const PROP_ICONS={shell:['🐚','🦪','⭐','🫧'],ball:['🏀','🏈','⚽'],fruit:['🍓','🍌','🍍','🍉','🍇','🍊','🍒'],flower:['🌸','🌷','🌻','🌺','🌼'],star:['⭐']};
+const PROP_ICONS={shell:['🐚','🦪','⭐','🫧'],ball:['🏀','🏈','⚽'],fruit:['🍓','🍌','🍍','🍉','🍇','🍊','🍒'],flower:['🌸','🌷','🌻','🌺','🌼'],star:['⭐'],critter:['🐞','🐛','🐌','🦋','🐭']};
 function playScene(sc,done){stopSpeech();SC=Object.assign({i:0,woke:0},sc,{done});renderScene();showLine();}
 function renderScene(){const pl=SC.place,props=SC.props||pl.props;
  const spots=shuffle([[3,13],[17,24],[31,11],[45,25],[59,12],[73,25],[87,13],[10,36],[38,38],[80,38]]);
- const ph=props.map((t,i)=>{const [x,y]=spots[i%spots.length];const ic=t==='flower'?'🌱':t==='star'?'⭐':t==='shell'?'🐚':t==='ball'?pick(PROP_ICONS.ball):pick(PROP_ICONS.fruit);return `<span class="prop ${t}" data-kind="${t}" style="left:${x+rand(-1,1)}%;top:${y+rand(-1,1)}%" onclick="tapProp(this)">${ic}</span>`;}).join('');
+ const ph=props.map((t,i)=>{const [x,y]=spots[i%spots.length];const ic=t==='flower'?'🌱':t==='star'?'⭐':t==='shell'?'🐚':t==='ball'?pick(PROP_ICONS.ball):t==='critter'?pick(PROP_ICONS.critter):pick(PROP_ICONS.fruit);return `<span class="prop ${t}" data-kind="${t}" style="left:${x+rand(-1,1)}%;top:${y+rand(-1,1)}%" onclick="tapProp(this)">${ic}</span>`;}).join('');
  show(`<div class="scene" id="scene" style="background:${pl.bg}"><div class="scenetitle">${esc(SC.title)}</div><div class="props">${ph}</div>
  <div class="owlbox" id="c-owl">${owlSVG()}</div>
  <div class="cast"><div class="castm" id="c-hero">${heroSVG(save.hero,SC.pose||'idle')}</div><div class="castm side" id="c-sib">${heroSVG(sibId(),SC.pose||'idle')}</div>${(SC.extras||[]).map(x=>`<div class="castm side side2" id="c-x-${x}" data-who="${x}">${heroSVG(x,SC.pose||'idle')}</div>`).join('')}${SC.boss?`<div class="castm bossm" id="c-boss"><span class="bob" style="display:inline-block;width:100%">${SC.bossFace||bossFace(SC.boss)}</span></div>`:''}</div></div>
@@ -1428,10 +1576,11 @@ function tapProp(el){const k=el.dataset.kind;const first=!el.dataset.w;el.datase
  else if(k==='fruit'){el.classList.add('awake');el.classList.remove('dance');void el.offsetWidth;el.classList.add('dance');[0,1,2].forEach(i=>tone(PENTA[rand(0,6)]/2,.12,'square',.08,i*.12));fxBurst(el,['🎵','🎶'],3);}
  else if(k==='shell'){el.classList.add('lit');el.textContent=pick(['🦪','✨','🫧']);SFX.splash();fxBurst(el,['🫧','✨','💜'],4);}
  else if(k==='ball'){el.classList.add('awake');el.classList.remove('dance');void el.offsetWidth;el.classList.add('dance');SFX.bounce(rand(0,6));fxBurst(el,['💥','⚡'],3);}
+ else if(k==='critter'){el.classList.add('awake');el.classList.remove('dance');void el.offsetWidth;el.classList.add('dance');SFX.hop(rand(0,6));fxBurst(el,['💜','✨','💚'],3);}
  else{el.classList.add('lit');el.textContent='🌟';SFX.chime();fxBurst(el,['✨','⭐'],4);}
  if(first&&SC){SC.woke++;const tot=document.querySelectorAll('.prop').length;$('wake').textContent=SC.woke>=tot?'All awake! 🎉':`✨ ${SC.woke}/${tot}`;if(SC.woke>=tot){SFX.win();react('#c-hero',HS().right);document.querySelectorAll('.castm.side').forEach(e=>react('#'+e.id,'cheer'));}}}
 function placeOf(n){const i=ORDER.indexOf(n),hp=save&&save.hero&&HPLACES[save.hero];return (hp&&hp[i])||PLACES[i];}
-function propWords(pl){const m={flower:'flowers',fruit:'fruits',star:'stars',shell:'seashells',ball:'balls'};return [...new Set(pl.props)].map(k=>m[k]).join(' and ');}
+function propWords(pl){const m={flower:'flowers',fruit:'fruits',star:'stars',shell:'seashells',ball:'balls',critter:'critter friends'};return [...new Set(pl.props)].map(k=>m[k]).join(' and ');}
 /* extra sidekicks (besides the main sidekick) who join a scene */
 function pickExtras(kind){const h=save.hero,fin=S&&S.n===12,o=SIBS[h].slice(1),r=Math.random;
  if(kind==='all'||(kind==='outro'&&fin))return o;
@@ -1609,7 +1758,7 @@ function learnBuild(){S.built=0;S.locked=false;const n=S.n,k=S.learnK,h=H(),pl=p
  <div class="row"><button id="addbtn" class="btn purple" data-enter onclick="addRow()">${h.verb} ${n} ${th}</button>
  <button id="nextbtn" class="btn green hidden" data-enter onclick="learnTrick()">Next: a trick! ▶</button></div>
  <p style="color:#64748b">Tip: tap any block to make it jump! Counting by ${n}s is called <b>skip counting</b>.</p></div>`);}
-function addRow(){const n=S.n,k=S.learnK;if(S.built>=k)return;S.built++;if(save.hero==='blu')SFX.boop(S.built+2);else if(save.hero==='sage')SFX.singNote(S.built);else if(save.hero==='eshon')SFX.scribble(S.built);else if(save.hero==='melrose')SFX.bubble(S.built);else if(save.hero==='cayden')SFX.bounce(S.built);else SFX.note(S.built);
+function addRow(){const n=S.n,k=S.learnK;if(S.built>=k)return;S.built++;if(save.hero==='blu')SFX.boop(S.built+2);else if(save.hero==='sage')SFX.singNote(S.built);else if(save.hero==='eshon')SFX.scribble(S.built);else if(save.hero==='melrose')SFX.bubble(S.built);else if(save.hero==='cayden')SFX.bounce(S.built);else if(save.hero==='zea')SFX.hop(S.built);else SFX.note(S.built);
  $('build').innerHTML=gridHTML(S.built,n,{labels:true,size:blockSize(k,n)});
  $('skip').textContent='Skip count: '+range(1,S.built).map(i=>i*n).join(', ');
  if(S.built===k){$('addbtn').classList.add('hidden');$('nextbtn').classList.remove('hidden');
@@ -1704,7 +1853,7 @@ document.addEventListener('keydown',e=>{
  else if(e.key==='Backspace'&&pad){padDel();e.preventDefault();}
  else if(e.key==='Enter'||e.key===' '){e.preventDefault();if(pad&&S&&!S.locked&&inp)padOK();else clickEnter();}
 });
-app.addEventListener('click',e=>{const b=e.target.closest('.blk');if(b&&!b.closest('.opt')){b.classList.remove('tap');void b.offsetWidth;b.classList.add('tap');if(save.hero==='blu')SFX.boop(rand(0,6));else if(save.hero==='sage')SFX.singNote(rand(0,6));else if(save.hero==='eshon')SFX.scribble(rand(0,6));else if(save.hero==='melrose')SFX.bubble(rand(0,6));else if(save.hero==='cayden')SFX.bounce(rand(0,6));else SFX.tap();}});
+app.addEventListener('click',e=>{const b=e.target.closest('.blk');if(b&&!b.closest('.opt')){b.classList.remove('tap');void b.offsetWidth;b.classList.add('tap');if(save.hero==='blu')SFX.boop(rand(0,6));else if(save.hero==='sage')SFX.singNote(rand(0,6));else if(save.hero==='eshon')SFX.scribble(rand(0,6));else if(save.hero==='melrose')SFX.bubble(rand(0,6));else if(save.hero==='cayden')SFX.bounce(rand(0,6));else if(save.hero==='zea')SFX.hop(rand(0,6));else SFX.tap();}});
 $('homeBtn').onclick=()=>{SFX.tap();save.hero?subjectScreen():titleScreen();};
 $('closetBtn').onclick=()=>{SFX.tap();closetScreen();};
 $('muteBtn').onclick=()=>{save.muted=!save.muted;persist();updateStatus();if(!save.muted)SFX.tap();};
@@ -1713,7 +1862,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='13';
+const APP_VERSION='14';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -2399,7 +2548,7 @@ const MIX=[
   tip:'Two steps! Find the first answer, then use it for step two. Underline the numbers and the clue words.',
   learn(){const H=nm(save.hero);return [{t:`Read: ${H} has 3 bags with 4 apples in each, then gives away 5. How many are left?`},{t:'Step 1: "3 bags with 4 in each" → 3 × 4 = <b>12</b>.',v:hvEq(null,3,4)},{t:'Step 2: "gives away 5" → 12 − 5 = <b>7</b>. Answer: 7 apples!',v:hvBar(12,null,5)}];},
   gen(k){return multiQ(k==='p'?0:1,k);}},
- {t:'Grand Final: The Muddle Monster',e:'🌀',skill:'everything mixed together',final:true,ramp:true,place:{name:'Top of Muddle Tower',e:'⚡',desc:'Lightning crackles at the very top of the tower. All six heroes are here!'},boss:['🌀','The Muddle Monster'],
+ {t:'Grand Final: The Muddle Monster',e:'🌀',skill:'everything mixed together',final:true,ramp:true,place:{name:'Top of Muddle Tower',e:'⚡',desc:'Lightning crackles at the very top of the tower. All seven heroes are here!'},boss:['🌀','The Muddle Monster'],
   tip:'Slow down, read the sign or the clue words, choose your method, then check your answer.',
   learn(){return [{t:'This is it! Everything you learned in the tower, all mixed up.',v:'<div class="eq">➕ ➖ ✖️ ➗ ( ) ?</div>'},{t:'1. Read carefully. 2. Find the sign or the clue words. 3. Brackets first. 4. Check your answer makes sense.',v:oopChart()},{t:'All six heroes are with you. Let\'s unmuddle NumiRealm for good!'}];},
   gen(k){const r=Math.random();if(r<.2)return mixFact(1,k);if(r<.4)return wopQ(1,k);if(r<.6)return missQ(pick(WOPS),pick([1,2]),k);if(r<.8)return oopQ(pick([1,2]),k);return multiQ(1,k);}}];
@@ -2424,7 +2573,7 @@ TEAM_SUB.mix={emi:["Read the sign first, {rel}, like reading a seed packet! 🌷
  cayden:["Read the play, {rel}: which move do we need? 🏀","Step one, step two, then score, {rel}! 🏈"]};
 STAUNTS.mix=["Plus is minus! Times is divide! Muddle, muddle, MUDDLE!","I swapped every sign in the tower. You'll never know which one to use!"];
 STAUNTS.mult=["Times tables are too small for me! I'll muddle the BIG numbers!","Carry? Placeholder? I'll scatter all your digits!"];
-SFINAL.mix="I am the MUDDLE MONSTER! I mixed up EVERY sign in NumiRealm! Six heroes? Ha! Let's see you unmuddle THIS!";
+SFINAL.mix="I am the MUDDLE MONSTER! I mixed up EVERY sign in NumiRealm! Seven heroes? Ha! Let's see you unmuddle THIS!";
 REALM_OWL.mix="Welcome to Muddle Tower! Every floor mixes adding, taking away, times and sharing. Read each sign and clue word carefully!";
 /* ---------- v9: subject select, subject maps and the subject lesson / practice / apply / boss flow ---------- */
 let lastMap=null;
@@ -3546,7 +3695,7 @@ function lmAnswer(){const q=SS.cur,L=q.L,s=L.steps[SS.lmStep];if(!s||SS.vals[0]=
  SS.lmTry++;SS.lmErr++;SFX.bad();const a=$('sans');if(a){a.classList.remove('shake');void a.offsetWidth;a.classList.add('shake','no');}const ask=$('lmask');
  if(SS.lmTry>=2){if(ask)ask.innerHTML+=`<div class="ldfix">It's <b>${s.want}</b>. ${s.tell}</div>`;SS.lmRev=true;SS.vals=[String(s.want)];_sRenderInp12();SS.lmTry=0;SS.lmStep++;SS.locked=true;setTimeout(()=>{if(SS&&SS.cur===q){SS.locked=false;fin();}},2000);}
  else{if(ask)ask.innerHTML=ask.innerHTML.replace(/<div class="ldtry">.*<\/div>/,'')+`<div class="ldtry">Try again! ${lmTry(L,s)}</div>`;speak('Try again! '+lmTry(L,s),'owl');setTimeout(()=>{if(!SS||SS.cur!==q)return;SS.vals=[''];if(a)a.classList.remove('no');_sRenderInp12();},700);}}
-/* ---- scenes: the grand final brings all six heroes ---- */
+/* ---- scenes: the grand final brings all seven heroes ---- */
 const _sExtras12=sExtras;sExtras=function(all){if(SS&&SS.sid==='mix'&&SS.ch&&SS.ch.final){const h=save.hero,s=sibId();return HERO_ORDER.filter(x=>x!==h&&x!==s);}return _sExtras12(all);};
 /* ---- castle map: the Long Multiplication Wing ---- */
 const _mapScreen12=SCR.mapScreen;
@@ -3587,6 +3736,27 @@ function v13Migrate(sv){if(!sv||!sv.profiles||sv.chv>=13)return false;Object.val
 (function(){let raw=null;try{raw=JSON.parse(localStorage.getItem(SKEY)||'null');}catch(e){}
  if(raw&&raw.profiles){if(!(raw.chv>=13)){save.chv=undefined;v13Migrate(save);persist();}}else save.chv=13;})();
 const _freshSave12=freshSave;freshSave=function(){const s=_freshSave12();s.chv=13;return s;};
+/* ===== v14: Zea the Critter Flip Star joins every realm, the Heroes Hall and the Grand Final ===== */
+HSUB.add.zea=["One ladybug plus two ladybugs makes a ladybug cartwheel crew! 🐞","Every flip adds one more point to my routine. Let's add! 🤸‍♀️"];
+HSUB.sub.zea=["Three mice tiptoed home, so I count the mice still here! 🐭","I'll do backward rolls to count back: ten, nine, eight… 🤸‍♀️"];
+HSUB.mult.zea=["A spider has 8 legs, so 3 spiders is 3 times 8! 🕷️💜","Rows of ladybugs on my gym mat make the times tables. Big numbers too! 🐞"];
+HSUB.div.zea=["Let's share the caterpillars fairly so every leaf gets the same! 🐛","Equal teams for the gym show: everyone gets a fair turn! 🤸‍♀️"];
+HSUB.frac.zea=["A balance beam cut in half is two equal parts! 💜","My leotard has four equal sparkle stripes: quarters! ✨"];
+HSUB.mix.zea=["A gym routine mixes flips, jumps and spins. Math mixes signs! 🤸‍♀️","I'll read each sign before I flip, like checking the mat before a jump! 💚"];
+TEAM_SUB.add.zea=["Count on like hopping along the mat, {rel}: start big, then hop the rest! 🐸","Two caterpillars plus two caterpillars, {rel}! Doubles are twin flips! 🐛"];
+TEAM_SUB.sub.zea=["Hop back along the beam, {rel}: one step back for each one we take away! 🤸‍♀️","If the snails slide away, we count who's still in the garden, {rel}. 🐌"];
+TEAM_SUB.mult.zea=["Bugs in rows, {rel}! 4 rows of 6 ladybugs is 24. That's an array! 🐞","Big numbers? Split them like a routine, {rel}: multiply the tens, then the ones, then add them up! 🤸‍♀️"];
+TEAM_SUB.div.zea=["Let's share the beetles into equal groups, {rel}, one for each leaf! 🪲","Dividing is like making fair gym teams, {rel}: same number on every team! 🤸‍♀️"];
+TEAM_SUB.frac.zea=["Fold the ribbon into equal parts, {rel}: halves, thirds, fourths! 🎀","Equal parts, like a balance beam, {rel}: both sides the same! 💜"];
+TEAM_SUB.mix.zea=["Check the sign before you flip, {rel}: plus, minus, times or share? 🤸‍♀️","Brackets are like the gym mat, {rel}: do what's inside first! 💚"];
+HERO12.zea={nick:'The Critter Flip Star',age:ZEA_CFG.age,cols:[['Violet','#7C3AED'],['Golden sparkle','#F59E0B'],['Silver','#CBD5E1']],look:ZEA_CFG.look,
+ loves:['gymnastics','fashion','spiders, mice & snakes'],pers:'Bouncy, brave and stylish. Zea can do a cartwheel AND design an outfit, and she thinks every creepy-crawly is amazing.',
+ origin:'When the Muddle Monster scrambled the gym and scattered the critters, Zea tightened her bow and said: "Stick the landing, strike a pose! Critter Flip, GO!"',
+ more:'Zea is cousin to Emi, Blú, Sage, Eshon, Melrose and Cayden. Her critter pals Webby the spider, Squeak the mouse and Noodle the snake cheer her on, and her Gym Bag fills with bows, ribbons and medals as she wins. Bugs line up in neat rows, so Zea sees times tables everywhere.',
+ powers:[{n:'Critter Count',e:'🐞',math:'Times tables & arrays',d:'Lines up ladybugs in rows: 3 rows of 5 bugs is 15!',love:'creepy-crawlies'},
+  {n:'Balance Beam',e:'🤸‍♀️',math:'Sharing fairly & equal parts',d:'Keeps both sides equal, so every group gets the same.',love:'gymnastics'},
+  {n:'Runway Patterns',e:'👗',math:'Skip counting & patterns',d:'Struts down the runway in steps: 2, 4, 6, 8… strike a pose!',love:'fashion'}],
+ stats:{Speed:8,Strategy:7,Teamwork:9,Creativity:9},fav:'mult',combo:'eshon',comboName:'Flip & Sketch',comboLine:'Cousins Zea and Eshon: he draws critter buddies and she flips them into a routine!'};
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
 </script>
