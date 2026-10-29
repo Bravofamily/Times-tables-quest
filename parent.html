@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="nr-game" content="./"><!-- where the kid game lives, relative to this page. Use "./" when deployed next to index.html -->
+<title>NumiRealm Parent Area (test)</title>
+<style>
+@font-face{font-family:'Baloo 2';font-weight:600 800;font-display:swap;src:url(fonts/baloo2-latin-600-800.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url(fonts/poppins-latin-400.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:swap;src:url(fonts/poppins-latin-600.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:700;font-display:swap;src:url(fonts/poppins-latin-700.woff2) format('woff2')}
+*{box-sizing:border-box}
+html,body{margin:0;overflow-x:hidden}
+body{font-family:Poppins,system-ui,sans-serif;color:#0f172a;background:linear-gradient(160deg,#0A1F44,#1E3A8A 60%,#2563eb);min-height:100vh}
+#testBanner{background:#fbbf24;color:#3b2300;text-align:center;font-weight:700;padding:8px 12px;font-size:14px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:900px;margin:0 auto;padding:16px 16px 6px;color:#fff}
+header h1{font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:26px;margin:0;line-height:1.1}
+header h1 span{color:#00C2FF}
+main{max-width:900px;margin:0 auto;padding:8px 16px 40px}
+.card{background:#fff;border-radius:22px;padding:18px;margin:12px 0;box-shadow:0 6px 0 #0000001a,0 10px 30px #0000002a}
+h2{font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:24px;margin:0 0 8px;color:#1E3A8A}
+h3{font-family:'Baloo 2',Poppins,sans-serif;font-weight:700;font-size:19px;margin:16px 0 6px;color:#0A1F44}
+p{line-height:1.5}.small{font-size:14px;color:#475569}
+label{display:block;font-weight:600;margin:12px 0 4px}
+input,select{font:inherit;font-size:17px;width:100%;min-height:48px;padding:8px 12px;border:2px solid #cbd5e1;border-radius:12px;background:#fff}
+input:focus,select:focus{outline:3px solid #00C2FF;border-color:#00C2FF}
+.btn{font:inherit;font-weight:700;font-size:17px;min-height:48px;min-width:44px;padding:10px 18px;border:0;border-radius:14px;background:#f97316;color:#fff;box-shadow:0 4px 0 #c2410c;cursor:pointer;margin:8px 8px 0 0}
+.btn.blue{background:#2563eb;box-shadow:0 4px 0 #1e3a8a}.btn.gray{background:#e2e8f0;color:#0f172a;box-shadow:0 4px 0 #94a3b8}.btn.red{background:#dc2626;box-shadow:0 4px 0 #991b1b}
+.btn.sm{font-size:15px;padding:8px 14px}
+.btn[disabled]{opacity:.6;cursor:default}
+.err{color:#b91c1c;font-weight:600}.ok{color:#047857;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.kid{border:2px solid #e2e8f0;border-radius:18px;padding:14px;cursor:pointer;background:#f8fafc;text-align:left;font:inherit;width:100%}
+.kid:hover{border-color:#00C2FF}
+.kid b{font-family:'Baloo 2',Poppins,sans-serif;font-size:22px;color:#1E3A8A}
+.pill{display:inline-block;background:#e0f2fe;color:#075985;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:600;margin:2px 4px 2px 0}
+.pill.warn{background:#fef3c7;color:#92400e}
+.bar{height:14px;background:#e2e8f0;border-radius:999px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#00C2FF,#2563eb)}
+.realm{display:grid;grid-template-columns:minmax(120px,170px) 1fr auto;gap:10px;align-items:center;margin:8px 0;font-size:15px}
+.code{font-family:'Baloo 2',monospace;font-weight:800;font-size:44px;letter-spacing:.18em;color:#0A1F44;text-align:center;margin:6px 0;word-break:break-all}
+.qr{display:flex;justify-content:center}.qr svg{width:200px;height:200px;max-width:100%}
+.dev{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #e2e8f0;padding:10px 0}
+.consent{display:flex;gap:12px;align-items:flex-start;background:#f1f5f9;border-radius:14px;padding:12px;margin:10px 0;font-weight:400}
+.consent input{width:28px;height:28px;min-height:28px;flex:0 0 28px;margin-top:2px}
+.chart svg{width:100%;height:auto;display:block}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.hidden{display:none}
+.steps{margin:6px 0 4px;padding-left:22px;line-height:1.6}
+.navl{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center;padding:0 6px}
+header{flex-wrap:wrap}header nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center}header nav .btn{margin:0}
+.whatl{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:#1E3A8A}
+.wl{list-style:none;padding:0;margin:8px 0}.wl li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid #e2e8f0;line-height:1.4}.wl li>span{font-size:20px;line-height:1.2}
+#welcomeCard{border:3px solid #00C2FF}
+@media (max-width:520px){header h1{font-size:22px}.realm{grid-template-columns:1fr auto}.realm .bar{grid-column:1/-1;grid-row:2}.code{font-size:36px}}
+</style>
+</head>
+<body>
+<div id="testBanner" role="note">🧪 TEST VERSION. For trying out the Parent Area only. Not for real family data yet.</div>
+<header><h1>Numi<span>Realm</span> Parent Area</h1><nav aria-label="Parent Area"><a class="navl" id="navAbout" href="parent-about.html">What's included?</a><button class="btn gray sm hidden" id="welcomeBtn" type="button">Account guide</button><button class="btn gray sm hidden" id="signOut" type="button">Sign out</button></nav></header>
+<main id="app" aria-live="polite"><div class="card"><p>Loading…</p></div></main>
+<script src="vendor/supabase.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script>
+'use strict';
+const CFG={url:'https://uuigasrelqbwxopvqoib.supabase.co',key:'sb_publishable_0E3BTvmAlWAc9wxz1Rl55w_0K6J-bmr'};
+const SITE='https://bravofamily.github.io/Times-tables-quest/';
+const REDIRECT=location.origin==='https://bravofamily.github.io'?SITE+'parent.html':location.href.split('#')[0].split('?')[0]; // local tests use their own origin
+const CONSENT_VERSION='test-1';
+const CONSENT_TEXT="I am this child's parent or legal guardian. I agree that NumiRealm may store my child's nickname, age range, grade and a summary of their math progress (stars, chapters, accuracy by skill, time played, hints and examples used) so I can see it here. I can remove a device or delete a kid profile at any time. (Test placeholder, not final legal wording.)";
+const REALMS=[['add','🌼 Addition Meadow'],['sub','🪨 Subtraction Caves'],['mult','🏰 Times Table Castle'],['div','⚓ Division Docks'],['frac','🧁 Fraction Bakery'],['mix','🗼 Muddle Tower']];
+const HERO={sage:'Sage',emi:'Emi',blu:'Blú',eshon:'Eshon',melrose:'Melrose',cayden:'Cayden',zea:'Zea'};
+const AGES=[['4-5','4–5'],['6-7','6–7'],['8-10','8–10'],['11-14','11–14']];
+const GRADES=['PreK','K','1','2','3','4','5','6','7','8'];
+const sb=supabase.createClient(CFG.url,CFG.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const S={consented:false,welcome:false,signup:/signup/.test(location.hash),user:null,email:'',step:'email',kids:[],progress:{},events:{},devices:[],view:'family',kid:null,code:null,err:'',msg:'',busy:false};
+const app=$('app');
+function render(html){app.innerHTML=html;$('signOut').classList.toggle('hidden',!S.user);$('welcomeBtn').classList.toggle('hidden',!S.user||!S.consented);const f=!S.user&&/signup|login/.test(location.hash)&&$('loginCard');if(f)f.scrollIntoView({block:'start'});else window.scrollTo(0,0);}
+addEventListener('hashchange',()=>{if(!S.user&&/signup|login/.test(location.hash)){S.signup=/signup/.test(location.hash);S.step='email';viewLogin();const f=$('loginCard');if(f)f.scrollIntoView({block:'start'});}});
+function errHTML(){return (S.err?`<p class="err" role="alert" id="err">⚠️ ${esc(S.err)}</p>`:'')+(S.msg?`<p class="ok" role="status" id="msg">${esc(S.msg)}</p>`:'');}
+function friendly(e){const m=(e&&(e.message||e.error_description||e.msg))||String(e);
+ if(/kid_limit/.test(m))return 'You can add up to 2 kids in this test.';if(/rate|too many/i.test(m))return 'Too many tries. Please wait a few minutes.';
+ if(/expired|invalid/i.test(m))return 'That code is wrong or expired. Ask for a new one.';if(/fetch|network/i.test(m))return 'Could not reach the server. Check your connection.';return m;}
+
+/* ---------- sign-in: email + 6-digit code ---------- */
+function viewLogin(){if(S.step==='code')return render(`<div class="card" id="loginCard"><h2>Check your email ✉️</h2>
+ <p>We sent a sign-in code to <b>${esc(S.email)}</b>. Type it here. (Tapping the link in the email works too.)</p>
+ <label for="otp">Sign-in code</label><input id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="123456">
+ ${errHTML()}<button class="btn blue" id="verifyBtn" type="button" ${S.busy?'disabled':''}>Sign in</button><button class="btn gray" id="backBtn" type="button">Use a different email</button></div>`);
+ render(`<div class="card" id="loginCard">${S.signup?`<h2 id="loginH">Create your parent account</h2>
+ <p>It takes about 2 minutes:</p><ol class="steps" id="signupSteps"><li>Enter your email.</li><li>Type the 6-digit code we email you.</li><li>Read and agree to the parent consent.</li><li>Add your kids (nickname only) and link their devices.</li></ol>`:`<h2 id="loginH">Parent Login</h2>
+ <p>Enter your email and we will send you a one-time sign-in code. No password needed.</p>`}
+ <label for="email">Email</label><input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" value="${esc(S.email)}">
+ ${errHTML()}<button class="btn" id="sendBtn" type="button" ${S.busy?'disabled':''}>Email me a code</button>
+ <p>${S.signup?'Already have an account? <button class="btn gray sm" id="goLogin" type="button">Parent Login</button>':'New here? <button class="btn gray sm" id="goSignup" type="button">Create a parent account</button>'}</p>
+ <p><a class="whatl" id="whatLink" href="parent-about.html">What's included? →</a></p>
+ <p class="small">Kids never sign in. Their game links to your account with a short code you make here.</p></div>`);}
+app.addEventListener('click',async ev=>{const t=ev.target.closest('button');if(!t)return;const id=t.id;
+ try{
+ if(id==='sendBtn'){const em=($('email').value||'').trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){S.err='Please enter a valid email.';return viewLogin();}
+  S.email=em;S.err='';S.busy=true;viewLogin();const {error}=await sb.auth.signInWithOtp({email:em,options:{shouldCreateUser:true,emailRedirectTo:REDIRECT}});S.busy=false;
+  if(error){S.err=friendly(error);return viewLogin();}S.step='code';return viewLogin();}
+ if(id==='welcomeClose'){S.welcome=false;return draw();}
+ if(id==='goLogin'||id==='goSignup'){S.signup=id==='goSignup';S.err='';viewLogin();const f=$('loginCard');f.scrollIntoView({behavior:'smooth',block:'start'});$('email').focus({preventScroll:true});return;}
+ if(id==='backBtn'){S.step='email';S.err='';return viewLogin();}
+ if(id==='verifyBtn'){const tok=($('otp').value||'').replace(/\D/g,'');if(tok.length<6){S.err='Enter the code from the email.';return viewLogin();}
+  S.busy=true;S.err='';viewLogin();const {data,error}=await sb.auth.verifyOtp({email:S.email,token:tok,type:'email'});S.busy=false;
+  if(error){S.err=friendly(error);return viewLogin();}S.user=data.user;return boot();}
+ if(id==='consentBtn'){if(!$('consentChk').checked){S.err='Please tick the box to continue.';return viewConsent();}
+  const {error}=await sb.from('parent_consent').insert({parent_id:S.user.id,consent_version:CONSENT_VERSION,consent_text:CONSENT_TEXT});if(error){S.err=friendly(error);return viewConsent();}S.err='';S.consented=true;S.welcome=true;return loadAll();}
+ if(id==='addKidBtn'){S.view='addkid';S.err='';return draw();}
+ if(id==='saveKid'){const nick=($('kNick').value||'').trim();if(!nick){S.err='Please enter a nickname.';return draw();}
+  const {error}=await sb.from('kids').insert({parent_id:S.user.id,nickname:nick.slice(0,20),age_range:$('kAge').value,grade:$('kGrade').value});
+  if(error){S.err=friendly(error);return draw();}S.view='family';S.err='';S.msg='Kid added.';return loadAll();}
+ if(id==='cancelKid'||id==='toFamily'){S.view='family';S.err='';S.msg='';S.code=null;return draw();}
+ if(t.dataset.kid){S.kid=t.dataset.kid;S.view='kid';S.err='';S.msg='';return draw();}
+ if(t.dataset.code){S.err='';const {data,error}=await sb.rpc('create_link_code',{p_kid_id:t.dataset.code});if(error){S.err=friendly(error);return draw();}
+  const row=Array.isArray(data)?data[0]:data;S.code={...row,kid:t.dataset.code};S.view='code';return draw();}
+ if(t.dataset.unlink){if(!confirm('Remove this device? It will stop syncing.'))return;const {data,error}=await sb.rpc('unlink_device',{p_device_id:t.dataset.unlink});
+  if(error||(data&&data.ok===false)){S.err=friendly(error||'Could not remove that device.');return draw();}S.msg='Device removed.';return loadAll();}
+ if(id==='codeDone'){S.view='kid';S.kid=S.code&&S.code.kid;S.code=null;return loadAll();}
+ }catch(e){S.busy=false;S.err=friendly(e);draw();}
+});
+$('welcomeBtn').onclick=()=>{S.welcome=true;S.view='family';draw();const w=$('welcomeCard');w&&w.scrollIntoView({block:'start'});};
+$('signOut').onclick=async()=>{await sb.auth.signOut();Object.assign(S,{consented:false,welcome:false,user:null,step:'email',kids:[],view:'family',err:'',msg:''});viewLogin();};
+
+/* ---------- consent ---------- */
+function viewConsent(){render(`<div class="card" id="consentCard"><h2>Before we start</h2>
+ <p>The Parent Area keeps only what you need to follow your kids' practice. No full names, birthdays, photos, location or ads.</p>
+ <label class="consent" for="consentChk"><input type="checkbox" id="consentChk"><span>${esc(CONSENT_TEXT)}</span></label>
+ <p class="small">Consent version ${CONSENT_VERSION}. This is a test placeholder and will be reviewed before real use.</p>
+ ${errHTML()}<button class="btn blue" id="consentBtn" type="button">I agree, continue</button></div>`);}
+
+/* ---------- data ---------- */
+let booting=null;function boot(){if(!booting)booting=boot2().finally(()=>{booting=null});return booting;}
+async function boot2(){const {data}=await sb.auth.getSession();S.user=data&&data.session?data.session.user:null;if(!S.user){S.step='email';viewLogin();if(/signup|login/.test(location.hash)){const f=$('loginCard');if(f)f.scrollIntoView({block:'start'});}return;}
+ const p=await sb.from('parents').select('id').eq('id',S.user.id).maybeSingle();
+ if(!p.data){const ins=await sb.from('parents').insert({id:S.user.id});if(ins.error&&!/duplicate/i.test(ins.error.message)){S.err=friendly(ins.error);return viewLogin();}}
+ const c=await sb.from('parent_consent').select('id').eq('parent_id',S.user.id).limit(1);
+ if(!c.data||!c.data.length)return viewConsent();S.consented=true;return loadAll();}
+async function loadAll(){const [k,p,e,d]=await Promise.all([sb.from('kids').select('*').order('created_at'),sb.from('progress').select('*'),
+  sb.from('progress_events').select('*').order('day',{ascending:true}).limit(200),sb.from('devices').select('*').is('revoked_at',null).order('created_at')]);
+ if(k.error){S.err=friendly(k.error);}
+ S.kids=k.data||[];S.progress={};(p.data||[]).forEach(r=>S.progress[r.kid_id]=r);S.events={};(e.data||[]).forEach(r=>(S.events[r.kid_id]=S.events[r.kid_id]||[]).push(r));S.devices=d.data||[];draw();}
+
+/* ---------- helpers ---------- */
+function struggles(pr){if(!pr||!pr.skills)return[];return Object.entries(pr.skills).map(([k,s])=>({k,n:s.n||k,acc:s.t?s.r/s.t:1,t:s.t||0,l:s.l||0}))
+ .filter(s=>(s.t>=5&&s.acc<.7)||(s.l>=3&&s.l>=s.t*.3)).sort((a,b)=>a.acc-b.acc||b.l-a.l).slice(0,3);}
+function starsOf(pr){return pr?REALMS.reduce((a,[id])=>a+(((pr.realms||{})[id]||{}).stars||0),0):0;}
+function reached(pr){let r='Not started yet';if(pr)REALMS.forEach(([id,n])=>{if((((pr.realms||{})[id]||{}).chapters||0)>0)r=n;});return r;}
+function weekStars(ev,pr){if(!ev||!ev.length)return 0;const wk=new Date(Date.now()-7*864e5).toISOString().slice(0,10);const before=[...ev].filter(e=>e.day<wk).pop();return Math.max(0,starsOf(pr)-(before?before.stars_total:0));}
+function mins(s){const m=Math.round((s||0)/60);return m<60?m+' min':Math.floor(m/60)+' h '+(m%60)+' min';}
+function ago(t){if(!t)return 'never';const m=Math.round((Date.now()-new Date(t))/60000);return m<1?'just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' h ago':Math.round(m/1440)+' days ago';}
+function trendSVG(ev){if(!ev||ev.length<2)return '<p class="small" id="noTrend">The trend graph appears after a couple of days of play.</p>';
+ const d=ev.slice(-30),W=600,H=220,L=40,R=40,T=16,B=36,n=d.length,x=i=>L+i*(W-L-R)/(n-1);
+ const acc=d.map(e=>e.answers_total?Math.round(100*e.answers_right/e.answers_total):null),mn=d.map(e=>e.minutes||0),mx=Math.max(10,...mn);
+ const y=v=>T+(H-T-B)*(1-v/100),ym=v=>T+(H-T-B)*(1-v/mx);let pts=acc.map((v,i)=>v==null?null:`${x(i).toFixed(1)},${y(v).toFixed(1)}`).filter(Boolean).join(' ');
+ const bw=Math.max(3,(W-L-R)/n*.5);
+ return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Accuracy and minutes played over the last ${n} days" id="trendSvg">
+ ${[0,50,100].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e2e8f0"/><text x="${L-6}" y="${y(v)+4}" font-size="12" text-anchor="end" fill="#64748b">${v}%</text>`).join('')}
+ ${mn.map((v,i)=>`<rect x="${(x(i)-bw/2).toFixed(1)}" y="${ym(v).toFixed(1)}" width="${bw.toFixed(1)}" height="${(H-B-ym(v)).toFixed(1)}" fill="#fed7aa" rx="2"/>`).join('')}
+ <text x="${W-R+6}" y="${ym(mx)+4}" font-size="12" fill="#c2410c">${mx}m</text>
+ <polyline points="${pts}" fill="none" stroke="#2563eb" stroke-width="3" stroke-linejoin="round"/>
+ ${acc.map((v,i)=>v==null?'':`<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="4" fill="#2563eb"/>`).join('')}
+ <text x="${L}" y="${H-10}" font-size="12" fill="#64748b">${esc(d[0].day)}</text><text x="${W-R}" y="${H-10}" font-size="12" text-anchor="end" fill="#64748b">${esc(d[n-1].day)}</text></svg>
+ <p class="small"><span style="color:#2563eb;font-weight:700">● Accuracy</span> &nbsp; <span style="color:#c2410c;font-weight:700">■ Total minutes played</span></p>`;}
+function qrSVG(text){try{const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true});}catch(e){return '';}}
+function gameURL(code){const base=new URL((document.querySelector('meta[name=nr-game]')||{}).content||'./',location.href);base.searchParams.set('parenttest','1');base.searchParams.set('link',code);return base.href;}
+
+function welcomeHTML(){return `<div class="card" id="welcomeCard" role="region" aria-labelledby="welT"><h2 id="welT">🎉 What you get with your account</h2>
+ <ul class="wl" id="welcomeList"><li><span>👧</span><div><b>Add up to 2 kids</b><br><span class="small">Nickname, age range and grade only.</span></div></li>
+ <li><span>🔗</span><div><b>Link their devices with a code</b><br><span class="small">Open a kid, tap “Add a device”, type the code in the game's Settings.</span></div></li>
+ <li><span>🏰</span><div><b>See realm progress</b><br><span class="small">Stars and chapters in all 6 realms.</span></div></li>
+ <li><span>🎯</span><div><b>Needs practice</b><br><span class="small">The skills they miss most.</span></div></li>
+ <li><span>📈</span><div><b>Trend graphs</b><br><span class="small">Accuracy and time played by day.</span></div></li>
+ <li><span>🛡️</span><div><b>Manage or remove devices and data</b><br><span class="small">Remove a device or delete a kid's profile any time.</span></div></li></ul>
+ <button class="btn blue" id="welcomeClose" type="button">Got it</button> <span class="small">Open it again any time from “Account guide” at the top.</span></div>`;}
+/* ---------- screens ---------- */
+function draw(){if(!S.user)return viewLogin();
+ if(S.view==='addkid')return render(`<div class="card" id="addKidCard"><h2>Add a kid</h2><p class="small">Use a nickname, not a full name.</p>
+  <label for="kNick">Nickname</label><input id="kNick" maxlength="20" autocomplete="off">
+  <label for="kAge">Age range</label><select id="kAge">${AGES.map(a=>`<option value="${a[0]}">${a[1]}</option>`).join('')}</select>
+  <label for="kGrade">Grade</label><select id="kGrade">${GRADES.map(g=>`<option value="${g}"${g==='1'?' selected':''}>${g==='PreK'?'Pre-K':g==='K'?'Kindergarten':'Grade '+g}</option>`).join('')}</select>
+  ${errHTML()}<button class="btn blue" id="saveKid" type="button">Save</button><button class="btn gray" id="cancelKid" type="button">Cancel</button></div>`);
+ if(S.view==='code'&&S.code){const k=S.kids.find(x=>x.id===S.code.kid)||{};const url=gameURL(S.code.code);
+  return render(`<div class="card" id="codeCard"><h2>Link a device for ${esc(k.nickname)}</h2>
+  <div class="code" id="linkCode" aria-label="Link code">${esc(S.code.code)}</div><p class="center small" style="text-align:center">Expires in <b id="countdown">10:00</b> · works once</p>
+  <div class="qr" id="qr">${qrSVG(url)}</div>
+  <h3>On your kid's device</h3><ol><li>Open NumiRealm and go to <b>Settings</b>.</li><li>Tap <b>Link to a parent account (test)</b> and answer the grown-up question.</li><li>Type this code (or scan the QR code with the device's camera), pick the hero your kid plays, and tap <b>Link device</b>.</li></ol>
+  ${errHTML()}<button class="btn gray" id="codeDone" type="button">Done</button></div>`),tick();}
+ if(S.view==='kid'){const k=S.kids.find(x=>x.id===S.kid);if(!k){S.view='family';return draw();}const pr=S.progress[k.id],ev=S.events[k.id],st=struggles(pr),devs=S.devices.filter(d=>d.kid_id===k.id);
+  const acc=pr?Object.values(pr.skills||{}).reduce((a,s)=>[a[0]+(s.r||0),a[1]+(s.t||0)],[0,0]):[0,0];
+  return render(`<button class="btn gray sm" id="toFamily" type="button">← Family</button>
+  <div class="card" id="kidCard"><h2>${esc(k.nickname)}</h2><p><span class="pill">Ages ${esc(k.age_range.replace('-','–'))}</span><span class="pill">${k.grade==='PreK'?'Pre-K':k.grade==='K'?'Kindergarten':'Grade '+esc(k.grade)}</span>${pr&&pr.hero?`<span class="pill">Hero: ${esc(HERO[pr.hero]||pr.hero)}</span>`:''}</p>
+  ${pr?`<p class="small">Last update ${ago(pr.updated_at)} · ${mins(pr.time_played_sec)} played · ${acc[1]?Math.round(100*acc[0]/acc[1])+'% correct':'no answers yet'} · ${pr.lanterns_used} lanterns · ${pr.examples_opened} examples opened</p>`:'<p class="small" id="noProgress">No progress yet. Link a device and play a lesson.</p>'}
+  <h3>Realms</h3><div id="realms">${REALMS.map(([id,n])=>{const r=(pr&&pr.realms&&pr.realms[id])||{chapters:0,total:0,stars:0,max:0};const pc=r.total?Math.round(100*r.chapters/r.total):0;
+   return `<div class="realm"><span>${n}</span><div class="bar" aria-hidden="true"><i style="width:${pc}%"></i></div><span class="small">${r.chapters}/${r.total||'–'} ch · ⭐ ${r.stars}</span></div>`;}).join('')}</div>
+  <h3>Needs practice</h3><div id="struggles">${st.length?st.map(s=>`<p><span class="pill warn">${esc(s.n)}</span> ${Math.round(s.acc*100)}% correct of ${s.t}${s.l?` · ${s.l} lanterns`:''}</p>`).join(''):'<p class="small">Nothing stands out yet. 🎉</p>'}</div>
+  <h3>Trend</h3><div class="chart">${trendSVG(ev)}</div></div>
+  <div class="card" id="kidDevices"><h2>Devices</h2>${devs.length?devs.map(devRow).join(''):'<p class="small">No devices linked yet.</p>'}
+  ${errHTML()}<button class="btn blue" type="button" id="makeCode" data-code="${k.id}">➕ Add a device (get a code)</button></div>`);}
+ render(`${S.welcome?welcomeHTML():''}<div class="card" id="familyCard"><h2>Your family</h2>${S.kids.length?`<div class="grid">${S.kids.map(k=>{const pr=S.progress[k.id],st=struggles(pr)[0];
+   return `<button class="kid" type="button" data-kid="${k.id}"><b>${esc(k.nickname)}</b>${pr&&pr.hero?` <span class="small">plays ${esc(HERO[pr.hero]||pr.hero)}</span>`:''}<br>
+   <span class="small">${esc(reached(pr))}</span><br><span class="pill">⭐ ${weekStars(S.events[k.id],pr)} this week</span><span class="pill">⏱ ${mins(pr&&pr.time_played_sec)}</span>${st?`<br><span class="pill warn">Needs practice: ${esc(st.n)}</span>`:''}</button>`;}).join('')}</div>`:'<p id="noKids">Add your first kid to get started.</p>'}
+  ${S.kids.length<2?'<button class="btn" id="addKidBtn" type="button">➕ Add a kid</button>':'<p class="small">This test allows up to 2 kids.</p>'}${errHTML()}</div>
+  <div class="card" id="allDevices"><h2>Linked devices</h2>${S.devices.length?S.devices.map(devRow).join(''):'<p class="small">No devices yet. Open a kid and tap “Add a device”.</p>'}</div>`);}
+function devRow(d){const k=S.kids.find(x=>x.id===d.kid_id)||{};return `<div class="dev"><span><b>${esc(d.device_name)}</b> <span class="small">· ${esc(k.nickname||'')} · last sync ${ago(d.last_seen_at)}</span></span><button class="btn red sm" type="button" data-unlink="${d.id}">Remove</button></div>`;}
+let timer=null;function tick(){clearInterval(timer);const go=()=>{const el=$('countdown');if(!el||!S.code){clearInterval(timer);return;}const s=Math.max(0,Math.round((new Date(S.code.expires_at)-Date.now())/1000));
+ el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');if(!s){el.textContent='expired';clearInterval(timer);}};go();timer=setInterval(go,1000);}
+
+sb.auth.onAuthStateChange((ev,session)=>{if(ev==='SIGNED_IN'&&session&&!S.user){S.user=session.user;boot();}});
+boot().catch(e=>{S.err=friendly(e);viewLogin();});
+</script>
+</body>
+</html>
