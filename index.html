@@ -7,9 +7,16 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0A1F44">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap">
+<!-- v22: fonts are hosted with the game (fonts/, SIL OFL 1.1). No requests to Google Fonts or any other third party. -->
+<link rel="preload" href="fonts/baloo2-latin-600-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/poppins-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Baloo 2';font-style:normal;font-weight:600 800;font-display:swap;src:url(fonts/baloo2-latin-600-800.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/poppins-latin-400.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/poppins-latin-500.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/poppins-latin-600.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/poppins-latin-700.woff2) format('woff2')}
+</style>
 <title>NumiRealm</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22nrci%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2300C2FF%22%2F%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%238B5CF6%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231E3A8A%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2230%22%20fill%3D%22%230A1F44%22%20stroke%3D%22%2300C2FF%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M32%207%20L50%2027%20L32%2057%20L14%2027%20Z%22%20fill%3D%22url%28%23nrci%29%22%20stroke%3D%22%23F1F5F9%22%20stroke-width%3D%222%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M14%2027%20H50%20M32%207%20L25%2027%20L32%2057%20L39%2027%20Z%22%20fill%3D%22none%22%20stroke%3D%22%23F1F5F9%22%20stroke-opacity%3D%22.55%22%20stroke-width%3D%221.3%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M32%2017.5l2.6%205.6%206%20.7-4.5%204.1%201.2%206-5.3-3-5.3%203%201.2-6-4.5-4.1%206-.7z%22%20fill%3D%22%23F59E0B%22%20stroke%3D%22%230A1F44%22%20stroke-width%3D%221.2%22%20stroke-linejoin%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2213%22%20cy%3D%2213%22%20r%3D%223%22%20fill%3D%22%2310B981%22%2F%3E%3Ccircle%20cx%3D%2252%22%20cy%3D%2212%22%20r%3D%222.6%22%20fill%3D%22%23EF4444%22%2F%3E%3Ccircle%20cx%3D%2253%22%20cy%3D%2250%22%20r%3D%222.2%22%20fill%3D%22%23F59E0B%22%2F%3E%3C%2Fsvg%3E">
 <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABgFBMVEUJH0QAAAAAwf4BtfEAwf4Awf/umgwAwv9vU9kJJEkAwP6FWvHd4+4EaJcBotp4WOOSd+wAwv9PifpsePcIPWYAyv8gM1VRW3mGZu6xucyjifAAv/8A//9Klvp4afZ0pvmXhuzF1OwEdqgBmNABq+VvlvmJeNrDw+YpI0NSSlduWUlqeZKBjKWGk6qSmPiHp/mypufFhBXvRETi5fEGXowOs4IAwv9PTXBRYHxMdt15Y9p4tPWMgt2qs+kHTXgNe2gOrHsAvPkAv/0A2/84Smg/k/pfTC5XUVFXVphTadZbfvmHZTiZpbyDsfqmkeuxze3bkBHx9fkMY14DgbQCj8UHvcY5cs4vqNomreAmreFHYppUjoBfqPlZtaZiSnVqT8xgWXxjUJp7h/iAZ9+hfveln92noN+80u/Kzd8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADRRZnqAAAAgHRSTlP/APz8rpP/T///zf///vv//2r///8N//////8MA/////////77//////////////////////8t/////////////7bUB/////////////////////7////NyP///v////////////////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOorFqYAAAI5SURBVHjaZVNnY6owFI2XDcosiqggrlZrHa2zdu+93t57/P9f8AIJlL7mC8nJ4ebk5hyUeRy2wbF4cIadAlEyE/YBGKZeZxiAfeEZQTgANbeEorGUU0EWnhBKHKg70ebaWvTZUYErPxJKMtTIz6tBsEpmNeatHRNs+dX4IUJnf3w/mEXTlfX1N2VKYGE83gvBo8BvNpvBESW84whBgPru3i7G8tmKb5p9ayMfMVZeghASyjIjkWPvjyv+fN6zrHuylhi5jAkG5Mg6WzH95nT6verpWYLkwMAEuUFWwceK2T+/vDzveY7+l5RoyBlUogWKi8rr97NTnm9/PfuiuEVawkYGRP27Whyb89M7Ho+7tqhoN1dRT8FAHEQNul1cX/e3OyGhM7hx3ep22DAJOMQysULT7J0NeX74zVU0cZPoZFjEqtGscGuaF83CsNMZTnVNE5cLEawmBFTsX1hWu6CJn9uOJm4RkSGBI0fgNlqWteU5itLSRDGbJyjDJQTU3ba8Ht53qqL4u0tBLFIAahOUtbyqjgl6rDC8poDsuNOosOzpPxVN/xErxKbAjcKtpm+Fiq6Db1hNFOLXYvFbCDCi6/yG4mqYECvEnRZCPxwkJboD3dls/eomBWRqmBco1qnrrRZVeMJ/gAmxHJfSqbdihSf8J2o57Cmo0VOKgwFVKNWALadsX5eoTmJIJNVBtlPBYYEZpYMzYoArPY0epKPXABD+D++hAWF4VTUMLxiHz9OdyUzi+E9S4D9kIzplTrMHkQAAAABJRU5ErkJggg==">
@@ -1480,6 +1487,12 @@ function freshProfile(id){return {name:HEROES[id].name,stars:{},hist:{},rewards:
 function freshSave(){return {muted:false,narrator:true,hero:null,profiles:Object.fromEntries(Object.keys(HEROES).map(id=>[id,freshProfile(id)]))};}
 /* v20: structured save store — load → validate → migrate → save, with a backup copy and an in-memory fallback */
 const SBKEY=SKEY+'-backup',SCKEY=SKEY+'-corrupt';
+/* v22 age ranges (no exact age is stored) */
+const AGE_RANGES=[['4-5','4–5','4 to 5'],['6-7','6–7','6 to 7'],['8-10','8–10','8 to 10'],['11-14','11–14','11 to 14']];
+const MIG22={n:0};
+function toAgeRange(a){if(typeof a==='string'){if(AGE_RANGES.some(r=>r[0]===a))return a;if(/^\d+$/.test(a.trim()))a=+a;else return null;}
+ if(typeof a!=='number'||!isFinite(a)||a<=0)return null;return a<=5?'4-5':a<=7?'6-7':a<=10?'8-10':'11-14';}
+function ageRangeOf(k){return AGE_RANGES.find(r=>r[0]===k)||null;}
 const NRStore=(function(){const mem={};let ok=true,notice=null,raw=null,src='none';
  function get(k){try{const v=localStorage.getItem(k);return v==null&&k in mem?mem[k]:v;}catch(e){ok=false;return k in mem?mem[k]:null;}}
  function set(k,v){mem[k]=v;try{localStorage.setItem(k,v);return true;}catch(e){ok=false;return false;}}
@@ -1491,7 +1504,10 @@ const NRStore=(function(){const mem={};let ok=true,notice=null,raw=null,src='non
   for(const k of ['stars','hist','eq'])o[k]=isObj(p[k])?p[k]:{};
   o.stars=Object.fromEntries(Object.entries(o.stars).filter(([k,v])=>typeof v==='number'&&isFinite(v)));
   o.rewards=Array.isArray(p.rewards)?p.rewards.filter(x=>typeof x==='string'||typeof x==='number'):[];
-  o.prologue=!!p.prologue;return o;}
+  o.prologue=!!p.prologue;
+  /* v22: age range instead of exact age; old exact ages map to their range, unknown values are dropped */
+  {const r=toAgeRange(p.age);if(r)o.age=r;else delete o.age;if(r&&r!==p.age)MIG22.n++;}
+  return o;}
  /* safe defaults per field; unknown fields from newer/older versions are kept, never dropped */
  function validate(s){const f=freshSave();if(!isObj(s)||!isObj(s.profiles))return null;const o=Object.assign(freshSave(),s);
   o.muted=typeof s.muted==='boolean'?s.muted:f.muted;o.narrator=typeof s.narrator==='boolean'?s.narrator:f.narrator;
@@ -1691,35 +1707,35 @@ function loseScene(){const pl=placeOf(S.n),ex=pickExtras('boss');return {title:`
 /* titleScreen (the NumiRealm home) lives in 5f-v11-ui.js */
 function pickHero(id){save.hero=id;save.lastHero=id;persist();SFX.good();const pf=P(),h=H();
  show(`<div class="card center"><div style="width:180px;margin:0 auto" id="selHero">${heroSVG(id,'cheer')}</div><h2>${h.title}</h2>
- <p class="big">What's your hero name? (optional)</p><input class="nm" id="nm" maxlength="14" value="${esc(pf.name)}" autocomplete="off"><br>
+ <p class="big">What's your hero name? (optional)</p><input class="nm" id="nm" maxlength="14" value="${esc(pf.name)}" autocomplete="off" aria-describedby="nmTip"><p class="nmtip" id="nmTip">💡 Tip: use a nickname or hero name, not a full name.</p>
  <button class="btn green" data-enter onclick="startAdventure()">▶ Start the adventure!</button><button class="btn gray sm" onclick="titleScreen()">↩ Pick another hero</button></div>`);
  fxBurst($('selHero'),h.fx,10);heroSfx();}
 function startAdventure(){const v=$('nm')?$('nm').value.trim().slice(0,14):'';P().name=v||H().name;persist();
  const go=()=>{if(!P().prologue)playScene(prologueScene(),()=>{P().prologue=true;persist();subjectScreen();});else subjectScreen();};
  if(!hasAbout(P()))aboutScreen(go);else go();}
 
-/* ---------- About Me (age + grade, per hero; display only, no effect on difficulty) ---------- */
-const AGES=[1,2,3,4,5,6,7,8,9,10,11,12];
+/* ---------- About Me (age range + grade, per hero; v22: range only, never an exact age) ---------- */
+const AGES=AGE_RANGES.map(r=>r[0]);
 const GRADES=[['none','Not in school yet','not in school yet'],['prek','Pre-K','in Pre-K'],['k','Kindergarten','in Kindergarten'],['1','1st','in 1st grade'],['2','2nd','in 2nd grade'],['3','3rd','in 3rd grade'],['4','4th','in 4th grade'],['5','5th','in 5th grade'],['6','6th','in 6th grade']];
 function gradeOf(k){return GRADES.find(g=>g[0]===k)||null;}
 function hasAbout(pf){return pf&&AGES.includes(pf.age)&&!!gradeOf(pf.grade);}
-function aboutChip(pf){if(!hasAbout(pf))return '';const g=gradeOf(pf.grade);return `🎂 ${pf.age} · 🎒 ${/^\d$/.test(g[0])?g[1]+' grade':g[1]}`;}
+function aboutChip(pf){if(!hasAbout(pf))return '';const g=gradeOf(pf.grade);return `🎂 Ages ${ageRangeOf(pf.age)[1]} · 🎒 ${/^\d$/.test(g[0])?g[1]+' grade':g[1]}`;}
 let AB=null;
 function aboutScreen(then,editing){stopSpeech();const pf=P();AB={then:then||mapScreen,editing:!!editing,age:hasAbout(pf)?pf.age:null,grade:hasAbout(pf)?pf.grade:null};aboutAge();}
 function aboutHead(q){return `<div class="card center about"><div class="abhero" id="abHero">${heroSVG(save.hero,'idle')}</div><div class="abtag">⭐ About Me ⭐</div><h2 class="abq">${q}</h2>`;}
 function aboutAge(){const pf=P(),q=`How old are you, ${esc(pf.name)}?`;
- show(aboutHead(q)+`<div class="abgrid ages">${AGES.map(a=>`<button class="abbtn ${AB.age===a?'on':''}" data-age="${a}" onclick="aboutPickAge(${a})">${a}</button>`).join('')}</div>
+ show(aboutHead(q)+`<p class="abhint" id="abAgeHint">Pick an age group. NumiRealm never asks for a birthday or exact age.</p><div class="abgrid ages ranges" role="group" aria-label="Age group">${AGE_RANGES.map(r=>`<button class="abbtn ${AB.age===r[0]?'on':''}" data-age="${r[0]}" aria-label="Ages ${r[2]}" onclick="aboutPickAge('${r[0]}')"><small>Ages</small>${r[1]}</button>`).join('')}</div>
  ${AB.editing?`<button class="btn gray sm" onclick="AB.then()">↩ Back</button>`:''}</div>`);
- speak(`How old are you, ${pf.name}? Tap your age.`,'owl');}
+ speak(`How old are you, ${pf.name}? Tap your age group.`,'owl');}
 function aboutPickAge(a){AB.age=a;SFX.tap();react('#abHero','cheer');setTimeout(aboutGrade,250);}
 function aboutGrade(){const q='What grade are you in?';
  show(aboutHead(q)+`<div class="abgrid grades">${GRADES.map(g=>`<button class="abbtn ${AB.grade===g[0]?'on':''}" data-grade="${g[0]}" onclick="aboutPickGrade('${g[0]}')">${g[1]}</button>`).join('')}</div>
- <button class="btn gray sm" onclick="aboutAge()">↩ Change age</button></div>`);
+ <button class="btn gray sm" onclick="aboutAge()">↩ Change age group</button></div>`);
  speak('What grade are you in? Tap your grade.','owl');}
 function aboutPickGrade(k){AB.grade=k;const pf=P();pf.age=AB.age;pf.grade=k;persist();SFX.good();
- const g=gradeOf(k),msg=`Nice to meet you, ${pf.name}! You're ${pf.age} and ${g[2]}!`;
+ const g=gradeOf(k),ar=ageRangeOf(pf.age),msg=`Nice to meet you, ${pf.name}! Ages ${ar[1]}, ${g[2]}!`,said=`Nice to meet you, ${pf.name}! Ages ${ar[2]}, ${g[2]}!`;
  show(aboutHead(esc(msg))+`<div class="abchip big">${aboutChip(pf)}</div><button class="btn green" id="abGo" onclick="AB.then()">${AB.editing?'✔ All done!':"▶ Let's go!"}</button></div>`);
- react('#abHero','cheer');fxBurst($('abHero'),H().fx,10);heroSfx();speak(msg,'owl');}
+ react('#abHero','cheer');fxBurst($('abHero'),H().fx,10);heroSfx();speak(said,'owl');}
 
 function mapScreen(){if(!save.hero)return titleScreen();stopConfetti();S=null;SS=null;SC=null;stopSpeech();lastMap='mult';if(save.lastSubj!=='mult'){save.lastSubj='mult';persist();}const u=unlockedIndex(),all=u>=ORDER.length,pf=P();
  let h=`<div class="card"><div class="maphead"><div class="mh" onclick="react('.mh','cheer')">${heroSVG(save.hero)}</div><div><h2>🏰 ${esc(pf.name)}'s Times Table Castle</h2><div class="big" style="font-size:18px">Multiplication: beat each chapter's boss to unlock the next one. ${H().closetE} Treasures: <b>${pf.rewards.length}/12</b></div><div class="abmap">${hasAbout(pf)?`<span class="abchip" id="abChip">${aboutChip(pf)}</span>`:''}<button class="btn blue sm tosub" id="toSubjects" onclick="subjectScreen()">↩ All subjects</button><button class="abedit" id="abEdit" onclick="aboutScreen(mapScreen,true)">✏️ About me</button></div></div></div></div><div class="levels">`;
@@ -1930,7 +1946,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='21';
+const APP_VERSION='22';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -3550,7 +3566,7 @@ function guideRead(id){SFX.tap();const say=g=>g.h+'. '+g.t.join(' ');let t;
 function heroCards(){stopConfetti();S=null;SS=null;SC=null;const act=vHero();const ids=act?[act].concat(HERO_ORDER.filter(x=>x!==act)):HERO_ORDER;
  show(`<h1 class="questh">👤 Hero Profiles</h1><div class="pcards">${ids.map(id=>{const pf=save.profiles[id],h=HEROES[id],fr=favRealm(id),g=gradeOf(pf.grade);
   return `<section class="card pcard ${id}" data-pcard="${id}"><div class="pctop"><div class="pcav" aria-hidden="true">${heroSVG(id,'idle')}</div><div><h2>${esc(pf.name)}${id===act?' <span class="acttag">Playing</span>':''}</h2><div class="ht">${h.title}</div></div></div>
-  <dl class="pcl"><div><dt>🎂 Age</dt><dd>${AGES.includes(pf.age)?pf.age:'Not set'}</dd></div><div><dt>🎒 Grade</dt><dd>${g?(/^\d$/.test(g[0])?g[1]+' grade':g[1]):'Not set'}</dd></div>
+  <dl class="pcl"><div><dt>🎂 Age group</dt><dd>${ageRangeOf(pf.age)?'Ages '+ageRangeOf(pf.age)[1]:'Not set'}</dd></div><div><dt>🎒 Grade</dt><dd>${g?(/^\d$/.test(g[0])?g[1]+' grade':g[1]):'Not set'}</dd></div>
   <div><dt>💖 Favorite realm</dt><dd>${fr?SUBJ_BY[fr].e+' '+SUBJ_BY[fr].realm:'Not picked yet'}</dd></div><div><dt>⭐ Total stars</dt><dd>${allStars(pf)}</dd></div>
   <div><dt>🔥 Streak</dt><dd>${streakOf(pf)} day${streakOf(pf)===1?'':'s'}</dd></div><div><dt>🏮 Lanterns used</dt><dd>${hintUsed(pf)}</dd></div></dl>
   <div class="center"><button class="btn purple sm" type="button" data-editabout="${id}" onclick="editAbout('${id}')" aria-label="Edit About Me for ${esc(pf.name)}">✏️ Edit About Me</button><button class="btn gray sm" type="button" onclick="go('hero','${id}')">🦸 Hero page</button></div></section>`;}).join('')}</div>${backBtn()}`,'profile');}
@@ -3615,7 +3631,7 @@ function practiceTip(id){const pf=save.profiles[id],wl=weakList(pf);
  if(hs)return {sid:hs,t:`${esc(pf.name)} used the most lanterns in <b>${SUBJ_BY[hs].realm}</b> (${hm}). A short ${SUBJ_BY[hs].name} drill will help.`};
  let ws=null,wr=4;SUBJ.forEach(sb=>{const d=sDone(sb.id,pf);if(d){const r=sStars(sb.id,pf)/d;if(r<wr){wr=r;ws=sb.id;}}});
  if(ws&&wr<3)return {sid:ws,t:`<b>${SUBJ_BY[ws].name}</b> is the weakest subject so far (${wr.toFixed(1)} stars per chapter). Replay a chapter there for 3 stars.`};
- const rec=SUBJ.find(sb=>hasAbout(pf)&&sb.grades.includes(pf.grade))||SUBJ[0];
+ const rec=SUBJ.find(sb=>hasAbout(pf)&&sb.grades.includes(pf.grade))||(ageRangeOf(pf.age)&&SUBJ_BY[AGE_REALM[pf.age]])||SUBJ[0];
  return {sid:rec.id,t:ws?`Great work so far! Next, start a new chapter in <b>${rec.realm}</b>.`:`No games played yet. <b>${rec.realm}</b> is a great place to start${hasAbout(pf)?` for ${esc(gradeOf(pf.grade)[2])}`:''}.`};}
 {const _pg=progressScreen;SCR.progress=function(id){_pg(id);const pid=id&&HEROES[id]?id:(save.hero||save.lastHero||HERO_ORDER[0]),tp=practiceTip(pid);
  const card=document.querySelector('#app .card');if(card)card.insertAdjacentHTML('afterend',`<div class="card tipcard" id="parentTip"><h2>🧑‍🏫 For grown-ups: what to practice next</h2><p class="big" style="font-size:17px">${tp.t}</p><div class="center"><button class="btn purple sm" type="button" id="tipGo" onclick="go('training',null,'${tp.sid}')">🎯 Open Training Grounds</button></div></div>`);
@@ -4153,6 +4169,8 @@ function nrSplashDone(){const s=document.getElementById('nrSplash');if(!s||s.dat
 setTimeout(()=>{const f=document.fonts&&document.fonts.ready;Promise.race([f||Promise.resolve(),new Promise(r=>setTimeout(r,600))]).then(()=>setTimeout(nrSplashDone,250));},0);
 setTimeout(nrSplashDone,1200);
 /* ===== v20: realm list checks, save notices, progress code (copy / load) ===== */
+const PC_NOTE="This code includes your heroes' names, age ranges and grades. Only share it with family.";
+function pcNoteHTML(){return `<p class="pcnote" id="pcNote" role="note">⚠️ ${PC_NOTE}</p>`;}
 /* the realm list is the one source: SUBJ must follow REALM_DEFS exactly */
 if(SUBJ.map(s=>s.id).join()!==REALM_IDS.join()||SUBJ.some(s=>s.realm!==RD[s.id].realm||s.e!==RD[s.id].e))console.error('NumiRealm: SUBJ is out of step with REALM_DEFS');
 
@@ -4193,7 +4211,7 @@ function pcCard(){const p=PC.prev,canShare=!!navigator.share;
  return `<div class="card pccard" id="progressCard"><h2>💾 Copy my progress <span class="gu" id="pcGrown">For grown-ups</span></h2>
  <p class="pcwhere" id="pcWhere">NumiRealm keeps progress <b>only on this device</b>, in this browser. There are no accounts and no cloud copy. To move progress to another device or browser, copy the progress code here and load it there.</p>
  <div class="pcbtns"><button class="btn blue sm" type="button" id="pcCopy" onclick="pcDoCopy()">📋 Copy my progress</button>${canShare?`<button class="btn gray sm" type="button" id="pcShare" onclick="pcDoShare()">📤 Share code</button>`:''}<button class="btn gray sm" type="button" id="pcDl" onclick="pcDownload()">⬇️ Download backup</button></div>
- ${PC.code?`<label class="pclab" for="pcOut">Progress code (all heroes)</label><textarea id="pcOut" class="pcta" readonly rows="3" onfocus="this.select()">${esc(PC.code)}</textarea>`:''}
+ ${PC.code?`<label class="pclab" for="pcOut">Progress code (all heroes)</label><textarea id="pcOut" class="pcta" readonly rows="3" onfocus="this.select()">${esc(PC.code)}</textarea>${pcNoteHTML()}`:''}
  ${PC.msg?`<p class="okmsg" role="status" id="pcMsg">✅ ${esc(PC.msg)}</p>`:''}
  <h3>📥 Load progress</h3><p class="small">Paste a progress code from another device. You will see what is inside before anything changes.</p>
  <textarea id="pcIn" class="pcta" rows="3" placeholder="NR1.…" aria-label="Progress code to load">${esc(PC.inp)}</textarea>
@@ -4207,11 +4225,11 @@ function pcCard(){const p=PC.prev,canShare=!!navigator.share;
 function pcRedraw(f){const c=$('progressCard');if(c)c.outerHTML=pcCard();if(f&&$(f))$(f).focus();}
 async function pcEnsure(){PC.code=await pcMake();return PC.code;}
 async function pcDoCopy(){SFX.tap();await pcEnsure();let ok=false;try{await navigator.clipboard.writeText(PC.code);ok=true;}catch(e){}
- PC.msg=ok?'Code copied. Paste it into NumiRealm on the other device (Settings → Load progress).':'Select the code below and copy it.';PC.err='';pcRedraw(ok?'pcMsg':'pcOut');if(!ok&&$('pcOut'))$('pcOut').select();}
-async function pcDoShare(){SFX.tap();await pcEnsure();try{await navigator.share({title:'NumiRealm progress code',text:PC.code});}catch(e){}pcRedraw();}
+ PC.msg=ok?'Code copied. Paste it into NumiRealm on the other device (Settings → Load progress). '+PC_NOTE:'Select the code below and copy it. '+PC_NOTE;PC.err='';pcRedraw(ok?'pcMsg':'pcOut');if(!ok&&$('pcOut'))$('pcOut').select();}
+async function pcDoShare(){SFX.tap();await pcEnsure();try{await navigator.share({title:'NumiRealm progress code',text:PC_NOTE+'\n\n'+PC.code});}catch(e){}pcRedraw();}
 async function pcDownload(){SFX.tap();await pcEnsure();const d=new Date().toISOString().slice(0,10);const a=document.createElement('a');
- a.href=URL.createObjectURL(new Blob(['NumiRealm progress code ('+d+'). Load it in Settings → Load progress.\n\n'+PC.code+'\n'],{type:'text/plain'}));a.download=`numirealm-progress-${d}.txt`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
- PC.msg='Backup file downloaded.';pcRedraw();}
+ a.href=URL.createObjectURL(new Blob(['NumiRealm progress code ('+d+'). Load it in Settings → Load progress.\n'+PC_NOTE+'\n\n'+PC.code+'\n'],{type:'text/plain'}));a.download=`numirealm-progress-${d}.txt`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+ PC.msg='Backup file downloaded. '+PC_NOTE;pcRedraw();}
 async function pcCheck(){SFX.tap();PC.inp=($('pcIn')||{}).value||'';PC.err='';PC.prev=null;PC.msg='';
  if(!PC.inp.trim()){PC.err='Paste a progress code first.';pcRedraw('pcIn');return;}
  try{PC.prev=await pcRead(PC.inp);}catch(e){PC.err=PC_ERR[e.message]||PC_ERR.format;}pcRedraw(PC.prev?'pcNo':'pcIn');}
@@ -4383,6 +4401,61 @@ if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.add
 .mb span{font-size:26px}.mb.part{border-style:solid;opacity:.95}.mb.on{border:3px solid var(--sc);opacity:1;background:#FFFBEB}
 .offnote{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:950;background:#0A1F44;color:#fff;border-radius:999px;padding:6px 14px;font-size:14px;font-weight:700;max-width:calc(100% - 24px);text-align:center}
 #rvStart[disabled]{opacity:.55;cursor:not-allowed}`;document.head.appendChild(st);})();
+/* ---------- v22: privacy update (self-hosted fonts, age ranges, Privacy page, reset all, progress-code note) ---------- */
+const AGE_REALM={'4-5':'add','6-7':'sub','8-10':'mult','11-14':'div'};
+/* persist the one-time age-range migration so no exact age stays in storage */
+if(MIG22.n>0){try{persist();}catch(e){}}
+(function(){const st=document.createElement('style');st.id='v22css';st.textContent=`
+.nmtip{margin:6px auto 12px;max-width:340px;font-size:14px;color:#475569;line-height:1.35}
+.abhint{text-align:center;margin:0 auto 10px;max-width:440px;color:#475569;font-size:15px}
+.abgrid.ranges{grid-template-columns:repeat(2,minmax(0,1fr));max-width:420px;margin-left:auto;margin-right:auto}
+.abgrid.ranges .abbtn{font-size:26px;line-height:1.05;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.abgrid.ranges .abbtn small{font-size:13px;font-weight:700;opacity:.8}
+.pcnote{margin:8px 0 0;padding:8px 12px;border-radius:12px;background:#FEF3C7;border:2px solid #F59E0B;color:#78350F;font-size:14px;font-weight:600;line-height:1.35}
+#nrFoot{text-align:center;padding:14px 12px 22px;font-size:14px;color:#475569}
+#nrFoot button{font:inherit;font-weight:700;color:#1E3A8A;background:none;border:0;text-decoration:underline;cursor:pointer;min-height:44px;padding:4px 10px}
+.privpg{max-width:760px;margin:0 auto}.privpg h2{margin-top:4px}.privpg p,.privpg li{font-size:16px;line-height:1.5}
+.privpg .upd{color:#475569;font-size:14px}.privpg ul{padding-left:22px}
+#resetAllCard{border:3px solid #DC2626}#resetAllCard .confirm{background:#FEF2F2;border:2px solid #DC2626;border-radius:14px;padding:12px;margin-top:10px}
+.privlink{margin-top:8px}
+@media (max-width:640px){#nrFoot{padding-bottom:96px}}
+`;document.head.appendChild(st);})();
+/* ---------- Privacy page for grown-ups ---------- */
+const PRIV_OPERATOR='BVO Global LLC',PRIV_CONTACT='<a href="mailto:bvoglobalmarketing@gmail.com">bvoglobalmarketing@gmail.com</a>',PRIV_UPDATED='Oct 28, 2026';
+function privacyScreen(){stopSpeech();stopConfetti();S=null;SS=null;SC=null;
+ const sec=(id,h,body)=>`<section class="card" data-priv="${id}"><h2>${h}</h2>${body}</section>`;
+ show(`<div class="privpg"><h1 class="questh">🔒 Privacy at NumiRealm</h1>
+ <div class="card"><p><b>For parents, guardians and teachers.</b> This page explains, in plain language, what NumiRealm does with information. NumiRealm is a free math game run by ${PRIV_OPERATOR}.</p><p class="upd">Last updated: ${PRIV_UPDATED}</p></div>
+ ${sec('device','📱 Everything stays on this device',`<p>NumiRealm saves your heroes' names, age ranges, grades, stars and settings only in this browser on this device (browser "local storage"). It is never sent to us or to anyone else.</p><ul><li>No accounts, no sign-in and no passwords.</li><li>No ads and no in-app purchases.</li><li>No analytics, tracking or cookies.</li><li>The game does not send any of your child's information anywhere.</li></ul>`)}
+ ${sec('ask','🎂 What the game asks for',`<p>Each hero can have a name, an age range (4–5, 6–7, 8–10 or 11–14) and a school grade. These help suggest where to start. NumiRealm never asks for a birthday, an exact age, a full name, an email address, a photo, or a location.</p><p>Tip: use a nickname or hero name, not a full name.</p>`)}
+ ${sec('host','🌐 Fonts and web hosting',`<p>The game's fonts are hosted with the game, so playing does not contact Google Fonts or any other outside service.</p><p>NumiRealm is hosted on GitHub Pages. Like every web host, GitHub may record technical details such as your IP address when the game is loaded. We do not receive or use that information. See GitHub's own privacy statement for details.</p>`)}
+ ${sec('code','🔑 The progress code',`<p>The progress code lets you move a game to another device. It contains your heroes' names, age ranges and grades, along with their progress. Anyone with the code can see that information.</p><p><b>Only share it with family.</b> Don't post it online or send it to people you don't know.</p>`)}
+ ${sec('reset','🗑️ How to erase everything',`<p>Open <b>Settings</b> and choose <b>Reset all data on this device</b>. After you confirm twice, the game deletes all heroes, progress, backups and saved game files from this browser. Clearing this site's data in your browser settings does the same thing.</p><p><button class="btn gray sm" type="button" onclick="SFX.tap();go('settings')">⚙️ Go to Settings</button></p>`)}
+ ${sec('contact','✉️ Questions',`<p>If you have questions about this page, contact ${PRIV_OPERATOR} at ${PRIV_CONTACT}.</p><p>If we ever change how NumiRealm handles information, we will update this page and the date above.</p>`)}
+ ${backBtn()}</div>`);}
+SCR.privacy=privacyScreen;SCRT.privacy='Privacy';
+function openPrivacy(){SFX.tap();go('privacy');}
+/* footer (added once, outside #app so every screen has it) */
+(function(){const a=$('app');if(a&&!$('nrFoot'))a.insertAdjacentHTML('afterend',`<footer id="nrFoot"><span>NumiRealm</span> · <button type="button" id="footPrivacy" onclick="openPrivacy()">Privacy for grown-ups</button></footer>`);})();
+/* Privacy links on Home and Profile */
+{const _h22=v12Home;v12Home=function(){_h22.apply(this,arguments);const t=document.querySelector('#app .tiles');if(t&&!$('homePrivacy'))t.insertAdjacentHTML('afterend',`<div class="center privlink"><button class="btn gray sm" type="button" id="homePrivacy" onclick="openPrivacy()">🔒 Privacy for grown-ups</button></div>`);};}
+{const _p22=SCR.profile;SCR.profile=function(){_p22.apply(this,arguments);const b=$('backBtn');if(b&&!$('profPrivacy'))b.parentNode.insertAdjacentHTML('beforebegin',`<div class="center privlink"><button class="btn gray sm" type="button" id="profPrivacy" onclick="openPrivacy()">🔒 Privacy for grown-ups</button></div>`);};}
+/* ---------- Reset all data on this device (two-step) ---------- */
+const V22={step:0};
+function resetAllCard(){const st=V22.step;
+ return `<div class="card" id="resetAllCard"><h2>⚠️ Reset all data on this device</h2><p>Erases <b>every</b> hero, all progress, backups and saved game files from this browser. This cannot be undone. Tip: copy your progress code first if you may want it back.</p>
+ ${st===0?`<button class="btn red" type="button" id="resetAllBtn" onclick="resetAllStep(1)">🗑️ Reset all data on this device</button>`:''}
+ ${st===1?`<div class="confirm" role="alertdialog" aria-labelledby="raQ1" id="resetAllC1"><p id="raQ1"><b>Step 1 of 2:</b> Are you sure? All heroes and all progress on this device will be erased.</p><button class="btn red" type="button" id="resetAllNext" onclick="resetAllStep(2)">Yes, continue</button> <button class="btn gray" type="button" id="resetAllCancel" onclick="resetAllStep(0)">No, keep everything</button></div>`:''}
+ ${st===2?`<div class="confirm" role="alertdialog" aria-labelledby="raQ2" id="resetAllC2"><p id="raQ2"><b>Step 2 of 2:</b> Last check. Tap <b>Erase everything</b> to delete all NumiRealm data on this device now.</p><button class="btn red" type="button" id="resetAllYes" onclick="resetAllDo()">Erase everything</button> <button class="btn gray" type="button" id="resetAllCancel" onclick="resetAllStep(0)">Cancel</button></div>`:''}
+ <p class="privlink"><button class="btn gray sm" type="button" id="setPrivacy" onclick="openPrivacy()">🔒 Privacy for grown-ups</button></p></div>`;}
+function resetAllStep(n){SFX.tap();V22.step=n;const c=$('resetAllCard');if(c){c.outerHTML=resetAllCard();const f=$(n===1?'resetAllNext':n===2?'resetAllYes':'resetAllBtn');if(f)f.focus();}}
+const NR_KEYS=()=>[SKEY,SBKEY,SCKEY,PKEY,'ttq-probe','nr-loaded'];
+async function resetAllWipe(){const own=k=>k.startsWith('ttq-')||k.startsWith('nr-')||k.startsWith('numirealm');
+ for(const st of [()=>localStorage,()=>sessionStorage]){try{const s=st();NR_KEYS().forEach(k=>s.removeItem(k));Object.keys(s).filter(own).forEach(k=>s.removeItem(k));}catch(e){}}
+ try{if(window.caches){const ks=await caches.keys();await Promise.all(ks.filter(k=>/^numirealm/.test(k)).map(k=>caches.delete(k)));}}catch(e){}
+ try{if(navigator.serviceWorker&&navigator.serviceWorker.getRegistrations){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()));}}catch(e){}}
+async function resetAllDo(){V22.step=0;window.NR_WIPED=true;try{persist=function(){};}catch(e){}await resetAllWipe();location.reload();}
+{const _s22=SCR.settings;SCR.settings=function(){_s22.apply(this,arguments);const r=$('resetCard');if(r&&!$('resetAllCard'))r.insertAdjacentHTML('afterend',resetAllCard());};}
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
 </script>

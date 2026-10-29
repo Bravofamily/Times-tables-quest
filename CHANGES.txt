@@ -1,3 +1,12 @@
+## v22 (Oct 28, 2026)
+- Fonts are now self-hosted (no Google Fonts requests). The offline cache includes them.
+- Age is now an age group (4–5, 6–7, 8–10, 11–14). Old saves and old NR1 progress codes with exact ages are migrated on load or import.
+- Name tip: "Tip: use a nickname or hero name, not a full name."
+- Settings: two-step "Reset all data on this device" (clears saves, backups, session flags, offline cache and service worker).
+- New Privacy page for grown-ups, with a footer link plus links on Home, Profile and Settings. It contains placeholders for the operator name and contact email, and makes no compliance claims.
+- The progress code now shows: "This code includes your heroes' names, age ranges and grades. Only share it with family." (also in copy, share and download).
+- APP_VERSION, version.json and the service-worker cache bumped to 22.
+
 v21 (local preview, not published)
 - Worked example ("How to solve it", 2-3 steps) after a wrong answer in practice and skill drills; covers every question type (53,100 generated questions checked). Hints still never give the answer.
 - Review queue in Practice: cleared needs-work skills come back after 1, 3, 7 and 14 days; a miss sends a skill back to needs-work.

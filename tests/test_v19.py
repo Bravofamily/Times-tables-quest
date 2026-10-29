@@ -1,7 +1,35 @@
+# v22 update of test_v19.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
+import os
 # v19: one NumiRealm brand — titles/meta, favicon + touch icons, static loading screen, one logo component everywhere
 import json,os,re,sys,base64,threading,http.server,functools,urllib.parse
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.abspath(__file__));PORT=8812;URL=f'http://127.0.0.1:{PORT}/index.html'
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__))));PORT=8812;URL=f'http://127.0.0.1:{PORT}/index.html'
 srv=http.server.ThreadingHTTPServer(('127.0.0.1',PORT),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D));srv.RequestHandlerClass.log_message=lambda *a:None
 threading.Thread(target=srv.serve_forever,daemon=True).start()
 FAILS=[]
@@ -38,7 +66,7 @@ with sync_playwright() as p:
         for w in [390,1280]:
             for rm in [False,True]:
                 c=b.new_context(viewport={'width':w,'height':844 if w<500 else 800},reduced_motion='reduce' if rm else 'no-preference')
-                c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
+                c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"22"}'))
                 pg=c.new_page();errs=[];pg.on('pageerror',lambda e:errs.append(str(e)))
                 tag=f'{eng} {w}px{" reduced-motion" if rm else ""}'
                 # pass 1: same page with the dismissal held (test-only route patch) so the loading screen can be inspected
@@ -71,7 +99,7 @@ with sync_playwright() as p:
         # game header + save/auto-update unaffected
         c=b.new_context(viewport={'width':390,'height':844})
         c.add_init_script("if(!sessionStorage.getItem('seeded')){localStorage.setItem('ttq-save-v2',%s);sessionStorage.setItem('seeded','1')}"%json.dumps(json.dumps(SAVE)))
-        c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
+        c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"22"}'))
         pg=c.new_page();pg.goto(URL);pg.wait_for_timeout(1500)
         sv=json.loads(pg.evaluate("localStorage.getItem('ttq-save-v2')"))
         ck(sv['profiles']['emi']['stars'].get('2')==3 and sv['profiles']['emi']['name']=='Emi',f'{eng}: v18 save loads unchanged')

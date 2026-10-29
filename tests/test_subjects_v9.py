@@ -1,8 +1,36 @@
+# v22 update of test_subjects_v9.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
+import os
 # v9/v10 NumiRealm: subject select, per-subject chapter 1 (learn/practice/boss pass + fail-retry),
 # generator correctness, v8 save migration, 375px layout, no console errors.
 import sys, os, json
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.dirname(os.path.abspath(__file__))); URL='file://'+os.path.join(D,'index.html')
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); URL='file://'+os.path.join(D,'index.html')
 errs=[]; fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m)
@@ -61,12 +89,12 @@ def boss(pg,win):
     return sigs
 REC={'add':11,'sub':11,'div':12,'frac':11}
 with sync_playwright() as p:
-    b=p.chromium.launch()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch()
     c=b.new_context(viewport={'width':1100,'height':950}); pg=c.new_page(); attach(pg,'main')
     pg.goto(URL); pg.wait_for_selector('.herocard'); pg.evaluate("TTQ.save.narrator=false")
     ck('NumiRealm' in pg.inner_text('#app') and pg.title().startswith('NumiRealm'),'title screen and <title> say NumiRealm')
     pg.evaluate("(s)=>{const b=document.querySelector(s);if(window.v16Go&&b.dataset.hero)v16Go(b.dataset.hero);b.click()}",'[data-hero=sage]'); pg.click('text=Start the adventure'); pg.wait_for_selector('[data-age]')
-    pg.click('[data-age="7"]'); pg.click('[data-grade="2"]'); pg.click('#abGo')
+    pg.click('[data-age="6-7"]'); pg.click('[data-grade="2"]'); pg.click('#abGo')
     pro=scene(pg); ck(any('five' in l.lower() or 'realm' in l.lower() for l in pro),'prologue mentions the realms')
     pg.wait_for_selector('.stile'); tiles=pg.eval_on_selector_all('.stile','es=>es.map(e=>e.dataset.subject)')
     ck(tiles==['add','sub','mult','div','frac','mix'],'subject select tiles in order: %s'%tiles)
@@ -135,8 +163,8 @@ with sync_playwright() as p:
     c.add_init_script("if(!sessionStorage.getItem('seeded')){sessionStorage.setItem('seeded','1');localStorage.setItem('ttq-save-v2',%s)}"%json.dumps(json.dumps(V8)))
     pg.goto(URL); pg.wait_for_selector('.stile')
     pr=pg.evaluate("TTQ.save.profiles")
-    ck(pr['cayden']['stars']=={"1":3,"2":3,"3":2} and pr['cayden']['rewards']==["cr1","cr2"] and pr['cayden']['age']==10 and pr['cayden']['grade']=='5','v8 cayden stars/rewards/age/grade kept')
-    ck(pr['emi']['eq']=={"head":"fcrown"} and pr['emi']['age']==6,'v8 emi kept')
+    ck(pr['cayden']['stars']=={"1":3,"2":3,"3":2} and pr['cayden']['rewards']==["cr1","cr2"] and pr['cayden']['age']==AR(10) and pr['cayden']['grade']=='5','v8 cayden stars/rewards/age/grade kept')
+    ck(pr['emi']['eq']=={"head":"fcrown"} and pr['emi']['age']==AR(6),'v8 emi kept')
     ck(set(pr)=={'sage','emi','blu','eshon','melrose','cayden','zea'},'all seven heroes present (zea gets a fresh default)')
     t=pg.inner_text('[data-subject=mult]'); ck('3/19' in t and '8/57' in t,'mult tile shows v8 progress: '+t.replace('\n',' | '))
     ck('0/11' in pg.inner_text('[data-subject=add]'),'other subjects start fresh')
@@ -152,7 +180,7 @@ with sync_playwright() as p:
     c=b.new_context(viewport={'width':375,'height':812},device_scale_factor=2,is_mobile=True,has_touch=True); pg=c.new_page(); attach(pg,'mobile')
     pg.goto(URL); pg.wait_for_selector('.herocard'); pg.evaluate("TTQ.save.narrator=false")
     pg.evaluate("(s)=>{const b=document.querySelector(s);if(window.v16Go&&b.dataset.hero)v16Go(b.dataset.hero);b.click()}",'[data-hero=melrose]'); pg.click('text=Start the adventure'); pg.wait_for_selector('[data-age]')
-    pg.click('[data-age="8"]'); pg.click('[data-grade="3"]'); pg.click('#abGo'); scene(pg); pg.wait_for_selector('.stile')
+    pg.click('[data-age="8-10"]'); pg.click('[data-grade="3"]'); pg.click('#abGo'); scene(pg); pg.wait_for_selector('.stile')
     ov=lambda: pg.evaluate("document.documentElement.scrollWidth<=innerWidth+1")
     ck(ov(),'mobile subject select: no horizontal overflow')
     bx=[pg.query_selector(f'[data-subject={s}]').bounding_box() for s in ('add','sub','mult','div','frac')]

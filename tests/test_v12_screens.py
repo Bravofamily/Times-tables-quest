@@ -1,9 +1,37 @@
+# v22 update of test_v12_screens.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
+import os
 # v12: every home button / tile / nav item opens its own real screen (not the hero picker), each reflects a seeded save;
 # Realm Map + chapter detail, Training Grounds drills + needs-work mix, Trophy Room, Guide, Profiles, Heroes Hall (6 heroes + villain,
 # play-as), Settings reset-confirm, Progress parent tip, Back + browser back, no console errors.
 import json, os, copy, re
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.abspath(__file__)); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m, flush=True); fails.append(m) if not c else None
 SEED={"muted":True,"narrator":False,"hero":None,"lastHero":"cayden","lastSubj":"div","voice":"","profiles":{
@@ -19,11 +47,11 @@ def load(pg,seed=SEED):
 def cur(pg): return pg.evaluate("TTQ_V12.CUR&&TTQ_V12.CUR.n")
 def nopicker(pg): return pg.locator('#app .herocard').count()==0
 with sync_playwright() as p:
-    b=p.chromium.launch(); c=b.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True); pg=c.new_page()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch(); c=b.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True); pg=c.new_page()
     pg.on('console',lambda m: errs.append(m.text) if m.type=='error' else None); pg.on('pageerror',lambda e: errs.append(str(e)))
     pg.on('dialog',lambda d: d.accept())
     load(pg)
-    ck(pg.evaluate("APP_VERSION")=='21','APP_VERSION is 21')
+    ck(pg.evaluate("APP_VERSION")=='22','APP_VERSION is 22')
     ck(pg.evaluate("HUB")=='home' and pg.evaluate("save.hero") is None,'seed with no active hero boots to home')
     # ---- every home control goes to its own screen ----
     targets=[('#bnQuest:visible, #navLevels:visible','realms'),('#bnPractice:visible, #navPractice:visible','training'),('[data-tile=trophies]','trophies'),('[data-tile=guide]','guide'),('[data-tile=heroes]','heroes'),
@@ -148,7 +176,7 @@ with sync_playwright() as p:
     pg.click('#resetNo'); pg.wait_for_timeout(200); ck(pg.locator('#resetConfirm').count()==0 and pg.evaluate("JSON.stringify(save.profiles.melrose.stars)")==st0,'Cancel keeps Melrose\'s progress')
     pg.click('[data-reset=melrose]'); pg.wait_for_timeout(150); pg.click('#resetYes'); pg.wait_for_timeout(200)
     m=pg.evaluate("save.profiles.melrose"); cy=pg.evaluate("allStars(save.profiles.cayden)")
-    ck(pg.evaluate("allStars(save.profiles.melrose)")==0 and m['name']=='Melrose' and m['age']==8 and m['grade']=='3' and cy>0 and pg.locator('#resetMsg').count()==1,'Yes resets only Melrose (name/age/grade kept, Cayden untouched)')
+    ck(pg.evaluate("allStars(save.profiles.melrose)")==0 and m['name']=='Melrose' and m['age']==AR(8) and m['grade']=='3' and cy>0 and pg.locator('#resetMsg').count()==1,'Yes resets only Melrose (name/age/grade kept, Cayden untouched)')
     sv=pg.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2'))"); ck(allz:=sum(sum(x.get('stars',{}).values()) for x in sv['profiles']['melrose'].get('subj',{}).values())==0,'reset persisted')
     # ---- Progress tip ----
     pg.evaluate("titleScreen()"); pg.click('[data-tile=progress]'); pg.wait_for_timeout(250)

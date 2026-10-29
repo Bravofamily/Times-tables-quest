@@ -1,7 +1,35 @@
+# v22 update of test_v13.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
+import os
 # v13: long multiplication wing, Mystery Missing Numbers, Muddle Tower (Mixed Math), migration, hints, layout.
 import json,os,sys,re
 from playwright.sync_api import sync_playwright
-D='/workspace/times-tables-quest'; URL='file://'+D+'/index.html'
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); URL='file://'+D+'/index.html'
 errs=[];fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m,flush=True)
@@ -27,12 +55,12 @@ def load(pg,seed):
     pg.goto(URL); pg.evaluate("s=>{localStorage.clear();localStorage.setItem('ttq-save-v2',JSON.stringify(s))}",seed); pg.reload(); pg.wait_for_timeout(400)
 def noov(pg,w): return pg.evaluate("document.documentElement.scrollWidth")<=w+1
 with sync_playwright() as p:
-    b=p.chromium.launch(); c=b.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True); pg=c.new_page()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch(); c=b.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True); pg=c.new_page()
     pg.on('console',lambda m: errs.append(m.text) if m.type=='error' else None); pg.on('pageerror',lambda e: errs.append(str(e)))
     pg.on('dialog',lambda d: d.accept())
     pg.goto(URL); pg.wait_for_timeout(300)
-    ck(pg.evaluate("APP_VERSION")=='21','APP_VERSION is 21')
-    ck(json.load(open(D+'/version.json'))=={"version":"21"},'version.json is {"version":"21"}')
+    ck(pg.evaluate("APP_VERSION")=='22','APP_VERSION is 22')
+    ck(json.load(open(D+'/version.json'))=={"version":"22"},'version.json is {"version":"22"}')
     # ---------- chapter lists ----------
     ch=pg.evaluate("Object.fromEntries(SUBJ.map(s=>[s.id,s.id==='mult'?MLX.map(c=>c.t):s.ch.map(c=>c.t)]))")
     ck(pg.evaluate("sCount('mult')")==19 and ch['mult'][0].startswith('×10') and 'Area' in ch['mult'][1] and 'Carry' in ch['mult'][2] and '3-Digit' in ch['mult'][3] and '2-Digit × 2-Digit' in ch['mult'][4] and 'Mystery' in ch['mult'][5] and 'Word' in ch['mult'][6],'castle: 12 tables + 7 new chapters in order (ch13-19): %s'%ch['mult'])
