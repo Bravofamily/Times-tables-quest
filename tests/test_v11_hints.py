@@ -1,14 +1,42 @@
+# v22 update of test_v11_hints.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
+import os
 # v11: guide-lantern hints — limit enforced, never contains the answer, refill on retry / new chapter, usage saved + shown on Progress.
 import json, os, re
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.abspath(__file__)); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m); fails.append(m) if not c else None
 SAVE={"muted":True,"narrator":False,"hero":"emi","profiles":{"emi":{"name":"Emi","stars":{"1":3},"hist":{},"rewards":[],"eq":{},"prologue":True,"age":6,"grade":"1",
   "subj":{"add":{"stars":{"1":3,"2":3},"hist":{},"intro":True},"sub":{"stars":{},"hist":{},"intro":True},"div":{"stars":{"1":3,"2":3,"3":3,"4":3,"5":3,"6":3,"7":3},"hist":{},"intro":True}}}}}
 NUMS=lambda s: set(int(x) for x in re.findall(r'(?<![\d.])\d+(?![\d.])',s))
 with sync_playwright() as p:
-    b=p.chromium.launch(); c=b.new_context(viewport={'width':390,'height':844}); pg=c.new_page()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch(); c=b.new_context(viewport={'width':390,'height':844}); pg=c.new_page()
     pg.on('console',lambda m: errs.append(m.text) if m.type=='error' else None); pg.on('pageerror',lambda e: errs.append(str(e)))
     pg.goto(URL); pg.evaluate("s=>localStorage.setItem('ttq-save-v2',JSON.stringify(s))",SAVE); pg.reload(); pg.wait_for_timeout(500)
     ck(pg.evaluate("TTQ_V11.HINT_MAX.practice")==3 and pg.evaluate("TTQ_V11.HINT_MAX.boss")==1,'limits: 3 per chapter (practice+apply), 1 per boss')

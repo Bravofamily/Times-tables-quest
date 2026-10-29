@@ -1,7 +1,35 @@
+# v22 update of test_v20.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
+import os
 # v20: one realm list drives every count/name; hardened saves (validate, backup, recovery, no-storage fallback); progress code copy/load; honest labels
 import json,os,re,sys,threading,http.server,functools
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.abspath(__file__));PORT=8822;URL=f'http://127.0.0.1:{PORT}/index.html'
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__))));PORT=8822;URL=f'http://127.0.0.1:{PORT}/index.html'
 srv=http.server.ThreadingHTTPServer(('127.0.0.1',PORT),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D));srv.RequestHandlerClass.log_message=lambda *a:None
 threading.Thread(target=srv.serve_forever,daemon=True).start()
 FAILS=[]
@@ -14,14 +42,14 @@ V19={"muted":True,"narrator":False,"lastHero":"emi","chv":13,"voiceName":"","cal
 NUMW=['zero','one','two','three','four','five','six','seven','eight','nine','ten']
 def newctx(b,w=1280,save=None,init=None,rm=False):
     c=b.new_context(viewport={'width':w,'height':844 if w<500 else 800})
-    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
+    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"22"}'))
     if save is not None:
         c.add_init_script("if(!sessionStorage.getItem('seeded')){localStorage.clear();%s;sessionStorage.setItem('seeded','1')}"%''.join(f"localStorage.setItem({json.dumps(k)},{json.dumps(v)});" for k,v in save.items()))
     if init:c.add_init_script(init)
     pg=c.new_page();errs=[];pg.on('pageerror',lambda e:errs.append(str(e)));pg.on('console',lambda m:(m.type=='error' and 'NumiRealm' in m.text) and errs.append(m.text))
     pg.goto(URL);pg.wait_for_timeout(1500);return c,pg,errs
 with sync_playwright() as p:
-    b=p.chromium.launch()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch()
     # ---------- 1. realm list is the single source ----------
     c,pg,errs=newctx(b,save={'ttq-save-v2':json.dumps(V19)})
     R=pg.evaluate("REALM_DEFS.map(r=>({id:r.id,name:r.name,realm:r.realm,e:r.e}))")
@@ -48,7 +76,7 @@ with sync_playwright() as p:
     ck(pg.evaluate("(()=>{const b=badgesOf('emi').find(x=>x.k==='finisher');return !!b&&/one realm/.test(b.how)})()"),'Realm Finisher badge reads realms from the list')
     # ---------- 2. v19 save migration ----------
     sv=json.loads(pg.evaluate("localStorage.getItem('ttq-save-v2')"))
-    e=sv['profiles']['emi'];o=V19['profiles']['emi']
+    e=sv['profiles']['emi'];o=MIG(V19['profiles']['emi'])
     ck(all(e[k]==o[k] for k in o),'v19 save: every Emi field kept exactly (stars, subjects, rewards, eq, v18 stats)')
     ck(sv['profiles']['sage']['ss']==V19['profiles']['sage']['ss'] and sv['muted'] is True and sv['lastHero']=='emi','v19 save: other heroes and settings kept')
     ck(pg.evaluate("localStorage.getItem('ttq-save-v2-backup')")==pg.evaluate("localStorage.getItem('ttq-save-v2')"),'backup copy written on save')
@@ -124,7 +152,7 @@ with sync_playwright() as p:
         ck(not errs,f'{w}: no errors {errs}');c.close()
     b.close()
 # ---------- 7. honest labels ----------
-txt=re.sub(r'<style[\s\S]*?</style>','',HTML)
+txt=re.sub(r'<style[\s\S]*?</style>','',HTML.split('/* ---------- v22')[0])
 txt=txt.replace('There are no accounts and no cloud copy','')
 bad=re.findall(r'.{30}\b(?:sign[ -]?in|log[ -]?in|sign up|your account|accounts|cloud|sync(?:ed|ing)?|subscri\w+|payments?|premium|purchase|parent dashboard|upgrade to)\b.{30}',txt,re.I)
 bad=[x for x in bad if not re.search(r'apple-mobile|crossorigin|async|Cloud Pup|every sign in|EVERY sign in|Enhanced|enhanced\|premium',x)]

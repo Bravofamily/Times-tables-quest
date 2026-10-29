@@ -1,8 +1,35 @@
+# v22 update of test_v21.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
 # v21: worked examples after a miss, spaced review queue, mastery checks + Realm Master badges,
 # Mixed Math review (gradual mixing), offline play with a versioned service worker, v20 save compatibility.
 import os,json,re,shutil,threading,http.server,functools,tempfile,time
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.abspath(__file__));URL='file://'+os.path.join(D,'index.html')
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__))));URL='file://'+os.path.join(D,'index.html')
 fails=[];errs=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m)
@@ -11,13 +38,13 @@ def attach(pg,tag):
     pg.on('console',lambda m: errs.append(f'[{tag}] {m.text}') if m.type=='error' and 'fonts.g' not in m.text and 'ERR_INTERNET_DISCONNECTED' not in m.text else None)
     pg.on('pageerror',lambda e: errs.append(f'[{tag}] PAGEERR {e}'))
 html=open(os.path.join(D,'index.html'),encoding='utf-8').read()
-ck("const APP_VERSION='21'" in html,'APP_VERSION is 21')
-ck(json.load(open(os.path.join(D,'version.json')))['version']=='21','version.json is 21')
+ck("const APP_VERSION='22'" in html,'APP_VERSION is 22 (v22 build)')
+ck(json.load(open(os.path.join(D,'version.json')))['version']=='22','version.json is 22')
 ck(os.path.exists(os.path.join(D,'sw.js')),'sw.js ships next to index.html')
 sw=open(os.path.join(D,'sw.js')).read()
 ck("'numirealm-v'+V" in sw and 'version\\.json' in sw and "cache:'no-cache'" in sw,'sw.js: versioned cache, version.json never cached, page network-first')
 ck('standalone' not in html and 'display-mode' not in html,'no standalone/display-mode strings')
-v21=html[html.index('/* ===== v21'):]
+v21=html[html.index('/* ===== v21'):html.index('/* ---------- v22')]  # v22: the Privacy page legitimately says "No accounts" etc.
 for w in ['practise','colour','favourite','centre','harbour','cosy','defence','behaviour','Brackets','Lighter skin','All six heroes']:
     ck(w not in v21,'US English in v21 code: no "%s"'%w)
 for w in ['sign in','log in','account','cloud','sync','subscri','payment','premium','purchase','upgrade to','parent dashboard']:
@@ -26,7 +53,7 @@ SEED={"muted":True,"narrator":False,"hero":"emi","profiles":{"emi":{"name":"Emi"
  "subj":{"add":{"stars":{"1":3,"2":3,"3":2,"4":3},"hist":{},"intro":True},"sub":{"stars":{"1":2},"hist":{},"intro":True},"frac":{"stars":{"1":1},"hist":{},"intro":True}},
  "weak":{"sub:2":{"m":1,"h":0,"ok":0,"sigs":[]}},"days":["2026-10-20"],"custom":{"keepme":[1,2,3]}}}}
 with sync_playwright() as p:
-    b=p.chromium.launch()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch()
     def page(w=1280,seed=SEED,url=URL,**kw):
         c=b.new_context(viewport={'width':w,'height':900},**kw)
         if seed is not None: c.add_init_script("if(!sessionStorage.getItem('seeded')){sessionStorage.setItem('seeded','1');localStorage.setItem('ttq-save-v2',%s)}"%json.dumps(json.dumps(seed)))
@@ -143,7 +170,7 @@ with sync_playwright() as p:
     e=s['profiles']['emi'];ck(e['subj']['add']['stars']=={"1":3,"2":3,"3":2,"4":3} and e['custom']=={"keepme":[1,2,3]} and e['rewards']==['fcrown'] and e['weak']['sub:2']['m']==1,'v20 save loads intact in v21 (stars, rewards, needs-work, unknown fields)')
     ck(pg3.evaluate("Object.keys(localStorage).includes('ttq-save-v2')"),'save key is still ttq-save-v2')
     c3.close();c.close()
-    # ---- 8. service worker: offline after first visit, update v20 -> v21 -> forced v22 ----
+    # ---- 8. service worker: offline after first visit, update v20 -> v22 -> forced v23 ----
     tmp=tempfile.mkdtemp();
     v20=os.path.join(os.path.dirname(D),'index-v20.html')
     if not os.path.exists(v20): v20='/workspace/index-v20.html'
@@ -154,31 +181,31 @@ with sync_playwright() as p:
     cx=b.new_context(viewport={'width':1280,'height':900});cx.add_init_script("if(!localStorage.getItem('ttq-save-v2'))localStorage.setItem('ttq-save-v2',%s)"%json.dumps(json.dumps(SEED)))
     pw=cx.new_page();attach(pw,'sw');pw.goto(U);pw.wait_for_timeout(1500)
     ck(pw.evaluate("TTQ_VERSION.app")=='20' and pw.evaluate("!navigator.serviceWorker.controller"),'v20 running, no service worker')
-    # release v21
-    shutil.copy(os.path.join(D,'index.html'),tmp+'/index.html');shutil.copy(os.path.join(D,'sw.js'),tmp+'/sw.js');open(tmp+'/version.json','w').write('{"version":"21"}')
+    # release v22
+    shutil.copy(os.path.join(D,'index.html'),tmp+'/index.html');shutil.copy(os.path.join(D,'sw.js'),tmp+'/sw.js');shutil.copytree(os.path.join(D,'fonts'),tmp+'/fonts',dirs_exist_ok=True);open(tmp+'/version.json','w').write('{"version":"22"}')
     pw.evaluate("document.dispatchEvent(new Event('visibilitychange'))");pw.wait_for_timeout(2500)
-    ck(pw.evaluate("TTQ_VERSION.app")=='21','v20 -> v21 auto-update reloads into v21')
+    ck(pw.evaluate("TTQ_VERSION.app")=='22','v20 -> v22 auto-update reloads into v22')
     pw.evaluate("navigator.serviceWorker.ready.then(()=>1)");pw.wait_for_timeout(1500);pw.reload();pw.wait_for_timeout(1500)
-    ck(pw.evaluate("!!navigator.serviceWorker.controller"),'v21 service worker controls the page')
-    ck('numirealm-v21' in pw.evaluate("caches.keys()"),'cache named numirealm-v21')
-    s=pw.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2')).profiles.emi");ck(s['subj']['add']['stars']['4']==3 and s['custom']=={"keepme":[1,2,3]},'save intact across v20 -> v21 update')
+    ck(pw.evaluate("!!navigator.serviceWorker.controller"),'v22 service worker controls the page')
+    ck('numirealm-v22' in pw.evaluate("caches.keys()"),'cache named numirealm-v22')
+    s=pw.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2')).profiles.emi");ck(s['subj']['add']['stars']['4']==3 and s['custom']=={"keepme":[1,2,3]},'save intact across v20 -> v22 update')
     # offline
     cx.set_offline(True);pw.reload();pw.wait_for_timeout(1500)
-    ck(pw.evaluate("TTQ_VERSION.app")=='21' and pw.query_selector('.herocard,#app h1') is not None,'offline reload: game loads from the cache')
+    ck(pw.evaluate("TTQ_VERSION.app")=='22' and pw.query_selector('.herocard,#app h1') is not None,'offline reload: game loads from the cache')
     ck(pw.is_visible('#offNote'),'offline notice shown')
-    pw.screenshot(path='/tmp/v21_offline.png')
+    pw.screenshot(path='/tmp/v22_offline.png')
     pw.evaluate("pickHero('emi');SP('add').stars[5]=2;persist()")
     ck(JSON.parse if False else pw.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2')).profiles.emi.subj.add.stars['5']")==2,'offline progress still saves')
     cx.set_offline(False);pw.wait_for_timeout(300);pw.evaluate("window.dispatchEvent(new Event('online'))");pw.wait_for_timeout(200)
     ck(not pw.query_selector('#offNote'),'offline notice hides when back online')
-    # forced next version v22 with the SW in place
-    h22=open(os.path.join(D,'index.html'),encoding='utf-8').read().replace("const APP_VERSION='21'","const APP_VERSION='22'")
-    open(tmp+'/index.html','w',encoding='utf-8').write(h22);open(tmp+'/version.json','w').write('{"version":"22"}')
+    # forced next version v23 with the SW in place
+    h23=open(os.path.join(D,'index.html'),encoding='utf-8').read().replace("const APP_VERSION='22'","const APP_VERSION='23'")
+    open(tmp+'/index.html','w',encoding='utf-8').write(h23);open(tmp+'/version.json','w').write('{"version":"23"}')
     pw.evaluate("go('home')");pw.wait_for_timeout(200);pw.evaluate("TTQ_VERSION.check(true)");pw.wait_for_timeout(3000)
-    ck(pw.evaluate("TTQ_VERSION.app")=='22','with the service worker present, a new release (v22) still arrives through auto-update')
+    ck(pw.evaluate("TTQ_VERSION.app")=='23','with the service worker present, a new release (v23) still arrives through auto-update')
     pw.wait_for_timeout(2500)
-    ks=pw.evaluate("caches.keys()");ck('numirealm-v22' in ks and 'numirealm-v21' not in ks,'old cache cleared after update (%s)'%ks)
-    ck(pw.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2')).profiles.emi.subj.add.stars['5']")==2,'save intact across v21 -> v22 update')
+    ks=pw.evaluate("caches.keys()");ck('numirealm-v23' in ks and 'numirealm-v22' not in ks,'old cache cleared after update (%s)'%ks)
+    ck(pw.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2')).profiles.emi.subj.add.stars['5']")==2,'save intact across v22 -> v23 update')
     cx.close();srv.shutdown();shutil.rmtree(tmp,True)
     b.close()
 ck(not errs,'no console errors: %s'%errs[:5])

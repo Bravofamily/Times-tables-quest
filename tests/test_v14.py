@@ -1,7 +1,35 @@
+# v22 update of test_v14.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
+import os
 # v14: Zea the Critter Flip Star (7th hero): select, About Me, story, Heroes Hall, rewards, banter, Grand Final, migration, hints, generator, layout.
 import json,os,sys,re
 from playwright.sync_api import sync_playwright
-D='/workspace/times-tables-quest'; URL='file://'+D+'/index.html'
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); URL='file://'+D+'/index.html'
 errs=[];fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m,flush=True)
@@ -26,12 +54,12 @@ def drain(pg):
         out.append(pg.evaluate("(document.querySelector('#who')||{}).innerText+': '+(document.querySelector('#btext')||{}).innerText")); pg.evaluate("nextLine()"); pg.wait_for_timeout(30)
     return out
 with sync_playwright() as p:
-    b=p.chromium.launch(); c=b.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True); pg=c.new_page()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch(); c=b.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True); pg=c.new_page()
     pg.on('console',lambda m: errs.append(m.text) if m.type=='error' else None); pg.on('pageerror',lambda e: errs.append(str(e)))
     pg.on('dialog',lambda d: d.accept())
     load(pg,None)
-    ck(pg.evaluate("APP_VERSION")=='21','APP_VERSION is 21')
-    ck(json.load(open(D+'/version.json'))=={"version":"21"},'version.json is {"version":"21"}')
+    ck(pg.evaluate("APP_VERSION")=='22','APP_VERSION is 22')
+    ck(json.load(open(D+'/version.json'))=={"version":"22"},'version.json is {"version":"22"}')
     # ---------- data ----------
     d=pg.evaluate("""()=>({order:HERO_ORDER.join(),title:HEROES.zea.title,cfg:ZEA_CFG,rew:REWARDS.zea.length,pl:HPLACES.zea.length,plok:HPLACES.zea.every(p=>p.zea&&p.name&&p.desc&&p.lost&&p.back&&p.props.length===7),
       boss:Object.keys(HBOSS.zea).length,sibs:SIBS.zea,rel:HERO_ORDER.filter(x=>x!=='zea').map(x=>relTo('zea',x)+'/'+relTo(x,'zea')),
@@ -69,9 +97,9 @@ with sync_playwright() as p:
     # ---------- select Zea -> About Me -> prologue ----------
     pg.evaluate("(s)=>{const b=document.querySelector(s);if(window.v16Go&&b.dataset.hero)v16Go(b.dataset.hero);b.click()}",'[data-hero=zea]'); pg.click('text=Start the adventure'); pg.wait_for_selector('.about [data-age]')
     ck(pg.inner_text('.abq').startswith('How old are you, Zea'),'first pick of Zea shows About Me')
-    pg.click('[data-age="7"]'); pg.wait_for_selector('[data-grade]'); pg.click('[data-grade="2"]'); pg.wait_for_selector('#abGo')
-    ck(pg.inner_text('.abq')=="Nice to meet you, Zea! You're 7 and in 2nd grade!",'About Me confirmation for Zea')
-    s=pg.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2')).profiles.zea"); ck(s['age']==7 and s['grade']=='2' and s['name']=='Zea','Zea profile saved (age 7, grade 2)')
+    pg.click('[data-age="6-7"]'); pg.wait_for_selector('[data-grade]'); pg.click('[data-grade="2"]'); pg.wait_for_selector('#abGo')
+    ck(pg.inner_text('.abq')=="Nice to meet you, Zea! Ages 6–7, in 2nd grade!",'About Me confirmation for Zea')
+    s=pg.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2')).profiles.zea"); ck(s['age']==AR(7) and s['grade']=='2' and s['name']=='Zea','Zea profile saved (age 7, grade 2)')
     pg.click('#abGo'); pg.wait_for_selector('#bubble'); lines=drain(pg); pg.wait_for_timeout(200)
     ck(pg.locator('.stile').count()==6 and pg.evaluate("document.body.classList.contains('theme-zea')"),'prologue -> Subject Select, Zea theme on')
     ck(not any(BAD.search(x) or SIBW.search(x) for x in lines) and any('Zea' in x for x in lines),'prologue lines OK (%d)'%len(lines))
@@ -191,7 +219,7 @@ with sync_playwright() as p:
     live=pg.evaluate("JSON.parse(JSON.stringify(TTQ.save))")
     for src in (live,):
         ck(src['profiles']['emi']['stars']==T12 and src['profiles']['emi']['subj']['mult']['stars']=={"13":3,"14":2,"15":3} and src['profiles']['emi']['subj']['mix']['stars']=={"1":3,"2":2,"3":3} and src['profiles']['emi']['subj']['add']['stars']=={"10":3,"11":2},'v13 save: Emi stars unchanged (castle, wing, tower, meadow)')
-        ck(src['profiles']['emi']['rewards']==["fcrown"] and src['profiles']['emi']['eq']=={"head":"fcrown"} and src['profiles']['emi']['age']==8 and src['profiles']['emi']['hintTotal']==3,'v13 save: Emi rewards/eq/age/hints unchanged')
+        ck(src['profiles']['emi']['rewards']==["fcrown"] and src['profiles']['emi']['eq']=={"head":"fcrown"} and src['profiles']['emi']['age']==AR(8) and src['profiles']['emi']['hintTotal']==3,'v13 save: Emi rewards/eq/age/hints unchanged')
         ck(src['profiles']['cayden']['stars']=={"1":3,"2":2} and src['profiles']['cayden']['subj']['div']['stars']=={"1":3,"12":2} and src['profiles']['cayden']['rewards']==["bball"],'v13 save: Cayden unchanged')
         ck(src.get('chv')==13 and src['hero']=='emi','v13 save: no re-migration (chv 13), hero kept')
         z=src['profiles'].get('zea',{}); ck(z.get('rewards')==[] and z.get('stars')=={} and z.get('name')=='Zea','Zea gets a fresh empty profile')

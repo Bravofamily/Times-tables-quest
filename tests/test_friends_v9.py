@@ -1,14 +1,42 @@
+# v22 update of test_friends_v9.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
+import os
 import sys, os
 from playwright.sync_api import sync_playwright
-URL='file://'+os.path.abspath(os.path.join(os.path.dirname(__file__),'index.html'))
-D=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
+URL='file://'+os.path.abspath(os.path.join(os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),'index.html'))
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 errors=[]
 ABOUT={'sage':(7,'2'),'emi':(6,'1'),'blu':(1,'none'),'eshon':(6,'1'),'melrose':(8,'3'),'cayden':(10,'5')}
 def start(pg):
     pg.click('text=Start the adventure')
     if pg.query_selector('.about') or pg.wait_for_timeout(150) or pg.query_selector('.about'):
         hero=pg.evaluate('TTQ.save.hero'); a,g=ABOUT[hero]
-        pg.click(f'[data-age="{a}"]'); pg.wait_for_selector(f'[data-grade="{g}"]'); pg.click(f'[data-grade="{g}"]'); pg.click('#abGo')
+        pg.click(f'[data-age="{AR(a)}"]'); pg.wait_for_selector(f'[data-grade="{g}"]'); pg.click(f'[data-grade="{g}"]'); pg.click('#abGo')
 
 def mult(pg):
     for _ in range(8):
@@ -96,14 +124,14 @@ V7_SAVE={"hero":"eshon","muted":False,"narrator":True,"profiles":{
 EXPECT={'melrose':dict(title='Melrose the Mermaid Fairy',sib='cayden',boss1='Sir Slime the Sea Snail',reward='wings',slot='back',closet='Dress-Up Closet',fx='.bubblefx',hc='rgb(192, 38, 211)',place='Fairy Glen',rel='big brother'),
         'cayden':dict(title='Cayden the Slam Dunk Hero',sib='melrose',boss1='Bouncy the Dribble Minion',reward='bball',slot='hand',closet='Sports Locker',fx='.speedfx',hc='rgb(220, 38, 38)',place='Backyard Court',rel='little sister')}
 with sync_playwright() as p:
-    b=p.chromium.launch()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch()
     # ---- old v7 save loads; new heroes get fresh profiles; old data untouched ----
     c0=b.new_context(viewport={'width':1100,'height':900}); p0=c0.new_page(); attach(p0,'v7save')
     p0.add_init_script("if(!sessionStorage.getItem('seeded')){localStorage.setItem('ttq-save-v2',%s);sessionStorage.setItem('seeded','1');}" % json.dumps(json.dumps(V7_SAVE)))
     p0.goto(URL); mult(p0)
     pr=p0.evaluate('TTQ.save.profiles')
     for k,v in V7_SAVE['profiles'].items():
-        for f in ('name','stars','rewards','eq','age','grade'): assert pr[k][f]==v[f],(k,f,pr[k][f])
+        for f in ('name','stars','rewards','eq','age','grade'): assert pr[k][f]==MIG(v)[f],(k,f,pr[k][f])
     for k in ('melrose','cayden'): assert pr[k]['name']==k.capitalize() and pr[k]['rewards']==[] and pr[k]['stars']=={},pr[k]
     assert p0.evaluate('TTQ.save.hero')=='eshon'
     print('v7 save migration ok')
@@ -146,7 +174,7 @@ with sync_playwright() as p:
         page.evaluate('titleScreen()'); page.wait_for_selector('.herocard'); page.evaluate("(s)=>{const b=document.querySelector(s);if(window.v16Go&&b.dataset.hero)v16Go(b.dataset.hero);b.click()}",f'[data-hero={h}]')
         page.click('text=Start the adventure'); page.wait_for_selector('.about')
         page.screenshot(path=os.path.join(D,f'v9reg-f-{h}-about.png'))
-        a,g=ABOUT[h]; page.click(f'[data-age="{a}"]'); page.click(f'[data-grade="{g}"]'); page.click('#abGo')
+        a,g=ABOUT[h]; page.click(f'[data-age="{AR(a)}"]'); page.click(f'[data-grade="{g}"]'); page.click('#abGo')
         page.wait_for_selector('#bubble')
         assert page.evaluate("document.body.className")=='theme-'+h
         assert page.evaluate("getComputedStyle(document.querySelector('#top')).borderBottomColor")==E['hc'],page.evaluate("getComputedStyle(document.querySelector('#top')).borderBottomColor")

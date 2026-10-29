@@ -1,8 +1,36 @@
+# v22 update of test_v16.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
+import os
 # v16: centered 3-up hero carousel on Home and on "Who is playing?"
 import json,threading,http.server,functools,os
 from playwright.sync_api import sync_playwright
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
 os.environ.setdefault('GST_PLUGIN_PATH','/workspace/wkdeps/root/usr/lib/x86_64-linux-gnu/gstreamer-1.0')
-D='/workspace/times-tables-quest'
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 srv=http.server.ThreadingHTTPServer(('127.0.0.1',8798),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D))
 srv.RequestHandlerClass.log_message=lambda *a:None
 threading.Thread(target=srv.serve_forever,daemon=True).start()
@@ -18,12 +46,12 @@ def ctx(b,w,h,save=SAVE,touch=False,rm=None):
     if rm: kw['reduced_motion']=rm
     c=b.new_context(**kw)
     if save is not None: c.add_init_script("if(!sessionStorage.getItem('s')){sessionStorage.setItem('s','1');localStorage.setItem('ttq-save-v2',%s)}"%json.dumps(json.dumps(save)))
-    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
+    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"22"}'))
     pg=c.new_page();pg.on('pageerror',lambda e:errs.append(str(e)));pg.goto(URL);pg.wait_for_selector('.hcar');pg.wait_for_timeout(500);return c,pg
 cen=lambda pg:pg.evaluate("v16Center()")
 def offs(pg): return pg.evaluate("Object.fromEntries([...document.querySelectorAll('.hslide')].map(s=>[s.dataset.slide,+s.dataset.off]))")
 with sync_playwright() as p:
-    b=p.chromium.launch()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch()
     c,pg=ctx(b,1280,900)
     ck(pg.locator('#app .herocards .herocard').count()==7 and pg.locator('.hcar').count()==1 and pg.locator('#app .herocards:not(.hcar-track)').count()==0,'Home: 7 hero cards live inside one carousel (no grid left)')
     ck([e.get_attribute('data-hero') for e in pg.query_selector_all('.herocard')]==IDS,'hero order kept')
@@ -77,7 +105,7 @@ with sync_playwright() as p:
     # select centered -> same pick flow
     pg.click('.hslide[data-off="0"] .herocard');pg.wait_for_selector('#nm');ck(pg.evaluate("TTQ.save.hero")=='blu' and pg.is_visible('text=Start the adventure'),'tap center selects Blú -> name/Start screen as before')
     sv=pg.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2'))");e=sv['profiles']['emi']
-    ck(e['stars']=={"2":3,"5":2} and e['rewards']==['fcrown'] and e['age']==6 and e['grade']=='1' and sv['lastHero']=='blu','saves intact (Emi stars/rewards/about kept)')
+    ck(e['stars']=={"2":3,"5":2} and e['rewards']==['fcrown'] and e['age']==AR(6) and e['grade']=='1' and sv['lastHero']=='blu','saves intact (Emi stars/rewards/about kept)')
     # Who is playing picker
     pg.evaluate("heroPickScreen()");pg.wait_for_timeout(300)
     ck(pg.locator('#app .hcar').count()==1 and pg.locator('#app .herocard').count()==7 and pg.locator('#heroes.hcar').count()==1,'"Who is playing?" uses the carousel')
@@ -97,7 +125,7 @@ with sync_playwright() as p:
         ck(abs(r['cx']-w/2)<3 and r['sw']<=w,'%dpx: focused card centered, no overflow (%s)'%(w,r))
         ck(r['cw']>=min(170,w*.55) and r['fs']>=20,'%dpx: card not cramped'%w)
         ck(r['lp']>8 and r['rp']>8,'%dpx: neighbours peek at both edges'%w)
-        if w==390:
+        if w==390 and os.environ.get('PWB','chromium')=='chromium':
             pg.evaluate("document.querySelector('.hcar').scrollIntoView({block:'center'})");pg.wait_for_timeout(300)
             bx=pg.query_selector('.hcar-vp').bounding_box();y=bx['y']+bx['height']/2;x=bx['x']+bx['width']/2
             cdp=c.new_cdp_session(pg)

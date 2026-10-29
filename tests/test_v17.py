@@ -1,8 +1,36 @@
+# v22 update of test_v17.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
+import os
 # v17: one Home layout on desktop and phone (phone = responsive desktop)
 import json,threading,http.server,functools,os
 from playwright.sync_api import sync_playwright
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
 os.environ.setdefault('GST_PLUGIN_PATH','/workspace/wkdeps/root/usr/lib/x86_64-linux-gnu/gstreamer-1.0')
-D='/workspace/times-tables-quest'
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 srv=http.server.ThreadingHTTPServer(('127.0.0.1',8799),functools.partial(http.server.SimpleHTTPRequestHandler,directory=D))
 srv.RequestHandlerClass.log_message=lambda *a:None
 threading.Thread(target=srv.serve_forever,daemon=True).start()
@@ -12,7 +40,7 @@ def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m)
     if not c: fails.append(m)
 HTML=open(D+'/index.html').read()
-ck("const APP_VERSION='21'" in HTML and json.load(open(D+'/version.json'))=={"version":"21"},'APP_VERSION and version.json are 21')
+ck("const APP_VERSION='22'" in HTML and json.load(open(D+'/version.json'))=={"version":"22"},'APP_VERSION and version.json are 22')
 ck('display-mode' not in HTML and 'standalone' not in HTML and 'hplay mob' not in HTML and 'subjcards dsk' not in HTML,'no standalone-only or phone-only Home markup/styles left')
 def save(last):
     return {"muted":True,"narrator":False,"lastHero":last,"profiles":{"emi":{"name":"Emi","stars":{"2":3},"hist":{"2x3":[1,1]},"eq":{},"prologue":True,"age":6,"grade":"1"},
@@ -20,7 +48,7 @@ def save(last):
 def ctx(b,w,h,last='emi',touch=False):
     c=b.new_context(viewport={'width':w,'height':h},has_touch=touch)
     c.add_init_script("if(!sessionStorage.getItem('s')){sessionStorage.setItem('s','1');localStorage.setItem('ttq-save-v2',%s)}"%json.dumps(json.dumps(save(last))))
-    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"21"}'))
+    c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"22"}'))
     pg=c.new_page();pg.on('pageerror',lambda e:errs.append(str(e)));pg.goto(URL);pg.wait_for_selector('.hhero');pg.wait_for_timeout(500);return c,pg
 LOGO="""(()=>{const l=document.querySelector('.hhero .logo'),r=l.getBoundingClientRect(),h=document.querySelector('.hhero').getBoundingClientRect(),
  fs=parseFloat(getComputedStyle(l).fontSize),sv=l.querySelector('svg.nrlogo'),tx=sv.querySelector('text'),tb=tx.getBBox();
@@ -50,7 +78,7 @@ with sync_playwright() as p:
     want=['banner','play','tiles','questh','quest','realms','heroes']
     for k,v in orders.items(): ck(v==want,f'{k}: section order {v}')
     ck(all(v==['blu','emi','sage'] for v in heroes.values()),f'hero order Blú, Emi, Sage everywhere {set(map(tuple,heroes.values()))}')
-    b=p.chromium.launch()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch()
     c,pg=ctx(b,390,844,last='sage'); ck(pg.evaluate("[...document.querySelectorAll('.hhero .chars .c')].map(e=>e.dataset.h)")==['blu','emi','sage'],'hero order does not change with last-played hero'); c.close()
     # phone layout specifics
     c,pg=ctx(b,390,844)

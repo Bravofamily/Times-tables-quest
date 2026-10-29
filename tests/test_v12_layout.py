@@ -1,11 +1,38 @@
+# v22 update of test_v12_layout.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
 # v12: new screens at 320/360/768/1440 - no horizontal overflow, >=44px tap targets, no console errors; reduced motion stops hero animations.
 import os
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.abspath(__file__)); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m, flush=True); fails.append(m) if not c else None
 import importlib.util,re
-src=open(os.path.join(D,'test_v12_screens.py')).read(); SEED=eval(re.search(r"SEED=(\{.*?\}\}\})\n",src,re.S).group(1).replace('True','True').replace('None','None'))
+src=open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'test_v12_screens.py')).read(); SEED=eval(re.search(r"SEED=(\{.*?\}\}\})\n",src,re.S).group(1).replace('True','True').replace('None','None'))
 OVF="""(()=>{const W=innerWidth,bad=[];const de=document.documentElement;if(de.scrollWidth>W+1)bad.push('doc '+de.scrollWidth);
 for(const e of document.querySelectorAll('#app *, #top *, #bnav *')){const r=e.getBoundingClientRect();if(!r.width||!r.height)continue;
  let p=e.parentElement,clip=false;while(p&&p!==document.body){const s=getComputedStyle(p);if(/auto|scroll|hidden|clip/.test(s.overflowX)){clip=true;break;}p=p.parentElement;}
@@ -19,7 +46,7 @@ SCREENS=[('home',"titleScreen()"),('realms',"titleScreen();go('realms')"),('chap
  ('hero-emi',"go('hero','emi')"),('hero-blu',"go('hero','blu')"),('hero-sage',"go('hero','sage')"),('hero-eshon',"go('hero','eshon')"),('hero-melrose',"go('hero','melrose')"),('hero-cayden',"go('hero','cayden')"),('villain',"go('villain')"),
  ('settings',"titleScreen();go('settings')"),('reset-confirm',"resetAsk('cayden')"),('progress',"titleScreen();go('progress')"),('pick',"titleScreen();save.lastHero=null;go('pick')")]
 with sync_playwright() as p:
-    b=p.chromium.launch()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch()
     for (w,h,mob) in [(320,640,True),(360,780,True),(768,1024,True),(1440,900,False)]:
         c=b.new_context(viewport={'width':w,'height':h},is_mobile=mob,has_touch=mob); pg=c.new_page(); tag=f'{w}x{h}'
         pg.on('console',lambda m,t=tag: errs.append(f'[{t}] {m.text}') if m.type=='error' else None); pg.on('pageerror',lambda e,t=tag: errs.append(f'[{t}] {e}'))

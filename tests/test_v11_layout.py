@@ -1,8 +1,36 @@
+# v22 update of test_v11_layout.py: same checks, adapted only for age groups, v22 version numbers and self-hosted fonts on file://
+import os
 # v11: responsive layout (320-1440, focus 360x780 / 768x1024 / 1440x900): no overflow, no console errors, tap targets;
 # a v10 save loads intact; keyboard play on desktop; reduced motion + big text.
 import json, os, copy
 from playwright.sync_api import sync_playwright
-D=os.path.dirname(os.path.abspath(__file__)); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
+
+# ---- v22 test helpers (added by the v22 update of this suite) ----
+def AR(a):
+    """v22 stores an age group instead of an exact age; map an old exact age to its group key."""
+    if isinstance(a,str) and '-' in a: return a
+    a=int(a); return '4-5' if a<=5 else '6-7' if a<=7 else '8-10' if a<=10 else '11-14'
+def MIG(o):
+    """An old profile as v22 keeps it: identical except age -> age group."""
+    o=dict(o)
+    if 'age' in o: o['age']=AR(o['age'])
+    return o
+def _fontfile(m):
+    """Chromium and WebKit block font loads from file:// pages (CORS); the game is served over https, where fonts load. Ignore only those."""
+    try: u=(m.location or {}).get('url','')
+    except Exception: u=''
+    t=m.text
+    return ("Access to font at 'file:" in t) or (u.endswith('.woff2') and 'ERR_FAILED' in t) or (u.endswith('.woff2') and 'Origin null is not allowed' in t) or (t=='Origin null is not allowed by Access-Control-Allow-Origin. Status code: 0' and not u)
+import playwright.sync_api._generated as _pwg
+for _cls in (_pwg.Page,_pwg.BrowserContext):
+    _orig=_cls.on
+    def _on(self,ev,f,_orig=_orig):
+        if ev=='console':
+            g=f; f=lambda m,g=g: None if _fontfile(m) else g(m)
+        return _orig(self,ev,f)
+    _cls.on=_on
+# ---- end helpers ----
+D=os.environ.get('NR_DIR',os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); URL='file://'+os.path.join(D,'index.html'); errs=[]; fails=[]
 def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+m); fails.append(m) if not c else None
 V10={"muted":True,"narrator":False,"hero":"cayden","lastSubj":"div","voice":"","profiles":{
@@ -20,7 +48,7 @@ SCREENS=[('home',"titleScreen()"),('quests',"pickHero('cayden',true);subjectScre
  ('hint',"useHint();useHint()"),('ld',"SS=null;openChapter('div',8);sPracticeStart();useHint()"),('fractions',"SS=null;openChapter('frac',1);sPracticeStart()"),('boss',"sBossStart();useHint()"),
  ('mult-map',"SS=null;mapScreen()"),('mult-practice',"S=makeSession(ORDER[0]);practiceStart();useHint()"),('progress',"S=null;progressScreen()"),('settings',"settingsScreen()"),('profile',"profileScreen()"),('practicehub',"practiceHub()"),('quickdone',"quickDone('add',3,4)")]
 with sync_playwright() as p:
-    b=p.chromium.launch()
+    b=getattr(p,os.environ.get('PWB','chromium')).launch()
     for (w,h,mob) in [(320,640,True),(360,780,True),(390,844,True),(768,1024,True),(1024,768,False),(1440,900,False)]:
         c=b.new_context(viewport={'width':w,'height':h},is_mobile=mob,has_touch=mob); pg=c.new_page(); tag=f'{w}x{h}'
         pg.on('console',lambda m,t=tag: errs.append(f'[{t}] {m.text}') if m.type=='error' else None); pg.on('pageerror',lambda e,t=tag: errs.append(f'[{t}] {e}'))
@@ -43,7 +71,7 @@ with sync_playwright() as p:
     def sub(a,b):  # every v10 key/value still present
         if isinstance(a,dict): return isinstance(b,dict) and all(k in b and sub(a[k],b[k]) for k in a)
         return a==b
-    ok=all(sub(V10['profiles'][k],sv['profiles'][k]) for k in V10['profiles'])
+    ok=all(sub(MIG(V10['profiles'][k]),sv['profiles'][k]) for k in V10['profiles'])
     ck(ok,'v10 save: every profile field (stars, hist, rewards, eq, age, grade, subject progress) kept after load')
     ck(all(k in pg.evaluate("Object.keys(save.profiles)") for k in V10['profiles']) and pg.evaluate("save.lastSubj")=='div' and pg.evaluate("save.hero")=='cayden','v10 save: heroes, current hero and lastSubj kept')
     ck(pg.evaluate("HUB")=='quest' and 'Division Docks' in pg.inner_text('#app'),'v10 save: resumes straight onto Cayden\'s Division Docks map')
@@ -52,7 +80,7 @@ with sync_playwright() as p:
     pg.evaluate("progressScreen('melrose')"); pg.wait_for_timeout(200)
     ck('3/' in pg.inner_text('.prow[data-psubj=add]') or '7/' in pg.inner_text('.prow[data-psubj=add]'),'v10 save: Melrose addition progress shown on Progress (%s)'%pg.inner_text('.prow[data-psubj=add]').replace('\n',' '))
     sv2=pg.evaluate("JSON.parse(localStorage.getItem('ttq-save-v2'))")
-    ck(all(sub(V10['profiles'][k],sv2['profiles'][k]) for k in V10['profiles']),'v10 save: still intact after browsing')
+    ck(all(sub(MIG(V10['profiles'][k]),sv2['profiles'][k]) for k in V10['profiles']),'v10 save: still intact after browsing')
     c.close()
     # ---- keyboard play (desktop)
     c=b.new_context(viewport={'width':1440,'height':900}); pg=c.new_page(); pg.on('pageerror',lambda e: errs.append(f'[kbd] {e}'))
