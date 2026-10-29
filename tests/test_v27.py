@@ -16,7 +16,8 @@ def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+f'[{BR}] '+m)
     if not c:F.append(m)
 html=open(os.path.join(D,'index.html'),encoding='utf-8').read()
-ck("const APP_VERSION='27'" in html and json.load(open(os.path.join(D,'version.json')))['version']=='27','APP_VERSION and version.json are 27')
+_av=re.search(r"const APP_VERSION='(\d+)'",html);_vj=json.load(open(os.path.join(D,'version.json')))['version']
+ck(_av is not None and int(_av.group(1))>=27 and _vj==_av.group(1),'APP_VERSION and version.json match and are >=27')
 ck(not re.search(r'Enter the realm|Master the math',html),'no lowercase "realm"/"math" tagline left in index.html')
 for k,pat in [('meta description',r'<meta name="description" content="NumiRealm: Enter the Realm\. Master the Math\.">'),('og:description',r'<meta property="og:description" content="Enter the Realm\. Master the Math\.">'),
               ('splash tagline',r'<p class="nrsp-tag">Enter the Realm\. Master the Math\.</p>'),('Home banner',r'<span class="banner">Enter the Realm\. Master the Math\.</span>'),('NR_TAG',r"const NR_TAG='Enter the Realm\. Master the Math\.'")]:

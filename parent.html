@@ -53,6 +53,13 @@ header{flex-wrap:wrap}header nav{display:flex;flex-wrap:wrap;gap:6px;align-items
 .whatl{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:#1E3A8A}
 .wl{list-style:none;padding:0;margin:8px 0}.wl li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid #e2e8f0;line-height:1.4}.wl li>span{font-size:20px;line-height:1.2}
 #welcomeCard{border:3px solid #00C2FF}
+.pttabs{display:flex;gap:6px;background:#f1f5f9;border-radius:999px;padding:4px;margin:6px 0 8px;max-width:420px}
+.pttab{flex:1;border:0;background:transparent;border-radius:999px;padding:8px 6px;font:inherit;font-weight:700;font-size:15px;color:#475569;cursor:pointer;min-height:44px}
+.pttab.on{background:#f97316;color:#fff;box-shadow:0 2px 0 #c2410c}
+.pttab:focus-visible{outline:3px solid #2563eb;outline-offset:2px}
+.pttotal{margin:4px 0 6px;font-size:17px}.pttotal b{color:#c2410c}
+.ptempty{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;background:#fff7ed;border:2px dashed #fdba74;border-radius:18px;padding:22px 12px;margin:6px 0}
+.ptempty div{font-size:34px}.ptempty b{color:#c2410c;font-size:17px}
 @media (max-width:520px){header h1{font-size:22px}.realm{grid-template-columns:1fr auto}.realm .bar{grid-column:1/-1;grid-row:2}.code{font-size:36px}}
 
 /* v27: back to the game, same blue pill as the game's own Home buttons */
@@ -60,11 +67,67 @@ header{flex-wrap:wrap}header nav{display:flex;flex-wrap:wrap;gap:6px;align-items
 .nrback{display:inline-flex;align-items:center;gap:6px;min-height:48px;min-width:44px;padding:8px 18px;border-radius:999px;background:linear-gradient(180deg,#3B5FD0 0%,#1E3A8A 60%,#172F72 100%);color:#fff;text-decoration:none;font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:17px;letter-spacing:.3px;box-shadow:0 5px 0 #0F1F4D,0 10px 18px #0004;text-shadow:0 1px 1px #0006;white-space:nowrap}
 .nrback:hover{filter:brightness(1.1)}.nrback:active{transform:translateY(3px);box-shadow:0 2px 0 #0F1F4D}
 .nrback:focus-visible{outline:3px solid #FFD166;outline-offset:3px}
+
+/* v28 Parent Center */
+.etabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:#eef2ff;border-radius:18px;padding:5px;margin:6px 0 12px}
+.etab{border:0;background:transparent;border-radius:14px;padding:8px 4px;font:inherit;font-weight:700;font-size:15px;color:#1E3A8A;cursor:pointer;min-height:48px}
+.etab.on{background:#2563eb;color:#fff;box-shadow:0 3px 0 #1e3a8a}.etab:focus-visible,.chip:focus-visible,.lcard:focus-visible{outline:3px solid #f97316;outline-offset:2px}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin:0 4px 0 6px;vertical-align:-1px}
+.smgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.smt{border-radius:14px;padding:8px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;font-size:13px;border:2px solid;min-height:84px;justify-content:center}
+.smt b{font-size:13px;line-height:1.2}.smi{font-size:22px}.smp{font-weight:700}
+.sm-star{background:#dcfce7;border-color:#16a34a}.sm-grow{background:#dbeafe;border-color:#2563eb}.sm-help{background:#ffedd5;border-color:#ea580c}.sm-start{background:#ede9fe;border-color:#7c3aed}.sm-new{background:#f8fafc;border-color:#e2e8f0;color:#94a3b8}
+.kidnav{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 2px;scrollbar-width:none}.kidnav a{flex:0 0 auto;display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;background:#ffffff22;color:#fff;font-weight:700;text-decoration:none;border:2px solid #ffffff55}
+.tip{display:flex;gap:10px;background:#fefce8;border:2px solid #fde047;border-radius:16px;padding:10px 12px;margin:10px 0}.tipi{font-size:26px}.tip p{margin:0 0 4px}
+.chal{background:linear-gradient(160deg,#fff,#ecfeff)}.chalt{font-size:19px;margin:0 0 6px}
+.chalgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.chalbox{background:#fff;border:2px solid #a5f3fc;border-radius:16px;padding:10px 12px}.chalbox p{margin:6px 0}.chalh{font-weight:700;color:#0e7490}
+.msgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.ms{background:linear-gradient(160deg,#fff7ed,#fef3c7);border:2px solid #fbbf24;border-radius:18px;padding:12px;text-align:center;display:flex;flex-direction:column;gap:2px;align-items:center}
+.ms.big{grid-column:1/-1;background:linear-gradient(135deg,#1E3A8A,#7c3aed);color:#fff;border-color:#facc15;animation:pop .6s ease}.ms.big .small{color:#e0e7ff}.ms.big b{font-family:'Baloo 2',Poppins,sans-serif;font-size:24px}
+.msi{font-size:34px}.ms.big .msi{font-size:52px}
+@keyframes pop{0%{transform:scale(.85);opacity:0}70%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}.confetti i{position:absolute;top:-12px;width:10px;height:14px;border-radius:3px;animation:fall 2s linear forwards}
+@keyframes fall{to{top:105%;transform:rotate(540deg)}}
+@media (prefers-reduced-motion:reduce){.confetti{display:none}.ms.big{animation:none}}
+.lsgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin:8px 0}
+.lcard{font:inherit;text-align:left;border:2px solid #e2e8f0;border-radius:16px;background:#f8fafc;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:3px;min-height:88px;color:#0f172a}
+.lcard:hover{border-color:#00C2FF}.lcard b{color:#1E3A8A}.lci{font-size:26px}
+.chips{gap:6px;margin:6px 0}.chip{font:inherit;font-size:14px;font-weight:600;border:2px solid #cbd5e1;background:#fff;border-radius:999px;padding:6px 14px;min-height:44px;min-width:44px;cursor:pointer;color:#0f172a}
+.chip.on{background:#2563eb;border-color:#2563eb;color:#fff}
+.lgrid{display:grid;grid-template-columns:240px 1fr;gap:14px;align-items:start}.lvis{width:100%;height:auto;background:#f8fafc;border-radius:14px}
+.qform{background:#f8fafc;border:2px solid #e2e8f0;border-radius:16px;padding:12px;margin:10px 0}.qform h3{margin-top:0}
+.scrollprev{margin:10px 0}.scroll{background:linear-gradient(160deg,#fff7e6,#fde68a);border:3px solid #d97706;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;color:#7c2d12;margin-top:4px}
+.qrow{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid #e2e8f0;padding:10px 0}.qrow>div{flex:1;min-width:0}.qrow .bar{margin:6px 0 2px}
+.qrow.done b{color:#047857}.bar.gold i{background:linear-gradient(90deg,#facc15,#16a34a)}
+.plan{border:2px solid #e2e8f0;border-radius:16px;padding:4px 12px 10px;margin:10px 0}.plan.done{border-color:#16a34a;background:#f0fdf4}
+.ba{display:flex;align-items:center;gap:14px;margin:6px 0}.ba>div{display:flex;flex-direction:column;align-items:center;background:#f1f5f9;border-radius:12px;padding:6px 14px}.ba b{font-size:22px;color:#1E3A8A}.baar{background:none!important;font-size:22px}
+.days{padding-left:20px;margin:6px 0;line-height:1.45;font-size:15px}.days li{margin:4px 0}.days li.dd{color:#64748b;text-decoration:line-through}.days li.dn{font-weight:600;background:#fff7ed;border-radius:8px;padding:2px 6px}
+.pcnote{background:#eff6ff;border:2px dashed #60a5fa;border-radius:16px;padding:12px;margin:8px 0}
+.toast{display:flex;align-items:center;gap:12px;border:3px solid #f97316}.toast>span{font-size:30px}.toast>div{flex:1}
+.bellc{display:inline-block;background:#dc2626;color:#fff;border-radius:999px;padding:0 7px;font-size:13px;margin-left:4px}
+.alist{list-style:none;padding:0;margin:6px 0}.alist li{display:flex;gap:10px;align-items:center;padding:10px 6px;border-top:1px solid #e2e8f0}.alist li.unread{background:#fff7ed;font-weight:600}.alist li>span:first-child{font-size:20px}
+.prefs{border:0;padding:0;margin:0}.prefs legend{font-weight:700;margin:6px 0}.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.soon{list-style:none;padding:0;margin:6px 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}.soon li{display:flex;gap:10px;align-items:flex-start;background:#f8fafc;border:2px dashed #cbd5e1;border-radius:14px;padding:10px;opacity:.85}.soon li>span{font-size:22px}
+.pill.soonp{background:#e2e8f0;color:#334155}
+@media (max-width:520px){.etab{font-size:13px;padding:6px 2px}.chalgrid,.lgrid,.pgrid{grid-template-columns:1fr}.qrow{flex-wrap:wrap}}
+.sumtext{font-size:1.05rem;line-height:1.55}.aipill{background:#e8e0ff;color:#3b2a7a}.row2{display:flex;gap:8px;flex-wrap:wrap}.mailframe{width:100%;height:640px;border:1px solid #ddd;border-radius:12px;margin-top:10px;background:#fff}
+/* v28 tour, help, sample data */
+#tourShade{position:fixed;inset:0;z-index:90;background:transparent}
+#tourHole{position:fixed;z-index:91;border-radius:16px;box-shadow:0 0 0 4px #facc15,0 0 0 9999px rgba(10,31,68,.62);pointer-events:none;transition:all .25s}
+#tourPop{position:fixed;z-index:92;left:50%;bottom:14px;transform:translateX(-50%);width:min(440px,calc(100vw - 20px));background:#fff;border-radius:20px;padding:16px 16px 10px;box-shadow:0 10px 40px #0006}
+#tourPop h3{margin:0 0 4px;color:#1E3A8A;font-size:20px}#tourPop p{margin:0 0 8px;font-size:15px}
+#tourPop .trow{display:flex;gap:6px;align-items:center;flex-wrap:wrap}#tourPop .tstep{margin-left:auto;font-size:13px;color:#64748b;font-weight:700}
+#tourPop .btn{margin:4px 0}
+.samplebar{background:#fef3c7;border:3px dashed #f59e0b;color:#78350f;border-radius:16px;padding:10px 14px;margin:8px 0;font-weight:700;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.samplebar .btn{margin:0 0 0 auto}
+#helpCard details{border:2px solid #e2e8f0;border-radius:14px;margin:8px 0;background:#f8fafc}
+#helpCard summary{cursor:pointer;font-weight:700;padding:12px 14px;min-height:44px;list-style-position:inside}
+#helpCard details p{margin:0;padding:0 14px 12px;font-size:15px}
 </style>
 </head>
 <body>
 <div id="testBanner" role="note">🧪 TEST VERSION. For trying out the Parent Area only. Not for real family data yet.</div>
-<header><div class="nrbackrow"><a class="nrback" id="nrBack" href="./" aria-label="Back to the NumiRealm game Home">🏠 Back to NumiRealm</a></div><h1>Numi<span>Realm</span> Parent Area</h1><nav aria-label="Parent Area"><a class="navl" id="navAbout" href="parent-about.html">What's included?</a><button class="btn gray sm hidden" id="welcomeBtn" type="button">Account guide</button><button class="btn gray sm hidden" id="signOut" type="button">Sign out</button></nav></header><script>/* v27: Back to NumiRealm keeps ?parenttest=1 for this tab when the visitor came from the test game */
+<header><div class="nrbackrow"><a class="nrback" id="nrBack" href="./" aria-label="Back to the NumiRealm game Home">🏠 Back to NumiRealm</a></div><h1>Numi<span>Realm</span> Parent Area</h1><nav aria-label="Parent Area"><a class="navl" id="navAbout" href="parent-about.html">What's included?</a><button class="btn gray sm hidden" id="bellBtn" type="button">🔔 Alerts</button><button class="btn gray sm hidden" id="welcomeBtn" type="button">Account guide</button><button class="btn gray sm hidden" id="tourBtn" type="button">❓ How it works</button><button class="btn gray sm hidden" id="signOut" type="button">Sign out</button></nav></header><script>/* v27: Back to NumiRealm keeps ?parenttest=1 for this tab when the visitor came from the test game */
 (function(){var K='nr-parenttest';try{var q=new URLSearchParams(location.search),r=document.referrer?new URL(document.referrer):null;
 if(q.get('parenttest')==='1'||(r&&r.origin===location.origin&&r.searchParams.get('parenttest')==='1'))sessionStorage.setItem(K,'1');}catch(e){}
 var f=false;try{f=sessionStorage.getItem(K)==='1';}catch(e){}var a=document.getElementById('nrBack');if(a)a.href='./'+(f?'?parenttest=1':'');})();</script>
@@ -85,13 +148,13 @@ const GRADES=['PreK','K','1','2','3','4','5','6','7','8'];
 const sb=supabase.createClient(CFG.url,CFG.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const S={consented:false,welcome:false,signup:/signup/.test(location.hash),user:null,email:'',step:'email',kids:[],progress:{},events:{},devices:[],view:'family',kid:null,code:null,err:'',msg:'',busy:false};
+const S={consented:false,welcome:false,signup:/signup/.test(location.hash),user:null,email:'',step:'email',kids:[],progress:{},events:{},devices:[],view:'family',kid:null,code:null,err:'',msg:'',busy:false,etab:'time',atab:'week',ptab:'week',qform:false,rform:false};
 const app=$('app');
-function render(html){app.innerHTML=html;$('signOut').classList.toggle('hidden',!S.user);$('welcomeBtn').classList.toggle('hidden',!S.user||!S.consented);const f=!S.user&&/signup|login/.test(location.hash)&&$('loginCard');if(f)f.scrollIntoView({block:'start'});else window.scrollTo(0,0);}
+function render(html){app.innerHTML=(S.sample?sampleBar():'')+html;$('signOut').classList.toggle('hidden',!S.user);$('tourBtn').classList.toggle('hidden',!S.user||!S.consented);$('welcomeBtn').classList.toggle('hidden',!S.user||!S.consented);const bb=$('bellBtn');if(bb){bb.classList.toggle('hidden',!S.user||!S.consented);const n=S.user&&S.consented&&PC.p4!==null?bellCount():0;bb.innerHTML='🔔 Alerts'+(n?' <span class="bellc" id="bellCount">'+n+'</span>':'');bb.setAttribute('aria-label','Alerts'+(n?', '+n+' new':''));}const f=!S.user&&/signup|login/.test(location.hash)&&$('loginCard');if(f)f.scrollIntoView({block:'start'});else window.scrollTo(0,0);}
 addEventListener('hashchange',()=>{if(!S.user&&/signup|login/.test(location.hash)){S.signup=/signup/.test(location.hash);S.step='email';viewLogin();const f=$('loginCard');if(f)f.scrollIntoView({block:'start'});}});
 function errHTML(){return (S.err?`<p class="err" role="alert" id="err">⚠️ ${esc(S.err)}</p>`:'')+(S.msg?`<p class="ok" role="status" id="msg">${esc(S.msg)}</p>`:'');}
 function friendly(e){const m=(e&&(e.message||e.error_description||e.msg))||String(e);
- if(/kid_limit/.test(m))return 'You can add up to 2 kids in this test.';if(/rate|too many/i.test(m))return 'Too many tries. Please wait a few minutes.';
+ if(/kid_limit/.test(m))return 'You can add up to 2 kids in this test.';if(/quest_limit/.test(m))return '5 quests are already waiting. Remove one first.';if(/reward_limit/.test(m))return '3 rewards are already open.';if(/plan_limit/.test(m))return 'Two fix-it plans are already running. Finish or stop one first.';if(/rate|too many/i.test(m))return 'Too many tries. Please wait a few minutes.';
  if(/expired|invalid/i.test(m))return 'That code is wrong or expired. Ask for a new one.';if(/fetch|network/i.test(m))return 'Could not reach the server. Check your connection.';return m;}
 
 /* ---------- sign-in: email + 6-digit code ---------- */
@@ -108,6 +171,9 @@ function viewLogin(){if(S.step==='code')return render(`<div class="card" id="log
  <p><a class="whatl" id="whatLink" href="parent-about.html">What's included? →</a></p>
  <p class="small">Kids never sign in. Their game links to your account with a short code you make here.</p></div>`);}
 app.addEventListener('click',async ev=>{const t=ev.target.closest('button');if(!t)return;const id=t.id;
+ if(S.sample&&sampleBlocks(t))return;
+ if(await pcClick(t,id))return;
+ if(t.dataset.ptab){S.ptab=t.dataset.ptab;const k=S.kids.find(x=>x.id===S.kid),box=$('playBox');if(k&&box){box.innerHTML=playHTML(S.progress[k.id],S.events[k.id],S.ptab);const nb=box.querySelector('[data-ptab="'+S.ptab+'"]');nb&&nb.focus();}return;}
  try{
  if(id==='sendBtn'){const em=($('email').value||'').trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){S.err='Please enter a valid email.';return viewLogin();}
   S.email=em;S.err='';S.busy=true;viewLogin();const {error}=await sb.auth.signInWithOtp({email:em,options:{shouldCreateUser:true,emailRedirectTo:REDIRECT}});S.busy=false;
@@ -133,8 +199,80 @@ app.addEventListener('click',async ev=>{const t=ev.target.closest('button');if(!
  if(id==='codeDone'){S.view='kid';S.kid=S.code&&S.code.kid;S.code=null;return loadAll();}
  }catch(e){S.busy=false;S.err=friendly(e);draw();}
 });
+
+/* ---------- v28 Parent Center clicks ---------- */
+function errOut(e){S.err=typeof e==='string'?e:friendly(e);S.msg='';redraw();const el=$('err');if(el)el.scrollIntoView({block:'center'});return true;}
+function redraw(){const y=scrollY;draw();scrollTo(0,y);}
+function curKid(){const k=S.kids.find(x=>x.id===S.kid);return k?{k,pr:S.progress[k.id],ev:S.events[k.id]}:null;}
+async function pcReload(){await loadPC();autoEarn();}
+function autoEarn(){if(!PC.p4)return;PC.rewards.forEach(r=>{const k=S.kids.find(x=>x.id===r.kid_id);if(!k||r.status!=='active')return;if(rwHave(k,S.progress[k.id],r)>=r.goal){r.status='earned';r.earned_at=new Date().toISOString();
+ sb.from('rewards').update({status:'earned',earned_at:r.earned_at}).eq('id',r.id).then(()=>{},()=>{});}});}
+function goTo(id){const el=$(id);if(el)el.scrollIntoView({block:'start'});}
+async function pcClick(t,id){const d=t.dataset,ck=curKid();
+ try{
+ if(d.etab){S.etab=d.etab;if(ck){$('engWrap').innerHTML=engHTML(ck.pr,ck.ev);const nb=$('engWrap').querySelector('[data-etab="'+S.etab+'"]');nb&&nb.focus();}return true;}
+ if(d.atab){S.atab=d.atab;if(ck&&$('accBox')){$('accBox').innerHTML=accHTML(ck.pr,ck.ev,S.atab);const nb=$('accBox').querySelector('[data-atab="'+S.atab+'"]');nb&&nb.focus();}return true;}
+ if(d.lesson){S.view='lessons';S.lesson=d.lesson;S.err='';S.msg='';draw();return true;}
+ if(d.lrealm){S.lrealm=d.lrealm;S.lesson=null;redraw();return true;}
+ if(id==='lessonClose'){S.lesson=null;draw();return true;}
+ if(id==='openLessons'){S.view='lessons';S.lesson=null;draw();return true;}
+ if(id==='openAlerts'||id==='openAlerts2'||id==='openAlerts3'){S.view='alerts';S.err='';S.msg='';draw();return true;}
+ if(id==='markRead'){markRead(alerts());S.msg='All caught up.';draw();return true;}
+ if(id==='savePrefs'){const ev={};PREF_EV.forEach(([k])=>ev[k]=!!($('pf_'+k)||{}).checked);
+  const row={events:ev,quiet_start:+$('pfQs').value,quiet_end:+$('pfQe').value,idle_days:+$('pfIdle').value,daily_goal:+$('pfGoal').value,email_weekly:!!($('pfEmail')||{}).checked,email_day:+(($('pfEmailDay')||{}).value||0),updated_at:new Date().toISOString()};let extra='';
+  if(PC.p4){let {error}=await sb.from('notify_prefs').upsert(Object.assign({parent_id:S.user.id},row));
+   if(error&&/email_|PGRST204|column/i.test(JSON.stringify(error))){const r2=Object.assign({},row);delete r2.email_weekly;delete r2.email_day;({error}=await sb.from('notify_prefs').upsert(Object.assign({parent_id:S.user.id},r2)));if(!error)extra=' The weekly email needs the latest setup-part4.sql first.';}
+   if(error){S.err=friendly(error);draw();return true;}}
+  else{const l=lrd(LOCAL_PC)||{};l.prefs=row;lwr(LOCAL_PC,l);}
+  PC.prefs=Object.assign({},PREF_DEF,row);S.err='';S.msg='Preferences saved.'+extra;draw();return true;}
+ if(id==='emailPreview'){S.mailNote='Building your preview…';S.mailHTML='';redraw();const r=await callFn({action:'preview'});
+  if(r.ok){S.mailNote='Preview sent to '+(r.to||'your email')+'. Check your inbox (and the spam folder).';}
+  else if(r.html){S.mailHTML=r.html;S.mailNote=r.error==='email_not_configured'?'Email sending is not set up yet (RESEND_API_KEY), so here is the preview on screen.':r.error==='preview_limit'?'You can send 3 previews a day. Here it is on screen instead.':'We could not send it just now. Here it is on screen.';}
+  else S.mailNote=r.error==='no_kids'?'Add a kid first.':'The weekly email is not switched on for this Parent Area yet. Whoever set it up can follow supabase/EDGE_SETUP.md.';
+  redraw();return true;}
+ if(id==='sumRefresh'&&ck){SUM[ck.k.id]={state:'loading'};redraw();loadSum(ck.k,true);return true;}
+ if(id==='celebrate'){confetti();return true;}
+ if(!ck)return false;const {k,pr}=ck;
+ if(id==='qNew'||d.qpick){S.qform=true;S.err='';S.msg='';if(d.qpick)S.qskill=d.qpick;else if(!S.qskill){const p=questPicks(pr,k)[0];S.qskill=p?p[0]:'mult:x2';}redraw();if(d.qpick)goTo('questCard');return true;}
+ if(id==='qCancelForm'){S.qform=false;redraw();return true;}
+ if(d.qmsg!==undefined&&$('qMsg')){$('qMsg').value=d.qmsg;S.qmsg=d.qmsg;$('qpM').textContent='“'+d.qmsg+'”';return true;}
+ if(id==='qSend'){const sk=$('qSkill').value,msg=($('qMsg').value||'').trim().slice(0,120),goal=+$('qGoal').value||10;
+  const {error}=await sb.from('quests').insert({parent_id:S.user.id,kid_id:k.id,skill:sk,title:('Practice '+skillName(pr,sk)).slice(0,60),message:msg,goal,source:questPicks(pr,k).some(p=>p[0]===sk)?'suggested':'parent'});
+  if(error){return errOut(error);}S.qform=false;S.qskill=null;S.qmsg='';S.err='';S.msg='';await pcReload();redraw();return true;}
+ if(d.qcancel){await sb.from('quests').update({status:'cancelled'}).eq('id',d.qcancel);await pcReload();redraw();return true;}
+ if(d.plan){const P=PLANS[d.plan];if(!P)return true;const a=skillAcc(pr,P.skills);
+  const r=await sb.from('fixit_plans').insert({parent_id:S.user.id,kid_id:k.id,plan_key:d.plan,before_acc:a?a.p:null}).select();
+  if(r.error){return errOut(r.error);}const pl=(r.data||[])[0];
+  if(pl)await sendPlanQuest(k,pr,pl);S.msg='';await pcReload();redraw();goTo('fixitCard');return true;}
+ if(d.plansend){const pl=PC.plans.find(x=>x.id===d.plansend);if(pl){await sendPlanQuest(k,pr,pl);await pcReload();}redraw();return true;}
+ if(d.planday){const pl=PC.plans.find(x=>x.id===d.planday);if(!pl)return true;const nd=Math.min(5,pl.day_done+1),fin=nd>=5,aft=planAfter(pl);
+  const up={day_done:nd,updated_at:new Date().toISOString()};if(fin){up.status='done';up.after_acc=aft?aft.p:null;}
+  const {error}=await sb.from('fixit_plans').update(up).eq('id',pl.id);if(error){return errOut(error);}
+  if(fin)confetti();await pcReload();redraw();return true;}
+ if(d.planstop){if(!confirm('Stop this fix-it plan?'))return true;await sb.from('fixit_plans').update({status:'stopped',updated_at:new Date().toISOString()}).eq('id',d.planstop);
+  await sb.from('quests').update({status:'cancelled'}).eq('plan_id',d.planstop).eq('status','active');await pcReload();redraw();return true;}
+ if(id==='rNew'){S.rform=true;redraw();return true;}
+ if(id==='rCancelForm'){S.rform=false;redraw();return true;}
+ if(d.rtitle!==undefined&&$('rTitle')){$('rTitle').value=d.rtitle;return true;}
+ if(id==='rSave'){const title=($('rTitle').value||'').trim().slice(0,60),type=$('rType').value,goal=Math.round(+$('rGoal').value);
+  if(!title)return errOut('Please name the reward.');if(!(goal>=1&&goal<=10000))return errOut('Pick an amount from 1 to 10,000.');
+  const {error}=await sb.from('rewards').insert({parent_id:S.user.id,kid_id:k.id,title,goal_type:type,goal,start_value:type==='quests'?0:rwCur(k,pr,type)});
+  if(error){return errOut(error);}S.rform=false;S.err='';S.msg='';await pcReload();redraw();return true;}
+ if(d.rwgive){await sb.from('rewards').update({status:'given'}).eq('id',d.rwgive);confetti();await pcReload();redraw();return true;}
+ if(d.rwcancel){await sb.from('rewards').update({status:'cancelled'}).eq('id',d.rwcancel);await pcReload();redraw();return true;}
+ if(d.chal){if(PC.p4){const {error}=await sb.from('challenge_done').insert({parent_id:S.user.id,kid_id:k.id,week:d.week,ckey:d.chal});if(error&&!/duplicate/i.test(error.message||'')){return errOut(error);}await pcReload();}
+  else{const l=lrd(LOCAL_PC)||{};l.chal=l.chal||{};(l.chal[k.id]=l.chal[k.id]||{})[d.week]=d.chal;lwr(LOCAL_PC,l);PC.chal.push({kid_id:k.id,week:d.week,ckey:d.chal});}
+  confetti();redraw();return true;}
+ }catch(e){return errOut(e);}
+ return false;}
+async function sendPlanQuest(k,pr,pl){const P=PLANS[pl.plan_key],day=Math.min(4,pl.day_done),dd=P.days[day];
+ const {error}=await sb.from('quests').insert({parent_id:S.user.id,kid_id:k.id,skill:dd[0],title:('Fix-it day '+(day+1)+': '+skillName(pr,dd[0])).slice(0,60),message:'Day '+(day+1)+' of 5. You\u2019ve got this!',goal:dd[1],source:'fixit',plan_id:pl.id});
+ if(error)S.err=friendly(error);}
+app.addEventListener('input',e=>{if(e.target.id==='qMsg'){S.qmsg=e.target.value;const m=$('qpM');if(m)m.textContent=S.qmsg?'“'+S.qmsg+'”':'';}});
+app.addEventListener('change',e=>{if(e.target.id==='qSkill'){S.qskill=e.target.value;const ck=curKid(),t=$('qpT');if(t&&ck)t.textContent='Practice '+skillName(ck.pr,S.qskill);}});
+$('bellBtn').onclick=()=>{S.view='alerts';S.err='';S.msg='';draw();};
 $('welcomeBtn').onclick=()=>{S.welcome=true;S.view='family';draw();const w=$('welcomeCard');w&&w.scrollIntoView({block:'start'});};
-$('signOut').onclick=async()=>{await sb.auth.signOut();Object.assign(S,{consented:false,welcome:false,user:null,step:'email',kids:[],view:'family',err:'',msg:''});viewLogin();};
+$('signOut').onclick=async()=>{await sb.auth.signOut();TOUR.stop();S.sample=false;Object.assign(S,{consented:false,welcome:false,user:null,step:'email',kids:[],view:'family',err:'',msg:''});viewLogin();};
 
 /* ---------- consent ---------- */
 function viewConsent(){render(`<div class="card" id="consentCard"><h2>Before we start</h2>
@@ -151,9 +289,12 @@ async function boot2(){const {data}=await sb.auth.getSession();S.user=data&&data
  const c=await sb.from('parent_consent').select('id').eq('parent_id',S.user.id).limit(1);
  if(!c.data||!c.data.length)return viewConsent();S.consented=true;return loadAll();}
 async function loadAll(){const [k,p,e,d]=await Promise.all([sb.from('kids').select('*').order('created_at'),sb.from('progress').select('*'),
-  sb.from('progress_events').select('*').order('day',{ascending:true}).limit(200),sb.from('devices').select('*').is('revoked_at',null).order('created_at')]);
+  sb.from('progress_events').select('*').order('day',{ascending:false}).limit(1000),sb.from('devices').select('*').is('revoked_at',null).order('created_at')]);
  if(k.error){S.err=friendly(k.error);}
- S.kids=k.data||[];S.progress={};(p.data||[]).forEach(r=>S.progress[r.kid_id]=r);S.events={};(e.data||[]).forEach(r=>(S.events[r.kid_id]=S.events[r.kid_id]||[]).push(r));S.devices=d.data||[];draw();}
+ S.kids=k.data||[];S.progress={};(p.data||[]).forEach(r=>S.progress[r.kid_id]=r);S.events={};[...(e.data||[])].sort((x,y)=>x.day<y.day?-1:x.day>y.day?1:0).forEach(r=>(S.events[r.kid_id]=S.events[r.kid_id]||[]).push(r));S.devices=d.data||[];
+ try{await loadPC();autoEarn();}catch(e){PC.p4=false;PC.p4err='net';}
+ if(S.sample)sampleApply();
+ draw();setTimeout(()=>TOUR.maybe(),0);}
 
 /* ---------- helpers ---------- */
 function struggles(pr){if(!pr||!pr.skills)return[];return Object.entries(pr.skills).map(([k,s])=>({k,n:s.n||k,acc:s.t?s.r/s.t:1,t:s.t||0,l:s.l||0}))
@@ -164,7 +305,7 @@ function weekStars(ev,pr){if(!ev||!ev.length)return 0;const wk=new Date(Date.now
 function mins(s){const m=Math.round((s||0)/60);return m<60?m+' min':Math.floor(m/60)+' h '+(m%60)+' min';}
 function ago(t){if(!t)return 'never';const m=Math.round((Date.now()-new Date(t))/60000);return m<1?'just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' h ago':Math.round(m/1440)+' days ago';}
 function trendSVG(ev){if(!ev||ev.length<2)return '<p class="small" id="noTrend">The trend graph appears after a couple of days of play.</p>';
- const d=ev.slice(-30),W=600,H=220,L=40,R=40,T=16,B=36,n=d.length,x=i=>L+i*(W-L-R)/(n-1);
+ const d=ev.slice(-30),W=600,H=220,L=48,R=40,T=16,B=36,n=d.length,x=i=>L+i*(W-L-R)/(n-1);
  const acc=d.map(e=>e.answers_total?Math.round(100*e.answers_right/e.answers_total):null),mn=d.map(e=>e.minutes||0),mx=Math.max(10,...mn);
  const y=v=>T+(H-T-B)*(1-v/100),ym=v=>T+(H-T-B)*(1-v/mx);let pts=acc.map((v,i)=>v==null?null:`${x(i).toFixed(1)},${y(v).toFixed(1)}`).filter(Boolean).join(' ');
  const bw=Math.max(3,(W-L-R)/n*.5);
@@ -176,6 +317,50 @@ function trendSVG(ev){if(!ev||ev.length<2)return '<p class="small" id="noTrend">
  ${acc.map((v,i)=>v==null?'':`<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="4" fill="#2563eb"/>`).join('')}
  <text x="${L}" y="${H-10}" font-size="12" fill="#64748b">${esc(d[0].day)}</text><text x="${W-R}" y="${H-10}" font-size="12" text-anchor="end" fill="#64748b">${esc(d[n-1].day)}</text></svg>
  <p class="small"><span style="color:#2563eb;font-weight:700">● Accuracy</span> &nbsp; <span style="color:#c2410c;font-weight:700">■ Total minutes played</span></p>`;}
+/* ---------- v28: time played (day / week / month / year) ---------- */
+const PT_TABS=[['day','Day'],['week','Week'],['month','Month'],['year','Year']];
+const p2=n=>String(n).padStart(2,'0');
+const dk=d=>d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());
+const noon=s=>{const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d,12);};
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+/* minutes per local day + rolled-up months. Uses the game's play log when the server stores it (setup part 4);
+   otherwise estimates from the daily snapshots (difference of total minutes between days). Never throws. */
+function playData(pr,ev){const days={},months={};let src='none';
+ try{const pl=pr&&pr.play;if(pl&&typeof pl==='object'&&Array.isArray(pl.days)&&/^\d{4}-\d{2}-\d{2}$/.test(pl.end||'')){src='log';const e=noon(pl.end),n=pl.days.length;
+   pl.days.forEach((v,i)=>{v=Math.max(0,Math.min(1440,+v||0));if(!v)return;const d=new Date(e);d.setDate(e.getDate()-(n-1-i));days[dk(d)]=v;});
+   Object.entries(pl.months||{}).forEach(([k,v])=>{if(/^\d{4}-\d{2}$/.test(k)&&+v>0)months[k]=Math.min(44640,+v);});
+   if(!Object.keys(days).length&&!Object.keys(months).length)src='none';}
+  if(src==='none'&&ev&&ev.length){src='events';const old=dk(new Date(Date.now()-170*864e5));let prev=null;
+   [...ev].sort((a,b)=>a.day<b.day?-1:1).forEach((e,i)=>{const m=Math.max(0,+e.minutes||0);
+    const v=prev==null?(e.day<old?0:m):Math.max(0,m-prev);prev=m;if(v>0)days[String(e.day).slice(0,10)]=(days[String(e.day).slice(0,10)]||0)+v;});}
+ }catch(e){}
+ const any=Object.values(days).some(v=>v>0)||Object.values(months).some(v=>v>0);return {days,months,src:any?src:'none'};}
+function fmtMin(m){m=Math.round(m||0);return m<60?m+' min':Math.floor(m/60)+' h'+(m%60?' '+(m%60)+' min':'');}
+function playBuckets(pd,tab,now){now=now||new Date();const t=new Date(now);t.setHours(12,0,0,0);const out=[];const mk=(k)=>(pd.days[k]||0);
+ const monthSum=(y,m)=>{const pre=y+'-'+p2(m+1);let s=pd.months[pre]||0;Object.entries(pd.days).forEach(([k,v])=>{if(k.slice(0,7)===pre)s+=v;});return s;};
+ if(tab==='day'){for(let i=13;i>=0;i--){const d=new Date(t);d.setDate(t.getDate()-i);out.push({lab:i===0?'Today':String(d.getDate()),full:MON[d.getMonth()]+' '+d.getDate(),v:mk(dk(d))});}}
+ else if(tab==='week'){const mon=new Date(t);mon.setDate(t.getDate()-((t.getDay()+6)%7));
+  for(let w=11;w>=0;w--){const s=new Date(mon);s.setDate(mon.getDate()-7*w);let v=0;for(let i=0;i<7;i++){const d=new Date(s);d.setDate(s.getDate()+i);v+=mk(dk(d));}
+   out.push({lab:w===0?'Now':MON[s.getMonth()]+' '+s.getDate(),full:'Week of '+MON[s.getMonth()]+' '+s.getDate(),v});}}
+ else if(tab==='month'){for(let i=11;i>=0;i--){const d=new Date(t.getFullYear(),t.getMonth()-i,1,12);out.push({lab:MON[d.getMonth()],full:MON[d.getMonth()]+' '+d.getFullYear(),v:monthSum(d.getFullYear(),d.getMonth())});}}
+ else{const ys=new Set([t.getFullYear()]);Object.keys(pd.days).concat(Object.keys(pd.months)).forEach(k=>ys.add(+k.slice(0,4)));
+  const lo=Math.max(Math.min(...ys),t.getFullYear()-5);for(let y=lo;y<=t.getFullYear();y++){let v=0;for(let m=0;m<12;m++)v+=monthSum(y,m);out.push({lab:String(y),full:String(y),v});}}
+ return out;}
+const PT_NOW={day:'Today',week:'This week',month:'This month',year:'This year'};
+const PT_SPAN={day:'last 14 days',week:'last 12 weeks',month:'last 12 months',year:'years'};
+function playSVG(b,tab){const ph=window.matchMedia&&matchMedia('(max-width:520px)').matches,W=ph?340:600,H=ph?200:230,L=ph?44:48,R=ph?20:12,T=18,B=36,n=b.length,mx=Math.max(...b.map(x=>x.v)),top=mx<=10?10:mx<=30?30:mx<=60?60:mx<=600?Math.ceil(mx/120)*120:Math.ceil(mx/1200)*1200;
+ const cw=(W-L-R)/n,bw=Math.min(46,cw*.62),y=v=>T+(H-T-B)*(1-v/top),every=ph?(tab==='week'?3:n>6?2:1):(n>12?2:1);
+ const grid=[0,top/2,top].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}" stroke="#e2e8f0"/><text x="${L-6}" y="${(y(v)+4).toFixed(1)}" font-size="12" text-anchor="end" fill="#64748b">${v>=60&&v%60===0?(v/60)+'h':Math.round(v)+'m'}</text>`).join('');
+ const bars=b.map((x,i)=>{const cx=L+cw*(i+.5),h=Math.max(x.v>0?3:0,(H-T-B)*x.v/top),last=i===n-1;
+  return `<rect class="ptbar" data-min="${x.v}" x="${(cx-bw/2).toFixed(1)}" y="${(H-B-h).toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="5" fill="${last?'#f97316':'#fdba74'}"><title>${esc(x.full)}: ${fmtMin(x.v)}</title></rect>`+
+  ((i%every===(n-1)%every)?`<text x="${cx.toFixed(1)}" y="${H-B+18}" font-size="12" text-anchor="middle" fill="${last?'#c2410c':'#64748b'}"${last?' font-weight="700"':''}>${esc(x.lab)}</text>`:'');}).join('');
+ return `<svg viewBox="0 0 ${W} ${H}" role="img" id="playSvg" aria-label="Minutes played per ${tab}, ${tab==='year'?'by year':PT_SPAN[tab]}">${grid}${bars}</svg>`;}
+function playHTML(pr,ev,tab){tab=PT_TABS.some(x=>x[0]===tab)?tab:'week';const pd=playData(pr,ev);
+ const tabs=`<div class="pttabs" role="tablist" aria-label="Time played by">${PT_TABS.map(([k,l])=>`<button type="button" role="tab" class="pttab${k===tab?' on':''}" data-ptab="${k}" aria-selected="${k===tab}">${l}</button>`).join('')}</div>`;
+ if(pd.src==='none')return tabs+`<div class="ptempty" id="playEmpty"><div aria-hidden="true">⏳</div><b>No play time yet</b><span class="small">Minutes show up here after your kid plays on a linked device.</span></div>`;
+ const b=playBuckets(pd,tab),cur=b[b.length-1].v,tot=b.reduce((a,x)=>a+x.v,0),act=b.filter(x=>x.v>0).length;
+ return tabs+`<p class="pttotal" id="playTotal"><b>${PT_NOW[tab]}: ${fmtMin(cur)}</b> <span class="small">· ${fmtMin(tot)} in ${tab==='year'?'all':'the'} ${PT_SPAN[tab]}${act&&tab!=='year'?` · avg ${fmtMin(tot/act)} per active ${tab}`:''}</span></p>
+ <div class="chart">${playSVG(b,tab)}</div>${pd.src==='events'?'<p class="small" id="playEst">Estimated from daily syncs. Exact per-day minutes appear once the server update is installed.</p>':''}`;}
 function qrSVG(text){try{const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true});}catch(e){return '';}}
 function gameURL(code){const base=new URL((document.querySelector('meta[name=nr-game]')||{}).content||'./',location.href);base.searchParams.set('parenttest','1');base.searchParams.set('link',code);return base.href;}
 
@@ -184,9 +369,268 @@ function welcomeHTML(){return `<div class="card" id="welcomeCard" role="region" 
  <li><span>🔗</span><div><b>Link their devices with a code</b><br><span class="small">Open a kid, tap “Add a device”, type the code in the game's Settings.</span></div></li>
  <li><span>🏰</span><div><b>See realm progress</b><br><span class="small">Stars and chapters in all 6 realms.</span></div></li>
  <li><span>🎯</span><div><b>Needs practice</b><br><span class="small">The skills they miss most.</span></div></li>
- <li><span>📈</span><div><b>Trend graphs</b><br><span class="small">Accuracy and time played by day.</span></div></li>
+ <li><span>📈</span><div><b>Trend graphs</b><br><span class="small">Time played by day, week, month and year, plus accuracy.</span></div></li>
  <li><span>🛡️</span><div><b>Manage or remove devices and data</b><br><span class="small">Remove a device or delete a kid's profile any time.</span></div></li></ul>
  <button class="btn blue" id="welcomeClose" type="button">Got it</button> <span class="small">Open it again any time from “Account guide” at the top.</span></div>`;}
+/* =====================================================================
+   v28 Parent Center: engagement tabs, tips, family challenge, milestones,
+   lessons, quests from home, fix-it plans, rewards, in-portal alerts.
+   Phase A works from the data already synced. Quests, plans, rewards and
+   saved preferences need supabase/setup-part4.sql; without it the portal
+   shows a friendly note and everything else keeps working.
+   ===================================================================== */
+const PC={p4:null,p4err:'',quests:[],plans:[],rewards:[],chal:[],prefs:null};
+const LOCAL_PC='nr-pc-local',SEEN_PC='nr-pc-seen';
+const lrd=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
+const lwr=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const PREF_EV=[['milestone','🏆','New milestone'],['weak','🎯','Weak spot found'],['fixit','🛠️','Fix-it plan finished'],['quest','📜','Quest finished'],['idle','💤','No play for a few days'],['goal','⏱','Daily play-time goal reached']];
+const PREF_DEF={events:{milestone:true,weak:true,fixit:true,quest:true,idle:true,goal:true},quiet_start:20,quiet_end:7,idle_days:3,daily_goal:30,email_weekly:false,email_day:0};
+/* v28: weekly summary + weekly email via the nr-weekly Edge Function (optional; degrades to an on-device summary) */
+const FN='nr-weekly',SUM={},DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+async function callFn(body){try{const {data,error}=await sb.functions.invoke(FN,{body});if(error){let j=null;try{j=error.context&&typeof error.context.json==='function'?await error.context.json():null}catch(e){}return j&&j.ok!==undefined?j:{ok:false,error:'unavailable'};}return data&&data.ok!==undefined?data:{ok:false,error:'unavailable'};}catch(e){return {ok:false,error:'unavailable'};}}
+function localSum(pr,ev){const m=minsThisWeek(pr,ev),st=starsThisWeek(ev,pr),w=struggles(pr).filter(x=>x.t>=5&&x.acc<0.7).slice(0,2).map(x=>x.n);
+ if(!m&&!st)return '{{KID}} has not played yet this week. A short 10-minute session is a great way to start, and a quest from home can help.';
+ return `{{KID}} played ${m} minute${m===1?'':'s'} this week and earned ${st} star${st===1?'':'s'}.`+(w.length?` Worth practicing: ${w.join(' and ')}.`:' No weak spots right now. Keep it up!');}
+async function loadSum(k,refresh){const r=await callFn({action:'summary',kid_id:k.id,refresh:!!refresh});const pr=S.progress[k.id],ev=S.events[k.id];
+ SUM[k.id]=r.ok?{state:'ok',source:r.source,text:r.text,week:r.week}:{state:'local',source:'template',text:localSum(pr,ev)};if(S.view==='kid'&&S.kid===k.id)redraw();}
+function summaryHTML(k){const s=SUM[k.id];
+ if(!s||s.state==='loading')return `<div class="card" id="summaryCard"><h2>🗞️ This week's summary</h2><p class="small" id="sumLoading">Writing this week's summary…</p></div>`;
+ const ai=s.source==='ai',note=ai?'Written by an AI service from this week\u2019s totals only. It never sees names. Please check it against the numbers above.':s.state==='local'?'Made on this device from this week\u2019s numbers. No AI used. AI summaries and the weekly email start once the server part is set up (supabase/EDGE_SETUP.md).':'Made by a simple template from this week\u2019s numbers. No AI used.';
+ return `<div class="card" id="summaryCard"><h2>🗞️ This week's summary</h2><p><span class="pill${ai?' aipill':''}" id="sumLabel">${ai?'🤖 AI-written':'📊 Smart summary'}</span></p>
+ <p id="sumText" class="sumtext">${esc(String(s.text).split('{{KID}}').join(k.nickname))}</p><p class="small" id="sumNote">${note}</p>
+ <div class="row2">${s.state==='ok'?'<button class="btn gray sm" type="button" id="sumRefresh">🔄 Refresh</button>':''}<button class="btn gray sm" type="button" id="openAlerts3">✉️ Weekly email settings</button></div></div>`;}
+function missingTable(e){const s=JSON.stringify(e||{});return /PGRST205|PGRST202|42P01|does not exist|schema cache|not mocked|404/i.test(s);}
+async function loadPC(){
+ const q=await sb.from('quests').select('*').order('created_at',{ascending:false}).limit(200);
+ if(q.error){PC.p4=false;PC.p4err=missingTable(q.error)?'setup':'net';PC.quests=[];PC.plans=[];PC.rewards=[];PC.chal=[];const l=lrd(LOCAL_PC)||{};PC.prefs=Object.assign({},PREF_DEF,l.prefs||{});
+  PC.chal=Object.entries(l.chal||{}).flatMap(([kid,o])=>Object.entries(o).map(([week,ckey])=>({kid_id:kid,week,ckey})));return;}
+ PC.p4=true;PC.p4err='';PC.quests=q.data||[];
+ const [f,r,c,p]=await Promise.all([sb.from('fixit_plans').select('*').order('created_at',{ascending:false}).limit(50),sb.from('rewards').select('*').order('created_at',{ascending:false}).limit(50),
+  sb.from('challenge_done').select('*').order('done_at',{ascending:false}).limit(300),sb.from('notify_prefs').select('*').limit(1)]);
+ PC.plans=f.data||[];PC.rewards=r.data||[];PC.chal=c.data||[];const pr=(p.data||[])[0];
+ PC.prefs=Object.assign({},PREF_DEF,pr||{});PC.prefs.events=Object.assign({},PREF_DEF.events,(pr&&pr.events)||{});}
+function setupNote(what){return `<div class="pcnote" role="note" data-setup="1"><b>🧩 ${esc(what)} needs a one-time database update.</b><br><span class="small">${PC.p4err==='net'?'We could not reach the server just now. Try again in a moment.':'Whoever set up the Parent Area can run <code>supabase/setup-part4.sql</code> in Supabase (SQL Editor, paste, Run). Everything else on this page already works.'}</span></div>`;}
+
+/* ---------- skills ---------- */
+const SKILLN={'frac:c1':'halves, thirds and fourths','sub:c8':'borrowing across zeros','div:c7':'remainders','add:c4':'adding within 20 by making ten','sub:c3':'fact families'};
+for(let n=1;n<=12;n++)SKILLN['mult:x'+n]='×'+n+' facts';
+function skillName(pr,k){return (pr&&pr.skills&&pr.skills[k]&&pr.skills[k].n)||SKILLN[k]||k;}
+function realmOf(k){return String(k).split(':')[0];}
+function skillAcc(pr,keys){let r=0,t=0;keys.forEach(k=>{const s=pr&&pr.skills&&pr.skills[k];if(s){r+=s.r||0;t+=s.t||0;}});return t?{r,t,p:Math.round(100*r/t)}:null;}
+function skillState(s){if(!s||!s.t)return 'new';const a=s.r/s.t;if(s.t<5)return 'start';if(a>=.9&&s.t>=8)return 'star';if(a>=.7)return 'grow';return 'help';}
+const SST={star:['🌟','Mastered','#16a34a'],grow:['🌱','Growing','#2563eb'],help:['🛟','Needs practice','#ea580c'],start:['🐣','Just started','#7c3aed'],new:['·','Not tried yet','#94a3b8']};
+
+/* ---------- tips tied to weak spots ---------- */
+function tipFor(k){const m=/^mult:x(\d+)$/.exec(k);if(m){const n=+m[1];
+  return ({7:['Try the “5, 6, 7, 8” chant: 56 = 7 × 8. Then 7 × 7 = 49 is “the square in the middle”.','m78'],8:['Double, double, double: 8 × 6 → 12, 24, 48.','m8'],9:['Hold up 10 fingers and fold down finger 4: 3 fingers and 6 fingers make 36 = 9 × 4.','m9'],
+   6:['Six groups = five groups plus one more: 6 × 7 = 35 + 7 = 42.','m6'],4:['Double it, then double again: 4 × 7 → 14 → 28.','m8'],3:['Double it, then add one more group: 3 × 6 = 12 + 6.','arrays'],
+   12:['Ten groups plus two groups: 12 × 6 = 60 + 12.','m6'],11:['Ten groups plus one group: 11 × 7 = 70 + 7.','m6'],5:['Count by 5s like the minutes on a clock.','arrays'],2:['Times 2 is just doubling: 2 × 8 is 8 + 8.','arrays']}[n])||['Draw it as rows of dots (an array) and skip-count the rows.','arrays'];}
+ const r=realmOf(k);if(k==='sub:c8')return ['Use the “minus one” trick: 300 − 127 is the same as 299 − 126, with no borrowing at all.','sub0'];
+ if(k==='div:c7')return ['Share real objects: 13 crackers on 4 plates is 3 each, with 1 left over. That leftover is the remainder.','rem'];
+ return ({add:['Make a ten first: 8 + 5 = 8 + 2 + 3 = 13.','mk10'],sub:['Count up instead of back: 52 − 47, start at 47 and count up to 52.','fam'],div:['Turn it into times: 24 ÷ 6 asks “6 times what is 24?”','fam'],
+  frac:['Cut a pizza or a tortilla: 2 equal pieces are halves, 4 equal pieces are fourths.','frac'],mix:['Before solving, say which operation the story needs, and why.','fam'],mult:['Draw it as rows of dots (an array).','arrays']})[r]||['Practice a little every day: 10 minutes beats 1 long session.','arrays'];}
+function tipsHTML(k,pr){const st=struggles(pr);
+ const list=`<div id="struggles">${st.length?st.map(s=>`<p><span class="pill warn">${esc(s.n)}</span> ${Math.round(s.acc*100)}% correct of ${s.t}${s.l?` · ${s.l} lanterns`:''}</p>`).join(''):'<p class="small">Nothing stands out yet. 🎉</p>'}</div>`;
+ const tips=st.map(s=>{const [t,les]=tipFor(s.k),sk=pr.skills[s.k]||{},plan=planFor(s.k);
+  return `<div class="tip" data-tipskill="${esc(s.k)}"><div class="tipi" aria-hidden="true">💡</div><div><p><b>${esc(k.nickname)} gets ${esc(s.n)} right ${sk.r||0} of ${sk.t||0} times.</b> ${esc(t)}</p>
+  <div class="row"><button class="btn gray sm" type="button" data-lesson="${les}">📚 Learn the method</button>${PC.p4?`<button class="btn blue sm" type="button" data-qpick="${esc(s.k)}">📜 Send as a quest</button>`:''}${PC.p4&&plan&&!PC.plans.some(p=>p.kid_id===k.id&&p.plan_key===plan&&p.status==='active')?`<button class="btn sm" type="button" data-plan="${plan}">🛠️ Start a 5-day fix-it plan</button>`:''}</div></div></div>`;}).join('');
+ return `<div class="card" id="tipsCard"><h2>🎯 Needs practice & tips</h2>${list}${tips||`<div class="ptempty" id="tipsEmpty"><div aria-hidden="true">🌈</div><b>No weak spots right now</b><span class="small">Tips appear here when a skill drops below 70% correct after 5+ tries.</span></div>`}</div>`;}
+
+/* ---------- engagement tabs ---------- */
+const ENG=[['time','⏱ Time'],['acc','🎯 Accuracy'],['realms','🗺️ Realms'],['skills','🧩 Skill map']];
+function accBuckets(ev,tab){const rd={},td={};let prev=null;[...(ev||[])].sort((a,b)=>a.day<b.day?-1:1).forEach(e=>{const r=+e.answers_right||0,t=+e.answers_total||0;
+  if(prev){const dr=Math.max(0,r-prev.r),dt=Math.max(0,t-prev.t);if(dt>0){const d=String(e.day).slice(0,10);rd[d]=(rd[d]||0)+Math.min(dr,dt);td[d]=(td[d]||0)+dt;}}prev={r,t};});
+ const br=playBuckets({days:rd,months:{}},tab),bt=playBuckets({days:td,months:{}},tab);return bt.map((x,i)=>({lab:x.lab,full:x.full,t:x.v,r:br[i].v,p:x.v?Math.round(100*br[i].v/x.v):null}));}
+function accSVG(b,tab){const ph=window.matchMedia&&matchMedia('(max-width:520px)').matches,W=ph?340:600,H=ph?200:220,L=ph?44:48,R=ph?20:12,T=14,B=36,n=b.length,cw=(W-L-R)/n,bw=Math.min(46,cw*.62),y=v=>T+(H-T-B)*(1-v/100),every=ph?(tab==='week'?3:n>6?2:1):(n>12?2:1);
+ const grid=[0,50,100].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e2e8f0"/><text x="${L-6}" y="${y(v)+4}" font-size="12" text-anchor="end" fill="#64748b">${v}%</text>`).join('');
+ const bars=b.map((x,i)=>{const cx=L+cw*(i+.5),c=x.p==null?'#e2e8f0':x.p>=80?'#16a34a':x.p>=60?'#f59e0b':'#ea580c';
+  return (x.p==null?'':`<rect class="acbar" data-p="${x.p}" x="${(cx-bw/2).toFixed(1)}" y="${y(x.p).toFixed(1)}" width="${bw.toFixed(1)}" height="${(H-B-y(x.p)).toFixed(1)}" rx="5" fill="${c}"><title>${esc(x.full)}: ${x.p}% right (${x.r} of ${x.t})</title></rect>`)+
+  ((i%every===(n-1)%every)?`<text x="${cx.toFixed(1)}" y="${H-B+18}" font-size="12" text-anchor="middle" fill="#64748b">${esc(x.lab)}</text>`:'');}).join('');
+ return `<svg viewBox="0 0 ${W} ${H}" role="img" id="accSvg" aria-label="Percent of answers right per ${tab}">${grid}${bars}</svg>`;}
+function accHTML(pr,ev,tab){tab=PT_TABS.some(x=>x[0]===tab)?tab:'week';const tabs=`<div class="pttabs" role="tablist" aria-label="Accuracy by">${PT_TABS.map(([k,l])=>`<button type="button" role="tab" class="pttab${k===tab?' on':''}" data-atab="${k}" aria-selected="${k===tab}">${l}</button>`).join('')}</div>`;
+ const b=accBuckets(ev,tab),has=b.some(x=>x.t>0);const tot=b.reduce((a,x)=>[a[0]+x.r,a[1]+x.t],[0,0]),cur=b[b.length-1];
+ const body=has?`<p class="pttotal" id="accTotal"><b>${PT_NOW[tab]}: ${cur.p==null?'no answers yet':cur.p+'% right'}</b> <span class="small">· ${Math.round(100*tot[0]/tot[1])}% of ${tot[1]} answers in ${tab==='year'?'all':'the'} ${PT_SPAN[tab]}</span></p><div class="chart">${accSVG(b,tab)}</div><p class="small"><span class="dot" style="background:#16a34a"></span>80%+ <span class="dot" style="background:#f59e0b"></span>60–79% <span class="dot" style="background:#ea580c"></span>under 60%</p>`
+  :`<div class="ptempty" id="accEmpty"><div aria-hidden="true">🎯</div><b>No answers to chart yet</b><span class="small">Accuracy shows up after two days of play on a linked device.</span></div>`;
+ return tabs+body+`<h3>Accuracy trend</h3><div class="chart">${trendSVG(ev)}</div>`;}
+function realmsHTML(pr){return `<div id="realms">${REALMS.map(([id,n])=>{const r=(pr&&pr.realms&&pr.realms[id])||{chapters:0,total:0,stars:0,max:0};const pc=r.total?Math.round(100*r.chapters/r.total):0;
+   return `<div class="realm"><span>${n}</span><div class="bar" aria-hidden="true"><i style="width:${pc}%"></i></div><span class="small">${r.chapters}/${r.total||'–'} ch · ⭐ ${r.stars}</span></div>`;}).join('')}</div>
+   <p class="small">⭐ ${starsOf(pr)} stars in total. A full bar means every chapter in that realm is done.</p>`;}
+function skillMapHTML(pr){const sk=(pr&&pr.skills)||{},by={};Object.keys(sk).forEach(k=>{(by[realmOf(k)]=by[realmOf(k)]||[]).push(k);});
+ const mul=[];for(let n=1;n<=12;n++)mul.push('mult:x'+n);by.mult=[...new Set(mul.concat((by.mult||[]).filter(k=>!/^mult:x/.test(k))))];
+ const any=Object.keys(sk).length;
+ return `<div id="skillMap">${!any?`<div class="ptempty" id="skillEmpty"><div aria-hidden="true">🧩</div><b>The skill map fills in as your kid plays</b><span class="small">Each tile is one skill. Times tables are shown from the start.</span></div>`:''}
+ ${REALMS.filter(([id])=>by[id]&&by[id].length).map(([id,n])=>`<h3>${n}</h3><div class="smgrid">${by[id].map(k=>{const s=sk[k],st=skillState(s),[ic,lab]=SST[st];
+  return `<div class="smt sm-${st}" data-skill="${esc(k)}" title="${esc(skillName(pr,k))}: ${lab}${s&&s.t?` (${s.r} of ${s.t} right)`:''}"><span class="smi" aria-hidden="true">${ic}</span><b>${esc(skillName(pr,k).replace(/ facts$/,''))}</b><span class="smp">${s&&s.t?Math.round(100*s.r/s.t)+'%':lab}</span></div>`;}).join('')}</div>`).join('')}
+ <p class="small smleg">${['star','grow','help','start','new'].map(x=>`<span class="dot" style="background:${SST[x][2]}"></span>${SST[x][1]}`).join(' &nbsp; ')}</p></div>`;}
+function engHTML(pr,ev){const t=ENG.some(x=>x[0]===S.etab)?S.etab:'time';
+ const body=t==='time'?`<div id="playBox">${playHTML(pr,ev,S.ptab)}</div>`:t==='acc'?`<div id="accBox">${accHTML(pr,ev,S.atab)}</div>`:t==='realms'?realmsHTML(pr):skillMapHTML(pr);
+ return `<div class="etabs" role="tablist" id="engTabs" aria-label="Progress views">${ENG.map(([k,l])=>`<button type="button" role="tab" class="etab${k===t?' on':''}" data-etab="${k}" aria-selected="${k===t}">${l}</button>`).join('')}</div><div id="engBox">${body}</div>`;}
+
+/* ---------- weekly family challenge ---------- */
+const CHALLENGES=[
+ {key:'pizza',icon:'🍕',title:'Pizza fractions',home:'Cut a pizza, tortilla or sandwich into halves, then fourths. Ask: “If I eat 1 of the 4 pieces, what fraction is left?”',goal:'stars',n:15,goalTxt:'Earn 15 stars in the game this week (Fraction Bakery is perfect for it).'},
+ {key:'cards',icon:'🃏',title:'Card-war times tables',home:'Each player flips two cards and multiplies them. Biggest answer wins the cards. Face cards count as 10.',goal:'minutes',n:60,goalTxt:'Play 60 minutes this week.'},
+ {key:'cookies',icon:'🍪',title:'Fair cookie sharing',home:'Share 13 crackers or cookies between 4 plates. How many does each plate get? How many are left over?',goal:'stars',n:12,goalTxt:'Earn 12 stars this week (try Division Docks).'},
+ {key:'store',icon:'🛒',title:'Grocery round-up',home:'At the store, round 3 prices to the nearest dollar and add them in your heads. Who gets closest to the real total?',goal:'minutes',n:45,goalTxt:'Play 45 minutes this week.'},
+ {key:'stairs',icon:'🪜',title:'Skip-count stairs',home:'On every step at home, skip-count by 3s, 4s or 7s. Switch numbers at the top.',goal:'stars',n:10,goalTxt:'Earn 10 stars this week.'},
+ {key:'clock',icon:'⏰',title:'Clock fives',home:'Look at the kitchen clock together and count the minutes by 5s around the dial.',goal:'minutes',n:40,goalTxt:'Play 40 minutes this week.'}];
+function isoWeek(d){d=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=d.getUTCDay()||7;d.setUTCDate(d.getUTCDate()+4-day);const y=d.getUTCFullYear(),w=Math.ceil(((d-Date.UTC(y,0,1))/864e5+1)/7);return y+'-W'+p2(w);}
+function thisChallenge(now){now=now||new Date();const wk=isoWeek(now),n=+wk.slice(0,4)*53+ +wk.slice(6);return {wk,c:CHALLENGES[n%CHALLENGES.length]};}
+function mondayKey(){const t=new Date();t.setHours(12,0,0,0);t.setDate(t.getDate()-((t.getDay()+6)%7));return dk(t);}
+function starsThisWeek(ev,pr){if(!ev||!ev.length)return 0;const mon=mondayKey(),before=[...ev].filter(e=>String(e.day)<mon).pop();return Math.max(0,starsOf(pr)-(before?before.stars_total:(ev[0].stars_total||0)));}
+function minsThisWeek(pr,ev){const b=playBuckets(playData(pr,ev),'week');return Math.round(b[b.length-1].v);}
+function challengeHTML(k,pr,ev){const {wk,c}=thisChallenge(),done=PC.chal.find(x=>x.kid_id===k.id&&x.week===wk),have=c.goal==='stars'?starsThisWeek(ev,pr):minsThisWeek(pr,ev),pc=Math.min(100,Math.round(100*have/c.n));
+ const total=PC.chal.filter(x=>x.kid_id===k.id).length;
+ return `<div class="card chal" id="challengeCard"><h2>${c.icon} This week's family challenge</h2><p class="chalt"><b>${esc(c.title)}</b></p>
+ <div class="chalgrid"><div class="chalbox"><span class="chalh">🏠 At the kitchen table (5 min)</span><p>${esc(c.home)}</p></div>
+ <div class="chalbox"><span class="chalh">🎮 In the game</span><p>${esc(c.goalTxt)}</p><div class="bar" aria-hidden="true"><i style="width:${pc}%"></i></div><p class="small" id="chalProg">${have} / ${c.n} ${c.goal==='stars'?'stars':'minutes'} so far</p></div></div>
+ ${done?`<p class="ok" id="chalDone">✅ Done this week! ${total} family challenge${total===1?'':'s'} completed${PC.p4?`. ${esc(k.nickname)} sees a 🏅 badge on the game's Home screen.`:'.'}</p>`:`<button class="btn" type="button" id="chalBtn" data-chal="${c.key}" data-week="${wk}">✅ We did it!</button>`}
+ ${PC.p4?'':'<p class="small">Saved on this device only until the database update (setup-part4.sql) is run.</p>'}<p class="small">A new challenge appears every Monday.</p></div>`;}
+
+/* ---------- milestones ---------- */
+const MS=[['stars','⭐',[1,10,25,50,100,250,500],n=>n===1?'First star!':n+' stars earned'],['min','⏱',[60,300,600,1200,3000],n=>(n/60)+' hour'+(n===60?'':'s')+' of practice'],
+ ['ans','🎯',[100,500,1000,2500,5000],n=>n.toLocaleString('en-US')+' answers'],['realms','🗺️',[2,4,6],n=>n===6?'Visited all 6 realms':'Explored '+n+' realms'],['master','🌟',[1,5,10],n=>n===1?'First mastered skill':n+' mastered skills'],
+ ['quests','📜',[1,5,10],n=>n===1?'First quest from home':n+' quests from home'],['plans','🛠️',[1,3],n=>n===1?'Finished a fix-it plan':n+' fix-it plans finished'],['chal','🏅',[1,4,10],n=>n===1?'First family challenge':n+' family challenges']];
+function msVals(k,pr){const sk=Object.values((pr&&pr.skills)||{});return {stars:starsOf(pr),min:Math.floor(((pr&&pr.time_played_sec)||0)/60),ans:sk.reduce((a,s)=>a+(s.t||0),0),
+ realms:REALMS.filter(([id])=>(((pr&&pr.realms)||{})[id]||{}).chapters>0).length,master:sk.filter(s=>skillState(s)==='star').length,
+ quests:PC.quests.filter(q=>q.kid_id===k.id&&q.status==='done').length,plans:PC.plans.filter(p=>p.kid_id===k.id&&p.status==='done').length,chal:PC.chal.filter(x=>x.kid_id===k.id).length};}
+function milestones(k,pr){const v=msVals(k,pr),got=[],next=[];MS.forEach(([c,ic,steps,lab])=>{const g=steps.filter(n=>v[c]>=n);if(g.length){const n=g[g.length-1];got.push({c,ic,n,lab:lab(n),rank:steps.indexOf(n)/steps.length});}
+  const nx=steps.find(n=>v[c]<n);if(nx)next.push({c,ic,n:nx,lab:lab(nx),have:v[c],r:v[c]/nx});});
+ got.sort((a,b)=>b.rank-a.rank);next.sort((a,b)=>b.r-a.r);return {got,next:next.slice(0,3)};}
+function milestonesHTML(k,pr){const {got,next}=milestones(k,pr);
+ return `<div class="card" id="milestoneCard"><h2>🏆 Milestones</h2>${got.length?`<div class="msgrid">${got.map((m,i)=>`<div class="ms${i===0?' big':''}" data-ms="${m.c}-${m.n}"><div class="msi" aria-hidden="true">${m.ic}</div><b>${esc(m.lab)}</b><span class="small">${esc(k.nickname)} reached this!</span></div>`).join('')}</div>
+ <button class="btn sm" type="button" id="celebrate">🎉 Celebrate with ${esc(k.nickname)}</button>`:`<div class="ptempty" id="msEmpty"><div aria-hidden="true">🏆</div><b>The first milestone is one star away</b><span class="small">Milestone cards appear here as ${esc(k.nickname)} plays.</span></div>`}
+ ${next.length?`<h3>Next up</h3>${next.map(m=>`<div class="realm msn"><span>${m.ic} ${esc(m.lab)}</span><div class="bar" aria-hidden="true"><i style="width:${Math.round(100*m.r)}%"></i></div><span class="small">${m.have} / ${m.n}</span></div>`).join('')}`:''}</div>`;}
+function confetti(){const box=document.createElement('div');box.className='confetti';box.setAttribute('aria-hidden','true');const cols=['#f97316','#00C2FF','#facc15','#22c55e','#ec4899','#2563eb'];
+ for(let i=0;i<60;i++){const s=document.createElement('i');s.style.left=(Math.random()*100)+'%';s.style.background=cols[i%cols.length];s.style.animationDelay=(Math.random()*.6)+'s';s.style.transform='rotate('+(Math.random()*360)+'deg)';box.appendChild(s);}
+ document.body.appendChild(box);setTimeout(()=>box.remove(),2600);}
+
+/* ---------- lessons library ---------- */
+const LESSONS=[
+ {id:'m78',realm:'mult',icon:'🏰',title:'7s and 8s: the “5, 6, 7, 8” trick',grade:'Grades 2–4',idea:'56 = 7 × 8 reads like counting: 5, 6, 7, 8. Anchor the hardest facts to it, then build neighbors from it: 7 × 7 = 56 − 7 = 49.',home:'Write “56 = 7 × 8” on a sticky note on the fridge. Each time you pass it, ask one neighbor fact (7 × 9? 8 × 8?).',say:'“What fact do you already know that is close to this one?”',avoid:'Drilling all 144 facts at once. Pick 2 or 3 per week.',vis:'array',a:7,b:8},
+ {id:'m8',realm:'mult',icon:'🏰',title:'Double, double, double (×4 and ×8)',grade:'Grades 2–4',idea:'×2 is a double. ×4 is a double of a double. ×8 is one more double: 8 × 6 → 12 → 24 → 48.',home:'Double numbers while walking: 3, 6, 12, 24… How far can you go?',say:'“Double it. Now double that.”',avoid:'Counting by 8s on fingers, which is slow and error-prone.',vis:'double'},
+ {id:'m9',realm:'mult',icon:'🏰',title:'The 9s finger trick',grade:'Grades 2–4',idea:'Hold up 10 fingers. For 9 × 4 fold down finger 4. Fingers left of it (3) are tens, right of it (6) are ones: 36.',home:'Try 9 × 1 to 9 × 10 with your hands together. Notice the digits always add up to 9.',say:'“What do the two digits add up to?”',avoid:'Using the trick past 9 × 10.',vis:'fingers'},
+ {id:'m6',realm:'mult',icon:'🏰',title:'Break it apart (×6, ×11, ×12)',grade:'Grades 3–4',idea:'Split a hard fact into easy ones: 6 × 7 = 5 × 7 + 1 × 7 = 35 + 7. 12 × 6 = 10 × 6 + 2 × 6.',home:'Pick a fact and race: who can find two different ways to split it?',say:'“Which easier facts are hiding inside this one?”',avoid:'Splitting into pieces that are just as hard.',vis:'split'},
+ {id:'arrays',realm:'mult',icon:'🏰',title:'Times tables as arrays',grade:'Grades 2–3',idea:'3 × 4 means 3 rows of 4. Seeing the rectangle shows why 3 × 4 = 4 × 3.',home:'Arrange coins, cereal or LEGO bricks in rows. Turn the rectangle sideways: same total!',say:'“How many rows? How many in each row?”',avoid:'Treating multiplication as only memorizing.',vis:'array',a:3,b:4},
+ {id:'mk10',realm:'add',icon:'🌼',title:'Make a ten',grade:'Grades K–2',idea:'8 + 5: move 2 from the 5 to make 10, then add the 3 that is left: 13.',home:'Use an egg carton with 10 slots and two colors of beans.',say:'“How many more to make 10?”',avoid:'Counting all from 1 every time.',vis:'ten'},
+ {id:'sub0',realm:'sub',icon:'🪨',title:'Subtracting across zero',grade:'Grades 2–4',idea:'300 − 127 is tricky because of the zeros. Take 1 from both numbers: 299 − 126 has the same answer (173) and needs no borrowing.',home:'Ask: “If we both lose one dollar, is the difference between us the same?” Try it with real money.',say:'“Can we make the problem friendlier without changing the answer?”',avoid:'Crossing out zeros without knowing why.',vis:'sub0'},
+ {id:'rem',realm:'div',icon:'⚓',title:'Remainders: sharing for real',grade:'Grades 3–5',idea:'13 ÷ 4: deal 13 things onto 4 plates. Each gets 3, and 1 is left over. That leftover is the remainder: 3 R1.',home:'Deal a deck of cards (or crackers) to the family. Who gets the leftovers?',say:'“Is there enough left for everyone to get one more?”',avoid:'A remainder that is as big as the divisor (that means one more round fits).',vis:'share'},
+ {id:'frac',realm:'frac',icon:'🧁',title:'Halves and fourths with food',grade:'Grades 1–3',idea:'A fraction is equal parts of one whole. 2 equal parts are halves, 4 equal parts are fourths. 2 fourths make 1 half.',home:'Fold a tortilla or paper in half, then in half again. Unfold and color 1 fourth.',say:'“Are the pieces equal? Then we can name them.”',avoid:'Calling unequal pieces “halves”.',vis:'pizza'},
+ {id:'fam',realm:'sub',icon:'🪨',title:'Fact families',grade:'Grades 1–4',idea:'3, 5 and 8 make a family: 3 + 5 = 8, 5 + 3 = 8, 8 − 5 = 3, 8 − 3 = 5. The same works for × and ÷ (6 × 4 = 24, 24 ÷ 6 = 4).',home:'Write 3 numbers in a triangle. Kid says all 4 facts that live in the house.',say:'“What addition fact helps with this subtraction?”',avoid:'Treating + and − as unrelated facts.',vis:'fam'}];
+function lessonVis(l){const W=220,H=120;let g='';
+ if(l.vis==='array'){const a=Math.min(l.a,7),b=Math.min(l.b,9),s=Math.min(200/b,100/a);for(let r=0;r<a;r++)for(let c=0;c<b;c++)g+=`<circle cx="${10+s/2+c*s}" cy="${10+s/2+r*s}" r="${s*.36}" fill="${r<5?'#f97316':'#2563eb'}"/>`;}
+ else if(l.vis==='pizza'){g=`<circle cx="60" cy="60" r="48" fill="#fde68a" stroke="#d97706" stroke-width="4"/><path d="M60 60 L60 12 A48 48 0 0 1 108 60 Z" fill="#f97316"/><line x1="60" y1="12" x2="60" y2="108" stroke="#d97706" stroke-width="3"/><line x1="12" y1="60" x2="108" y2="60" stroke="#d97706" stroke-width="3"/><text x="130" y="68" font-size="26" font-weight="700" fill="#c2410c">1/4</text>`;}
+ else if(l.vis==='ten'){for(let i=0;i<10;i++)g+=`<rect x="${10+(i%5)*40}" y="${14+Math.floor(i/5)*44}" width="34" height="38" rx="6" fill="#f1f5f9" stroke="#94a3b8"/><circle cx="${27+(i%5)*40}" cy="${33+Math.floor(i/5)*44}" r="12" fill="${i<8?'#f97316':'#2563eb'}"/>`;}
+ else if(l.vis==='share'){for(let p=0;p<4;p++){g+=`<ellipse cx="${30+p*52}" cy="80" rx="23" ry="12" fill="#e0f2fe" stroke="#0284c7"/>`;for(let i=0;i<3;i++)g+=`<circle cx="${20+p*52+i*10}" cy="74" r="5" fill="#d97706"/>`;}g+=`<circle cx="110" cy="24" r="7" fill="#dc2626"/><text x="122" y="29" font-size="14" fill="#991b1b">1 left over</text>`;}
+ else{const t={double:'6 → 12 → 24 → 48',fingers:'🖐️🖐️  9 × 4 = 36',split:'6×7 = 35 + 7',sub0:'300−127 = 299−126',fam:'3 + 5 = 8 ↔ 8 − 5 = 3'}[l.vis]||'';g=`<text x="${W/2}" y="68" font-size="20" font-weight="700" text-anchor="middle" fill="#1E3A8A">${esc(t)}</text>`;}
+ return `<svg viewBox="0 0 ${W} ${H}" class="lvis" role="img" aria-label="Picture for ${esc(l.title)}">${g}</svg>`;}
+function lessonsView(){const f=S.lrealm||'all',L=LESSONS.filter(l=>f==='all'||l.realm===f),cur=LESSONS.find(l=>l.id===S.lesson);
+ return `<button class="btn gray sm" id="toFamily" type="button">← Family</button>
+ ${cur?`<div class="card lesson" id="lessonDetail"><h2>${cur.icon} ${esc(cur.title)}</h2><p><span class="pill">${esc(cur.grade)}</span><span class="pill">${esc((REALMS.find(r=>r[0]===cur.realm)||['',''])[1])}</span></p>
+  <div class="lgrid">${lessonVis(cur)}<div><h3>The idea</h3><p>${esc(cur.idea)}</p></div></div>
+  <h3>🏠 Try it at home (2 minutes)</h3><p>${esc(cur.home)}</p><h3>💬 Say this</h3><p>${esc(cur.say)}</p><h3>🚫 Avoid</h3><p>${esc(cur.avoid)}</p>
+  <button class="btn gray sm" type="button" id="lessonClose">Back to all lessons</button></div>`:''}
+ <div class="card" id="lessonsCard"><h2>📚 Learn the method</h2><p class="small">Short, school-style explanations so you can help the same way your kid is taught. 2 minutes each.</p>
+ <div class="row chips" role="group" aria-label="Filter by realm">${[['all','All']].concat(REALMS.filter(([id])=>LESSONS.some(l=>l.realm===id))).map(([id,n])=>`<button type="button" class="chip${f===id?' on':''}" data-lrealm="${id}" aria-pressed="${f===id}">${esc(n)}</button>`).join('')}</div>
+ <div class="lsgrid">${L.map(l=>`<button type="button" class="lcard" data-lesson="${l.id}"><span class="lci" aria-hidden="true">${l.icon}</span><b>${esc(l.title)}</b><span class="small">${esc(l.grade)}</span></button>`).join('')}</div></div>`;}
+
+/* ---------- quests from home ---------- */
+function questPicks(pr,kid){const picks=[];struggles(pr).forEach(s=>picks.push([s.k,'Weak spot: '+s.n]));
+ const sk=(pr&&pr.skills)||{};for(let n=2;n<=12;n++){const k='mult:x'+n;if(!picks.some(p=>p[0]===k)&&sk[k]&&skillState(sk[k])==='grow'){picks.push([k,'Almost mastered: ×'+n+' facts']);break;}}
+ Object.keys(sk).filter(k=>skillState(sk[k])==='star').slice(0,1).forEach(k=>picks.push([k,'Keep it fresh: '+skillName(pr,k)]));
+ return picks.slice(0,4);}
+const QMSG=['You can do it! 💪','Proud of you!','Finish this and we will celebrate 🎉','Let\u2019s beat yesterday!'];
+function questHTML(k,pr){if(!PC.p4)return `<div class="card" id="questCard"><h2>📜 Quest from home</h2><p class="small">Pick a skill, add a short message, and it shows up in ${esc(k.nickname)}'s game as a scroll from home.</p>${setupNote('Quest from home')}</div>`;
+ const qs=PC.quests.filter(q=>q.kid_id===k.id&&q.status!=='cancelled').slice(0,8),act=qs.filter(q=>q.status==='active').length,picks=questPicks(pr,k);
+ const opts=[...new Set(picks.map(p=>p[0]).concat(Object.keys((pr&&pr.skills)||{}),Array.from({length:11},(_,i)=>'mult:x'+(i+2)),['frac:c1','sub:c8','div:c7']))].filter(x=>/^[a-z]{2,5}:(x\d{1,2}|c\d{1,2})$/.test(x));
+ const form=S.qform?`<div class="qform" id="questForm"><h3>New quest for ${esc(k.nickname)}</h3>
+  ${picks.length?`<p class="small">Recommended:</p><div class="row chips">${picks.map(([sk,why])=>`<button type="button" class="chip${S.qskill===sk?' on':''}" data-qpick="${esc(sk)}">${esc(why)}</button>`).join('')}</div>`:''}
+  <label for="qSkill">Skill to practice</label><select id="qSkill">${opts.map(o=>`<option value="${esc(o)}"${o===S.qskill?' selected':''}>${esc((REALMS.find(r=>r[0]===realmOf(o))||['',''])[1].replace(/^\S+ /,''))}: ${esc(skillName(pr,o))}</option>`).join('')}</select>
+  <label for="qGoal">How many questions?</label><select id="qGoal">${[5,10,15,20].map(n=>`<option value="${n}"${n===10?' selected':''}>${n} questions (about ${Math.max(2,Math.round(n/2.5))} min)</option>`).join('')}</select>
+  <label for="qMsg">Message from home <span class="small">(optional, shown on the scroll)</span></label><input id="qMsg" maxlength="120" autocomplete="off" placeholder="You can do it! 💪" value="${esc(S.qmsg||'')}">
+  <div class="row chips">${QMSG.map(m=>`<button type="button" class="chip" data-qmsg="${esc(m)}">${esc(m)}</button>`).join('')}</div>
+  <div class="scrollprev" id="questPreview" aria-label="Preview of the scroll in the game"><span class="small">Preview in the game:</span><div class="scroll"><b>📜 <span id="qpT">Practice ${esc(skillName(pr,S.qskill||opts[0]))}</span></b><i id="qpM">${S.qmsg?'“'+esc(S.qmsg)+'”':''}</i></div></div>
+  <button class="btn blue" type="button" id="qSend">📜 Send to ${esc(k.nickname)}'s game</button><button class="btn gray" type="button" id="qCancelForm">Cancel</button></div>`:'';
+ return `<div class="card" id="questCard"><h2>📜 Quest from home</h2><p class="small">Quests appear on the Home screen of ${esc(k.nickname)}'s linked device as a scroll from home. Finished quests sync back here.</p>
+ ${qs.length?`<div id="questList">${qs.map(q=>{const pc=Math.min(100,Math.round(100*q.total_count/q.goal));return `<div class="qrow ${q.status}"><div><b>${q.status==='done'?'✅':'📜'} ${esc(q.title)}</b>${q.message?` <span class="small">“${esc(q.message)}”</span>`:''}<div class="bar" aria-hidden="true"><i style="width:${pc}%"></i></div>
+  <span class="small">${q.status==='done'?`Finished ${ago(q.done_at)} · ${q.right_count} of ${q.total_count} right`:`${q.total_count} of ${q.goal} questions so far`}${q.source==='fixit'?' · fix-it plan':''}</span></div>
+  ${q.status==='active'?`<button class="btn gray sm" type="button" data-qcancel="${q.id}">Remove</button>`:''}</div>`;}).join('')}</div>`:(S.qform?'':`<div class="ptempty" id="questEmpty"><div aria-hidden="true">📜</div><b>No quests yet</b><span class="small">Send one and it appears in the game the next time ${esc(k.nickname)} opens it.</span></div>`)}
+ ${form}${S.qform?'':act>=5?'<p class="small">5 quests are already waiting. Remove one to add more.</p>':`<button class="btn" type="button" id="qNew">➕ New quest</button>`}</div>`;}
+
+/* ---------- fix-it plans ---------- */
+const PLANS={
+ m78:{icon:'🏰',title:'7s and 8s facts',skills:['mult:x7','mult:x8'],days:[['mult:x7',10,'Say the 7s out loud while climbing stairs: 7, 14, 21… up to 70.'],['mult:x8',10,'Learn the “5, 6, 7, 8” chant: 56 = 7 × 8. Put it on a sticky note on the fridge.'],['mult:x7',12,'Make 8 groups of 8 coins or cereal pieces. Count them by 8s.'],['mult:x8',12,'Flash-card race: you read 6 cards with ×7 and ×8, your kid answers.'],['mult:x7',15,'Your kid teaches you their favorite trick for 7s and 8s.']]},
+ frac14:{icon:'🧁',title:'Halves and fourths',skills:['frac:c1'],days:[['frac:c1',8,'Fold a paper in half. Are both parts equal? Name them.'],['frac:c1',10,'Cut a tortilla or sandwich into fourths. Eat 1 fourth: how many fourths are left?'],['frac:c1',10,'Find halves at home: half a glass of water, half the cookies on a plate.'],['frac:c1',12,'Draw a pizza. Show that 2 fourths are the same as 1 half.'],['frac:c1',12,'Your kid makes a fraction quiz for you with paper shapes.']]},
+ sub0:{icon:'🪨',title:'Subtracting across zero',skills:['sub:c8'],days:[['sub:c8',8,'With play money: break a $100 bill into ten $10 bills. Why is that fair?'],['sub:c8',10,'Try the minus-one trick together: 300 − 127 = 299 − 126.'],['sub:c8',10,'Make change at a pretend shop: pay $5.00 for something that costs $2.37.'],['sub:c8',12,'Check answers with addition: does 173 + 127 make 300?'],['sub:c8',12,'Your kid explains one problem out loud, start to finish.']]},
+ rem:{icon:'⚓',title:'Remainders in division',skills:['div:c7'],days:[['div:c7',8,'Deal 13 crackers onto 4 plates. What is left over?'],['div:c7',10,'Deal a deck of cards to the family. Who gets the leftovers?'],['div:c7',10,'Ask: “Can the leftover ever be as big as the number of plates?” Test it.'],['div:c7',12,'Story time: 22 kids, 5 per car. How many cars? (Watch out for the leftover kids!)'],['div:c7',12,'Your kid writes a remainder story problem for you.']]}};
+function planFor(k){return k==='mult:x7'||k==='mult:x8'?'m78':k==='frac:c1'?'frac14':k==='sub:c8'?'sub0':k==='div:c7'?'rem':null;}
+function planQuests(p){return PC.quests.filter(q=>q.plan_id===p.id);}
+function planAfter(p){const d=planQuests(p).reduce((a,q)=>[a[0]+q.right_count,a[1]+q.total_count],[0,0]);return d[1]?{p:Math.round(100*d[0]/d[1]),t:d[1]}:null;}
+function fixitHTML(k,pr){if(!PC.p4)return `<div class="card" id="fixitCard"><h2>🛠️ Fix-it plans</h2><p class="small">5-day plans: one short in-game quest plus a 2-minute activity at home each day, with accuracy before and after.</p>${setupNote('Fix-it plans')}</div>`;
+ const mine=PC.plans.filter(p=>p.kid_id===k.id&&p.status!=='stopped');
+ const rows=mine.map(p=>{const P=PLANS[p.plan_key];if(!P)return '';const day=Math.min(5,p.day_done+1),aft=planAfter(p),qa=planQuests(p).find(q=>q.status==='active'),done=p.status==='done';
+  return `<div class="plan${done?' done':''}" data-planid="${p.id}"><h3>${P.icon} ${esc(P.title)} ${done?'<span class="pill">Finished 🎉</span>':`<span class="pill">Day ${day} of 5</span>`}</h3>
+  <div class="ba" id="ba-${p.plan_key}"><div><span class="small">Before</span><b>${p.before_acc==null?'–':p.before_acc+'%'}</b></div><div class="baar" aria-hidden="true">→</div><div><span class="small">${done?'After':'During the plan'}</span><b>${done&&p.after_acc!=null?p.after_acc+'%':aft?aft.p+'%':'–'}</b></div></div>
+  <ol class="days">${P.days.map((d,i)=>`<li class="${i<p.day_done?'dd':i===p.day_done&&!done?'dn':''}"><b>Day ${i+1}:</b> 🎮 ${d[1]} questions of ${esc(skillName(pr,d[0]))} · 🏠 ${esc(d[2])}</li>`).join('')}</ol>
+  ${done?'':`<div class="row">${qa?`<span class="small">Day ${day} quest is waiting in the game (${qa.total_count}/${qa.goal}).</span>`:`<button class="btn blue sm" type="button" data-plansend="${p.id}">📜 Send Day ${day} quest</button>`}<button class="btn sm" type="button" data-planday="${p.id}">✅ Day ${day} done</button><button class="btn gray sm" type="button" data-planstop="${p.id}">Stop plan</button></div>`}</div>`;}).join('');
+ const avail=Object.entries(PLANS).filter(([key])=>!mine.some(p=>p.plan_key===key&&p.status==='active'));const sug=struggles(pr).map(s=>planFor(s.k)).filter(Boolean);
+ return `<div class="card" id="fixitCard"><h2>🛠️ Fix-it plans</h2><p class="small">5 days, about 10 minutes a day: one short quest in the game plus a 2-minute activity at home.</p>${rows||`<div class="ptempty" id="fixitEmpty"><div aria-hidden="true">🛠️</div><b>No plan running</b><span class="small">Pick a starter plan below.${sug.length?' ⭐ marks the ones that match a weak spot.':''}</span></div>`}
+ <h3>Starter plans</h3><div class="lsgrid">${avail.map(([key,P])=>{const acc=skillAcc(pr,P.skills);return `<button type="button" class="lcard" data-plan="${key}"><span class="lci" aria-hidden="true">${P.icon}</span><b>${sug.includes(key)?'⭐ ':''}${esc(P.title)}</b><span class="small">${acc?'Now '+acc.p+'% right':'Not practiced yet'} · Start plan</span></button>`;}).join('')}</div></div>`;}
+
+/* ---------- rewards ---------- */
+const RW_T={stars:['⭐','stars earned'],minutes:['⏱','minutes played'],quests:['📜','quests finished']};
+function rwCur(k,pr,type,since){return type==='stars'?starsOf(pr):type==='minutes'?Math.floor(((pr&&pr.time_played_sec)||0)/60):PC.quests.filter(q=>q.kid_id===k.id&&q.status==='done'&&(!since||q.done_at>=since)).length;}
+function rwHave(k,pr,r){return Math.max(0,rwCur(k,pr,r.goal_type,r.created_at)-(r.goal_type==='quests'?0:r.start_value));}
+function rewardsHTML(k,pr){if(!PC.p4)return `<div class="card" id="rewardsCard"><h2>🎁 Rewards & goals</h2><p class="small">Set a real-world reward (a park trip, a sleepover) for a goal like 50 stars.</p>${setupNote('Rewards')}</div>`;
+ const rs=PC.rewards.filter(r=>r.kid_id===k.id&&r.status!=='cancelled').slice(0,6),open=rs.filter(r=>r.status!=='given').length;
+ return `<div class="card" id="rewardsCard"><h2>🎁 Rewards & goals</h2><p class="small">You choose the reward and give it in real life. ${esc(k.nickname)} sees the goal and the progress bar in the game.</p>
+ ${rs.length?rs.map(r=>{const h=Math.min(r.goal,rwHave(k,pr,r)),pc=Math.round(100*h/r.goal),[ic,u]=RW_T[r.goal_type];
+  return `<div class="qrow rw ${r.status}" data-rw="${r.id}"><div><b>🎁 ${esc(r.title)}</b> <span class="small">· ${ic} ${r.goal} ${u}</span><div class="bar gold" aria-hidden="true"><i style="width:${pc}%"></i></div>
+  <span class="small">${r.status==='given'?'Given ✅':h>=r.goal?'🎉 Earned! Time to celebrate.':`${h} / ${r.goal} ${u}`}</span></div>
+  ${r.status==='given'?'':h>=r.goal?`<button class="btn sm" type="button" data-rwgive="${r.id}">Mark as given</button>`:`<button class="btn gray sm" type="button" data-rwcancel="${r.id}">Remove</button>`}</div>`;}).join(''):(S.rform?'':`<div class="ptempty" id="rewardsEmpty"><div aria-hidden="true">🎁</div><b>No rewards yet</b><span class="small">Ideas: a trip to the park, picking dinner, a sleepover.</span></div>`)}
+ ${S.rform?`<div class="qform" id="rewardForm"><label for="rTitle">Reward</label><input id="rTitle" maxlength="60" autocomplete="off" placeholder="Trip to the park">
+  <div class="row chips">${['Trip to the park','Pick dinner','Movie night','Extra bedtime story'].map(x=>`<button type="button" class="chip" data-rtitle="${esc(x)}">${esc(x)}</button>`).join('')}</div>
+  <label for="rType">Goal</label><select id="rType">${Object.entries(RW_T).map(([t,[ic,u]])=>`<option value="${t}">${ic} ${u}</option>`).join('')}</select>
+  <label for="rGoal">Amount (counted from today)</label><input id="rGoal" type="number" inputmode="numeric" min="1" max="10000" value="30">
+  <button class="btn blue" type="button" id="rSave">Save reward</button><button class="btn gray" type="button" id="rCancelForm">Cancel</button></div>`:open>=3?'<p class="small">3 rewards are open. Mark one as given to add another.</p>':'<button class="btn" type="button" id="rNew">➕ New reward</button>'}</div>`;}
+
+/* ---------- in-portal alerts ---------- */
+function inQuiet(p,now){const h=(now||new Date()).getHours(),a=+p.quiet_start,b=+p.quiet_end;return a===b?false:a<b?(h>=a&&h<b):(h>=a||h<b);}
+function lastPlayDay(pr,ev){const pd=playData(pr,ev),ks=Object.keys(pd.days).filter(k=>pd.days[k]>0).sort();return ks.length?ks[ks.length-1]:null;}
+function alerts(){const p=PC.prefs||PREF_DEF,on=p.events||PREF_DEF.events,out=[],today=dk(new Date());
+ S.kids.forEach(k=>{const pr=S.progress[k.id],ev=S.events[k.id],nm=k.nickname;if(!pr)return;
+  if(on.milestone)milestones(k,pr).got.forEach(m=>out.push({key:`ms:${k.id}:${m.c}:${m.n}`,ev:'milestone',ic:m.ic,kid:k.id,txt:`${nm} reached a milestone: ${m.lab}`}));
+  if(on.weak)struggles(pr).forEach(s=>out.push({key:`weak:${k.id}:${s.k}`,ev:'weak',ic:'🎯',kid:k.id,txt:`${nm} needs practice with ${s.n} (${Math.round(s.acc*100)}% right)`}));
+  if(on.fixit)PC.plans.filter(x=>x.kid_id===k.id&&x.status==='done').forEach(x=>out.push({key:'fix:'+x.id,ev:'fixit',ic:'🛠️',kid:k.id,txt:`${nm} finished the fix-it plan “${(PLANS[x.plan_key]||{}).title||x.plan_key}”`}));
+  if(on.quest)PC.quests.filter(q=>q.kid_id===k.id&&q.status==='done').forEach(q=>out.push({key:'q:'+q.id,ev:'quest',ic:'📜',kid:k.id,txt:`${nm} finished the quest “${q.title}” (${q.right_count} of ${q.total_count} right)`}));
+  const lp=lastPlayDay(pr,ev);if(on.idle&&lp){const d=Math.round((noon(today)-noon(lp))/864e5);if(d>=p.idle_days)out.push({key:`idle:${k.id}:${lp}`,ev:'idle',ic:'💤',kid:k.id,txt:`${nm} has not played for ${d} days`});}
+  if(on.goal){const m=(playData(pr,ev).days[today])||0;if(m>=p.daily_goal)out.push({key:`goal:${k.id}:${today}`,ev:'goal',ic:'⏱',kid:k.id,txt:`${nm} played ${fmtMin(m)} today and reached your ${p.daily_goal}-minute goal`});}});
+ const seen=new Set(lrd(SEEN_PC)||[]);out.forEach(a=>a.unread=!seen.has(a.key));return out.sort((a,b)=>b.unread-a.unread);}
+function markRead(list){const s=new Set(lrd(SEEN_PC)||[]);list.forEach(a=>s.add(a.key));lwr(SEEN_PC,[...s].slice(-400));}
+function bellCount(){try{return alerts().filter(a=>a.unread).length;}catch(e){return 0;}}
+function toastHTML(){const n=bellCount(),p=PC.prefs||PREF_DEF;if(!n||inQuiet(p))return '';return `<div class="card toast" id="alertToast" role="status"><span aria-hidden="true">🔔</span><div><b>${n} new alert${n===1?'':'s'}</b><br><span class="small">${esc(alerts().find(a=>a.unread).txt)}</span></div><button class="btn sm" type="button" id="openAlerts">See alerts</button></div>`;}
+function alertsView(){const al=alerts(),p=PC.prefs||PREF_DEF,ev=p.events||PREF_DEF.events,hrs=Array.from({length:24},(_,h)=>[h,(h%12||12)+(h<12?' AM':' PM')]);
+ return `<button class="btn gray sm" id="toFamily" type="button">← Family</button>
+ <div class="card" id="alertsCard"><h2>🔔 Alerts</h2><p class="small">Shown only here in the Parent Area. No phone notifications are sent. The weekly email is separate and stays off unless you turn it on below.${inQuiet(p)?' 🌙 Quiet hours are on, so no pop-up banner right now.':''}</p>
+ ${al.length?`<ul class="alist" id="alertList">${al.map(a=>`<li class="${a.unread?'unread':''}" data-ev="${a.ev}"><span aria-hidden="true">${a.ic}</span><span>${esc(a.txt)}</span>${a.unread?'<span class="pill">New</span>':''}</li>`).join('')}</ul>
+ <button class="btn gray sm" type="button" id="markRead">Mark all as read</button>`:`<div class="ptempty" id="alertsEmpty"><div aria-hidden="true">🔔</div><b>All quiet</b><span class="small">Alerts appear when something happens that you chose below.</span></div>`}</div>
+ <div class="card" id="prefsCard"><h2>⚙️ Alert preferences</h2><fieldset class="prefs"><legend>Tell me about</legend>${PREF_EV.map(([k,ic,l])=>`<label class="consent" for="pf_${k}"><input type="checkbox" id="pf_${k}" data-pref="${k}"${ev[k]!==false?' checked':''}><span>${ic} ${esc(l)}</span></label>`).join('')}</fieldset>
+ <div class="pgrid"><div><label for="pfIdle">“No play” after</label><select id="pfIdle">${[1,2,3,5,7,14].map(n=>`<option value="${n}"${+p.idle_days===n?' selected':''}>${n} day${n===1?'':'s'}</option>`).join('')}</select></div>
+ <div><label for="pfGoal">Daily play-time goal</label><select id="pfGoal">${[15,20,30,45,60,90].map(n=>`<option value="${n}"${+p.daily_goal===n?' selected':''}>${n} minutes</option>`).join('')}</select></div>
+ <div><label for="pfQs">Quiet hours from</label><select id="pfQs">${hrs.map(([h,l])=>`<option value="${h}"${+p.quiet_start===h?' selected':''}>${l}</option>`).join('')}</select></div>
+ <div><label for="pfQe">until</label><select id="pfQe">${hrs.map(([h,l])=>`<option value="${h}"${+p.quiet_end===h?' selected':''}>${l}</option>`).join('')}</select></div></div>
+ <p class="small">During quiet hours the Parent Area does not show the pop-up banner. Alerts still wait in this list.</p>
+ <fieldset class="prefs" id="emailPrefs"><legend>✉️ Weekly email</legend><label class="consent" for="pfEmail"><input type="checkbox" id="pfEmail"${p.email_weekly?' checked':''}><span>Send me a weekly email: each kid's summary, play time, wins, weak spots and this week's family challenge</span></label>
+ <div class="pgrid"><div><label for="pfEmailDay">Send it on</label><select id="pfEmailDay">${DAYS.map((d,i)=>`<option value="${i}"${+p.email_day===i?' selected':''}>${d}</option>`).join('')}</select></div></div>
+ <p class="small">Goes to ${esc((S.user&&S.user.email)||S.email||'your sign-in email')}. Off until you turn it on. Every email has an unsubscribe link.</p>
+ <button class="btn gray" type="button" id="emailPreview">📨 Send me a preview now</button>${S.mailNote?`<p class="pcnote small" id="mailNote" role="status">${esc(S.mailNote)}</p>`:''}${S.mailHTML?`<iframe id="emailPreviewFrame" class="mailframe" title="Email preview" sandbox="" srcdoc="${esc(S.mailHTML)}"></iframe>`:''}</fieldset>
+ ${PC.p4?'':'<p class="small" id="prefsLocal">Saved on this device only until the database update (setup-part4.sql) is run.</p>'}${errHTML()}<button class="btn blue" type="button" id="savePrefs">Save preferences</button>${errHTML()}</div>`;}
+
+/* ---------- coming soon ---------- */
+const SOON=[['🤖','“Ask about my kid”','Ask questions about progress in plain language.'],['📄','Teacher report (PDF)','A one-page report to share at school.'],['📲','Phone notifications','Alerts on your phone, not just here.'],['🎙️','Voice notes from home','Record a cheer your kid hears in the game.'],['🏅','Family leaderboard','Friendly ranking between siblings.'],['💳','Premium plan','Extra features for families. The game stays free.'],['🧩','Home-screen widget','Today\u2019s minutes at a glance.']];
+function soonHTML(){return `<div class="card" id="soonCard"><h2>🚧 Coming soon</h2><p class="small">Not available yet. These need phone, chat or billing services that this test does not use. Nothing here is switched on.</p>
+ <ul class="soon">${SOON.map(([ic,t,d])=>`<li><span aria-hidden="true">${ic}</span><div><b>${esc(t)}</b> <span class="pill soonp">Coming soon</span><br><span class="small">${esc(d)}</span></div></li>`).join('')}</ul></div>`;}
+
 /* ---------- screens ---------- */
 function draw(){if(!S.user)return viewLogin();
  if(S.view==='addkid')return render(`<div class="card" id="addKidCard"><h2>Add a kid</h2><p class="small">Use a nickname, not a full name.</p>
@@ -200,26 +644,113 @@ function draw(){if(!S.user)return viewLogin();
   <div class="qr" id="qr">${qrSVG(url)}</div>
   <h3>On your kid's device</h3><ol><li>Open NumiRealm and go to <b>Settings</b>.</li><li>Tap <b>Link to a parent account (test)</b> and answer the grown-up question.</li><li>Type this code (or scan the QR code with the device's camera), pick the hero your kid plays, and tap <b>Link device</b>.</li></ol>
   ${errHTML()}<button class="btn gray" id="codeDone" type="button">Done</button></div>`),tick();}
- if(S.view==='kid'){const k=S.kids.find(x=>x.id===S.kid);if(!k){S.view='family';return draw();}const pr=S.progress[k.id],ev=S.events[k.id],st=struggles(pr),devs=S.devices.filter(d=>d.kid_id===k.id);
+ if(S.view==='lessons')return render(lessonsView());
+ if(S.view==='alerts')return render(alertsView());
+ if(S.view==='kid'){const k=S.kids.find(x=>x.id===S.kid);if(!k){S.view='family';return draw();}if(!SUM[k.id]){SUM[k.id]={state:'loading'};setTimeout(()=>loadSum(k),0);}const pr=S.progress[k.id],ev=S.events[k.id],devs=S.devices.filter(d=>d.kid_id===k.id);
   const acc=pr?Object.values(pr.skills||{}).reduce((a,s)=>[a[0]+(s.r||0),a[1]+(s.t||0)],[0,0]):[0,0];
   return render(`<button class="btn gray sm" id="toFamily" type="button">← Family</button>
   <div class="card" id="kidCard"><h2>${esc(k.nickname)}</h2><p><span class="pill">Ages ${esc(k.age_range.replace('-','–'))}</span><span class="pill">${k.grade==='PreK'?'Pre-K':k.grade==='K'?'Kindergarten':'Grade '+esc(k.grade)}</span>${pr&&pr.hero?`<span class="pill">Hero: ${esc(HERO[pr.hero]||pr.hero)}</span>`:''}</p>
   ${pr?`<p class="small">Last update ${ago(pr.updated_at)} · ${mins(pr.time_played_sec)} played · ${acc[1]?Math.round(100*acc[0]/acc[1])+'% correct':'no answers yet'} · ${pr.lanterns_used} lanterns · ${pr.examples_opened} examples opened</p>`:'<p class="small" id="noProgress">No progress yet. Link a device and play a lesson.</p>'}
-  <h3>Realms</h3><div id="realms">${REALMS.map(([id,n])=>{const r=(pr&&pr.realms&&pr.realms[id])||{chapters:0,total:0,stars:0,max:0};const pc=r.total?Math.round(100*r.chapters/r.total):0;
-   return `<div class="realm"><span>${n}</span><div class="bar" aria-hidden="true"><i style="width:${pc}%"></i></div><span class="small">${r.chapters}/${r.total||'–'} ch · ⭐ ${r.stars}</span></div>`;}).join('')}</div>
-  <h3>Needs practice</h3><div id="struggles">${st.length?st.map(s=>`<p><span class="pill warn">${esc(s.n)}</span> ${Math.round(s.acc*100)}% correct of ${s.t}${s.l?` · ${s.l} lanterns`:''}</p>`).join(''):'<p class="small">Nothing stands out yet. 🎉</p>'}</div>
-  <h3>Trend</h3><div class="chart">${trendSVG(ev)}</div></div>
+  <h3>Progress</h3><div id="engWrap">${engHTML(pr,ev)}</div></div>${summaryHTML(k)}
+  <nav class="kidnav" aria-label="On this page"><a href="#summaryCard">🗞️ Summary</a><a href="#tipsCard">🎯 Tips</a><a href="#questCard">📜 Quests</a><a href="#fixitCard">🛠️ Fix-it</a><a href="#rewardsCard">🎁 Rewards</a><a href="#milestoneCard">🏆 Milestones</a><a href="#challengeCard">🏠 Challenge</a></nav>
+  ${tipsHTML(k,pr)}${questHTML(k,pr)}${fixitHTML(k,pr)}${rewardsHTML(k,pr)}${milestonesHTML(k,pr)}${challengeHTML(k,pr,ev)}
   <div class="card" id="kidDevices"><h2>Devices</h2>${devs.length?devs.map(devRow).join(''):'<p class="small">No devices linked yet.</p>'}
   ${errHTML()}<button class="btn blue" type="button" id="makeCode" data-code="${k.id}">➕ Add a device (get a code)</button></div>`);}
- render(`${S.welcome?welcomeHTML():''}<div class="card" id="familyCard"><h2>Your family</h2>${S.kids.length?`<div class="grid">${S.kids.map(k=>{const pr=S.progress[k.id],st=struggles(pr)[0];
+ render(`${S.welcome?welcomeHTML():''}${toastHTML()}<div class="card" id="familyCard"><h2>Your family</h2>${S.kids.length?`<div class="grid">${S.kids.map(k=>{const pr=S.progress[k.id],st=struggles(pr)[0];
    return `<button class="kid" type="button" data-kid="${k.id}"><b>${esc(k.nickname)}</b>${pr&&pr.hero?` <span class="small">plays ${esc(HERO[pr.hero]||pr.hero)}</span>`:''}<br>
-   <span class="small">${esc(reached(pr))}</span><br><span class="pill">⭐ ${weekStars(S.events[k.id],pr)} this week</span><span class="pill">⏱ ${mins(pr&&pr.time_played_sec)}</span>${st?`<br><span class="pill warn">Needs practice: ${esc(st.n)}</span>`:''}</button>`;}).join('')}</div>`:'<p id="noKids">Add your first kid to get started.</p>'}
+   <span class="small">${esc(reached(pr))}</span><br><span class="pill">⭐ ${weekStars(S.events[k.id],pr)} this week</span><span class="pill">⏱ ${mins(pr&&pr.time_played_sec)}</span>${st?`<br><span class="pill warn">Needs practice: ${esc(st.n)}</span>`:''}</button>`;}).join('')}</div>`:'<p id="noKids">Add your first kid to get started.</p><p class="small">Want to look around first? <button class="btn gray sm" id="sampleBtn" type="button">👀 Try it with sample data</button></p>'}
   ${S.kids.length<2?'<button class="btn" id="addKidBtn" type="button">➕ Add a kid</button>':'<p class="small">This test allows up to 2 kids.</p>'}${errHTML()}</div>
-  <div class="card" id="allDevices"><h2>Linked devices</h2>${S.devices.length?S.devices.map(devRow).join(''):'<p class="small">No devices yet. Open a kid and tap “Add a device”.</p>'}</div>`);}
+  <div class="card" id="pcCard"><h2>🧭 Parent Center</h2><div class="lsgrid"><button type="button" class="lcard" id="openLessons"><span class="lci" aria-hidden="true">📚</span><b>Learn the method</b><span class="small">${LESSONS.length} two-minute lessons</span></button>
+  <button type="button" class="lcard" id="openAlerts2"><span class="lci" aria-hidden="true">🔔</span><b>Alerts & preferences</b><span class="small">${bellCount()} new · shown only here</span></button>
+  <a class="lcard" id="openGameNight" href="gamenight.html${location.search.includes('parenttest=1')?'?parenttest=1':''}" onclick="try{sessionStorage.setItem('nr-gn-ok','1')}catch(e){}" style="text-decoration:none;color:inherit"><span class="lci" aria-hidden="true">🎉</span><b>Family Game Night</b><span class="small">Host a math party on everyone's devices</span></a></div>${PC.p4===false?setupNote('Quests, fix-it plans and rewards'):''}</div>
+  <div class="card" id="allDevices"><h2>Linked devices</h2>${S.devices.length?S.devices.map(devRow).join(''):'<p class="small">No devices yet. Open a kid and tap “Add a device”.</p>'}</div>${helpHTML()}${soonHTML()}`);}
 function devRow(d){const k=S.kids.find(x=>x.id===d.kid_id)||{};return `<div class="dev"><span><b>${esc(d.device_name)}</b> <span class="small">· ${esc(k.nickname||'')} · last sync ${ago(d.last_seen_at)}</span></span><button class="btn red sm" type="button" data-unlink="${d.id}">Remove</button></div>`;}
 let timer=null;function tick(){clearInterval(timer);const go=()=>{const el=$('countdown');if(!el||!S.code){clearInterval(timer);return;}const s=Math.max(0,Math.round((new Date(S.code.expires_at)-Date.now())/1000));
  el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');if(!s){el.textContent='expired';clearInterval(timer);}};go();timer=setInterval(go,1000);}
 
+/* ---------- v28: sample data (example only, never saved) ---------- */
+const SAMPLE_ID='sample-kid';
+function sampleBar(){return `<div class="samplebar" id="sampleBar" role="note">📋 EXAMPLE DATA: this is a made-up kid so you can look around. Nothing here is real or saved.<span id="sampleMsg" class="small" role="status"></span><button class="btn gray sm" id="sampleExit" type="button">Exit example</button></div>`;}
+function sampleData(){const today=new Date(),iso=d=>d.toISOString().slice(0,10);
+ const days=Array.from({length:400},(_,i)=>i%7===3||i%11===5?0:6+(i*37)%30);
+ const ev=Array.from({length:7},(_,i)=>({kid_id:SAMPLE_ID,day:iso(new Date(today-(6-i)*864e5)),stars_total:20+i*3,answers_right:120+i*14,answers_total:150+i*17,minutes:60+i*18}));
+ return {kid:{id:SAMPLE_ID,nickname:'Sample Kid',age_range:'6-8',grade:'2',created_at:iso(today),sample:true},
+  progress:{kid_id:SAMPLE_ID,hero:'emi',updated_at:new Date(today-36e5).toISOString(),time_played_sec:5*3600+1200,lanterns_used:4,examples_opened:9,
+   realms:{add:{stars:21,chapters:7,total:10,max:30},sub:{stars:12,chapters:4,total:10,max:30},mult:{stars:8,chapters:3,total:12,max:36},div:{stars:0,chapters:0,total:10,max:30},frac:{stars:2,chapters:1,total:8,max:24},mix:{stars:0,chapters:0,total:6,max:18}},
+   skills:{'mult:x7':{n:'×7 facts',r:6,t:14,l:4},'add:c2':{n:'adding within 20',r:38,t:40,l:0},'sub:c3':{n:'subtracting across zero',r:9,t:15,l:2},'mult:x2':{n:'×2 facts',r:30,t:31,l:0},'frac:c3':{n:'halves, thirds and fourths',r:3,t:6,l:1}},
+   play:{v:1,end:iso(today),days,months:{}}},events:ev};}
+function sampleApply(){const d=sampleData();S.kids=[d.kid];S.progress={[SAMPLE_ID]:d.progress};S.events={[SAMPLE_ID]:d.events};S.devices=[];
+ SUM[SAMPLE_ID]={state:'local',source:'template',text:'Sample Kid played about 2 hours on 5 days this week and earned 18 stars. Adding within 20 is rock solid (95% right). ×7 facts need a little love: try skip-counting by 7s on the stairs.'};}
+function sampleOn(){if(S.sample)return;S._real={kids:S.kids,progress:S.progress,events:S.events,devices:S.devices};S.sample=true;sampleApply();}
+function sampleOff(){if(!S.sample)return;S.sample=false;const r=S._real||{};S.kids=r.kids||[];S.progress=r.progress||{};S.events=r.events||{};S.devices=r.devices||[];delete SUM[SAMPLE_ID];if(S.kid===SAMPLE_ID){S.kid=null;}if(S.view==='kid'||S.view==='code')S.view='family';}
+const SAMPLE_WRITE_IDS=['makeCode','qSend','rSave','saveKid','addKidBtn','chalBtn','sumRefresh','emailPreview','savePrefs','markRead'];
+const SAMPLE_WRITE_DATA=['pref','rw','plan','plansend','planstop','planday','rwgive','rwcancel','qcancel','unlink','chal','week'];
+function sampleBlocks(t){if(t.id==='sampleExit'){sampleOff();draw();return true;}
+ if(SAMPLE_WRITE_IDS.includes(t.id)||SAMPLE_WRITE_DATA.some(k=>k in t.dataset)){const m=$('sampleMsg');if(m)m.textContent=' That button is turned off in the example. Add your own kid to use it.';else alert('That button is turned off in the example.');return true;}return false;}
+app.addEventListener('click',ev=>{const t=ev.target.closest('button');if(t&&t.id==='sampleBtn'){sampleOn();draw();}});
+/* ---------- v28: Help / FAQ ---------- */
+const HELP=[['🔗 Linking a kid','Add a kid (a nickname is enough), open them and tap “Add a device”. Type the 6-letter code, or scan the QR code, in the game under Settings on the kid’s device. Progress syncs from then on.'],
+ ['📊 Progress tabs','Time shows minutes played per day, week, month or year. Accuracy shows percent right. Realms shows stars per world. Skill map shows each skill as Mastered, Growing, Needs practice or Not tried yet.'],
+ ['🗞️ Weekly summary','A short note about the week. It is labeled “AI-written” when AI wrote it, or “Written from your kid’s numbers”. The AI never gets your kid’s name.'],
+ ['🎯 Tips & fix-it plans','Tips point at weak skills using your kid’s real numbers. A fix-it plan is 5 short days: one in-game quest plus a 2-minute activity at home.'],
+ ['📜 Quest from home','Pick a skill and a number of questions. It shows up as a scroll on your kid’s linked device, and the result comes back here.'],
+ ['🎁 Rewards','Set a real-world reward for stars, minutes or quests. It is earned automatically; you mark it as given.'],
+ ['🔔 Alerts & email','Alerts show only on this page. Choose which events, the daily goal and quiet hours. The weekly email is off until you turn it on and pick a day; every email has an unsubscribe link.'],
+ ['🎉 Family Game Night','Everyone plays math at the same time on their own device. A grown-up opens a room, players join with a code or QR. No accounts, nothing saved.'],
+ ['📚 Learn the method','Two-minute lessons that show how the game teaches, so you can help the same way at home.'],
+ ['🔒 Privacy','We keep a nickname, an age range and game progress. No ads. You can remove a device or a kid at any time.']];
+function helpHTML(){return `<div class="card" id="helpCard"><h2>❓ Help & FAQ</h2><p class="small">Short answers. Tap a question. <button class="btn gray sm" id="helpTour" type="button">▶️ Replay the tour</button></p>${HELP.map(([q,a],i)=>`<details data-help="${i}"><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>`;}
+app.addEventListener('click',ev=>{const t=ev.target.closest('button');if(t&&t.id==='helpTour')TOUR.start();});
+/* ---------- v28: first-visit guided tour ---------- */
+const TOUR=(function(){
+ const kid=()=>{const k=S.kids[0];if(!k)return false;S.view='kid';S.kid=k.id;S.etab=S.etab||'time';return true;};
+ const etab=v=>()=>{if(!kid())return false;S.etab=v;return true;};
+ const STEPS=[
+  {go:()=>{S.view='family';return true;},sel:'#familyCard',t:'👋 Welcome to the Parent Area',x:'A quick tour of what you can do here. It takes about a minute. You can skip it and replay it any time with “❓ How it works”.'},
+  {k:1,go:kid,sel:'#kidDevices',t:'🔗 Link your kid’s device',x:'Open a kid and tap “Add a device”. Type the code or scan the QR code in the game on their tablet or phone. Progress then shows up here.'},
+  {k:1,go:etab('time'),sel:'#engWrap',t:'⏱ Time',x:'How long your kid plays, per day, week, month or year.'},
+  {k:1,go:etab('acc'),sel:'#engWrap',t:'🎯 Accuracy',x:'The percent of answers right over time. Steady is great; dips are normal when a new skill starts.'},
+  {k:1,go:etab('realms'),sel:'#engWrap',t:'🗺️ Realms',x:'Stars earned in each world of the game, from Addition Meadow to Muddle Tower.'},
+  {k:1,go:etab('skills'),sel:'#engWrap',t:'🧩 Skill map',x:'Every skill as a tile: Mastered, Growing, Needs practice, Just started or Not tried yet.'},
+  {k:1,go:kid,sel:'#summaryCard',t:'🗞️ Weekly summary',x:'A short note about the week: time, wins, weak spots and a tip. It says “AI-written” when AI wrote it. The AI never sees your kid’s name.'},
+  {k:1,go:kid,sel:'#tipsCard',t:'💡 Tips',x:'Tips use your kid’s real numbers (like “gets ×7 right 6 of 14 times”) with a lesson, a quest or a fix-it plan one tap away.'},
+  {k:1,go:kid,sel:'#fixitCard',t:'🛠️ Fix-it plans',x:'Five short days for one tricky skill: an in-game quest plus a 2-minute activity at home. You see accuracy before and after.'},
+  {k:1,go:kid,sel:'#questCard',t:'📜 Quest from home',x:'Send a mini mission with an optional message. It appears as a scroll in the game on your kid’s device.'},
+  {k:1,go:kid,sel:'#rewardsCard',t:'🎁 Rewards',x:'Promise a real-world reward for stars, minutes or quests. It is earned automatically and your kid sees the progress bar.'},
+  {go:()=>{S.view='alerts';return true;},sel:'#prefsCard',t:'🔔 Alerts & quiet hours',x:'Pick which alerts you want, the daily play goal and quiet hours. Alerts only show on this page.'},
+  {go:()=>{S.view='alerts';return true;},sel:'#emailPrefs',t:'✉️ Weekly email',x:'Off until you turn it on. Pick a day, and preview it right now. Every email has an unsubscribe link.'},
+  {go:()=>{S.view='family';return true;},sel:'#openGameNight',t:'🎉 Family Game Night',x:'Math party on everyone’s devices: you open a room, the family joins with a code. Points for right and fast answers.'},
+  {go:()=>{S.view='family';return true;},sel:'#openLessons',t:'📚 Learn the method',x:'Two-minute lessons that show how the game teaches, so you can help the same way at home.'},
+  {go:()=>{S.view='family';return true;},sel:'#helpCard',t:'✅ That’s it!',x:'Questions later? The Help & FAQ is here, and “❓ How it works” at the top replays this tour.'}];
+ let i=-1,tmp=false,els=null;
+ const key=()=>'nr-tour-done:'+(S.user&&S.user.id);
+ function done(){try{if(localStorage.getItem(key())==='1')return true;}catch(e){}return !!(S.user&&S.user.user_metadata&&S.user.user_metadata.nr_tour_done);}
+ function markDone(){try{localStorage.setItem(key(),'1');}catch(e){}
+  if(S.user&&!(S.user.user_metadata||{}).nr_tour_done){S.user.user_metadata=Object.assign({},S.user.user_metadata,{nr_tour_done:true});sb.auth.updateUser({data:{nr_tour_done:true}}).catch(()=>{});}}
+ function maybe(){if(i<0&&S.user&&S.consented&&!done())start();}
+ function ui(){if(els)return els;const shade=document.createElement('div');shade.id='tourShade';const hole=document.createElement('div');hole.id='tourHole';
+  const pop=document.createElement('div');pop.id='tourPop';pop.setAttribute('role','dialog');pop.setAttribute('aria-modal','true');pop.setAttribute('aria-labelledby','tourT');
+  document.body.append(shade,hole,pop);pop.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='tourNext')show(i+1);else if(b.id==='tourBack')show(i-1);else if(b.id==='tourSkip'||b.id==='tourDone')stop(true);});
+  document.addEventListener('keydown',onKey);addEventListener('resize',place);addEventListener('scroll',place,{passive:true});return els={shade,hole,pop};}
+ function onKey(e){if(i<0)return;if(e.key==='Escape')stop(true);else if(e.key==='ArrowRight')show(i+1);else if(e.key==='ArrowLeft')show(i-1);}
+ function target(){return i>=0&&document.querySelector(STEPS[i].sel);}
+ function place(){if(!els||i<0)return;const t=target(),h=els.hole;if(!t){h.style.cssText='left:50%;top:40%;width:0;height:0';return;}
+  const r=t.getBoundingClientRect(),pad=6;h.style.left=(r.left-pad)+'px';h.style.top=(r.top-pad)+'px';h.style.width=(r.width+2*pad)+'px';h.style.height=(r.height+2*pad)+'px';}
+ function show(n){if(n<0)return;if(n>=STEPS.length)return stop(true);
+  if(!S.kids.length&&STEPS[n].k){sampleOn();tmp=true;}
+  i=n;const st=STEPS[i];if(st.go()===false){}draw();ui();
+  const t=target(),last=i===STEPS.length-1;
+  els.pop.innerHTML=`<h3 id="tourT">${st.t}</h3><p id="tourX">${st.x}</p>${S.sample&&tmp?'<p class="small" id="tourSample">📋 Shown with example data until you link a kid.</p>':''}
+   <div class="trow">${i?'<button class="btn gray sm" id="tourBack" type="button">← Back</button>':''}${last?'<button class="btn sm" id="tourDone" type="button">Got it!</button>':'<button class="btn blue sm" id="tourNext" type="button">Next →</button><button class="btn gray sm" id="tourSkip" type="button">Skip tour</button>'}<span class="tstep" id="tourStep">${i+1} / ${STEPS.length}</span></div>`;
+  document.body.style.paddingBottom=(els.pop.offsetHeight+40)+'px';
+  if(t){const pop=els.pop.getBoundingClientRect();const r=t.getBoundingClientRect();const room=innerHeight-pop.height-24;
+   let y=scrollY+r.top-Math.max(12,Math.min(80,(room-r.height)/2));window.scrollTo(0,Math.max(0,y));}
+  place();requestAnimationFrame(place);const b=document.getElementById(last?'tourDone':'tourNext');b&&b.focus({preventScroll:true});}
+ function start(){i=-1;show(0);}
+ function stop(finished){if(i<0&&!els)return;i=-1;if(els){els.shade.remove();els.hole.remove();els.pop.remove();document.body.style.paddingBottom='';document.removeEventListener('keydown',onKey);removeEventListener('resize',place);removeEventListener('scroll',place);els=null;}
+  if(finished)markDone();if(tmp){tmp=false;sampleOff();}S.view='family';if(S.user&&S.consented)draw();}
+ $('tourBtn').onclick=()=>start();
+ return {start,stop,maybe,done,STEPS,get i(){return i;}};})();
 sb.auth.onAuthStateChange((ev,session)=>{if(ev==='SIGNED_IN'&&session&&!S.user){S.user=session.user;boot();}});
 boot().catch(e=>{S.err=friendly(e);viewLogin();});
 </script>
