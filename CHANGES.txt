@@ -1,3 +1,10 @@
+## v24 (Oct 28, 2026)
+- New "📖 Example" button next to the hint lanterns on every question screen (times tables, all subject chapters, bosses and drills). It opens a worked example of a different problem with the same skill and format and a different answer, solved step by step. "Another example" shows a new one each time, and "Back to my problem" (or ✕ / Esc) returns with your answer, timer and hints unchanged.
+- Examples never give your answer away: they don't reuse your problem's numbers (in any order), your answer, or any of your numbers as the example's answer, and a missing-number problem gets a missing-number example that doesn't show your missing number. Equivalent fractions count as the same.
+- Examples are free and unlimited: no lanterns used, no change to stars, saves or streaks. Drill timers pause while an example is open. The owl narrator reads the example aloud when the narrator is on.
+- Wrong answers in times-table practice now also show a worked example (groups/array and skip counting). Subject wrong-answer examples and lantern limits are unchanged.
+- APP_VERSION, version.json and the service-worker cache bumped to 24.
+
 ## v23 (Oct 28, 2026)
 - New "Get the NumiRealm app" card at the bottom of Home with short Add-to-Home-Screen steps for iPhone/iPad, Android and computers. Your own device's steps show first. An "Install NumiRealm" button appears when the browser offers installation. The card says "You're playing the app version" when opened from the Home Screen.
 - Real web app manifest (manifest.webmanifest) and PNG icons (192, 512, maskable 512, Apple touch 180) replace the inline data: manifest, so Chrome, Edge and Android can install NumiRealm. The offline cache includes them.

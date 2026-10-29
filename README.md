@@ -17,7 +17,11 @@ Each release must bump the version in two places together, `APP_VERSION` in `ind
 
 ## Tests
 
-`test_v22.py` and `test_v23.py` run with Playwright. Set `PWB=chromium` or `PWB=webkit` and optionally `SHOTS=1` for screenshots. Run it from this folder.
+`test_v22.py`, `test_v23.py` and `test_v24.py` run with Playwright. Set `PWB=chromium` or `PWB=webkit` and optionally `SHOTS=1` for screenshots. Run it from this folder.
+
+## Example button (v24)
+
+Every question screen has a "📖 Example" button next to the hint lanterns. It shows a different problem of the same kind, worked step by step, as many times as the player likes. It's free (no lanterns), pauses drill timers, and keeps the player's answer in place.
 
 ## Install as an app (v23)
 NumiRealm is a web app, not an App Store app. Grown-ups can add it to the Home Screen (Safari → Share → Add to Home Screen; Chrome on Android → ⋮ → Install app; Chrome/Edge on a computer → install icon in the address bar). Files: `manifest.webmanifest`, `icons/`. Steps are shown on the Home screen.
