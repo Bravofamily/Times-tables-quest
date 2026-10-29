@@ -767,6 +767,16 @@ body.calm *,body.calm *::before,body.calm *::after{animation-duration:.001ms!imp
 #nrhTopGate{position:fixed;inset:0;z-index:1000;background:#0A1F44cc;display:flex;align-items:center;justify-content:center;padding:16px}
 #nrhTopGate .nrhdlg{background:#fff;color:#0A1F44;border-radius:20px;padding:18px;max-width:420px;width:100%;box-shadow:0 12px 40px #0008}
 #nrhTopGate h3{margin:0 0 6px;font-size:22px}#nrhTopGate h3 span{color:#0284c7}#nrhTopGate .plin{width:100%;box-sizing:border-box}#nrhTopGate .plin{min-height:48px;font-size:18px}#nrhTopGate .nrhrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}#nrhTopGate .nrhrow .btn{margin:0;min-height:48px;flex:1 1 140px}
+#nrQuest{max-width:560px;margin:18px auto 6px;padding:16px 16px 14px;border-radius:18px;background:linear-gradient(160deg,#fff7e6,#fde68a);color:#3b2300;border:3px solid #d97706;box-shadow:0 6px 18px #0A1F4433;font-family:Poppins,system-ui,sans-serif;text-align:left;box-sizing:border-box;position:relative}
+#nrQuest[hidden]{display:none}
+#nrQuest h3{font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:21px;margin:0 0 6px;color:#7c2d12}#nrQuest h3 span{color:#d97706}
+#nrQuest .nrqq,#nrQuest .nrqr{background:#fffbeb;border:2px dashed #d97706;border-radius:14px;padding:10px 12px;margin:8px 0}
+#nrQuest .nrqq.done{border-style:solid;border-color:#16a34a;background:#f0fdf4}
+#nrQuest .nrqt{font-size:17px}#nrQuest .nrqm{font-style:italic;margin:4px 0;font-size:15px}
+#nrQuest .nrqs{margin:4px 0;font-size:14px}#nrQuest .nrqb{margin:6px 0 0;font-size:15px}
+#nrQuest .nrqbar{height:12px;background:#fde68a;border-radius:999px;overflow:hidden;margin:6px 0}#nrQuest .nrqbar i{display:block;height:100%;background:linear-gradient(90deg,#f97316,#d97706)}
+#nrQuest .nrqbar.gold i{background:linear-gradient(90deg,#facc15,#16a34a)}
+#nrQuest .nrqgo{min-height:48px;min-width:44px;margin:4px 0 0}
 #nrParentHome{max-width:560px;margin:18px auto 6px;padding:16px 16px 14px;border-radius:18px;background:linear-gradient(135deg,#1E3A8A,#0A1F44);color:#F1F5F9;border:2px solid #f9731688;box-shadow:0 6px 18px #0A1F4433;font-family:Poppins,system-ui,sans-serif;text-align:left;box-sizing:border-box}
 #nrParentHome h3{font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:21px;margin:0 0 4px;color:#fff;line-height:1.2}#nrParentHome h3 span{color:#00C2FF}
 #nrParentHome p{margin:6px 0;font-size:14px;line-height:1.45}
@@ -2008,7 +2018,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='27';
+const APP_VERSION='28';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -4714,6 +4724,32 @@ setVoice=function(v){save.voiceName=v||null;persist();pickVoice();testVoice();};
   const lab=document.querySelector('label[for="voiceSel"]');if(lab)lab.innerHTML='Which voice<small>Pick the voice that reads to you</small>';}
  const tv=$('testVoice');if(tv&&!$('voiceTip'))tv.parentNode.insertAdjacentHTML('afterend',`<p class="small voicetip" id="voiceTip">Tip for grown-ups: on iPhone or iPad, more natural voices can be downloaded under <b>Settings › Accessibility › Spoken Content › Voices</b> (try an "Enhanced" or "Premium" English voice), then pick it here.</p>`);}catch(e){}};settingsScreen=track('settings',SCR.settings);}
 
+/* ===== v28 Play-time log (local, silent): active seconds per hero per LOCAL day =====
+   Counts a 10 s tick only when the tab is visible, a hero is picked and the kid touched/typed in the last 60 s.
+   Days older than 400 are rolled into months (kept 10 years). Sent to the parent account only when linked (NRP payload). */
+const NRT=(function(){
+ const K='nr-playlog',TICK=10,IDLE=60000,KEEP=400;
+ let last=0;const poke=()=>{last=Date.now();};
+ ['pointerdown','keydown','touchstart','wheel'].forEach(e=>addEventListener(e,poke,{passive:true,capture:true}));
+ const rd=()=>{try{const v=JSON.parse(localStorage.getItem(K)||'null');return v&&typeof v==='object'?v:{};}catch(e){return {};}};
+ const wr=v=>{try{localStorage.setItem(K,JSON.stringify(v));}catch(e){}};
+ const p2=n=>String(n).padStart(2,'0');
+ const dkey=d=>d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate());
+ function prune(o,now){const cut=new Date(now||Date.now());cut.setHours(12,0,0,0);cut.setDate(cut.getDate()-KEEP);const ck=dkey(cut);
+  const mcut=(cut.getFullYear()-10)+'-'+p2(cut.getMonth()+1);o.d=o.d||{};o.m=o.m||{};
+  Object.keys(o.d).forEach(k=>{if(k<ck){const m=k.slice(0,7);o.m[m]=(o.m[m]||0)+(o.d[k]|0);delete o.d[k];}});
+  Object.keys(o.m).forEach(k=>{if(k<mcut)delete o.m[k];});return o;}
+ function add(hero,sec,when){if(!hero||!(sec>0))return;const all=rd(),o=all[hero]||(all[hero]={d:{},m:{}});o.d=o.d||{};
+  const k=dkey(when||new Date());o.d[k]=Math.min(86400,(o.d[k]|0)+Math.round(sec));prune(o,when);wr(all);}
+ function active(){if(document.hidden)return false;if(Date.now()-last>IDLE)return false;try{return !!(save&&save.hero&&save.profiles&&save.profiles[save.hero]);}catch(e){return false;}}
+ setInterval(()=>{if(active())add(save.hero,TICK);},TICK*1000);
+ /* compact form for the payload: minutes per local day (oldest first, ends today) + rolled-up months */
+ function summary(hero){const o=prune((rd()[hero])||{d:{},m:{}});const t=new Date();t.setHours(12,0,0,0);const days=[];
+  let first=-1;for(let i=KEEP-1;i>=0;i--){const d=new Date(t);d.setDate(t.getDate()-i);const v=Math.round(((o.d||{})[dkey(d)]||0)/60);if(v>0&&first<0)first=days.length;days.push(v);}
+  const months={};Object.entries(o.m||{}).forEach(([k,v])=>{const m=Math.round(v/60);if(m>0)months[k]=m;});
+  return {v:1,end:dkey(t),days:first<0?[]:days.slice(first),months};}
+ return {add,summary,prune,dkey,raw:rd,_poke:poke};})();
+
 /* ===== Parent Area PHASE 1 (TEST): link this device to a parent account =====
    Hidden unless the URL has ?parenttest=1 (or this device is already linked, so it can be unlinked).
    Kid side never logs in: it holds a long random device token and only calls 3 anon RPCs. */
@@ -4736,7 +4772,7 @@ const NRP=(function(){
   try{if(typeof S!=='undefined'&&S&&S.n)return {k:'mult:x'+S.n,n:'×'+S.n+' facts'};}catch(e){}return null;}
  function rec(kind,ok){const L=link();if(!L||!save||!save.hero)return;const s=stats(),h=hs(s,save.hero);
   if(kind==='ans'||kind==='lan'){const c=curSkill();if(!c)return;const o=h.s[c.k]||(h.s[c.k]={n:c.n,r:0,t:0,l:0});
-   if(kind==='ans'){o.t++;if(ok)o.r++;}else{o.l++;h.lan++;}}
+   if(kind==='ans'){o.t++;if(ok)o.r++;try{if(typeof NRQ!=='undefined')NRQ.onAns(c.k,ok);}catch(e){}}else{o.l++;h.lan++;}}
   else if(kind==='ex')h.ex++;else if(kind==='sec')h.sec+=ok;wr(SK,s);}
  /* ---- payload from the real save format ---- */
  function payload(sv,heroId,sts){sv=sv||save;const pf=sv.profiles[heroId];if(!pf)return null;const realms={};
@@ -4745,7 +4781,7 @@ const NRP=(function(){
    realms[x.id]={chapters:ch|0,total:total|0,stars:stars|0,max:(total|0)*3};});
   const h=((sts||stats()).h||{})[heroId]||{s:{},sec:0,lan:0,ex:0};const skills={};
   Object.entries(h.s||{}).slice(0,80).forEach(([k,o])=>{skills[k]={n:String(o.n||k).slice(0,40),r:o.r|0,t:o.t|0,l:o.l|0};});
-  return {v:1,hero:heroId,realms,skills,time_played_sec:Math.round(h.sec||0),lanterns_used:h.lan|0,examples_opened:h.ex|0,client_at:new Date().toISOString()};}
+  return {v:1,hero:heroId,realms,skills,time_played_sec:Math.round(h.sec||0),lanterns_used:h.lan|0,examples_opened:h.ex|0,play:(function(){try{return NRT.summary(heroId);}catch(e){return null;}})(),client_at:new Date().toISOString()};}
  /* ---- network ---- */
  async function rpc(fn,body){const r=await fetch(CFG.url+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json',apikey:CFG.key,Authorization:'Bearer '+CFG.key},body:JSON.stringify(body)});
   if(!r.ok)throw new Error('http_'+r.status);return r.json();}
@@ -4828,13 +4864,14 @@ const NRH=(function(){
   ${g?`<div id="nrhGateBox" role="group" aria-label="Grown-up check"><p><b>Grown-ups only.</b> This leaves the game. What is <b id="nrhQ">${g.a} × ${g.b} + ${g.c}</b>?</p>
    <input id="nrhGate" class="plin" inputmode="numeric" autocomplete="off" aria-label="Answer">${st.err?`<p class="plred" id="nrhErr" role="alert">${esc(st.err)}</p>`:''}
    <div class="nrhrow"><button class="btn" id="nrhGo" type="button">Continue</button><button class="btn gray" id="nrhCancel" type="button">Cancel</button></div></div>`
-  :`<div class="nrhrow"><button class="btn" id="nrhLogin" type="button">🔑 Parent Login</button></div><button class="nrhwhat" id="nrhWhat" type="button">What's included?</button>`}`;}
+  :`<div class="nrhrow"><button class="btn" id="nrhLogin" type="button">🔑 Parent Login</button><button class="btn blue" id="nrhGN" type="button">🎉 Family Game Night</button></div><button class="nrhwhat" id="nrhWhat" type="button">What's included?</button>`}`;}
  function mount(){if(!SHOW_HOME)return;const app=document.getElementById('nrApp');let el=document.getElementById('nrParentHome');
   if(!app&&!el)return;
   if(!el){el=document.createElement('section');el.id='nrParentHome';el.setAttribute('aria-label','Parent Area for grown-ups');app.parentNode.insertBefore(el,app);
    el.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
     if(b.id==='nrhLogin'||b.id==='nrhWhat'){st.dest=b.id==='nrhWhat'?ABOUT_URL:LOGIN_URL;st.gate=newGate();st.err='';draw(el);const i=document.getElementById('nrhGate');i&&i.focus();}
     else if(b.id==='nrhCancel'){st.gate=null;st.err='';draw(el);}
+    else if(b.id==='nrhGN')api.leave(PARENT_BASE+'gamenight.html'+FQ);
     else if(b.id==='nrhGo')go(el);});
    el.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='nrhGate')go(el);});draw(el);}
   else if(app&&el.nextElementSibling!==app)app.parentNode.insertBefore(el,app);}
@@ -4862,8 +4899,75 @@ const NRH=(function(){
  if(SHOW_HOME){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',topBtn);else topBtn();}
  if(SHOW_HOME){new MutationObserver(()=>{if(document.getElementById('nrApp')&&!document.getElementById('nrParentHome'))mount();}).observe(document.body,{childList:true,subtree:true});mount();}
  return api;})();
+/* v28 Family Game Night (TEST): on a linked device without ?parenttest=1, a small card links to gamenight.html.
+   Hidden on unlinked devices, so the normal game is unchanged. Hosting is behind a grown-up check on that page. */
+(function(){if(NRH.SHOW_HOME||!NRP.link())return;
+ function mount(){const app=document.getElementById('nrApp');if(!app||document.getElementById('nrGameNight'))return;
+  const el=document.createElement('section');el.id='nrGameNight';el.setAttribute('aria-label','Family Game Night');
+  el.innerHTML='<div class="nrhrow"><button class="btn blue" id="nrgnGo" type="button">🎉 Family Game Night</button></div>';
+  el.querySelector('button').addEventListener('click',()=>NRH.leave('gamenight.html'));app.parentNode.insertBefore(el,app);}
+ new MutationObserver(mount).observe(document.body,{childList:true,subtree:true});mount();})();
 
 /* NRH-END */
+/* NRQ-BEGIN */
+/* ===== v28 Parent Center (TEST): "Quest from home" scroll on the Home screen =====
+   Only for a device linked to a parent account (or ?parenttest=1 for previews). Reads the
+   kid's quests, rewards and family-challenge badges through the token-checked get_home RPC
+   and reports quest answers through quest_progress. Nothing is shown or sent otherwise. */
+const NRQ=(function(){
+ const HK='nr-parent-home',PK='nr-parent-qp';
+ const rd=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
+ const wr=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const link=()=>NRP.link();
+ const st={busy:false,note:''};
+ function home(){const h=rd(HK);return h&&typeof h==='object'?h:null;}
+ function mine(){const L=link();return !!(L&&save&&save.hero&&save.hero===L.hero);}
+ /* shown on Home when the linked hero is playing, or before any hero is picked; answers only count for the linked hero */
+ function shown(){const L=link();return !!(L&&save&&(!save.hero||save.hero===L.hero));}
+ async function call(fn,body){const r=await fetch(NRP.CFG.url+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json',apikey:NRP.CFG.key,Authorization:'Bearer '+NRP.CFG.key},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error('http_'+r.status);return r.json();}
+ async function refresh(){const L=link();if(!L||st.busy||navigator.onLine===false)return;st.busy=true;
+  try{await sendProgress();const r=await call('get_home',{p_device_token:L.token});
+   if(r&&r.ok){const loc=rd(PK)||{};(r.quests||[]).forEach(q=>{const p=loc[q.id];if(p&&q.status==='active'){q.right=Math.max(q.right|0,p.r|0);q.total=Math.max(q.total|0,p.t|0);}});
+    wr(HK,{at:Date.now(),quests:(r.quests||[]).slice(0,5),rewards:(r.rewards||[]).slice(0,3),badges:r.badges|0});draw();}
+   else if(r&&r.error==='unlinked'){wr(HK,null);wr(PK,null);draw();}}
+  catch(e){/* offline, or the server does not have part 4 yet: keep what we have */}
+  finally{st.busy=false;}}
+ async function sendProgress(){const L=link(),loc=rd(PK);if(!L||!loc)return;
+  for(const [id,p] of Object.entries(loc)){if(p.sent)continue;
+   try{const r=await call('quest_progress',{p_device_token:L.token,p_quest_id:id,p_right:p.r|0,p_total:p.t|0});
+    if(r&&(r.ok||r.error==='not_found')){const cur=rd(PK)||{};if(cur[id]&&cur[id].t===p.t){cur[id].sent=true;wr(PK,cur);}}}catch(e){return;}}}
+ /* called by NRP.rec for every answer while linked */
+ function onAns(k,ok){if(!mine())return;const h=home();if(!h)return;const q=(h.quests||[]).find(x=>x.status==='active'&&x.skill===k);if(!q)return;
+  q.total=(q.total|0)+1;if(ok)q.right=(q.right|0)+1;if(q.total>=q.goal){q.status='done';q.justDone=true;}wr(HK,h);
+  const loc=rd(PK)||{};loc[q.id]={r:q.right,t:q.total,sent:false};wr(PK,loc);clearTimeout(st.t);st.t=setTimeout(refresh,q.status==='done'?200:4000);}
+ function start(id){const h=home();const q=h&&(h.quests||[]).find(x=>x.id===id);if(!q)return;const m=/^([a-z]+):(x|c)(\d+)$/.exec(q.skill);if(!m)return;
+  const sid=m[1],n=+m[3];try{if(sid==='mult'&&m[2]==='x'){if(ORDER.indexOf(n)>unlockedIndex()){st.note='That quest is in a part of the castle you have not reached yet. Keep playing to unlock it!';return draw();}openLevel(n);}
+   else if(typeof playChapter==='function'&&SUBJ_BY[sid])playChapter(sid,n);}catch(e){}}
+ function html(){const h=home();if(!h)return '';const qs=(h.quests||[]),rw=(h.rewards||[]);if(!qs.length&&!rw.length&&!h.badges)return '';
+  const qh=qs.map(q=>{const pc=Math.min(100,Math.round(100*(q.total|0)/(q.goal||1))),done=q.status==='done';
+   return `<div class="nrqq${done?' done':''}" data-q="${esc(q.id)}"><div class="nrqt">${done?'✅':'📜'} <b>${esc(q.title)}</b></div>
+   ${q.message?`<p class="nrqm">“${esc(q.message)}”</p>`:''}
+   <div class="nrqbar" role="progressbar" aria-valuemin="0" aria-valuemax="${q.goal|0}" aria-valuenow="${q.total|0}" aria-label="Quest progress"><i style="width:${pc}%"></i></div>
+   <p class="nrqs">${done?'Quest complete! Your grown-up will see it. 🎉':`${q.total|0} of ${q.goal|0} questions · ${q.right|0} right`}</p>
+   ${done?'':`<button class="btn nrqgo" type="button" data-qgo="${esc(q.id)}">▶ Start quest</button>`}</div>`;}).join('');
+  const rh=rw.map(r=>{const have=Math.min(r.goal,r.have|0),pc=Math.round(100*have/(r.goal||1)),u={stars:'stars',minutes:'minutes',quests:'quests'}[r.goal_type]||'';
+   return `<div class="nrqr"><span aria-hidden="true">🎁</span> <b>${esc(r.title)}</b><div class="nrqbar gold"><i style="width:${pc}%"></i></div><p class="nrqs">${r.status==='earned'||have>=r.goal?'You did it! Ask your grown-up. 🎉':`${have} / ${r.goal} ${u}`}</p></div>`;}).join('');
+  const L=link();return `<h3>📜 From <span>home</span>${L&&L.nickname?' for '+esc(L.nickname):''}</h3>${st.note?`<p class="nrqs" role="status">${esc(st.note)}</p>`:''}${qh}${rh}${h.badges?`<p class="nrqb" id="nrqBadges">🏅 Family challenges done: <b>${h.badges|0}</b></p>`:''}`;}
+ function draw(){const el=document.getElementById('nrQuest');if(!el)return;const x=shown()?html():'';el.innerHTML=x;el.hidden=!x;}
+ function mount(){if(!link()&&!NRP.FLAG)return;const app=document.getElementById('nrApp');if(!app)return;let el=document.getElementById('nrQuest');
+  if(!el){el=document.createElement('section');el.id='nrQuest';el.hidden=true;el.setAttribute('aria-label','Quests from home');
+   el.addEventListener('click',e=>{const b=e.target.closest('button[data-qgo]');if(b)start(b.dataset.qgo);});}
+  if(!el.isConnected){const ph=document.getElementById('nrParentHome'),at=ph&&ph.parentNode===app.parentNode?ph:app;at.parentNode.insertBefore(el,at);}
+  draw();}
+ const api={HK,PK,refresh,onAns,start,draw,mount,home};
+ if(link()||NRP.FLAG){new MutationObserver(()=>{if(document.getElementById('nrApp')&&!document.getElementById('nrQuest'))mount();}).observe(document.body,{childList:true,subtree:true});mount();
+  if(link())setTimeout(refresh,1500);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')refresh();});window.addEventListener('online',()=>refresh());setInterval(()=>{if(!document.hidden)refresh();},120000);}
+ return api;})();
+/* NRQ-END */
+
 </script>
 </body>
 </html>

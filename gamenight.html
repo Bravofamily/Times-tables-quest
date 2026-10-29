@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en-US"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Family Game Night - NumiRealm</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="icons/icon-192.png">
+<style>
+@font-face{font-family:'Baloo 2';font-weight:600 800;font-display:swap;src:url(fonts/baloo2-latin-600-800.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url(fonts/poppins-latin-400.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:700;font-display:swap;src:url(fonts/poppins-latin-700.woff2) format('woff2')}
+*{box-sizing:border-box}html,body{margin:0;overflow-x:hidden}
+body{font-family:Poppins,system-ui,sans-serif;color:#0f172a;background:linear-gradient(160deg,#0A1F44,#1E3A8A 60%,#7c3aed);min-height:100vh}
+#testBanner{background:#fbbf24;color:#3b2300;text-align:center;font-weight:700;padding:8px 12px;font-size:14px}
+header{max-width:900px;margin:0 auto;padding:16px 16px 4px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px}
+header h1{font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:26px;margin:0;line-height:1.1}header h1 span{color:#00C2FF}
+.tag{color:#c7d2fe;font-size:13px;margin:0}
+main{max-width:900px;margin:0 auto;padding:8px 16px 40px}
+.card{background:#fff;border-radius:22px;padding:18px;margin:12px 0;box-shadow:0 6px 0 #0000001a,0 10px 30px #0000002a}
+h2{font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:26px;margin:0 0 8px;color:#1E3A8A}
+h3{font-family:'Baloo 2',Poppins,sans-serif;font-size:19px;margin:14px 0 6px;color:#0A1F44}
+p{line-height:1.5}.small{font-size:14px;color:#475569}
+label{display:block;font-weight:700;margin:12px 0 4px}
+input,select{font:inherit;font-size:18px;width:100%;min-height:48px;padding:8px 12px;border:2px solid #cbd5e1;border-radius:12px;background:#fff}
+input:focus,select:focus{outline:3px solid #00C2FF;border-color:#00C2FF}
+.btn{font:inherit;font-weight:700;font-size:18px;min-height:48px;min-width:44px;padding:10px 18px;border:0;border-radius:14px;background:#f97316;color:#fff;box-shadow:0 4px 0 #c2410c;cursor:pointer;margin:6px 6px 6px 0}
+.btn.blue{background:#2563eb;box-shadow:0 4px 0 #1e3a8a}.btn.gray{background:#e2e8f0;color:#0f172a;box-shadow:0 4px 0 #94a3b8}.btn.green{background:#059669;box-shadow:0 4px 0 #065f46}
+.btn[disabled]{opacity:.55;cursor:default}
+.err{color:#b91c1c;font-weight:700}.ok{color:#047857;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:flex;align-items:center;gap:8px;min-height:48px;padding:8px 14px;border:2px solid #cbd5e1;border-radius:14px;font-weight:700;cursor:pointer;margin:0;background:#f8fafc}
+.chip input{width:22px;min-height:22px;height:22px;margin:0}
+.chip.on,.chip:has(input:checked){border-color:#2563eb;background:#dbeafe}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.code{font-family:'Baloo 2',Poppins,sans-serif;font-size:56px;font-weight:800;letter-spacing:8px;color:#7c3aed;margin:0;line-height:1}
+.lobby{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+#qr svg{width:170px;height:170px;background:#fff;border-radius:12px}
+.plist{list-style:none;padding:0;margin:8px 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.plist li{background:#f1f5f9;border-radius:14px;padding:10px 12px;font-weight:700;display:flex;justify-content:space-between;gap:6px;align-items:center}
+.plist li.off{opacity:.5}.plist li.done{background:#d1fae5}
+.heroes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.hero{font:inherit;font-weight:700;min-height:64px;border:3px solid #e2e8f0;border-radius:16px;background:#f8fafc;cursor:pointer;font-size:15px}
+.hero b{display:block;font-size:26px}.hero[aria-pressed=true]{border-color:#7c3aed;background:#ede9fe}
+.q{font-family:'Baloo 2',Poppins,sans-serif;font-size:54px;font-weight:800;text-align:center;color:#0A1F44;margin:10px 0;line-height:1.1}
+.timer{height:14px;background:#e2e8f0;border-radius:999px;overflow:hidden}.timer i{display:block;height:100%;background:linear-gradient(90deg,#f97316,#facc15);transition:width .25s linear}
+.secs{text-align:center;font-weight:800;color:#7c3aed;font-size:20px;margin:6px 0}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{font:inherit;font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:32px;min-height:76px;border:0;border-radius:18px;color:#fff;cursor:pointer;box-shadow:0 5px 0 #0003}
+.choice:nth-child(1){background:#2563eb}.choice:nth-child(2){background:#f97316}.choice:nth-child(3){background:#059669}.choice:nth-child(4){background:#db2777}
+.choice[disabled]{opacity:.45}.choice.pick{opacity:1;outline:5px solid #facc15}
+.board{list-style:none;padding:0;margin:8px 0}.board li{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;margin:6px 0;background:#f1f5f9;font-weight:700}
+.board li .pts{margin-left:auto;font-family:'Baloo 2',Poppins,sans-serif;font-size:22px;color:#7c3aed}
+.board li.me{outline:3px solid #7c3aed}.board .gain{color:#047857;font-size:14px}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:10px;margin:16px 0}
+.pod{text-align:center;width:31%;max-width:180px}.pod .blk{border-radius:14px 14px 0 0;color:#fff;font-family:'Baloo 2',Poppins,sans-serif;font-size:34px;font-weight:800;padding-top:8px}
+.pod.p1 .blk{height:150px;background:#f59e0b}.pod.p2 .blk{height:110px;background:#94a3b8}.pod.p3 .blk{height:80px;background:#b45309}
+.pod .nm{font-weight:800;margin:6px 0 2px;word-break:break-word}.pod .sc{color:#7c3aed;font-weight:800}
+.owl{display:flex;gap:10px;align-items:center;background:#ede9fe;border-radius:16px;padding:10px 12px;margin:10px 0}
+.owl .o{font-size:40px}.owl p{margin:0;font-weight:700;color:#4c1d95}
+.big{font-size:22px;font-weight:800;text-align:center}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+.ctr{text-align:center}
+@media (max-width:520px){.q{font-size:44px}.code{font-size:44px}.heroes{grid-template-columns:repeat(2,1fr)}}
+/* back to the game, same pill as the parent pages */
+header{flex-wrap:wrap}.nrbackrow{flex-basis:100%;display:flex;margin:0 0 2px}
+.nrback{display:inline-flex;align-items:center;gap:6px;min-height:48px;min-width:44px;padding:8px 18px;border-radius:999px;background:linear-gradient(180deg,#3B5FD0 0%,#1E3A8A 60%,#172F72 100%);color:#fff;text-decoration:none;font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:17px;letter-spacing:.3px;box-shadow:0 5px 0 #0F1F4D,0 10px 18px #0004;text-shadow:0 1px 1px #0006;white-space:nowrap}
+.nrback:hover{filter:brightness(1.1)}.nrback:active{transform:translateY(3px);box-shadow:0 2px 0 #0F1F4D}
+.nrback:focus-visible{outline:3px solid #FFD166;outline-offset:3px}
+</style></head>
+<body>
+<div id="testBanner" hidden>TEST MODE: Family Game Night preview</div>
+<header><div class="nrbackrow"><a class="nrback" id="backLink" href="./" aria-label="Back to the NumiRealm game Home">🏠 Back to NumiRealm</a></div><div><h1>Numi<span>Realm</span> 🎉 Game Night</h1><p class="tag">Enter the Realm. Master the Math.</p></div></header>
+<main id="app" aria-live="polite"></main>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<script src="vendor/supabase.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script>
+/* NumiRealm Family Game Night (TEST). Supabase Realtime broadcast + presence, publishable key only.
+   The host page is the source of truth: it makes the questions, keeps the answers and scores.
+   Nothing is stored in a database: nicknames live only in the room while it is open. */
+const GN=(function(){
+'use strict';
+const CFG={url:'https://uuigasrelqbwxopvqoib.supabase.co',key:'sb_publishable_0E3BTvmAlWAc9wxz1Rl55w_0K6J-bmr'};
+const qs=new URLSearchParams(location.search);
+const FLAG=qs.get('parenttest')==='1';
+const LINKED=(()=>{try{return !!localStorage.getItem('nr-parent-link');}catch(e){return false;}})();
+const PORTAL=(()=>{try{return sessionStorage.getItem('nr-gn-ok')==='1';}catch(e){return false;}})();
+const FQ=FLAG?'?parenttest=1':'';
+const MAX=8,GRACE=10000,REVEAL_MS=6000,ROOM_TTL=3*3600e3;
+const HEROES=[['sage','Sage','🎤'],['emi','Emi','💜'],['blu','Blú','⭐'],['eshon','Eshon','✏️']];
+const HERO=Object.fromEntries(HEROES.map(h=>[h[0],h]));
+const TOPICS=[['mult','✖️ Times tables'],['add','➕ Adding'],['sub','➖ Taking away'],['div','➗ Sharing (division)'],['frac','🍕 Fractions']];
+const LEVELS=[['a','Ages 4-7'],['b','Ages 8-10'],['c','Ages 11+'],['g','Grown-up']];
+const LV=Object.fromEntries(LEVELS);
+const app=document.getElementById('app');
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const cleanName=s=>String(s||'').replace(/[^\p{L}\p{N} '\-]/gu,'').replace(/\s+/g,' ').trim().slice(0,12);
+const uid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);
+const CODE_CH='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const newCode=()=>Array.from({length:5},()=>CODE_CH[R(0,CODE_CH.length-1)]).join('');
+const cleanCode=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,5);
+const now=()=>Date.now();
+
+/* ---------- questions (all answers are whole numbers) ---------- */
+function gen(topic,lv){let t,a;
+ if(topic==='add'){const r={a:[[1,10],[1,10]],b:[[10,99],[1,50]],c:[[100,999],[10,999]],g:[[150,999],[150,999]]}[lv];const x=R(...r[0]),y=R(...r[1]);t=`${x} + ${y}`;a=x+y;}
+ else if(topic==='sub'){const r={a:[[2,10]],b:[[20,99]],c:[[100,999]],g:[[300,1500]]}[lv][0];const x=R(...r),y=R(1,x-1);t=`${x} − ${y}`;a=x-y;}
+ else if(topic==='mult'){const r={a:[[1,5],[1,5]],b:[[2,10],[2,10]],c:[[2,12],[2,12]],g:[[6,15],[6,15]]}[lv];const x=R(...r[0]),y=R(...r[1]);t=`${x} × ${y}`;a=x*y;}
+ else if(topic==='div'){const r={a:[[1,5],[1,5]],b:[[2,10],[2,10]],c:[[2,12],[2,12]],g:[[6,15],[6,15]]}[lv];const x=R(...r[0]),y=R(...r[1]);t=`${x*y} ÷ ${x}`;a=y;}
+ else{const f={a:[[1,2]],b:[[1,2],[1,4],[1,3]],c:[[3,4],[2,3],[2,5]],g:[[5,8],[3,8],[4,5],[5,6]]}[lv];const [n,d]=pick(f);const m=R(1,lv==='a'?10:12)*d;t=`${n}/${d} of ${m}`;a=m/d*n;}
+ return {text:t,ans:a};}
+function choicesFor(a){const s=new Set([a]);const off=[1,2,-1,-2,10,-10,3,5];let i=0;
+ while(s.size<4&&i<40){const v=a+pick(off)*(i>20?R(1,3):1);if(v>=0)s.add(v);i++;}
+ while(s.size<4)s.add(a+s.size*7);
+ return [...s].sort(()=>Math.random()-.5);}
+
+/* ---------- owl narrator (host screen only) ---------- */
+function narratorOn(){try{const o=JSON.parse(localStorage.getItem('ttq-save-v2')||'null');if(o&&typeof o.narrator==='boolean')return o.narrator;}catch(e){}return true;}
+let VOICE_ON=narratorOn();
+function say(text){try{if(!VOICE_ON||!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text).replace(/×/g,' times ').replace(/÷/g,' divided by ').replace(/−/g,' minus '));u.rate=1;speechSynthesis.speak(u);}catch(e){}}
+function owl(text){return `<div class="owl" id="owlLine"><span class="o" aria-hidden="true">🦉</span><p>${esc(text)}</p></div>`;}
+
+/* ---------- confetti ---------- */
+function confetti(){const c=document.getElementById('confetti');if(!c||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+ const P=Array.from({length:140},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height,v:2+Math.random()*4,r:4+Math.random()*5,c:pick(['#f97316','#2563eb','#facc15','#db2777','#059669','#a78bfa'])}));
+ let n=0;(function f(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.y+=p.v;p.x+=Math.sin((p.y+n)/30);x.fillStyle=p.c;x.fillRect(p.x,p.y,p.r,p.r*1.6);});if(++n<240)requestAnimationFrame(f);else x.clearRect(0,0,c.width,c.height);})();}
+
+/* ---------- realtime ---------- */
+let sb=null;
+function client(){if(sb)return sb;if(!window.supabase)return null;try{sb=supabase.createClient(CFG.url,CFG.key,{auth:{persistSession:false,autoRefreshToken:false}});}catch(e){sb=null;}return sb;}
+function openChannel(code,key,on,onStatus){const c=client();if(!c){onStatus('NO_CLIENT');return null;}
+ const ch=c.channel('nrgn-'+code,{config:{broadcast:{self:false},presence:{key}}});
+ Object.entries(on.broadcast||{}).forEach(([ev,fn])=>ch.on('broadcast',{event:ev},m=>fn(m.payload||{})));
+ if(on.presence)ch.on('presence',{event:'sync'},()=>on.presence(ch.presenceState()));
+ ch.subscribe(s=>onStatus(s));return ch;}
+const send=(ch,event,payload)=>{try{ch&&ch.send({type:'broadcast',event,payload});}catch(e){}};
+
+/* ---------- screens shared ---------- */
+function board(players,me,gains){const L=[...players].sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name));
+ return `<ol class="board" id="board">${L.map((p,i)=>`<li class="${p.id===me?'me':''}${p.online===false?' off':''}" data-pid="${esc(p.id)}"><span>${i+1}.</span><span aria-hidden="true">${HERO[p.hero]?HERO[p.hero][2]:'🙂'}</span><span>${esc(p.name)}${p.id===me?' (you)':''}</span>${gains&&gains[p.id]!=null?`<span class="gain">${gains[p.id].ok?'✅ +'+gains[p.id].pts:'❌ +0'}</span>`:''}<span class="pts">${p.score}</span></li>`).join('')}</ol>`;}
+function podium(players){const L=[...players].sort((a,b)=>b.score-a.score);const slot=(p,k)=>p?`<div class="pod p${k}"><div class="nm">${HERO[p.hero]?HERO[p.hero][2]:'🙂'} ${esc(p.name)}</div><div class="sc">${p.score} pts</div><div class="blk">${k}</div></div>`:`<div class="pod p${k}"></div>`;
+ return `<div class="podium" id="podium">${slot(L[1],2)}${slot(L[0],1)}${slot(L[2],3)}</div>${L.length>3?`<ol class="board" start="4">${L.slice(3).map(p=>`<li>${esc(p.name)}<span class="pts">${p.score}</span></li>`).join('')}</ol>`:''}`;}
+function timerBar(id){return `<div class="timer" role="progressbar" aria-label="Time left"><i id="${id}Bar" style="width:100%"></i></div><p class="secs" id="${id}Secs"></p>`;}
+let tick=null;
+function runTimer(id,deadline,total){clearInterval(tick);const f=()=>{const left=Math.max(0,deadline-now());const b=document.getElementById(id+'Bar'),s=document.getElementById(id+'Secs');if(b)b.style.width=(100*left/total)+'%';if(s)s.textContent=Math.ceil(left/1000)+' s';if(!left)clearInterval(tick);};f();tick=setInterval(f,250);}
+
+/* ---------- home ---------- */
+function home(msg){clearInterval(tick);app.innerHTML=`<section class="card" id="gnHome"><h2>🎉 Family Game Night</h2>
+ <p>Everyone plays math together, each on their own phone or tablet. Fast right answers win more points!</p>
+ ${msg?`<p class="err" id="homeMsg" role="alert">${esc(msg)}</p>`:''}
+ <button class="btn" id="joinBtn" type="button">🙋 Join a game</button>
+ <button class="btn blue" id="hostBtn" type="button">👪 Host a game (grown-ups)</button>
+ <p class="small">No accounts needed. Players only share a nickname, and it disappears when the game ends.</p></section>`;
+ document.getElementById('joinBtn').onclick=()=>joinForm();document.getElementById('hostBtn').onclick=gate;}
+function gate(err){const a=R(6,9),b=R(3,9),c=R(11,18);app.innerHTML=`<section class="card" id="gnGate" role="group" aria-label="Grown-up check"><h2>👪 Grown-ups only</h2>
+ <p>Hosting runs the game for everyone. What is <b id="gateQ">${a} × ${b} + ${c}</b>?</p><input id="gateIn" inputmode="numeric" autocomplete="off" aria-label="Answer">
+ ${err?`<p class="err" id="gateErr" role="alert">Not quite. That check is for grown-ups.</p>`:''}
+ <button class="btn" id="gateGo" type="button">Continue</button><button class="btn gray" id="gateCancel" type="button">Cancel</button></section>`;
+ const i=document.getElementById('gateIn');i.focus();const go=()=>{if(+i.value.trim()===a*b+c)hostSetup();else gate(true);};
+ document.getElementById('gateGo').onclick=go;i.onkeydown=e=>{if(e.key==='Enter')go();};document.getElementById('gateCancel').onclick=()=>home();}
+
+/* ================= HOST ================= */
+const H={};
+function hostSetup(){const s=H.settings||{topics:['mult'],rounds:5,secs:20,mode:'choice',fair:true,level:'b'};
+ app.innerHTML=`<section class="card" id="gnSetup"><h2>🎲 Set up the game</h2>
+ <h3>Topics</h3><div class="chips" id="topics">${TOPICS.map(([k,l])=>`<label class="chip"><input type="checkbox" name="topic" value="${k}"${s.topics.includes(k)?' checked':''}>${l}</label>`).join('')}</div>
+ <div class="row"><div><label for="rounds">Rounds</label><select id="rounds">${[3,5,8,10,15].map(n=>`<option${n===s.rounds?' selected':''}>${n}</option>`).join('')}</select></div>
+ <div><label for="secs">Time per question</label><select id="secs">${[10,15,20,30,45].map(n=>`<option value="${n}"${n===s.secs?' selected':''}>${n} seconds</option>`).join('')}</select></div>
+ <div><label for="mode">Answer style</label><select id="mode"><option value="choice"${s.mode==='choice'?' selected':''}>Tap 1 of 4 answers</option><option value="type"${s.mode==='type'?' selected':''}>Type the number</option></select></div></div>
+ <label class="chip" style="margin-top:14px"><input type="checkbox" id="fair"${s.fair?' checked':''}>⚖️ Fair play: each player gets questions for their own age</label>
+ <div id="levelBox"${s.fair?' hidden':''}><label for="level">Everyone's level</label><select id="level">${LEVELS.map(([k,l])=>`<option value="${k}"${k===s.level?' selected':''}>${l}</option>`).join('')}</select></div>
+ <label class="chip" style="margin-top:10px"><input type="checkbox" id="voice"${VOICE_ON?' checked':''}>🦉 Owl narrator voice on this screen</label>
+ <p class="err" id="setupErr" role="alert"></p>
+ <button class="btn green" id="createRoom" type="button">🚪 Open the room</button><button class="btn gray" id="setupCancel" type="button">Cancel</button></section>`;
+ const fair=document.getElementById('fair');fair.onchange=()=>{document.getElementById('levelBox').hidden=fair.checked;};
+ document.getElementById('setupCancel').onclick=()=>home();
+ document.getElementById('createRoom').onclick=()=>{const topics=[...document.querySelectorAll('input[name=topic]:checked')].map(i=>i.value);
+  if(!topics.length){document.getElementById('setupErr').textContent='Pick at least one topic.';return;}
+  VOICE_ON=document.getElementById('voice').checked;
+  H.settings={topics,rounds:+document.getElementById('rounds').value,secs:+document.getElementById('secs').value,mode:document.getElementById('mode').value,fair:fair.checked,level:document.getElementById('level').value};
+  hostOpen();};}
+function hostOpen(){Object.assign(H,{code:newCode(),id:'host-'+uid(),players:{},order:[],phase:'lobby',round:0,qs:{},ans:{},gains:null,born:now(),status:'connecting'});
+ H.ch=openChannel(H.code,H.id,{broadcast:{answer:hostAnswer,hello:()=>hostPush()},presence:hostPresence},s=>{H.status=s;
+   if(s==='SUBSCRIBED'){H.ch.track({role:'host'});hostPush();}hostDraw();});
+ if(!H.ch){home('Game Night needs an internet connection. Please try again later.');return;}
+ clearInterval(H.beat);H.beat=setInterval(()=>{if(now()-H.born>ROOM_TTL){hostEnd('expired');return;}hostPush();},2000);
+ addEventListener('pagehide',()=>send(H.ch,'end',{reason:'host_left'}));
+ hostDraw();}
+function hostPresence(state){const seen=new Set();
+ Object.entries(state).forEach(([key,metas])=>{const m=(metas||[])[0]||{};if(m.role!=='player')return;seen.add(key);
+  let p=H.players[key];
+  if(!p){if(H.order.length>=MAX){send(H.ch,'full',{id:key});return;}
+   p=H.players[key]={id:key,name:cleanName(m.name)||'Player',hero:HERO[m.hero]?m.hero:'',level:LV[m.level]?m.level:'b',score:0,online:true,joined:H.round};H.order.push(key);
+   if(H.phase==='lobby')say(p.name+' joined!');}
+  p.online=true;});
+ Object.values(H.players).forEach(p=>{if(!seen.has(p.id))p.online=false;});
+ hostPush();hostDraw();}
+function playersList(){return H.order.map(id=>H.players[id]);}
+function lvFor(p){return H.settings.fair?p.level:H.settings.level;}
+function hostQuestion(p){if(!H.qs[p.id]){if(H.settings.fair){H.qs[p.id]=H.make(lvFor(p));}else H.qs[p.id]=H.shared;}return H.qs[p.id];}
+function hostStart(){if(!playersList().some(p=>p.online))return;hostNext();}
+function hostNext(){H.round++;H.phase='question';H.qs={};H.ans={};H.gains=null;
+ const topic=pick(H.settings.topics);H.topic=topic;
+ H.make=lv=>{const q=gen(topic,lv);if(H.settings.mode==='choice')q.choices=choicesFor(q.ans);return q;};
+ H.shared=H.make(H.settings.level);
+ playersList().forEach(hostQuestion);
+ H.start=now();H.deadline=H.start+H.settings.secs*1000;
+ clearTimeout(H.to);H.to=setTimeout(hostReveal,H.settings.secs*1000+300);
+ say(H.round===1?"Here comes the first question!":"Round "+H.round+"!");
+ hostPush();hostDraw();}
+function hostAnswer(m){if(H.phase!=='question'||m.round!==H.round)return;const p=H.players[m.id];if(!p||H.ans[p.id])return;
+ const q=hostQuestion(p);const ms=Math.max(0,now()-H.start),T=H.settings.secs*1000;if(ms>T+1500)return;
+ const v=Number(String(m.v).trim());const ok=Number.isFinite(v)&&v===q.ans;
+ H.ans[p.id]={v:String(m.v).slice(0,8),ok,pts:ok?100+Math.round(50*Math.max(0,1-ms/T)):0};
+ hostPush();hostDraw();
+ const active=playersList().filter(p=>p.online);if(active.length&&active.every(p=>H.ans[p.id]))setTimeout(hostReveal,400);}
+function hostReveal(){if(H.phase!=='question')return;clearTimeout(H.to);H.phase='reveal';H.gains={};
+ playersList().forEach(p=>{const a=H.ans[p.id];if(a){p.score+=a.pts;H.gains[p.id]={ok:a.ok,pts:a.pts};}else if(p.online)H.gains[p.id]={ok:false,pts:0};});
+ const top=playersList().sort((a,b)=>b.score-a.score)[0];
+ H.line=top?`${top.name} is in the lead with ${top.score} points!`:'Nice try, everyone!';say(H.line);
+ hostPush();hostDraw();
+ if(H.round>=H.settings.rounds){H.to=setTimeout(hostPodium,REVEAL_MS);}}
+function hostPodium(){clearTimeout(H.to);H.phase='podium';const top=playersList().sort((a,b)=>b.score-a.score)[0];
+ H.line=top?`Hooray! ${top.name} wins Game Night! Great math, everyone!`:'Thanks for playing!';say(H.line);hostPush();hostDraw();confetti();}
+function hostEnd(reason){clearInterval(H.beat);clearTimeout(H.to);send(H.ch,'end',{reason:reason||'host_ended'});try{H.ch&&H.ch.unsubscribe();}catch(e){}H.ch=null;home(reason==='expired'?'That room was open for 3 hours, so it closed.':'');}
+function hostPush(){if(!H.ch||H.status!=='SUBSCRIBED')return;const P=playersList().map(p=>({id:p.id,name:p.name,hero:p.hero,score:p.score,online:p.online,answered:!!(H.ans&&H.ans[p.id])}));
+ const pay={phase:H.phase,round:H.round,rounds:H.settings.rounds,secs:H.settings.secs,mode:H.settings.mode,players:P,full:H.order.length>=MAX};
+ if(H.phase==='question'){pay.left=Math.max(0,H.deadline-now());pay.q={};playersList().forEach(p=>{const q=hostQuestion(p);pay.q[p.id]={text:q.text,choices:q.choices||null};});}
+ if(H.phase==='reveal'){pay.reveal={};playersList().forEach(p=>{const q=H.qs[p.id];if(q)pay.reveal[p.id]={text:q.text,ans:q.ans,mine:H.ans[p.id]?H.ans[p.id].v:null,ok:!!(H.ans[p.id]&&H.ans[p.id].ok),pts:H.ans[p.id]?H.ans[p.id].pts:0};});pay.last=H.round>=H.settings.rounds;}
+ send(H.ch,'state',pay);}
+function qrSvg(text){try{const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true});}catch(e){return '';}}
+function hostDraw(){const P=playersList(),on=P.filter(p=>p.online);
+ const joinUrl=location.origin+location.pathname+'?join='+H.code+(FLAG?'&parenttest=1':'');
+ const st=H.status==='SUBSCRIBED'?'':H.status==='connecting'?'<p class="small" id="hostConn">Connecting...</p>':`<p class="err" id="hostConn">Can't reach the game server right now (${esc(H.status)}). Check the internet and try again.</p>`;
+ if(H.phase==='lobby'){clearInterval(tick);app.innerHTML=`<section class="card" id="gnLobby"><h2>🚪 Room is open</h2>${st}
+  <div class="lobby"><div><p class="small">Players go to Game Night and tap <b>Join</b>, then type:</p><p class="code" id="roomCode">${H.code}</p>
+  <p class="small">or scan this code with the camera</p></div><div id="qr" aria-label="QR code to join">${qrSvg(joinUrl)}</div></div>
+  <h3>Players (${P.length}/${MAX})</h3><ul class="plist" id="plist">${P.map(p=>`<li class="${p.online?'':'off'}"><span>${HERO[p.hero]?HERO[p.hero][2]:'🙂'} ${esc(p.name)}</span><span class="small">${LV[p.level]}</span></li>`).join('')||'<li class="off">Waiting for players...</li>'}</ul>
+  ${owl(P.length?`${P.length} ${P.length===1?'player is':'players are'} here. Ready when you are!`:'Hoo! Waiting for players to join.')}
+  <button class="btn green" id="startGame" type="button"${on.length?'':' disabled'}>▶️ Start the game</button><button class="btn gray" id="endRoom" type="button">Close room</button>
+  <p class="small">${H.settings.rounds} rounds · ${H.settings.secs} s each · ${H.settings.mode==='choice'?'tap answers':'type answers'} · ${H.settings.fair?'fair play by age':'everyone: '+LV[H.settings.level]}</p></section>`;
+  document.getElementById('startGame').onclick=hostStart;document.getElementById('endRoom').onclick=()=>hostEnd();return;}
+ if(H.phase==='question'){const shared=!H.settings.fair;app.innerHTML=`<section class="card" id="gnHostQ"><p class="small">Room ${H.code} · Round ${H.round} of ${H.settings.rounds}</p>
+  ${shared?`<p class="q" id="hostQText">${esc(H.shared.text)} = ?</p>`:`<p class="big">Everyone has a question for their age!</p>`}${timerBar('ht')}
+  <h3>Answered ${Object.keys(H.ans).length} of ${on.length}</h3><ul class="plist" id="plist">${P.map(p=>`<li class="${H.ans[p.id]?'done':''}${p.online?'':' off'}"><span>${HERO[p.hero]?HERO[p.hero][2]:'🙂'} ${esc(p.name)}</span><span>${H.ans[p.id]?'✅':'⏳'}</span></li>`).join('')}</ul>
+  <button class="btn gray" id="skipQ" type="button">⏭ Show answers now</button></section>`;
+  runTimer('ht',H.deadline,H.settings.secs*1000);document.getElementById('skipQ').onclick=hostReveal;return;}
+ clearInterval(tick);
+ if(H.phase==='reveal'){const last=H.round>=H.settings.rounds;app.innerHTML=`<section class="card" id="gnHostReveal"><p class="small">Room ${H.code} · Round ${H.round} of ${H.settings.rounds}</p><h2>📊 Leaderboard</h2>
+  ${!H.settings.fair?`<p class="big" id="revealAns">${esc(H.shared.text)} = ${H.shared.ans}</p>`:''}${owl(H.line)}${board(P,null,H.gains)}
+  ${last?'<p class="big">🏆 Final scores coming up...</p>':`<button class="btn green" id="nextQ" type="button">▶️ Next question</button>`}<button class="btn gray" id="endEarly" type="button">🏁 End game</button></section>`;
+  const n=document.getElementById('nextQ');n&&(n.onclick=hostNext);document.getElementById('endEarly').onclick=hostPodium;return;}
+ if(H.phase==='podium'){app.innerHTML=`<section class="card ctr" id="gnPodium"><h2>🏆 Game Night champions!</h2>${owl(H.line)}${podium(P)}
+  <button class="btn green" id="again" type="button">🔁 Play again</button><button class="btn gray" id="closeRoom" type="button">Close room</button></section>`;
+  document.getElementById('again').onclick=()=>{P.forEach(p=>p.score=0);H.round=0;H.phase='lobby';H.gains=null;hostPush();hostDraw();};
+  document.getElementById('closeRoom').onclick=()=>hostEnd();}}
+
+/* ================= PLAYER ================= */
+const P={};
+const SK='nr-gn-me';
+function loadMe(){try{return JSON.parse(sessionStorage.getItem(SK)||'null');}catch(e){return null;}}
+function saveMe(m){try{sessionStorage.setItem(SK,JSON.stringify(m));}catch(e){}}
+function joinForm(code,err){const m=loadMe()||{};const sel={hero:m.hero||'',level:m.level||'b'};
+ app.innerHTML=`<section class="card" id="gnJoin"><h2>🙋 Join a game</h2>
+ <label for="joinCode">Room code</label><input id="joinCode" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCDE" value="${esc(code||m.code||'')}" style="font-size:28px;letter-spacing:6px;text-transform:uppercase">
+ <label>Pick your hero</label><div class="heroes" id="heroes">${HEROES.map(([k,n,e])=>`<button type="button" class="hero" data-hero="${k}" aria-pressed="${sel.hero===k}"><b aria-hidden="true">${e}</b>${esc(n)}</button>`).join('')}</div>
+ <label for="joinName">Nickname for this game</label><input id="joinName" maxlength="12" autocomplete="off" placeholder="Like: Super Mia" value="${esc(m.name||'')}">
+ <p class="small">Just a fun nickname, not your real full name. It's only kept until the game ends.</p>
+ <label for="joinLevel">My level</label><select id="joinLevel">${LEVELS.map(([k,l])=>`<option value="${k}"${k===sel.level?' selected':''}>${l}</option>`).join('')}</select>
+ ${err?`<p class="err" id="joinErr" role="alert">${esc(err)}</p>`:''}
+ <button class="btn green" id="joinGo" type="button">🚀 Join!</button><button class="btn gray" id="joinCancel" type="button">Back</button></section>`;
+ const nm=document.getElementById('joinName');
+ document.querySelectorAll('.hero').forEach(b=>b.onclick=()=>{sel.hero=b.dataset.hero;document.querySelectorAll('.hero').forEach(x=>x.setAttribute('aria-pressed',x===b));if(!nm.value.trim())nm.value=HERO[sel.hero][1];});
+ document.getElementById('joinCancel').onclick=()=>home();
+ document.getElementById('joinGo').onclick=()=>{const c=cleanCode(document.getElementById('joinCode').value),n=cleanName(nm.value)||(sel.hero?HERO[sel.hero][1]:'');
+  if(c.length!==5)return joinForm(c,'Type the 5-letter room code from the host screen.');
+  if(!n)return joinForm(c,'Pick a hero or type a nickname.');
+  const me={code:c,id:(m.code===c&&m.id)||'p-'+uid(),name:n,hero:sel.hero,level:document.getElementById('joinLevel').value};saveMe(me);playerJoin(me);};}
+function playerJoin(me){Object.assign(P,{me,state:null,picked:null,hostSeen:false,status:'connecting'});clearTimeout(P.lost);clearTimeout(P.find);
+ try{P.ch&&P.ch.unsubscribe();}catch(e){}
+ P.ch=openChannel(me.code,me.id,{broadcast:{state:playerState,full:m=>{if(m.id===me.id){playerLeave();joinForm(me.code,'Sorry, this room is full (8 players).');}},
+   end:m=>playerEnded(m.reason)},presence:playerPresence},s=>{P.status=s;
+   if(s==='SUBSCRIBED'){P.ch.track({role:'player',name:me.name,hero:me.hero,level:me.level});send(P.ch,'hello',{id:me.id});}
+   else if(s==='CHANNEL_ERROR'||s==='TIMED_OUT'||s==='NO_CLIENT')playerDraw();});
+ P.find=setTimeout(()=>{if(!P.state){playerLeave();joinForm(me.code,"We couldn't find that room. Check the code with the host.");}},12000);
+ playerDraw();}
+function playerLeave(){clearTimeout(P.find);clearTimeout(P.lost);try{P.ch&&P.ch.unsubscribe();}catch(e){}P.ch=null;}
+function playerPresence(state){const host=Object.values(state).some(ms=>(ms||[]).some(m=>m.role==='host'));
+ if(host){P.hostSeen=true;clearTimeout(P.lost);P.lost=null;const w=document.getElementById('hostAway');w&&w.remove();}
+ else if(P.hostSeen&&!P.lost){P.lost=setTimeout(()=>playerEnded('host_left'),GRACE);
+  const s=document.querySelector('#app .card');if(s&&!document.getElementById('hostAway'))s.insertAdjacentHTML('afterbegin','<p class="err" id="hostAway">The host lost connection. Waiting a few seconds...</p>');}}
+function playerEnded(reason){if(!P.me)return;const st=P.state;playerLeave();try{sessionStorage.removeItem(SK);}catch(e){}clearInterval(tick);
+ if(reason!=='host_left'&&st&&st.phase==='podium')return;
+ app.innerHTML=`<section class="card ctr" id="gnEnded"><h2>👋 Game over</h2><p id="endMsg">${reason==='host_left'?'The host left, so this game ended.':'The host closed the room.'} Thanks for playing!</p>
+ ${st&&st.players&&st.players.length?board(st.players,P.me.id):''}<button class="btn" id="endHome" type="button">OK</button></section>`;P.me=null;
+ document.getElementById('endHome').onclick=()=>home();}
+function playerState(s){if(!P.me)return;clearTimeout(P.find);P.hostSeen=true;const prev=P.state;P.state=s;
+ const inGame=s.players.some(p=>p.id===P.me.id);P.inGame=inGame;
+ const key=s.phase+':'+s.round+':'+inGame+(s.phase==='lobby'||s.phase==='reveal'?':'+JSON.stringify(s.players.map(p=>[p.id,p.score,p.online])):'');
+ if(prev&&prev.phase==='question'&&s.phase==='question'&&prev.round===s.round){P.deadline=now()+s.left;return;}
+ if(key===P.key)return;P.key=key;
+ if(s.phase==='question'&&!(prev&&prev.phase==='question'&&prev.round===s.round))P.picked=null;
+ if(s.phase==='question')P.deadline=now()+s.left;
+ playerDraw();if(s.phase==='podium'&&!(prev&&prev.phase==='podium'))confetti();}
+function playerDraw(){const me=P.me,s=P.state;if(!me)return;
+ const hdr=`<p class="small">Room ${esc(me.code)} · ${HERO[me.hero]?HERO[me.hero][2]:'🙂'} ${esc(me.name)}</p>`;
+ if(!s){clearInterval(tick);const bad=P.status==='CHANNEL_ERROR'||P.status==='TIMED_OUT'||P.status==='NO_CLIENT';
+  app.innerHTML=`<section class="card ctr" id="gnWait">${hdr}<h2>${bad?'😕 Connection trouble':'🔎 Finding the room...'}</h2>${bad?'<p class="err" id="connErr">We can\'t reach the game server. Check the internet and try again.</p>':''}<button class="btn gray" id="leave" type="button">Leave</button></section>`;
+  document.getElementById('leave').onclick=()=>{playerLeave();joinForm(me.code);};return;}
+ if(!P.inGame&&s.phase!=='lobby'){clearInterval(tick);app.innerHTML=`<section class="card ctr" id="gnWait">${hdr}<h2>⏳ Hold on!</h2><p id="lateMsg">${s.full?'This room is full right now.':'The game already started. You join at the next round!'}</p><button class="btn gray" id="leave" type="button">Leave</button></section>`;
+  document.getElementById('leave').onclick=()=>{playerLeave();home();};return;}
+ if(s.phase==='lobby'){clearInterval(tick);app.innerHTML=`<section class="card ctr" id="gnWait">${hdr}<h2>✅ You're in!</h2><p class="big" id="waitMsg">Waiting for the host to start...</p>
+  <ul class="plist">${s.players.map(p=>`<li class="${p.online?'':'off'}">${HERO[p.hero]?HERO[p.hero][2]:'🙂'} ${esc(p.name)}</li>`).join('')}</ul><button class="btn gray" id="leave" type="button">Leave</button></section>`;
+  document.getElementById('leave').onclick=()=>{playerLeave();try{sessionStorage.removeItem(SK);}catch(e){}home();};return;}
+ if(s.phase==='question'){const q=(s.q||{})[me.id];if(!q){app.innerHTML=`<section class="card ctr" id="gnWait">${hdr}<p class="big" id="lateMsg">You join at the next round!</p></section>`;return;}
+  const done=P.picked!=null;
+  app.innerHTML=`<section class="card" id="gnQ">${hdr}<p class="small">Round ${s.round} of ${s.rounds}</p><p class="q" id="qText">${esc(q.text)} = ?</p>${timerBar('pt')}
+  ${done?`<p class="big ok" id="locked">🔒 Answer locked in: ${esc(P.picked)}</p><p class="small ctr">Waiting for everyone...</p>`:
+   q.choices?`<div class="choices" id="choices">${q.choices.map(c=>`<button class="choice" type="button" data-v="${c}">${c}</button>`).join('')}</div>`:
+   `<input id="typeAns" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="Your answer" style="font-size:32px;text-align:center"><button class="btn green" id="typeGo" type="button" style="width:100%;margin-top:10px">Send answer</button>`}</section>`;
+  runTimer('pt',P.deadline,s.secs*1000);
+  const answer=v=>{if(P.picked!=null||now()>P.deadline)return;P.picked=String(v);send(P.ch,'answer',{id:me.id,round:s.round,v:String(v)});P.key=null;playerDraw();};
+  document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>answer(b.dataset.v));
+  const ti=document.getElementById('typeAns');if(ti){ti.focus();const go=()=>{const v=ti.value.replace(/[^0-9]/g,'');if(v)answer(v);};document.getElementById('typeGo').onclick=go;ti.onkeydown=e=>{if(e.key==='Enter')go();};}
+  return;}
+ clearInterval(tick);
+ if(s.phase==='reveal'){const r=(s.reveal||{})[me.id];app.innerHTML=`<section class="card" id="gnReveal">${hdr}<p class="small">Round ${s.round} of ${s.rounds}</p>
+  ${r?`<p class="big ${r.ok?'ok':'err'}" id="myResult">${r.ok?'🎉 Correct! +'+r.pts+' points':r.mine==null?'⏰ Time ran out!':'Almost!'}</p><p class="big" id="rightAns">${esc(r.text)} = ${r.ans}</p>`:''}
+  <h3>Leaderboard</h3>${board(s.players,me.id)}${s.last?'<p class="big">🏆 Final scores coming up...</p>':'<p class="small ctr">Next question soon!</p>'}</section>`;return;}
+ if(s.phase==='podium'){const L=[...s.players].sort((a,b)=>b.score-a.score);const place=L.findIndex(p=>p.id===me.id)+1;
+  app.innerHTML=`<section class="card ctr" id="gnPodium">${hdr}<h2>🏆 Final scores!</h2><p class="big" id="myPlace">${place===1?'🥇 You won!':place?`You finished #${place}. Great job!`:''}</p>${podium(s.players)}
+  <button class="btn gray" id="leave" type="button">Leave</button></section>`;
+  document.getElementById('leave').onclick=()=>{playerLeave();try{sessionStorage.removeItem(SK);}catch(e){}home();};}}
+
+/* ---------- boot ---------- */
+function boot(){
+ if(!FLAG&&!LINKED&&!PORTAL){app.innerHTML=`<section class="card" id="gnOff"><h2>🎉 Family Game Night</h2><p>Coming soon!</p><a class="btn" href="index.html" style="text-decoration:none">Back to the game</a></section>`;return;}
+ document.getElementById('testBanner').hidden=!FLAG;
+ document.getElementById('backLink').href='./'+FQ;
+ const j=cleanCode(qs.get('join'));const me=loadMe();
+ if(me&&me.code&&(!j||j===me.code))playerJoin(me); // reconnect after a reload
+ else if(j)joinForm(j);else home();}
+boot();
+return {gen,choicesFor,cleanName,cleanCode,H,P,MAX};
+})();
+</script>
+</body></html>
