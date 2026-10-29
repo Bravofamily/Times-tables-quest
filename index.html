@@ -758,6 +758,7 @@ body.calm *,body.calm *::before,body.calm *::after{animation-duration:.001ms!imp
 @media (max-width:599px){.realms{display:flex;overflow-x:auto;gap:10px;padding:4px 2px 10px;scroll-snap-type:x mandatory}.realm{flex:0 0 150px;scroll-snap-align:start}}
 @media (max-width:380px){.arrs{grid-template-columns:repeat(3,minmax(0,1fr))}.arrs .opt{min-width:0;padding:4px}.arrs .gridwrap{zoom:.8}}
 </style>
+<style>.setrow.vrow .vsel{min-width:min(300px,100%)}@media (max-width:520px){.setrow.vrow{flex-wrap:wrap}.setrow.vrow .sl{flex:1 1 100%}.setrow.vrow .vsel{flex:1 1 100%;width:100%;max-width:none;margin-top:8px}}</style>
 </head>
 <body>
 <div id="nrSplash" role="status" aria-label="Loading NumiRealm"><div class="nrsp-in"><svg class="nrlogo stack" viewBox="0 0 296 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NumiRealm" focusable="false"><g transform="translate(108 0) scale(1.25)"><defs><linearGradient id="nrcsp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00C2FF"/><stop offset=".55" stop-color="#8B5CF6"/><stop offset="1" stop-color="#1E3A8A"/></linearGradient></defs><circle cx="32" cy="32" r="30" fill="#0A1F44" stroke="#00C2FF" stroke-width="3"/><path d="M32 7 L50 27 L32 57 L14 27 Z" fill="url(#nrcsp)" stroke="#F1F5F9" stroke-width="2" stroke-linejoin="round"/><path d="M14 27 H50 M32 7 L25 27 L32 57 L39 27 Z" fill="none" stroke="#F1F5F9" stroke-opacity=".55" stroke-width="1.3" stroke-linejoin="round"/><path d="M32 17.5l2.6 5.6 6 .7-4.5 4.1 1.2 6-5.3-3-5.3 3 1.2-6-4.5-4.1 6-.7z" fill="#F59E0B" stroke="#0A1F44" stroke-width="1.2" stroke-linejoin="round"/><circle cx="13" cy="13" r="3" fill="#10B981"/><circle cx="52" cy="12" r="2.6" fill="#EF4444"/><circle cx="53" cy="50" r="2.2" fill="#F59E0B"/></g><defs><linearGradient id="nrwsp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3B0"/><stop offset=".45" stop-color="#F59E0B"/><stop offset="1" stop-color="#00C2FF"/></linearGradient><filter id="nrssp" x="-5%" y="-10%" width="110%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="0" flood-color="#0A1F44"/></filter></defs><g font-family="'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif" font-weight="800" font-size="56" text-anchor="middle"><text x="148" y="140" textLength="282" lengthAdjust="spacingAndGlyphs" fill="url(#nrwsp)" stroke="#0A1F44" stroke-width="6" stroke-linejoin="round" paint-order="stroke" filter="url(#nrssp)">NumiRealm</text></g></svg><p class="nrsp-tag">Enter the realm. Master the math.</p><div class="nrsp-load" aria-hidden="true"><i></i><i></i><i></i></div></div></div>
@@ -1988,7 +1989,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='24';
+const APP_VERSION='25';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -2020,7 +2021,8 @@ function frH(n,d,cls){return `<span class="fr ${cls||''}"><span class="fn">${n}<
 function mixH(w,n,d){return `<span class="mixd"><b>${w}</b>${frH(n,d)}</span>`;}
 const FRW={2:['half','halves'],3:['third','thirds'],4:['fourth','fourths'],5:['fifth','fifths'],6:['sixth','sixths'],7:['seventh','sevenths'],8:['eighth','eighths'],9:['ninth','ninths'],10:['tenth','tenths'],12:['twelfth','twelfths']};
 function frSay(n,d){const w=FRW[d];return w?`${n} ${n===1?w[0]:w[1]}`:`${n} over ${d}`;}
-const stripH=s=>String(s).replace(/<span class="fr[^"]*"><span class="fn">(\d+)<\/span><span class="fd">(\d+)<\/span><\/span>/g,(m,n,d)=>' '+frSay(+n,+d)+' ').replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim();
+/* v25: fractions stay as a/b (blanks like ?/24 too) so narrNorm can read them aloud */
+const stripH=s=>String(s==null?'':s).replace(/<span class="fr[^"]*"><span class="fn">([\d?]+)<\/span><span class="fd">([\d?]+)<\/span><\/span>/g,' $1/$2 ').replace(/<[^>]+>/g,' ').replace(/&[a-z#0-9]+;/gi,' ').replace(/\s+/g,' ').trim();
 /* ten-frames: a cells color A, b cells color B; x = how many of the A cells are crossed out (take-away) */
 function frames(a,b,x){b=b||0;x=x||0;const tot=Math.max(10,Math.ceil((a+b)/10)*10);let h='<div class="tfs">';
  for(let f=0;f<tot;f+=10){h+='<div class="tf">';for(let i=f;i<f+10;i++){const c=i<a?'a':i<a+b?'b':'';h+=`<span class="tfc"><i class="${c}${(x&&i<a&&i>=a-x)?' x':''}"></i></span>`;}h+='</div>';}
@@ -4592,6 +4594,106 @@ async function resetAllDo(){V22.step=0;window.NR_WIPED=true;try{persist=function
 {const _s22=SCR.settings;SCR.settings=function(){_s22.apply(this,arguments);const r=$('resetCard');if(r&&!$('resetAllCard'))r.insertAdjacentHTML('afterend',resetAllCard());};}
 /* ---------- start ---------- */
 if(save.hero){if(save.lastSubj==='mult')mapScreen();else if(save.lastSubj&&SUBJ_BY[save.lastSubj])smapScreen(save.lastSubj);else subjectScreen();}else titleScreen();
+/* ---------- v25: fluent narrator (voice ranking, chunked queue, speech-only normalizer) ---------- */
+/* Pronunciation table: edit here. Left = how it's written, right = how the narrator should say it. */
+const SAY_AS={'Blú':'Bloo','Khílo':'Kee-lo','Eshon':'Eh-shawn','Zea':'Zee-uh','Cayden':'Kay-den','Melrose':'Melrose','Sage':'Sage','Emi':'Em-ee','NumiRealm':'Noomy Realm','Numi':'Noomy'};
+const NARR={rate:.92,pitch:1.05,max:160,gen:0,q:[],who:'owl',timer:null,keep:null,watch:null,ss:null,log:[]};
+const N25W=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+const N25D={2:['half','halves'],3:['third','thirds'],4:['fourth','fourths'],5:['fifth','fifths'],6:['sixth','sixths'],7:['seventh','sevenths'],8:['eighth','eighths'],9:['ninth','ninths'],10:['tenth','tenths'],11:['eleventh','elevenths'],12:['twelfth','twelfths'],16:['sixteenth','sixteenths'],20:['twentieth','twentieths'],100:['hundredth','hundredths']};
+const N25O={1:'first',2:'second',3:'third',4:'fourth',5:'fifth',6:'sixth',7:'seventh',8:'eighth',9:'ninth',10:'tenth',11:'eleventh',12:'twelfth',13:'thirteenth',20:'twentieth',21:'twenty-first',22:'twenty-second',23:'twenty-third',30:'thirtieth',31:'thirty-first'};
+function n25w(n){return n<=20?N25W[n]:String(n);}
+function n25fr(a,b){a=+a;b=+b;if(!b)return a+' over '+b;const d=N25D[b];if(!d)return a+' over '+b;if(b===2&&a===1)return 'one half';return n25w(a)+' '+(a===1?d[0]:d[1]);}
+const N25ENT={amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:' ',times:'×',divide:'÷',minus:'−',ndash:'–',mdash:'—',hellip:'…',frac12:'1/2',frac14:'1/4',frac34:'3/4',rarr:' ',larr:' ',middot:' ',bull:' ',hearts:' ',star:' '};
+function narrNorm(input){let s=String(input==null?'':input);
+ s=s.replace(/<span class="fr[^"]*"><span class="fn">([\d?]+)<\/span><span class="fd">([\d?]+)<\/span><\/span>/g,' $1/$2 ');
+ s=s.replace(/<(br|\/p|\/li|\/div|\/h\d)\b[^>]*>/gi,'. ').replace(/<[^>]*>/g,' ').replace(/<[^>]*$/,' ');
+ for(let i=0;i<2;i++)s=s.replace(/&#x([0-9a-f]+);/gi,(m,h)=>String.fromCodePoint(parseInt(h,16))).replace(/&#(\d+);/g,(m,d)=>String.fromCodePoint(+d)).replace(/&([a-z0-9]+);/gi,(m,k)=>N25ENT[k.toLowerCase()]!=null?N25ENT[k.toLowerCase()]:' ');
+ s=s.replace(/<[a-z\/][^<>]*>/gi,' ').replace(/<3\b/g,' ');
+ s=s.replace(/\s*[·•]\s*/g,', ');
+ s=s.replace(/[½¼¾⅓⅔]/g,c=>({'½':' 1/2 ','¼':' 1/4 ','¾':' 3/4 ','⅓':' 1/3 ','⅔':' 2/3 '})[c]);
+ /* names */
+ for(const [k,v] of Object.entries(SAY_AS))s=s.replace(new RegExp('(^|[^\\p{L}])'+k+'(?=[^\\p{L}]|$)','gu'),'$1'+v);
+ s=s.replace(/×\s*(\d+)(\s+tables?)?(?!\s*[=×÷+−\d])/g,(m,n,tb,o,str)=>{const prev=str.slice(0,o).trimEnd().slice(-1);return /[\d?)_=]/.test(prev)?m:' the '+n+' times table ';});
+ /* emoji and decorative symbols */
+ s=s.replace(/[\p{Extended_Pictographic}\u{FE0F}\u{FE0E}\u{200D}\u{20E3}\u{1F3FB}-\u{1F3FF}\u{1F1E6}-\u{1F1FF}]/gu,' ').replace(/[⭐★☆✦✧✩✪✫✬✭✮✯✰•·●○◆◇■□▪▫►▶◀◄▲▼→←↑↓↔⇒⇐➜➔➝➡⟶✓✔✗✘♪♫♥♡❤❀✿❁※†‡§¶~^|\\`#*_{}\[\]]/gu,m=>m==='_'?'_':' ');
+ s=s.replace(/_{2,}|＿+|\uFF3F+|_/g,' ? ');
+ s=s.replace(/\bCh\.\s*(\d+)/g,'Chapter $1').replace(/\bLv\.\s*(\d+)/gi,'Level $1').replace(/\bvs\.?(?=\s)/g,'versus').replace(/\be\.g\./g,'for example').replace(/\bi\.e\./g,'that is');
+ s=s.replace(/(\d)\s*R\s*(\d+)\b/g,'$1 remainder $2');
+ s=s.replace(/\$(\d+)\.(\d\d)\b/g,(m,a,b)=>a+(a==='1'?' dollar':' dollars')+(+b?' and '+(+b)+(b==='01'?' cent':' cents'):'')).replace(/\$(\d+)/g,(m,a)=>a+(a==='1'?' dollar':' dollars')).replace(/(\d)¢/g,'$1 cents').replace(/(\d)\s*%/g,'$1 percent');
+ s=s.replace(/(\d),(\d{3})(?!\d)/g,'$1$2').replace(/(\d),(\d{3})(?!\d)/g,'$1$2');
+ s=s.replace(/\b(\d{1,2})(st|nd|rd|th)\b/g,(m,n)=>N25O[+n]||m);
+ const mathy=/[=×÷+?−]|\d\s*[x*]\s*\d/.test(s);
+ s=s.replace(/(\d)\s*[–—]\s*(\d)/g,'$1 to $2');
+ /* mixed numbers then fractions */
+ s=s.replace(/(\w)\s*[–—]\s*(\w)/g,'$1 to $2');
+ s=s.replace(/(\d+)\s*\/\s*\?(?![\d?])/g,' $1 over what number ').replace(/\?\s*\/\s*(\d+)/g,(m,d)=>' what number over '+d+' ');
+ s=s.replace(/(\d+)\s+(\d+)\s*\/\s*(\d+)(?!\d)/g,(m,w,a,b)=>+a<+b?w+' and '+n25fr(a,b):m);
+ s=s.replace(/(\d+)\s*\/\s*(\d+)(?!\d)/g,(m,a,b)=>' '+n25fr(a,b)+' ');
+ s=s.replace(/(\d)\.(\d+)/g,(m,a,b)=>a+' point '+b.split('').join(' '));
+ /* unknown boxes in equations */
+ s=s.replace(/(^|[\s(=×÷+−\-*x])\?(?=\s*[=×÷+−\-*x]|\s*$|\s*[.,)])/g,(m,p,o,str)=>{const after=str.slice(o+m.length);const before=str.slice(0,o);return /[=×÷+−]|\d\s*$/.test(before+p)||/^\s*[=×÷+−]/.test(after)?p+' what number ':m;});
+ s=s.replace(/(\d|number)\s*[x*]\s*(?=\d|what)/g,'$1 times ');
+ s=s.replace(/\s&\s/g,' and ');
+ s=s.replace(/×/g,' times ').replace(/÷/g,' divided by ').replace(/−/g,' minus ').replace(/\+/g,' plus ').replace(/=/g,' equals ').replace(/≠/g,' does not equal ').replace(/≈/g,' is about ');
+ s=s.replace(/(\d|number)\s*<\s*(?=\d|what)/g,'$1 is less than ').replace(/(\d|number)\s*>\s*(?=\d|what)/g,'$1 is greater than ').replace(/[<>]/g,' ');
+ s=s.replace(/(\d|number)\s+-\s+(?=\d|what)/g,'$1 minus ').replace(/(\d)-(?=\d)/g,mathy?'$1 minus ':'$1 to ');
+ s=s.replace(/(^|\s)-(\d)/g,'$1minus $2');
+ s=s.replace(/\s*\/\s*/g,' or ').replace(/\s*…\s*/g,', ').replace(/\s+([.,!?;:])/g,'$1').replace(/([.,!?;:]){2,}/g,(m)=>m[0]==='.'?'.':m.includes('?')?'?':m.includes('!')?'!':m[0]);
+ s=s.replace(/\b(undefined|NaN|null)\b/g,' ').replace(/\s+/g,' ').replace(/^[\s.,;:!]+/,'').trim();
+ return s;}
+function narrChunks(t,max){max=max||NARR.max;const out=[];const sents=String(t).match(/[^.!?]+[.!?]+["')]*|[^.!?]+$/g)||[];
+ const pieces=[];for(let sn of sents){sn=sn.trim();if(!sn)continue;if(sn.length<=max){pieces.push(sn);continue;}
+  const parts=sn.split(/(?<=[,;:])\s+/);let cur='';for(const p of parts){if(p.length>max){if(cur){pieces.push(cur);cur='';}const ws=p.split(/\s+/);let c2='';for(const w of ws){if(c2&&(c2+' '+w).length>max){pieces.push(c2);c2=w;}else c2=c2?c2+' '+w:w;}if(c2)pieces.push(c2);continue;}
+   if(cur&&(cur+' '+p).length>max){pieces.push(cur);cur=p;}else cur=cur?cur+' '+p:p;}if(cur)pieces.push(cur);}
+ let cur='';for(const p of pieces){if(cur&&(cur+' '+p).length>max){out.push(cur);cur=p;}else cur=cur?cur+' '+p:p;}if(cur)out.push(cur);return out;}
+/* voice ranking */
+const NOVELTY25=/\b(albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|deranged|hysterical|pipe organ)\b|^(fred|junior|kathy|ralph|grandma|grandpa|eddy|flo|reed|rocko|sandy|shelley)\b/i;
+const GOODV=/^(samantha|ava|allison|zoe|evan|nicky|susan|tom|nathan|joelle|noelle|aaron|siri)\b|\b(aria|jenny|guy|michelle|ana|emma|brian|andrew|ava)\b/i;
+function voiceScore(v){const n=v.name||'',l=(v.lang||'').replace('_','-');let s=0;
+ if(!/^en/i.test(l))return -1e4;s+=/^en-US$/i.test(l)?100:40;
+ if(/enhanced|premium|neural|natural/i.test(n))s+=60;if(/siri/i.test(n))s+=50;if(GOODV.test(n.replace(/^(microsoft|google|apple)\s+/i,'')))s+=30;if(/google us english/i.test(n))s+=25;
+ if(v.localService)s+=15;if(/compact/i.test(n))s-=10;if(/espeak|mbrola|robot|festival|pico/i.test(n))s-=250;if(NOVELTY25.test(n)||NOVELTY.test(n))s-=600;return s;}
+function rankVoices(list){return (list||[]).filter(v=>/^en/i.test(v.lang||'')).map((v,i)=>({v,s:voiceScore(v),i})).sort((a,b)=>b.s-a.s||a.i-b.i).map(x=>x.v);}
+function allVoices(){try{return hasTTS()?(speechSynthesis.getVoices()||[]):[];}catch(e){return [];}}
+niceVoices=function(){const r=rankVoices(allVoices());const good=r.filter(v=>voiceScore(v)>-100);if(good.length)return good;const ok=r.filter(v=>voiceScore(v)>-300);return ok.length?ok:r;};enVoices=niceVoices;
+function bestVoice(){const r=niceVoices();return r[0]||null;}
+pickVoice=function(){try{VOICE=null;const r=niceVoices();if(save.voiceName&&NOVELTY25.test(save.voiceName)){save.voiceName=null;persist();}
+ if(save.voiceName){const v=r.find(v=>v.name===save.voiceName);if(v){VOICE=v;return;}}VOICE=r[0]||null;}catch(e){VOICE=null;}};
+if(hasTTS()){try{speechSynthesis.addEventListener&&speechSynthesis.addEventListener('voiceschanged',()=>pickVoice());}catch(e){}
+ const rePoll=()=>{if(niceVoices().length)return;let t=0;const iv=setInterval(()=>{t++;onVoices();if(niceVoices().length||t>40)clearInterval(iv);},250);};
+ document.addEventListener('pointerup',rePoll,{once:true,capture:true});document.addEventListener('touchend',rePoll,{once:true,capture:true});}
+/* queue */
+function narrSS(){return NARR.ss||window.speechSynthesis;}
+function narrClear(){NARR.gen++;NARR.q=[];clearTimeout(NARR.timer);clearTimeout(NARR.watch);clearInterval(NARR.keep);NARR.keep=null;}
+stopSpeech=function(){narrClear();try{if(hasTTS()){const ss=narrSS();if(ss.speaking||ss.pending)ss.cancel();}}catch(e){}};
+function narrVoiceParams(u,who){const b=who==='boss';u.rate=b?.88:NARR.rate;u.pitch=b?.7:who==='owl'?NARR.pitch:1.15;u.volume=1;if(VOICE){u.voice=VOICE;u.lang=VOICE.lang;}else u.lang='en-US';}
+function narrPlay(gen){if(gen!==NARR.gen)return;const item=NARR.q.shift();if(!item){clearInterval(NARR.keep);NARR.keep=null;return;}
+ const ss=narrSS();let u;try{u=new SpeechSynthesisUtterance(item.t);}catch(e){return;}narrVoiceParams(u,NARR.who);let started=false;
+ AUD.utts.push(u);if(AUD.utts.length>12)AUD.utts.splice(0,AUD.utts.length-12);
+ const retry=()=>{if(gen!==NARR.gen)return;if(!item.r){item.r=1;NARR.q.unshift(item);}NARR.log.push('retry');try{ss.cancel();}catch(e){}NARR.timer=setTimeout(()=>narrPlay(gen),120);};
+ u.onstart=()=>{started=true;clearTimeout(NARR.watch);};
+ u.onend=()=>{clearTimeout(NARR.watch);if(gen!==NARR.gen)return;if(!started&&!item.r&&!item.done){item.done=1;return retry();}narrPlay(gen);};
+ u.onerror=e=>{clearTimeout(NARR.watch);if(gen!==NARR.gen)return;const er=e&&e.error;if(er==='interrupted'||er==='canceled')return;item.done=1;if(!item.r)retry();else narrPlay(gen);};
+ clearTimeout(NARR.watch);NARR.watch=setTimeout(()=>{if(gen!==NARR.gen||started)return;if(!ss.speaking){item.done=1;if(!item.r)retry();else narrPlay(gen);}},3000);
+ try{ss.speak(u);NARR.log.push('speak:'+item.t);}catch(e){}}
+function narrKeepAlive(){const ua=navigator.userAgent||'';if(!/Chrome|Chromium|Edg\//.test(ua)||/Android|Mobile|iPhone|iPad|CriOS/.test(ua))return;clearInterval(NARR.keep);const g=NARR.gen;
+ NARR.keep=setInterval(()=>{const ss=narrSS();if(g!==NARR.gen||!ss.speaking){clearInterval(NARR.keep);NARR.keep=null;return;}if(!ss.paused){ss.pause();ss.resume();}},10000);}
+speakNow=function(text,who){try{if(!hasTTS())return false;const t=narrNorm(text);if(!t)return false;const ch=narrChunks(t);if(!ch.length)return false;
+ const ss=narrSS();const busy=ss.speaking||ss.pending;narrClear();if(!VOICE)pickVoice();NARR.who=who||'owl';NARR.q=ch.map(t=>({t}));const g=NARR.gen;
+ if(ss.paused)try{ss.resume();}catch(e){}
+ if(busy){try{ss.cancel();}catch(e){}NARR.timer=setTimeout(()=>{narrPlay(g);narrKeepAlive();},90);}else{narrPlay(g);narrKeepAlive();}return true;}catch(e){return false;}};
+speakClean=narrNorm;
+/* cancel speech when moving to a new screen (every screen goes through show) */
+{const _sh=show;show=function(){stopSpeech();return _sh.apply(this,arguments);};}
+setTog=function(k){if(k==='sound')save.muted=!save.muted;else save[k]=!save[k];persist();if(k==='narrator'&&!save.narrator)stopSpeech();if(!save.muted)SFX.tap();runScr({n:'settings',a:[]});const b=$('tg-'+k);if(b)b.focus();if(k==='narrator'&&save.narrator)speakNow('Narrator is on.','owl');};
+window.addEventListener('pagehide',()=>stopSpeech());document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSpeech();});
+/* Settings: recommended default, test button, tip for grown-ups */
+testVoice=function(){audioUnlock();speakNow('Hoo-hoo! Hi, I am your NumiRealm narrator. 7 × ? = 14. 3/4 of the cupcakes are ready!','owl');};
+setVoice=function(v){save.voiceName=v||null;persist();pickVoice();testVoice();};
+{const _s25=SCR.settings;SCR.settings=function(){_s25.apply(this,arguments);try{const sel=$('voiceSel');if(sel){const o=sel.querySelector('option[value=""]');if(o){const b=bestVoice();o.textContent='Best voice (recommended)';o.title=b?'Best voice: '+voiceLabel(b):'';}
+  const row=sel.closest('.setrow');if(row)row.classList.add('vrow');
+  const lab=document.querySelector('label[for="voiceSel"]');if(lab)lab.innerHTML='Which voice<small>Pick the voice that reads to you</small>';}
+ const tv=$('testVoice');if(tv&&!$('voiceTip'))tv.parentNode.insertAdjacentHTML('afterend',`<p class="small voicetip" id="voiceTip">Tip for grown-ups: on iPhone or iPad, more natural voices can be downloaded under <b>Settings › Accessibility › Spoken Content › Voices</b> (try an "Enhanced" or "Premium" English voice), then pick it here.</p>`);}catch(e){}};settingsScreen=track('settings',SCR.settings);}
 </script>
 </body>
 </html>
