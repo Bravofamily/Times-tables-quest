@@ -1,3 +1,9 @@
+## v29 (Oct 29, 2026)
+- Fix: the Parent Login button no longer disappears after going to a parent page and tapping "Back to NumiRealm". The parent test flag is now remembered on the device (localStorage key nr-parenttest) the first time ?parenttest=1 is seen, so it survives back links, sign-in redirects, new tabs, update reloads and the installed app. ?parenttest=0 turns it off on that device. Back links on parent.html, parent-about.html and gamenight.html (including the "Coming soon" card) keep the flag.
+- Fix: the auto-update reload now keeps the page's query (?parenttest, ?link) instead of replacing it with ?v= only.
+- Updates: the service worker is registered with updateViaCache 'none' and re-checked on launch and whenever the app comes back to the screen. Every HTML page is network-first with no HTTP cache; only the game page is kept for offline play, under its own key (gamenight.html could previously be stored as index.html). If a new version arrives mid-level, an "Update ready: tap to refresh" button appears instead of interrupting.
+- APP_VERSION, version.json and the service-worker cache bumped to 29. Added tests/test_v29.py.
+
 ## v28 (Oct 29, 2026)
 One update: the Time played graph plus the Parent Center (test, parent area only).
 - Parent page, kid detail: progress now has four tabs: Time (the Time played graph with Day/Week/Month/Year), Accuracy (percent right per Day/Week/Month/Year, plus the old accuracy trend), Realms and Skill map (one tile per skill: Mastered, Growing, Needs practice, Just started, Not tried yet).
