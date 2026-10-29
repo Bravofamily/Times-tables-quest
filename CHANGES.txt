@@ -1,3 +1,7 @@
+## v23 (Oct 28, 2026)
+- New "Get the NumiRealm app" card at the bottom of Home with short Add-to-Home-Screen steps for iPhone/iPad, Android and computers. Your own device's steps show first. An "Install NumiRealm" button appears when the browser offers installation. The card says "You're playing the app version" when opened from the Home Screen.
+- Real web app manifest (manifest.webmanifest) and PNG icons (192, 512, maskable 512, Apple touch 180) replace the inline data: manifest, so Chrome, Edge and Android can install NumiRealm. The offline cache includes them.
+
 ## v22 (Oct 28, 2026)
 - Fonts are now self-hosted (no Google Fonts requests). The offline cache includes them.
 - Age is now an age group (4–5, 6–7, 8–10, 11–14). Old saves and old NR1 progress codes with exact ages are migrated on load or import.
