@@ -98,7 +98,8 @@ with sync_playwright() as p:
     pg.goto(HOST+'/index.html?parenttest=1');pg.wait_for_selector('#nrhGN',timeout=8000);ck(pg.is_visible('#nrhGN'),'game (?parenttest=1): Game Night button on the home card')
     bb=pg.locator('#nrhGN').bounding_box();ck(bb and bb['height']>=44,'Game Night button >=44px')
     pg.click('#nrhGN');pg.wait_for_url(re.compile(r'gamenight\.html\?parenttest=1'));ck(pg.is_visible('#gnHome') and pg.is_visible('#testBanner'),'game button opens Game Night home (test banner)')
-    pg.evaluate("localStorage.setItem('nr-parent-link',JSON.stringify({nickname:'Mia',hero:'emi',deviceName:'iPad',code:'X'}))")
+    # v29: the test flag is remembered per device, so forget it before checking a linked device without the flag
+    pg.evaluate("localStorage.removeItem('nr-parenttest')");pg.evaluate("localStorage.setItem('nr-parent-link',JSON.stringify({nickname:'Mia',hero:'emi',deviceName:'iPad',code:'X'}))")
     pg.goto(HOST+'/index.html');pg.wait_for_timeout(800)
     ck(pg.locator('#nrGameNight').count()==1 and pg.locator('#nrParentHome').count()==0,'linked device (no flag): small Game Night card only')
     pg.goto(HOST+'/gamenight.html');ck(pg.is_visible('#gnHome') and pg.is_hidden('#testBanner'),'linked device can open Game Night')

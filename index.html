@@ -2018,7 +2018,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='28';
+const APP_VERSION='29';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -2028,12 +2028,13 @@ const APP_VERSION='28';
  function go(){if(!pending)return;const v=pending,k='ttq-reloaded-'+v;
   try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){return;}
   try{persist();}catch(e){}
-  location.replace(location.pathname+'?v='+encodeURIComponent(v));}
+  const q=new URLSearchParams(location.search);q.set('v',v);location.replace(location.pathname+'?'+q.toString());} // v29: keep ?parenttest / ?link on update reloads
  function check(force){if(checking||!window.fetch||!/^https?:$/.test(location.protocol))return;checking=true;
   fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{
    const v=j&&j.version!=null?String(j.version):null;
-   if(v&&v!==APP_VERSION){pending=v;if(force||safe)go();}
+   if(v&&v!==APP_VERSION){pending=v;if(force||safe)go();else prompt();}
   }).catch(()=>{}).finally(()=>{checking=false;});}
+ function prompt(){if(document.getElementById('nrUpd'))return;const b=document.createElement('button');b.id='nrUpd';b.type='button';b.textContent='✨ Update ready: tap to refresh';b.style.cssText='position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:99999;padding:10px 18px;border:0;border-radius:999px;background:#00C2FF;color:#0A1F44;font:700 15px Poppins,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.35);cursor:pointer';b.onclick=()=>{try{sessionStorage.removeItem('ttq-reloaded-'+pending);}catch(e){}go();};document.body&&document.body.appendChild(b);}
  window.TTQ_VERSION={get app(){return APP_VERSION;},get pending(){return pending;},get safe(){return safe;},check,safeNow(){safe=true;if(pending)setTimeout(go,400);}};
  check(true); // launch: nothing in progress yet
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check(false);});
@@ -4462,7 +4463,7 @@ function masteryBadgesHTML(id){const pf=save.profiles[id],M=pf?mOf(pf):{};const 
 /* ---------- 5. offline play: service worker (cache named by APP_VERSION) + offline notice ---------- */
 function offlineNote(){const off=navigator.onLine===false;let d=$('offNote');if(off&&!d){d=document.createElement('div');d.id='offNote';d.className='offnote';d.setAttribute('role','status');d.textContent='Offline: playing from this device. Progress still saves here.';document.body.appendChild(d);}else if(!off&&d)d.remove();}
 window.addEventListener('online',offlineNote);window.addEventListener('offline',offlineNote);setTimeout(offlineNote,0);
-if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js?v='+encodeURIComponent(APP_VERSION)).catch(()=>{});});}
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js?v='+encodeURIComponent(APP_VERSION),{updateViaCache:'none'}).then(r=>{try{r.update();}catch(e){}document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){try{r.update();}catch(e){}}});}).catch(()=>{});});} // v29: never use the HTTP cache for sw.js; re-check on launch and when the app comes back
 (function(){const st=document.createElement('style');st.textContent=`
 .wex{margin:8px auto 4px;max-width:560px;text-align:left;background:#EEF6FF;border:2px solid #60A5FA;border-radius:14px;padding:8px 14px;color:#0A1F44;font-size:16px;line-height:1.4}
 .wex b{display:block;margin-bottom:2px}.wex ol{margin:0;padding-left:22px}.wex li{margin:2px 0}.wex .fr{font-size:14px}
@@ -4757,7 +4758,7 @@ const NRP=(function(){
  const CFG={url:'https://uuigasrelqbwxopvqoib.supabase.co',key:'sb_publishable_0E3BTvmAlWAc9wxz1Rl55w_0K6J-bmr'};
  const LK='nr-parent-link',QK='nr-parent-queue',SK='nr-parent-stats';
  const qs=new URLSearchParams(location.search);
- const FLAG=qs.get('parenttest')==='1';
+ const FLAG=(function(){try{var q=new URLSearchParams(location.search).get('parenttest');if(q==='1')localStorage.setItem('nr-parenttest','1');else if(q==='0'){localStorage.removeItem('nr-parenttest');sessionStorage.removeItem('nr-parenttest');}return localStorage.getItem('nr-parenttest')==='1'||(q!=='0'&&sessionStorage.getItem('nr-parenttest')==='1');}catch(e){return new URLSearchParams(location.search).get('parenttest')==='1';}})(); // v29: remembered on this device (localStorage) so back links, reloads and the installed app keep it; ?parenttest=0 clears it
  const PREFILL=(qs.get('link')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
  const REALM={add:'Addition Meadow',sub:'Subtraction Caves',mult:'Times Table Castle',div:'Division Docks',frac:'Fraction Bakery',mix:'Muddle Tower'};
  const rd=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
