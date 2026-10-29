@@ -759,6 +759,18 @@ body.calm *,body.calm *::before,body.calm *::after{animation-duration:.001ms!imp
 @media (max-width:380px){.arrs{grid-template-columns:repeat(3,minmax(0,1fr))}.arrs .opt{min-width:0;padding:4px}.arrs .gridwrap{zoom:.8}}
 </style>
 <style>.setrow.vrow .vsel{min-width:min(300px,100%)}@media (max-width:520px){.setrow.vrow{flex-wrap:wrap}.setrow.vrow .sl{flex:1 1 100%}.setrow.vrow .vsel{flex:1 1 100%;width:100%;max-width:none;margin-top:8px}}</style>
+<style>.plcard .gu{font-size:13px}.plrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}.plrow .btn{margin:0}.pllab{display:block;font-weight:700;margin:12px 0 4px}.plin{font:inherit;font-size:18px;min-height:48px;padding:8px 12px;border-radius:12px;border:2px solid #cbd5e1;box-sizing:border-box;max-width:100%;width:100%;background:#fff}.plrow .plin{width:auto;flex:1 1 120px}.plcode{letter-spacing:.2em;text-transform:uppercase;font-weight:800}.plred{background:#dc2626;box-shadow:0 5px 0 #991b1b}</style>
+<style id="nrhCss">#nrParentHome{max-width:560px;margin:18px auto 6px;padding:16px 16px 14px;border-radius:18px;background:linear-gradient(135deg,#1E3A8A,#0A1F44);color:#F1F5F9;border:2px solid #f9731688;box-shadow:0 6px 18px #0A1F4433;font-family:Poppins,system-ui,sans-serif;text-align:left;box-sizing:border-box}
+#nrParentHome h3{font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:21px;margin:0 0 4px;color:#fff;line-height:1.2}#nrParentHome h3 span{color:#00C2FF}
+#nrParentHome p{margin:6px 0;font-size:14px;line-height:1.45}
+#nrParentHome summary{cursor:pointer;font-weight:700;color:#FDE68A;min-height:44px;display:flex;align-items:center}
+#nrParentHome summary::before{content:'▸';margin-right:8px}#nrParentHome details[open] summary::before{content:'▾'}
+#nrParentHome .nrhb{margin:0 0 6px;padding-left:4px;list-style:none;font-size:14px;line-height:1.45}#nrParentHome .nrhb li{margin:5px 0}
+#nrParentHome .nrhb em{font-style:normal;background:#fbbf24;color:#3b2300;border-radius:999px;padding:0 8px;font-size:12px;font-weight:700;margin-left:4px;white-space:nowrap}
+#nrParentHome .nrhwhat{background:none;border:0;color:#FDE68A;font:inherit;font-weight:700;font-size:14px;text-decoration:underline;text-underline-offset:3px;min-height:44px;padding:0 4px;margin-top:6px;cursor:pointer}
+#nrParentHome .nrhrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}#nrParentHome .nrhrow .btn{margin:0;min-height:48px;flex:1 1 200px}
+#nrParentHome .plin{width:100%;box-sizing:border-box;min-height:48px;font-size:18px}
+</style>
 </head>
 <body>
 <div id="nrSplash" role="status" aria-label="Loading NumiRealm"><div class="nrsp-in"><svg class="nrlogo stack" viewBox="0 0 296 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NumiRealm" focusable="false"><g transform="translate(108 0) scale(1.25)"><defs><linearGradient id="nrcsp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00C2FF"/><stop offset=".55" stop-color="#8B5CF6"/><stop offset="1" stop-color="#1E3A8A"/></linearGradient></defs><circle cx="32" cy="32" r="30" fill="#0A1F44" stroke="#00C2FF" stroke-width="3"/><path d="M32 7 L50 27 L32 57 L14 27 Z" fill="url(#nrcsp)" stroke="#F1F5F9" stroke-width="2" stroke-linejoin="round"/><path d="M14 27 H50 M32 7 L25 27 L32 57 L39 27 Z" fill="none" stroke="#F1F5F9" stroke-opacity=".55" stroke-width="1.3" stroke-linejoin="round"/><path d="M32 17.5l2.6 5.6 6 .7-4.5 4.1 1.2 6-5.3-3-5.3 3 1.2-6-4.5-4.1 6-.7z" fill="#F59E0B" stroke="#0A1F44" stroke-width="1.2" stroke-linejoin="round"/><circle cx="13" cy="13" r="3" fill="#10B981"/><circle cx="52" cy="12" r="2.6" fill="#EF4444"/><circle cx="53" cy="50" r="2.2" fill="#F59E0B"/></g><defs><linearGradient id="nrwsp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3B0"/><stop offset=".45" stop-color="#F59E0B"/><stop offset="1" stop-color="#00C2FF"/></linearGradient><filter id="nrssp" x="-5%" y="-10%" width="110%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="0" flood-color="#0A1F44"/></filter></defs><g font-family="'Baloo 2','Arial Rounded MT Bold','Trebuchet MS',system-ui,sans-serif" font-weight="800" font-size="56" text-anchor="middle"><text x="148" y="140" textLength="282" lengthAdjust="spacingAndGlyphs" fill="url(#nrwsp)" stroke="#0A1F44" stroke-width="6" stroke-linejoin="round" paint-order="stroke" filter="url(#nrssp)">NumiRealm</text></g></svg><p class="nrsp-tag">Enter the realm. Master the math.</p><div class="nrsp-load" aria-hidden="true"><i></i><i></i><i></i></div></div></div>
@@ -1989,7 +2001,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='25';
+const APP_VERSION='26';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -4694,6 +4706,137 @@ setVoice=function(v){save.voiceName=v||null;persist();pickVoice();testVoice();};
   const row=sel.closest('.setrow');if(row)row.classList.add('vrow');
   const lab=document.querySelector('label[for="voiceSel"]');if(lab)lab.innerHTML='Which voice<small>Pick the voice that reads to you</small>';}
  const tv=$('testVoice');if(tv&&!$('voiceTip'))tv.parentNode.insertAdjacentHTML('afterend',`<p class="small voicetip" id="voiceTip">Tip for grown-ups: on iPhone or iPad, more natural voices can be downloaded under <b>Settings › Accessibility › Spoken Content › Voices</b> (try an "Enhanced" or "Premium" English voice), then pick it here.</p>`);}catch(e){}};settingsScreen=track('settings',SCR.settings);}
+
+/* ===== Parent Area PHASE 1 (TEST): link this device to a parent account =====
+   Hidden unless the URL has ?parenttest=1 (or this device is already linked, so it can be unlinked).
+   Kid side never logs in: it holds a long random device token and only calls 3 anon RPCs. */
+const NRP=(function(){
+ const CFG={url:'https://uuigasrelqbwxopvqoib.supabase.co',key:'sb_publishable_0E3BTvmAlWAc9wxz1Rl55w_0K6J-bmr'};
+ const LK='nr-parent-link',QK='nr-parent-queue',SK='nr-parent-stats';
+ const qs=new URLSearchParams(location.search);
+ const FLAG=qs.get('parenttest')==='1';
+ const PREFILL=(qs.get('link')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
+ const REALM={add:'Addition Meadow',sub:'Subtraction Caves',mult:'Times Table Castle',div:'Division Docks',frac:'Fraction Bakery',mix:'Muddle Tower'};
+ const rd=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
+ const wr=(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+ const st={view:'closed',gate:null,err:'',msg:'',busy:false,code:PREFILL,dev:'',hero:null};
+ const link=()=>rd(LK);
+ const enabled=()=>FLAG||!!link();
+ /* ---- local stats (only while linked) ---- */
+ function stats(){const s=rd(SK)||{};if(!s.h||typeof s.h!=='object')s.h={};return s;}
+ function hs(s,h){if(!s.h[h])s.h[h]={s:{},sec:0,lan:0,ex:0};return s.h[h];}
+ function curSkill(){try{if(typeof SS!=='undefined'&&SS&&SS.sid)return {k:SS.sid+':c'+SS.c,n:String((SS.ch&&SS.ch.skill)||SS.sid).slice(0,40)};}catch(e){}
+  try{if(typeof S!=='undefined'&&S&&S.n)return {k:'mult:x'+S.n,n:'×'+S.n+' facts'};}catch(e){}return null;}
+ function rec(kind,ok){const L=link();if(!L||!save||!save.hero)return;const s=stats(),h=hs(s,save.hero);
+  if(kind==='ans'||kind==='lan'){const c=curSkill();if(!c)return;const o=h.s[c.k]||(h.s[c.k]={n:c.n,r:0,t:0,l:0});
+   if(kind==='ans'){o.t++;if(ok)o.r++;}else{o.l++;h.lan++;}}
+  else if(kind==='ex')h.ex++;else if(kind==='sec')h.sec+=ok;wr(SK,s);}
+ /* ---- payload from the real save format ---- */
+ function payload(sv,heroId,sts){sv=sv||save;const pf=sv.profiles[heroId];if(!pf)return null;const realms={};
+  SUBJ.forEach(x=>{let total=0,stars=0,ch=0;try{total=sCount(x.id);stars=sStars(x.id,pf);
+   ch=x.id==='mult'?ORDER.filter(n=>((pf.stars||{})[n]||0)>0).length:Object.values((pf.subj&&pf.subj[x.id]&&pf.subj[x.id].stars)||{}).filter(v=>v>0).length;}catch(e){}
+   realms[x.id]={chapters:ch|0,total:total|0,stars:stars|0,max:(total|0)*3};});
+  const h=((sts||stats()).h||{})[heroId]||{s:{},sec:0,lan:0,ex:0};const skills={};
+  Object.entries(h.s||{}).slice(0,80).forEach(([k,o])=>{skills[k]={n:String(o.n||k).slice(0,40),r:o.r|0,t:o.t|0,l:o.l|0};});
+  return {v:1,hero:heroId,realms,skills,time_played_sec:Math.round(h.sec||0),lanterns_used:h.lan|0,examples_opened:h.ex|0,client_at:new Date().toISOString()};}
+ /* ---- network ---- */
+ async function rpc(fn,body){const r=await fetch(CFG.url+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json',apikey:CFG.key,Authorization:'Bearer '+CFG.key},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error('http_'+r.status);return r.json();}
+ function queue(){const L=link();if(!L)return;const p=payload(save,L.hero);if(!p)return;wr(QK,{payload:p,at:Date.now()});clearTimeout(st.t);st.t=setTimeout(flush,3000);}
+ let flushing=false;
+ async function flush(){const L=link(),q=rd(QK);if(!L||!q||flushing)return;if(navigator.onLine===false)return;flushing=true;
+  try{const r=await rpc('push_progress',{p_device_token:L.token,p_payload:q.payload});
+   if(r&&r.ok){const cur=rd(QK);if(cur&&cur.at===q.at)wr(QK,null);L.lastSync=Date.now();wr(LK,L);}
+   else if(r&&r.error==='unlinked'){wr(LK,null);wr(QK,null);st.msg='This device was unlinked from the parent account.';st.view='closed';}
+  }catch(e){/* offline or server down: keep the queued summary, try again later */}
+  finally{flushing=false;rer();}}
+ /* ---- grown-up gate + UI ---- */
+ function newGate(){const a=6+Math.floor(Math.random()*4),b=3+Math.floor(Math.random()*7),c=11+Math.floor(Math.random()*8);return {a,b,c,ans:a*b+c};}
+ function guessDev(){const u=navigator.userAgent;return /iPad/.test(u)?'iPad':/iPhone/.test(u)?'iPhone':/Android/.test(u)?'Android device':'Computer';}
+ function heroOpts(){return HERO_ORDER.map(id=>`<option value="${id}"${id===st.hero?' selected':''}>${esc(HEROES[id].name)}</option>`).join('');}
+ function ago(t){if(!t)return 'not yet';const m=Math.round((Date.now()-t)/60000);return m<1?'just now':m<60?m+' min ago':Math.round(m/60)+' h ago';}
+ function card(){const L=link();let b='';
+  if(L){const q=rd(QK);b=`<p class="small" id="plStatus">✅ Linked to <b>${esc(L.nickname||'your kid')}</b> as hero <b>${esc((HEROES[L.hero]||{}).name||L.hero)}</b> on “${esc(L.deviceName)}”.<br>Last sync: <span id="plLast">${ago(L.lastSync)}</span>${q?` · <span id="plPending">1 update waiting to send${navigator.onLine===false?' (offline)':''}</span>`:''}</p>
+   ${st.view==='unlink'?`<p class="small"><b>Unlink this device?</b> Progress stays on this device and in the parent account.</p><div class="plrow"><button class="btn gray sm" type="button" id="plCancel" onclick="NRP.view('closed')">Keep linked</button><button class="btn sm plred" type="button" id="plUnlinkYes" onclick="NRP.unlink()">Unlink</button></div>`
+   :`<div class="plrow"><button class="btn blue sm" type="button" id="plSync" onclick="NRP.syncNow()">🔄 Sync now</button><button class="btn gray sm" type="button" id="plUnlink" onclick="NRP.view('unlink')">Unlink this device</button></div>`}`;}
+  else if(st.view==='closed')b=`<p class="small">Let a parent see this kid's progress in the NumiRealm Parent Area. A grown-up makes a code in the Parent Area first.</p><button class="btn blue sm" type="button" id="plOpen" onclick="NRP.view('gate')">🔗 Link to a parent account (test)</button>`;
+  else if(st.view==='gate')b=`<p class="small" id="plGateQ"><b>Grown-ups only:</b> what is ${st.gate.a} × ${st.gate.b} + ${st.gate.c}?</p><div class="plrow"><input id="plGate" class="plin" inputmode="numeric" autocomplete="off" aria-label="Grown-up check answer" maxlength="4"><button class="btn blue sm" type="button" id="plGateGo" onclick="NRP.gateGo()">Continue</button><button class="btn gray sm" type="button" onclick="NRP.view('closed')">Cancel</button></div>`;
+  else b=`<label class="pllab" for="plCode">Link code from the Parent Area</label><input id="plCode" class="plin plcode" maxlength="7" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABC123" value="${esc(st.code)}">
+   <label class="pllab" for="plHero">Which hero does this kid play here?</label><select id="plHero" class="plin">${heroOpts()}</select>
+   <label class="pllab" for="plDev">Name this device</label><input id="plDev" class="plin" maxlength="40" value="${esc(st.dev)}">
+   <div class="plrow"><button class="btn blue sm" type="button" id="plLink" onclick="NRP.doLink()"${st.busy?' disabled':''}>${st.busy?'Linking…':'🔗 Link device'}</button><button class="btn gray sm" type="button" onclick="NRP.view('closed')">Cancel</button></div>`;
+  return `<div class="card plcard" id="parentLink"><h2>👪 Parent account <span class="gu">Test · For grown-ups</span></h2>${b}
+   ${st.err?`<p class="errmsg" role="alert" id="plErr">⚠️ ${esc(st.err)}</p>`:''}${st.msg?`<p class="okmsg" role="status" id="plMsg">${esc(st.msg)}</p>`:''}</div>`;}
+ function mount(){if(!enabled())return;const old=$('parentLink');if(old){old.outerHTML=card();return;}
+  const anchor=$('progressCard')||[...document.querySelectorAll('#app .card')].pop();if(anchor)anchor.insertAdjacentHTML('afterend',card());}
+ function rer(){if($('parentLink'))mount();}
+ const ERR={invalid_or_expired:'That code is wrong or has expired. Codes last 10 minutes and work once. Make a new one in the Parent Area.',rate_limited:'Too many tries. Please wait 15 minutes and try again.',too_many_devices:'This kid already has 5 linked devices. Remove one in the Parent Area first.'};
+ const api={FLAG,CFG,payload,stats,rec,flush,queue,link,mount,
+  view(v){st.err='';st.msg='';if(v==='gate')st.gate=newGate();if(v==='form'){st.hero=st.hero||save.hero||HERO_ORDER[0];st.dev=st.dev||guessDev();}st.view=v;mount();
+   const f=v==='gate'?$('plGate'):v==='form'?$('plCode'):null;if(f)try{f.focus()}catch(e){}},
+  gateGo(){const v=+(($('plGate')||{}).value||'').trim();if(v===st.gate.ans){api.view('form');}else{st.gate=newGate();st.err='Not quite. That check is for grown-ups.';mount();}},
+  async doLink(){st.code=(($('plCode')||{}).value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');st.hero=($('plHero')||{}).value||st.hero;st.dev=(($('plDev')||{}).value||'').trim().slice(0,40)||guessDev();
+   st.err='';if(!/^[A-Z0-9]{6}$/.test(st.code)){st.err='Enter the 6-character code from the Parent Area.';mount();return;}
+   if(navigator.onLine===false){st.err='You are offline. Connect to the internet to link this device.';mount();return;}
+   st.busy=true;mount();
+   try{const r=await rpc('redeem_link_code',{p_code:st.code,p_device_name:st.dev});
+    if(r&&r.ok&&r.device_token){wr(LK,{token:r.device_token,deviceId:r.device_id,kidId:r.kid_id,nickname:r.nickname,hero:st.hero,deviceName:st.dev,linkedAt:Date.now(),lastSync:null});
+     st.view='closed';st.code='';st.msg='Linked! Progress will sync in the background.';queue();setTimeout(flush,50);}
+    else st.err=ERR[(r||{}).error]||'Linking did not work. Please try again.';
+   }catch(e){st.err='Could not reach the server. Check the internet connection and try again.';}
+   st.busy=false;mount();},
+  async unlink(){const L=link();wr(LK,null);wr(QK,null);st.view='closed';st.msg='This device is unlinked. Progress stays on this device.';mount();
+   if(L)try{await rpc('unlink_this_device',{p_device_token:L.token});}catch(e){}},
+  syncNow(){queue();clearTimeout(st.t);flush();}};
+ /* ---- hooks (no-ops unless linked) ---- */
+ const _ans=answer;answer=function(v){let ok=null;try{if(S&&!S.locked&&S.onAnswer&&S.cur)ok=v===S.cur.ans;}catch(e){}const r=_ans.apply(this,arguments);if(ok!==null)rec('ans',ok);return r;};
+ const _sp=sPick;sPick=function(i){let ok=null;try{if(SS&&SS.cur&&!SS.locked)ok=!!SS.cur.check(i);}catch(e){}const r=_sp.apply(this,arguments);if(ok!==null)rec('ans',ok);return r;};
+ const _sh=showHint;showHint=function(full){if(!full)rec('lan');return _sh.apply(this,arguments);};
+ const _sH=sHint;sHint=function(full){if(!full&&SS&&SS.cur)rec('lan');return _sH.apply(this,arguments);};
+ const _ex=exOpen;exOpen=function(){rec('ex');return _ex.apply(this,arguments);};
+ const _ps=persist;persist=function(){const r=_ps.apply(this,arguments);if(link())queue();return r;};
+ setInterval(()=>{if(!link()||document.hidden)return;let on=false;try{on=!!((typeof S!=='undefined'&&S&&S.cur)||(typeof SS!=='undefined'&&SS&&SS.cur));}catch(e){}if(on)rec('sec',10);},10000);
+ addEventListener('online',()=>flush());
+ addEventListener('pageshow',()=>{if(link()){queue();}});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&link()){queue();}});
+ setInterval(()=>{if(rd(QK))flush();},60000);
+ if(link())setTimeout(()=>{queue();},1500);
+ return api;})();
+{const _sPL=SCR.settings;SCR.settings=function(){_sPL.apply(this,arguments);try{NRP.mount();}catch(e){}};settingsScreen=track('settings',SCR.settings);}
+if(NRP.FLAG&&new URLSearchParams(location.search).get('link'))setTimeout(()=>{try{if(save.hero)settingsScreen();}catch(e){}},400);
+
+/* NRH-BEGIN */
+/* ===== Parent Area PHASE 1 (TEST): Home-screen card for grown-ups =====
+   SHOW_HOME is the one-line switch: today it follows ?parenttest=1; set it to true to show it to everyone. */
+const NRH=(function(){
+ const SHOW_HOME=NRP.FLAG;
+ const PARENT_BASE=''; // parent.html and parent-about.html live next to index.html // local test layout vs. deployed next to index.html
+ const st={gate:null,dest:null,err:''};
+ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function newGate(){const a=6+Math.floor(Math.random()*4),b=3+Math.floor(Math.random()*7),c=11+Math.floor(Math.random()*8);return {a,b,c,ans:a*b+c};}
+ function html(){const g=st.gate;return `<h3>👪 Parent <span>Login</span></h3>
+  <p>For grown-ups: see how your kid is doing in NumiRealm. The game stays free.</p>
+  ${g?`<div id="nrhGateBox" role="group" aria-label="Grown-up check"><p><b>Grown-ups only.</b> This leaves the game. What is <b id="nrhQ">${g.a} × ${g.b} + ${g.c}</b>?</p>
+   <input id="nrhGate" class="plin" inputmode="numeric" autocomplete="off" aria-label="Answer">${st.err?`<p class="plred" id="nrhErr" role="alert">${esc(st.err)}</p>`:''}
+   <div class="nrhrow"><button class="btn" id="nrhGo" type="button">Continue</button><button class="btn gray" id="nrhCancel" type="button">Cancel</button></div></div>`
+  :`<div class="nrhrow"><button class="btn" id="nrhLogin" type="button">🔑 Parent Login</button></div><button class="nrhwhat" id="nrhWhat" type="button">What's included?</button>`}`;}
+ function mount(){if(!SHOW_HOME)return;const app=document.getElementById('nrApp');let el=document.getElementById('nrParentHome');
+  if(!app&&!el)return;
+  if(!el){el=document.createElement('section');el.id='nrParentHome';el.setAttribute('aria-label','Parent Area for grown-ups');app.parentNode.insertBefore(el,app);
+   el.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+    if(b.id==='nrhLogin'||b.id==='nrhWhat'){st.dest=b.id==='nrhWhat'?'parent-about.html':'parent.html#login';st.gate=newGate();st.err='';draw(el);const i=document.getElementById('nrhGate');i&&i.focus();}
+    else if(b.id==='nrhCancel'){st.gate=null;st.err='';draw(el);}
+    else if(b.id==='nrhGo')go(el);});
+   el.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='nrhGate')go(el);});draw(el);}
+  else if(app&&el.nextElementSibling!==app)app.parentNode.insertBefore(el,app);}
+ function draw(el){el.innerHTML=html();}
+ function go(el){const v=+((document.getElementById('nrhGate')||{}).value||'').trim();
+  if(v===st.gate.ans){const u=PARENT_BASE+st.dest;st.gate=null;draw(el);api.leave(u);}else{st.gate=newGate();st.err='Not quite. That check is for grown-ups.';draw(el);}}
+ const api={SHOW_HOME,PARENT_BASE,mount,leave:u=>{location.href=u;}};
+ if(SHOW_HOME){new MutationObserver(()=>{if(document.getElementById('nrApp')&&!document.getElementById('nrParentHome'))mount();}).observe(document.body,{childList:true,subtree:true});mount();}
+ return api;})();
+
+/* NRH-END */
 </script>
 </body>
 </html>

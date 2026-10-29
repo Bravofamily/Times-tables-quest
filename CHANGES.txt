@@ -1,3 +1,10 @@
+## v26 (Oct 28, 2026)
+- Parent Area test pages: parent.html (parent login by email link, child profiles, consent, one-time 10-minute link code/QR, linked devices, progress) and parent-about.html ("What's included?", no sign-in). Supabase JS and QR libraries are vendored in vendor/. Database setup is in supabase/setup.sql.
+- Hidden "Parent Login" card on Home and "Link to a parent account (test)" in Settings. Both appear only with ?parenttest=1 (or on a device that is already linked, so it can be unlinked), and both sit behind a grown-up gate.
+- No change to the normal game. Without ?parenttest=1, Home and Settings are the same as v25 and the game makes no Supabase requests.
+- The service worker never caches parent*.html or vendor/, so the parent pages always come from the network.
+- APP_VERSION, version.json and the service-worker cache bumped to 26. Added tests/test_v26.py and tests/test_parent.py (Supabase mocked). tests/test_v25.py now accepts version >= 25.
+
 ## v25 (Oct 28, 2026)
 - Narrator voice ranking (en-US, Enhanced/Premium/Neural/Siri, local first; novelty/eSpeak voices excluded), late voice loading handled, choice remembered.
 - Settings: new "Which voice" picker (default "Best voice (recommended)"), Test voice button, grown-up voice-download tip.

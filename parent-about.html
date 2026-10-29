@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>What's included: NumiRealm Parent Area (test)</title>
+<style>
+@font-face{font-family:'Baloo 2';font-weight:600 800;font-display:swap;src:url(fonts/baloo2-latin-600-800.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:400;font-display:swap;src:url(fonts/poppins-latin-400.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:swap;src:url(fonts/poppins-latin-600.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:700;font-display:swap;src:url(fonts/poppins-latin-700.woff2) format('woff2')}
+*{box-sizing:border-box}
+html,body{margin:0;overflow-x:hidden}
+body{font-family:Poppins,system-ui,sans-serif;color:#0f172a;background:linear-gradient(160deg,#0A1F44,#1E3A8A 60%,#2563eb);min-height:100vh}
+#testBanner{background:#fbbf24;color:#3b2300;text-align:center;font-weight:700;padding:8px 12px;font-size:14px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:900px;margin:0 auto;padding:16px 16px 6px;color:#fff}
+header h1{font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:26px;margin:0;line-height:1.1}
+header h1 span{color:#00C2FF}
+main{max-width:900px;margin:0 auto;padding:8px 16px 40px}
+.card{background:#fff;border-radius:22px;padding:18px;margin:12px 0;box-shadow:0 6px 0 #0000001a,0 10px 30px #0000002a}
+h2{font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:24px;margin:0 0 8px;color:#1E3A8A}
+h3{font-family:'Baloo 2',Poppins,sans-serif;font-weight:700;font-size:19px;margin:16px 0 6px;color:#0A1F44}
+p{line-height:1.5}.small{font-size:14px;color:#475569}
+label{display:block;font-weight:600;margin:12px 0 4px}
+input,select{font:inherit;font-size:17px;width:100%;min-height:48px;padding:8px 12px;border:2px solid #cbd5e1;border-radius:12px;background:#fff}
+input:focus,select:focus{outline:3px solid #00C2FF;border-color:#00C2FF}
+.btn{font:inherit;font-weight:700;font-size:17px;min-height:48px;min-width:44px;padding:10px 18px;border:0;border-radius:14px;background:#f97316;color:#fff;box-shadow:0 4px 0 #c2410c;cursor:pointer;margin:8px 8px 0 0}
+.btn.blue{background:#2563eb;box-shadow:0 4px 0 #1e3a8a}.btn.gray{background:#e2e8f0;color:#0f172a;box-shadow:0 4px 0 #94a3b8}.btn.red{background:#dc2626;box-shadow:0 4px 0 #991b1b}
+.btn.sm{font-size:15px;padding:8px 14px}
+.btn[disabled]{opacity:.6;cursor:default}
+.err{color:#b91c1c;font-weight:600}.ok{color:#047857;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.kid{border:2px solid #e2e8f0;border-radius:18px;padding:14px;cursor:pointer;background:#f8fafc;text-align:left;font:inherit;width:100%}
+.kid:hover{border-color:#00C2FF}
+.kid b{font-family:'Baloo 2',Poppins,sans-serif;font-size:22px;color:#1E3A8A}
+.pill{display:inline-block;background:#e0f2fe;color:#075985;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:600;margin:2px 4px 2px 0}
+.pill.warn{background:#fef3c7;color:#92400e}
+.bar{height:14px;background:#e2e8f0;border-radius:999px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#00C2FF,#2563eb)}
+.realm{display:grid;grid-template-columns:minmax(120px,170px) 1fr auto;gap:10px;align-items:center;margin:8px 0;font-size:15px}
+.code{font-family:'Baloo 2',monospace;font-weight:800;font-size:44px;letter-spacing:.18em;color:#0A1F44;text-align:center;margin:6px 0;word-break:break-all}
+.qr{display:flex;justify-content:center}.qr svg{width:200px;height:200px;max-width:100%}
+.dev{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid #e2e8f0;padding:10px 0}
+.consent{display:flex;gap:12px;align-items:flex-start;background:#f1f5f9;border-radius:14px;padding:12px;margin:10px 0;font-weight:400}
+.consent input{width:28px;height:28px;min-height:28px;flex:0 0 28px;margin-top:2px}
+.chart svg{width:100%;height:auto;display:block}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.hidden{display:none}
+.steps{margin:6px 0 4px;padding-left:22px;line-height:1.6}
+.navl{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center;padding:0 6px}
+header{flex-wrap:wrap}header nav{display:flex;flex-wrap:wrap;gap:6px;align-items:center}header nav .btn{margin:0}
+.whatl{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:#1E3A8A}
+.wl{list-style:none;padding:0;margin:8px 0}.wl li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid #e2e8f0;line-height:1.4}.wl li span{font-size:20px;line-height:1.2}
+#welcomeCard{border:3px solid #00C2FF}
+@media (max-width:520px){header h1{font-size:22px}.realm{grid-template-columns:1fr auto}.realm .bar{grid-column:1/-1;grid-row:2}.code{font-size:36px}}
+</style>
+<style>
+.land{background:linear-gradient(135deg,#0A1F44,#1E3A8A);color:#F1F5F9;border:2px solid #00C2FF55}
+.land h2{color:#fff;font-size:30px;line-height:1.15}.land h2 span{color:#00C2FF}.tag{color:#FDE68A;font-weight:700;margin:0 0 6px}
+.bens{list-style:none;padding:0;margin:10px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.bens li{border:2px solid #e2e8f0;border-radius:16px;padding:12px 14px;line-height:1.45;font-size:15px;background:#f8fafc}
+.bens li b{display:block;color:#1E3A8A;font-size:17px;font-family:'Baloo 2',Poppins,sans-serif}.bens li.soon{border-style:dashed;background:#fffbeb}
+.soonp{display:inline-block;background:#fbbf24;color:#3b2300;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:700;margin-left:6px;vertical-align:middle;font-family:Poppins,sans-serif}
+.free{background:#ecfeff;border:2px solid #00C2FF;border-radius:14px;padding:12px 14px;font-weight:600;color:#0A1F44}
+a.btn{display:inline-flex;align-items:center;text-decoration:none}
+.navl{color:#fff;font-weight:700;text-decoration:underline;min-height:44px;display:inline-flex;align-items:center;padding:0 6px}
+</style>
+</head>
+<body>
+<div id="testBanner" role="note">🧪 TEST VERSION. For trying out the Parent Area only. Not for real family data yet.</div>
+<header><h1>Numi<span>Realm</span> Parent Area</h1><nav aria-label="Parent Area"><a class="navl" href="parent.html#login" id="navLogin">Parent Login</a></nav></header>
+<main id="about">
+<section class="card land" aria-labelledby="aboutT"><h2 id="aboutT">What's included with a Numi<span>Realm</span> parent account</h2>
+<p class="tag">Enter the Realm. Master the Math. Cheer them on.</p>
+<p>Follow your kids' math adventure from your own phone, without looking over their shoulder.</p>
+<a class="btn" id="ctaTop" href="parent.html#login">🔑 Parent Login</a></section>
+<section class="card" aria-labelledby="nowT"><h2 id="nowT">Available now</h2><ul class="bens" id="benefits"><li><b>📊 Progress in all 6 realms</b><span>Stars and chapters for each kid, from Addition Meadow to Muddle Tower.</span></li><li><b>🎯 Spot what needs practice</b><span>A “Needs practice” list shows the skills they miss most, and how often they reached for a hint lantern.</span></li><li><b>📈 Trend graphs</b><span>Accuracy and time played, day by day.</span></li><li><b>🔗 Up to 2 kids, linked with a code</b><span>Link each kid's phone, tablet or computer with a one-time code that expires in 10 minutes. Kids never sign in.</span></li><li><b>☁️ Syncs from any device, works offline</b><span>Play offline and progress is saved, then sent when the device is back online.</span></li><li><b>🛠️ You stay in control</b><span>Remove a device or delete a kid's profile and progress any time.</span></li></ul></section>
+<section class="card" aria-labelledby="soonT"><h2 id="soonT">On the way</h2><ul class="bens" id="soon">
+<li class="soon"><b>✉️ Weekly email reports<span class="soonp">Coming soon</span></b><span>Not available yet.</span></li>
+<li class="soon"><b>👑 Premium area of NumiRealm<span class="soonp">Coming soon</span></b><span>Not available yet. Details will come later.</span></li></ul>
+<p class="free" id="freeNote">🎮 The NumiRealm game itself stays free.</p></section>
+<section class="card" aria-labelledby="safeT"><h2 id="safeT">Kid-safe by design</h2><ul class="bens" id="safety"><li><b>👧 Nickname only</b><span>No full names, photos or birthdays. Just a nickname, age range and grade.</span></li><li><b>🚫 No ads, no tracking</b><span>No ad networks or tracking scripts in the game or the Parent Area.</span></li><li><b>🔒 Kids never sign in</b><span>A kid's device holds a private link token. It can only send a progress summary.</span></li><li><b>🗑️ Delete any time</b><span>Removing a device stops syncing right away. Deleting a kid removes their data.</span></li></ul></section>
+<section class="card" style="text-align:center"><h2>Ready?</h2><p>Sign in with your email. New here? The same page creates your account.</p>
+<a class="btn blue" id="ctaLogin" href="parent.html#login">🔑 Parent Login</a> <a class="btn gray" id="ctaSignup" href="parent.html#signup">Create a parent account</a></section>
+</main>
+</body>
+</html>

@@ -14,7 +14,7 @@ def ck(c,m):
     print(('PASS ' if c else 'FAIL ')+f'[{BR}] '+m)
     if not c: fails.append(m)
 html=open(os.path.join(D,'index.html'),encoding='utf-8').read()
-ck("const APP_VERSION='25'" in html and json.load(open(os.path.join(D,'version.json')))['version']=='25','version 25')
+_av=re.search(r"const APP_VERSION='(\d+)'",html);ck(_av and int(_av.group(1))>=25 and int(json.load(open(os.path.join(D,'version.json')))['version'])>=25,'version >= 25')
 ALL={str(i):3 for i in range(1,13)}
 subj={s:{"stars":{str(i):3 for i in range(1,20)},"hist":{},"intro":True} for s in ['add','sub','mult','div','frac','mix']}
 SAVE={"muted":True,"narrator":True,"lastHero":"emi","hero":"emi","profiles":{"emi":{"name":"Emi","stars":ALL,"hist":{},"rewards":[],"eq":{},"prologue":True,"age":"8-10","grade":"3","subj":subj}}}
