@@ -3,7 +3,7 @@
 import os,json,re,threading,http.server,functools,time,uuid,random,datetime
 from urllib.parse import urlparse,parse_qs,unquote
 from playwright.sync_api import sync_playwright
-D=os.environ.get('NR_DIR') or os.path.dirname(os.path.dirname(os.path.abspath(__file__)));BR=os.environ.get('PWB','chromium');SH=os.environ.get('SHOTS')=='1';OUT=os.environ.get('SHOTS_DIR','/tmp/numirealm-parent-shots')
+D=os.environ.get('NR_DIR') or os.path.dirname(os.path.dirname(os.path.abspath(__file__)));BR=os.environ.get('PWB','chromium');SH=os.environ.get('SHOTS')=='1';OUT=os.environ.get('SHOTS_DIR','/tmp/numirealm-parent-shots');HOUT=os.environ.get('HEADER_SHOTS_DIR','/tmp/numirealm-header-shots')
 os.makedirs(OUT,exist_ok=True) if SH else None
 PORT=8881 if BR=='chromium' else 8882
 class Q(http.server.SimpleHTTPRequestHandler):
@@ -100,6 +100,14 @@ def small_btns(pg): return pg.evaluate("[...document.querySelectorAll('button')]
 SAVE={"muted":True,"narrator":False,"lastHero":"emi","hero":"emi","profiles":{"emi":{"name":"Emi","stars":{"2":3,"10":2,"5":1},"hist":{},"rewards":[],"eq":{},"prologue":True,"age":"6-7","grade":"1",
   "subj":{"add":{"stars":{"1":3,"2":3,"3":1},"hist":{},"intro":True},"frac":{"stars":{"1":2,"2":0},"hist":{},"intro":True}}},
   "sage":{"name":"Sage","stars":{},"hist":{},"rewards":[],"eq":{},"prologue":True,"subj":{"sub":{"stars":{"1":3},"hist":{},"intro":True}}}}}
+def backck(pg,m,href='./'):
+    # v27: 'Back to NumiRealm' pill top-left in the header, visible without scrolling, >=44px, links to the game Home
+    r=pg.evaluate("(()=>{const a=document.getElementById('nrBack');if(!a)return null;const b=a.getBoundingClientRect(),cs=getComputedStyle(a);return {top:b.top+scrollY,left:b.left+scrollX,w:b.width,h:b.height,vw:innerWidth,vh:innerHeight,vis:cs.display!=='none'&&cs.visibility!=='hidden'&&b.width>0,inHeader:!!a.closest('header'),href:a.getAttribute('href'),txt:a.textContent}})()")
+    ck(bool(r) and r['vis'] and r['inHeader'] and r['top']>=0 and r['top']+r['h']<=r['vh'] and r['left']<r['vw']/2 and r['h']>=44 and r['w']>=44 and 'Back to NumiRealm' in r['txt'] and r['href']==href,f'{m}: Back to NumiRealm button top-left, >=44px, href {href} ({r})')
+def hdrshot(pg,name):
+    if not SH: return
+    os.makedirs(HOUT,exist_ok=True);pg.evaluate("scrollTo(0,0)");bb=pg.locator('header').bounding_box()
+    pg.screenshot(path=f'{HOUT}/{name}.png',clip={'x':0,'y':0,'width':pg.viewport_size['width'],'height':min(pg.viewport_size['height'],bb['y']+bb['height']+40)})
 def ctx(b,w,h,mob):
     kw=dict(viewport={'width':w,'height':h},service_workers='block')
     if mob: kw.update(has_touch=True,**({'is_mobile':True,'device_scale_factor':2} if BR=='chromium' else {}))
@@ -116,12 +124,12 @@ with sync_playwright() as p:
         c=ctx(b,w,h,mob);pg=c.new_page();watch(pg);pg.goto(f'{HOST}/parent.html');pg.wait_for_selector('#email')
         ck(pg.locator('#testBanner').is_visible() and 'TEST VERSION' in pg.inner_text('#testBanner'),f'{tag}: Test version banner shown')
         ck(pg.evaluate("typeof supabase!=='undefined'&&!!document.querySelector('script[src=\"vendor/supabase.js\"]')&&![...document.scripts].some(s=>s.src&&new URL(s.src).origin!==location.origin)"),f'{tag}: supabase-js is vendored, no CDN scripts')
-        noscroll(pg,f'{tag} login')
+        noscroll(pg,f'{tag} login');backck(pg,f'{tag} login');hdrshot(pg,f'{BR}-{tag}-login-header')
         ck(pg.inner_text('#loginH')=='Parent Login' and pg.get_attribute('#whatLink','href')=='parent-about.html' and pg.get_attribute('#navAbout','href')=='parent-about.html',f'{tag}: login screen has What\'s included? link + header nav')
         ck(pg.locator('#welcomeBtn').is_hidden(),f'{tag}: account guide hidden before sign-in')
         if SH: pg.screenshot(path=f'{OUT}/{BR}-{tag}-1-login.png')
         pg.click('#goSignup');pg.wait_for_timeout(400)
-        ck(pg.inner_text('#loginH')=='Create your parent account' and pg.locator('#signupSteps li').count()==4,f'{tag}: sign-up path on the login page')
+        ck(pg.inner_text('#loginH')=='Create your parent account' and pg.locator('#signupSteps li').count()==4,f'{tag}: sign-up path on the login page');backck(pg,f'{tag} signup steps')
         pg.click('#goLogin');pg.wait_for_timeout(300);ck(pg.inner_text('#loginH')=='Parent Login',f'{tag}: back to login')
         # ---------------- benefits page (no sign-in) ----------------
         ab=c.new_page();watch(ab);ab.goto(f'{HOST}/parent-about.html');ab.wait_for_selector('#benefits')
@@ -129,22 +137,22 @@ with sync_playwright() as p:
         ck(ab.locator('#benefits li').count()==6 and ab.locator('#soon li').count()==2 and at.count('Coming soon')==2 and 'Weekly email reports' in at and 'Premium area' in at,f'{tag}: benefits page: 6 benefits, 2 Coming soon')
         ck(all(x in at for x in ['6 realms','Needs practice','Trend graphs','Up to 2 kids','offline','Nickname only','No ads, no tracking','Delete any time']),f'{tag}: benefits + kid-safety text')
         ck('stays free' in ab.inner_text('#freeNote') and not re.search(r'[$€£]|\bprice|/mo\b|per month',ab.inner_text('body'),re.I),f'{tag}: game-stays-free, no prices')
-        ck(ab.evaluate("![...document.scripts].length&&![...document.querySelectorAll('link[href^=http],img[src^=http]')].length"),f'{tag}: benefits page loads nothing external, needs no sign-in')
-        noscroll(ab,f'{tag} benefits page')
+        ck(ab.evaluate("![...document.scripts].some(s=>s.src)&&![...document.querySelectorAll('link[href^=http],img[src^=http]')].length"),f'{tag}: benefits page loads nothing external, needs no sign-in')
+        noscroll(ab,f'{tag} benefits page');backck(ab,f'{tag} benefits page');hdrshot(ab,f'{BR}-{tag}-whats-included-header')
         if SH: ab.screenshot(path=f'{OUT}/{BR}-{tag}-10-benefits-page.png',full_page=True)
         ab.click('#ctaLogin');ab.wait_for_selector('#loginH');ck(ab.url.endswith('/parent.html#login') and ab.inner_text('#loginH')=='Parent Login',f'{tag}: benefits CTA opens Parent Login');ab.close()
         pg.fill('#email','bad');pg.click('#sendBtn');ck(pg.locator('#err').count()==1,f'{tag}: invalid email rejected')
-        pg.fill('#email','parent@example.com');pg.click('#sendBtn');pg.wait_for_selector('#otp')
+        pg.fill('#email','parent@example.com');pg.click('#sendBtn');pg.wait_for_selector('#otp');backck(pg,f'{tag} email code')
         ck(('POST','/auth/v1/otp') in M.calls,f'{tag}: email code requested')
         pg.fill('#otp','000000');pg.click('#verifyBtn');pg.wait_for_selector('#err');ck(True,f'{tag}: wrong code shows error')
         pg.fill('#otp','123456');pg.click('#verifyBtn');pg.wait_for_selector('#consentChk')
         ck(len(M.parents)==1 and M.parents[0]['id']==M.uid,f'{tag}: parent profile row created')
-        noscroll(pg,f'{tag} consent')
+        noscroll(pg,f'{tag} consent');backck(pg,f'{tag} consent')
         if SH: pg.screenshot(path=f'{OUT}/{BR}-{tag}-2-consent.png',full_page=True)
         pg.click('#consentBtn');ck(pg.locator('#err').count()==1 and not M.consent,f'{tag}: consent needs the checkbox')
         pg.check('#consentChk');pg.click('#consentBtn');pg.wait_for_selector('#noKids')
         ck(pg.locator('#welcomeCard').is_visible() and pg.locator('#welcomeList li').count()==6 and all(x in pg.inner_text('#welcomeCard') for x in ['up to 2 kids','with a code','realm progress','Needs practice','Trend graphs','remove devices and data']),f'{tag}: welcome checklist shown right after consent')
-        noscroll(pg,f'{tag} welcome')
+        noscroll(pg,f'{tag} welcome');backck(pg,f'{tag} welcome checklist')
         if SH: pg.screenshot(path=f'{OUT}/{BR}-{tag}-12-welcome.png',full_page=True)
         pg.click('#welcomeClose');ck(pg.locator('#welcomeCard').count()==0 and pg.locator('#welcomeBtn').is_visible(),f'{tag}: welcome dismissible')
         pg.click('#welcomeBtn');ck(pg.locator('#welcomeCard').is_visible(),f'{tag}: welcome re-opens from Account guide');pg.click('#welcomeClose')
@@ -184,9 +192,13 @@ with sync_playwright() as p:
         gh.fill('#nrhGate','3');gh.click('#nrhGo');ck(gh.locator('#nrhErr').count()==1 and not gh.evaluate("window._left"),f'{tag}: wrong gate answer stays in the game')
         gh.click('#nrhCancel');ck(gh.locator('#nrhLogin').count()==1,f'{tag}: gate cancel')
         def solve(): a,bb,cc=map(int,re.findall(r'\d+',gh.inner_text('#nrhQ'))[:3]);gh.fill('#nrhGate',str(a*bb+cc));gh.press('#nrhGate','Enter')
-        gh.click('#nrhWhat');ck(gh.locator('#nrhGate').count()==1,f'{tag}: What\'s included? is gated too');solve();ck(gh.evaluate("window._left")=='parent-about.html',f'{tag}: What\'s included? goes to benefits page')
+        gh.click('#nrhWhat');ck(gh.locator('#nrhGate').count()==1,f'{tag}: What\'s included? is gated too');solve();ck(gh.evaluate("window._left")=='parent-about.html?parenttest=1',f'{tag}: What\'s included? goes to benefits page')
         gh.evaluate("void(NRH.leave=u=>{location.href=u})");gh.click('#nrhLogin');solve();gh.wait_for_selector('#loginH',timeout=8000)
-        ck(gh.url.endswith('/parent.html#login') and gh.inner_text('#loginH')=='Parent Login',f'{tag}: Parent Login opens parent.html login')
+        ck(gh.url.endswith('/parent.html?parenttest=1#login') and gh.inner_text('#loginH')=='Parent Login',f'{tag}: Parent Login opens parent.html login')
+        backck(gh,f'{tag} login from test game',href='./?parenttest=1')
+        gh.goto(f'{HOST}/parent-about.html');gh.wait_for_selector('#benefits');backck(gh,f'{tag} benefits from test game',href='./?parenttest=1')
+        gh.click('#nrBack');gh.wait_for_selector('#nrParentHome',timeout=8000)
+        ck(gh.url==f'{HOST}/?parenttest=1',f'{tag}: Back to NumiRealm opens the test game Home with the flag kept ({gh.url})')
         gh.close()
         # ---------------- game with flag: gate, link ----------------
         g=game(gc,f'?parenttest=1&link={code}');g.wait_for_timeout(300)
@@ -234,15 +246,22 @@ with sync_playwright() as p:
         ft=pg.inner_text('#familyCard')
         ck('Mia' in ft and 'Needs practice: ×7 facts' in ft and '41 min' in ft,f'{tag}: family overview card shows realm, minutes, needs-practice skill')
         ck("Mia's tablet" in pg.inner_text('#allDevices'),f'{tag}: device listed')
-        noscroll(pg,f'{tag} family')
+        noscroll(pg,f'{tag} family');backck(pg,f'{tag} family')
         if SH: pg.screenshot(path=f'{OUT}/{BR}-{tag}-3-family.png',full_page=True)
         pg.click(f'button[data-kid="{mia}"]');pg.wait_for_selector('#realms')
         kt=pg.inner_text('#kidCard')
         ck('3/11' in pg.inner_text('#realms') or re.search(r'4/\d+ ch',pg.inner_text('#realms')) is not None,f'{tag}: realm progress rows')
         ck(pg.inner_text('#struggles').index('×7 facts')<pg.inner_text('#struggles').index('halves') and 'adding within 20' not in pg.inner_text('#struggles'),f'{tag}: struggle skills sorted, strong skills excluded')
         ck(pg.locator('#trendSvg polyline').count()==1 and pg.locator('#trendSvg circle').count()==7 and pg.locator('#trendSvg rect').count()==7,f'{tag}: inline SVG trend chart')
-        noscroll(pg,f'{tag} kid detail')
+        noscroll(pg,f'{tag} kid detail');backck(pg,f'{tag} kid detail')
+        ck(not small_btns(pg),f'{tag} kid detail: all buttons >=44px')
         if SH: pg.screenshot(path=f'{OUT}/{BR}-{tag}-4-kid-detail.png',full_page=True)
+        # ---------------- v27: back to the game keeps the parent signed in ----------------
+        np=c.new_page();watch(np);np.goto(f'{HOST}/parent.html');np.wait_for_selector('#allDevices',timeout=8000);backck(np,f'{tag} signed-in family (new tab, no flag)')
+        np.click('#nrBack');np.wait_for_function("typeof settingsScreen==='function'",timeout=8000)
+        ck(np.url==f'{HOST}/' and np.locator('#nrParentHome').count()==0,f'{tag}: Back to NumiRealm opens the normal game Home ({np.url})')
+        np.goto(f'{HOST}/parent.html');np.wait_for_selector('#allDevices',timeout=8000)
+        ck(np.locator('#email').count()==0 and np.locator('#signOut').is_visible(),f'{tag}: parent still signed in after going back to the game');np.close()
         # ---------------- unlink from dashboard -> device learns it ----------------
         dev=[d for d in M.devices if not d['revoked_at']][0]['id']
         pg.once('dialog',lambda d: d.accept());pg.click(f'button[data-unlink="{dev}"]');pg.wait_for_selector('#msg')

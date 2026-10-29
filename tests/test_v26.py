@@ -16,7 +16,7 @@ def ck(c,m):
     if not c:F.append(m)
 rd=lambda f:open(os.path.join(D,f),encoding='utf-8').read()
 html=rd('index.html');ph=rd('parent.html');sw=rd('sw.js')
-ck("const APP_VERSION='26'" in html and json.load(open(os.path.join(D,'version.json')))['version']=='26','APP_VERSION and version.json are 26')
+_av=re.search(r"const APP_VERSION='(\d+)'",html);ck(_av and int(_av.group(1))>=26 and _av.group(1)==json.load(open(os.path.join(D,'version.json')))['version'],'APP_VERSION and version.json match and are >= 26')
 ck("const PARENT_BASE=''" in html and 'game/' not in re.search(r'/\* NRH-BEGIN \*/[\s\S]*?/\* NRH-END \*/',html).group(0),'game links parent pages in the same folder')
 ck('<meta name="nr-game" content="./">' in ph,'parent.html links back to the game in the same folder')
 ck("SITE+'parent.html'" in ph and "const SITE='https://bravofamily.github.io/Times-tables-quest/'" in ph and 'emailRedirectTo:REDIRECT' in ph,'emailRedirectTo is the live parent.html URL on GitHub Pages')
@@ -26,7 +26,7 @@ shell=re.search(r'const SHELL=\[(.*?)\]',sw).group(1)
 ck('parent' not in shell and 'vendor' not in shell,'sw.js does not precache parent pages or vendor/')
 ck(re.search(r"parent\[\^/\]\*\\\.html\$/\.test\(u\.pathname\)\|\|/\\/vendor\\//\.test\(u\.pathname\)\)return",sw) is not None,'sw.js skips parent*.html and vendor/')
 s=serve(D,P);s2=serve(V25,P+1) if V25 else None
-SNAP="""()=>{const a=document.body.cloneNode(true);a.querySelectorAll('script,style').forEach(e=>e.remove());return a.innerHTML.replace(/\\d{1,2}:\\d{2}/g,'T').replace(/NumiRealm v\\d+/g,'NumiRealm vN').replace(/(min-)?height: [\\d.]+px;?/g,'') /* measured heights vary with font-load timing */}"""
+SNAP="""()=>{const a=document.body.cloneNode(true);a.querySelectorAll('script,style').forEach(e=>e.remove());return a.innerHTML.replace(/\\d{1,2}:\\d{2}/g,'T').replace(/NumiRealm v\\d+/g,'NumiRealm vN').replace(/Enter the realm\\. Master the math/gi,'TAGLINE') /* v27 capitalised the tagline */.replace(/(min-)?height: [\\d.]+px;?/g,'') /* measured heights vary with font-load timing */}"""
 with sync_playwright() as p:
     b=getattr(p,BR).launch()
     def page(port,q=''):
