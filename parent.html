@@ -123,6 +123,7 @@ header{flex-wrap:wrap}header nav{display:flex;flex-wrap:wrap;gap:6px;align-items
 #helpCard details{border:2px solid #e2e8f0;border-radius:14px;margin:8px 0;background:#f8fafc}
 #helpCard summary{cursor:pointer;font-weight:700;padding:12px 14px;min-height:44px;list-style-position:inside}
 #helpCard details p{margin:0;padding:0 14px 12px;font-size:15px}
+.gchk{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-size:15px;line-height:1.4;cursor:pointer}.gchk input{width:24px;height:24px;flex:0 0 24px;margin:2px 0 0}#sendBtn[aria-disabled=true]{opacity:.5;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -153,7 +154,7 @@ addEventListener('hashchange',()=>{if(!S.user&&/signup|login/.test(location.hash
 function errHTML(){return (S.err?`<p class="err" role="alert" id="err">⚠️ ${esc(S.err)}</p>`:'')+(S.msg?`<p class="ok" role="status" id="msg">${esc(S.msg)}</p>`:'');}
 function friendly(e){const m=(e&&(e.message||e.error_description||e.msg))||String(e);
  if(/kid_limit/.test(m))return 'You can add up to 2 kids in this test.';if(/quest_limit/.test(m))return '5 quests are already waiting. Remove one first.';if(/reward_limit/.test(m))return '3 rewards are already open.';if(/plan_limit/.test(m))return 'Two fix-it plans are already running. Finish or stop one first.';if(/rate|too many/i.test(m))return 'Too many tries. Please wait a few minutes.';
- if(/expired|invalid/i.test(m))return 'That code is wrong or expired. Ask for a new one.';if(/fetch|network/i.test(m))return 'Could not reach the server. Check your connection.';return m;}
+ if(/signups? not allowed|user not found/i.test(m))return 'No parent account with that email yet. Tap "Create a parent account" below.';if(/expired|invalid/i.test(m))return 'That code is wrong or expired. Ask for a new one.';if(/fetch|network/i.test(m))return 'Could not reach the server. Check your connection.';return m;}
 
 /* ---------- sign-in: email + 6-digit code ---------- */
 function viewLogin(){if(S.step==='code')return render(`<div class="card" id="loginCard"><h2>Check your email ✉️</h2>
@@ -164,20 +165,22 @@ function viewLogin(){if(S.step==='code')return render(`<div class="card" id="log
  <p>It takes about 2 minutes:</p><ol class="steps" id="signupSteps"><li>Enter your email.</li><li>Type the 6-digit code we email you.</li><li>Read and agree to the parent consent.</li><li>Add your kids (nickname only) and link their devices.</li></ol>`:`<h2 id="loginH">Parent Login</h2>
  <p>Enter your email and we will send you a one-time sign-in code. No password needed.</p>`}
  <label for="email">Email</label><input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" value="${esc(S.email)}">
- ${errHTML()}<button class="btn" id="sendBtn" type="button" ${S.busy?'disabled':''}>Email me a code</button>
+ ${S.signup?`<label class="gchk" for="guardChk"><input type="checkbox" id="guardChk" ${S.guard?'checked':''}> <span>I'm a parent or legal guardian, 18 or older, and I agree to the <a id="termsLink" href="parent-about.html#safeT" target="_blank" rel="noopener">Terms and Privacy Policy</a>.</span></label>`:''}
+ ${errHTML()}<button class="btn" id="sendBtn" type="button" ${S.busy?'disabled':''} ${S.signup&&!S.guard?'aria-disabled="true"':''}>${S.signup?'Create account: email me a code':'Email me a code'}</button>
  <p>${S.signup?'Already have an account? <button class="btn gray sm" id="goLogin" type="button">Parent Login</button>':'New here? <button class="btn gray sm" id="goSignup" type="button">Create a parent account</button>'}</p>
  <p><a class="whatl" id="whatLink" href="parent-about.html">What's included? →</a></p>
  <p class="small">Kids never sign in. Their game links to your account with a short code you make here.</p></div>`);}
+app.addEventListener('change',ev=>{if(ev.target.id==='guardChk'){S.guard=ev.target.checked;const b=$('sendBtn');if(b){if(S.guard)b.removeAttribute('aria-disabled');else b.setAttribute('aria-disabled','true');}if(S.guard&&S.err){S.err='';const e=$('err');e&&e.remove();}}});
 app.addEventListener('click',async ev=>{const t=ev.target.closest('button');if(!t)return;const id=t.id;
  if(S.sample&&sampleBlocks(t))return;
  if(await pcClick(t,id))return;
  if(t.dataset.ptab){S.ptab=t.dataset.ptab;const k=S.kids.find(x=>x.id===S.kid),box=$('playBox');if(k&&box){box.innerHTML=playHTML(S.progress[k.id],S.events[k.id],S.ptab);const nb=box.querySelector('[data-ptab="'+S.ptab+'"]');nb&&nb.focus();}return;}
  try{
- if(id==='sendBtn'){const em=($('email').value||'').trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){S.err='Please enter a valid email.';return viewLogin();}
-  S.email=em;S.err='';S.busy=true;viewLogin();const {error}=await sb.auth.signInWithOtp({email:em,options:{shouldCreateUser:true,emailRedirectTo:REDIRECT}});S.busy=false;
+ if(id==='sendBtn'){if(S.signup&&!($('guardChk')&&$('guardChk').checked)){S.err="Please tick the box to confirm you're a parent or guardian, 18 or older.";return viewLogin();}const em=($('email').value||'').trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){S.err='Please enter a valid email.';return viewLogin();}
+  S.email=em;S.err='';S.busy=true;viewLogin();const {error}=await sb.auth.signInWithOtp({email:em,options:S.signup?{shouldCreateUser:true,emailRedirectTo:REDIRECT,data:{guardian_confirmed:true,guardian_confirmed_at:new Date().toISOString()}}:{shouldCreateUser:false,emailRedirectTo:REDIRECT}});S.busy=false;
   if(error){S.err=friendly(error);return viewLogin();}S.step='code';return viewLogin();}
  if(id==='welcomeClose'){S.welcome=false;return draw();}
- if(id==='goLogin'||id==='goSignup'){S.signup=id==='goSignup';S.err='';viewLogin();const f=$('loginCard');f.scrollIntoView({behavior:'smooth',block:'start'});$('email').focus({preventScroll:true});return;}
+ if(id==='goLogin'||id==='goSignup'){S.signup=id==='goSignup';S.guard=false;S.err='';viewLogin();const f=$('loginCard');f.scrollIntoView({behavior:'smooth',block:'start'});$('email').focus({preventScroll:true});return;}
  if(id==='backBtn'){S.step='email';S.err='';return viewLogin();}
  if(id==='verifyBtn'){const tok=($('otp').value||'').replace(/\D/g,'');if(tok.length<6){S.err='Enter the code from the email.';return viewLogin();}
   S.busy=true;S.err='';viewLogin();const {data,error}=await sb.auth.verifyOtp({email:S.email,token:tok,type:'email'});S.busy=false;
