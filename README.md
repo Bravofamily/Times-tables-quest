@@ -25,3 +25,10 @@ Every question screen has a "📖 Example" button next to the hint lanterns. It 
 
 ## Install as an app (v23)
 NumiRealm is a web app, not an App Store app. Grown-ups can add it to the Home Screen (Safari → Share → Add to Home Screen; Chrome on Android → ⋮ → Install app; Chrome/Edge on a computer → install icon in the address bar). Files: `manifest.webmanifest`, `icons/`. Steps are shown on the Home screen.
+
+
+## v25 – Smoother narrator
+- Picks the most natural voice on the device (Enhanced/Premium/Siri-style voices first, novelty and robotic voices skipped), with a **Narrator voice** picker ("Best available (recommended)") and a **Test voice** button in Settings.
+- Speech is split into short chunks and queued, with fixes so it doesn't cut out (Chrome keep-alive, iPhone first-tap unlock, retry once, stops when you change screens).
+- Math is read aloud the way a teacher says it ("7 times what number equals 14", "three fourths", "23 remainder 3") and names are pronounced right (Bloo, Kee-lo, Eh-shawn, Zee-uh). Text on screen is unchanged.
+- Tip for grown-ups: on iPhone/iPad download nicer voices in Settings › Accessibility › Spoken Content › Voices.

@@ -1,3 +1,10 @@
+## v25 (Oct 28, 2026)
+- Narrator voice ranking (en-US, Enhanced/Premium/Neural/Siri, local first; novelty/eSpeak voices excluded), late voice loading handled, choice remembered.
+- Settings: new "Which voice" picker (default "Best voice (recommended)"), Test voice button, grown-up voice-download tip.
+- Chunked speech queue (<160 chars), Chrome keep-alive, iOS gesture priming, cancel on screen change, cancel→speak delay, retry once on error/no start.
+- Speech-only normalizer for symbols, fractions (incl. blanks like ?/24), remainders, money, decimals, ordinals, ranges, chapters; emoji stripped; one pronunciation table.
+- Rate 0.92, pitch 1.05. APP_VERSION and version.json bumped to 25. tests/test_v25.py added.
+
 ## v24 (Oct 28, 2026)
 - New "📖 Example" button next to the hint lanterns on every question screen (times tables, all subject chapters, bosses and drills). It opens a worked example of a different problem with the same skill and format and a different answer, solved step by step. "Another example" shows a new one each time, and "Back to my problem" (or ✕ / Esc) returns with your answer, timer and hints unchanged.
 - Examples never give your answer away: they don't reuse your problem's numbers (in any order), your answer, or any of your numbers as the example's answer, and a missing-number problem gets a missing-number example that doesn't show your missing number. Equivalent fractions count as the same.
