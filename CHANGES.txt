@@ -1,3 +1,10 @@
+## v27 (Oct 29, 2026)
+- Parent pages: a "🏠 Back to NumiRealm" button at the top left of the header on parent.html (every screen: login, sign-up steps, email code, consent, family, kid detail, welcome checklist) and on parent-about.html. It goes to the game Home (./). It keeps ?parenttest=1 when you came from the test game (remembered for the tab), and signed-in parents stay signed in.
+- Test game (?parenttest=1 only, same one-line switch as the Home card): a compact "🔑 Parent Login" button at the right of the top bar on every screen. It is icon-only on phones so the title keeps its room. It uses the same grown-up gate, then opens parent.html#login. Links from the game to the parent pages now carry ?parenttest=1.
+- Tagline capitalised to the official "Enter the Realm. Master the Math." everywhere (Home banner, splash, page description, share text, narrator line).
+- No other change to the normal game: without ?parenttest=1, Home and Settings are the same as v26 apart from the tagline, and the game makes no Supabase requests.
+- APP_VERSION, version.json and the service-worker cache bumped to 27. Added tests/test_v27.py. Extended tests/test_parent.py (Back button). test_v26.py now accepts version >= 26.
+
 ## v26 (Oct 28, 2026)
 - Parent Area test pages: parent.html (parent login by email link, child profiles, consent, one-time 10-minute link code/QR, linked devices, progress) and parent-about.html ("What's included?", no sign-in). Supabase JS and QR libraries are vendored in vendor/. Database setup is in supabase/setup.sql.
 - Hidden "Parent Login" card on Home and "Link to a parent account (test)" in Settings. Both appear only with ?parenttest=1 (or on a device that is already linked, so it can be unlinked), and both sit behind a grown-up gate.

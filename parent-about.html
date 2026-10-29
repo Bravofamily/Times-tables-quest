@@ -53,6 +53,12 @@ header{flex-wrap:wrap}header nav{display:flex;flex-wrap:wrap;gap:6px;align-items
 .wl{list-style:none;padding:0;margin:8px 0}.wl li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid #e2e8f0;line-height:1.4}.wl li span{font-size:20px;line-height:1.2}
 #welcomeCard{border:3px solid #00C2FF}
 @media (max-width:520px){header h1{font-size:22px}.realm{grid-template-columns:1fr auto}.realm .bar{grid-column:1/-1;grid-row:2}.code{font-size:36px}}
+
+/* v27: back to the game, same blue pill as the game's own Home buttons */
+.nrbackrow{flex-basis:100%;display:flex;margin:0 0 2px}
+.nrback{display:inline-flex;align-items:center;gap:6px;min-height:48px;min-width:44px;padding:8px 18px;border-radius:999px;background:linear-gradient(180deg,#3B5FD0 0%,#1E3A8A 60%,#172F72 100%);color:#fff;text-decoration:none;font-family:'Baloo 2',Poppins,sans-serif;font-weight:800;font-size:17px;letter-spacing:.3px;box-shadow:0 5px 0 #0F1F4D,0 10px 18px #0004;text-shadow:0 1px 1px #0006;white-space:nowrap}
+.nrback:hover{filter:brightness(1.1)}.nrback:active{transform:translateY(3px);box-shadow:0 2px 0 #0F1F4D}
+.nrback:focus-visible{outline:3px solid #FFD166;outline-offset:3px}
 </style>
 <style>
 .land{background:linear-gradient(135deg,#0A1F44,#1E3A8A);color:#F1F5F9;border:2px solid #00C2FF55}
@@ -68,7 +74,10 @@ a.btn{display:inline-flex;align-items:center;text-decoration:none}
 </head>
 <body>
 <div id="testBanner" role="note">🧪 TEST VERSION. For trying out the Parent Area only. Not for real family data yet.</div>
-<header><h1>Numi<span>Realm</span> Parent Area</h1><nav aria-label="Parent Area"><a class="navl" href="parent.html#login" id="navLogin">Parent Login</a></nav></header>
+<header><div class="nrbackrow"><a class="nrback" id="nrBack" href="./" aria-label="Back to the NumiRealm game Home">🏠 Back to NumiRealm</a></div><h1>Numi<span>Realm</span> Parent Area</h1><nav aria-label="Parent Area"><a class="navl" href="parent.html#login" id="navLogin">Parent Login</a></nav></header><script>/* v27: Back to NumiRealm keeps ?parenttest=1 for this tab when the visitor came from the test game */
+(function(){var K='nr-parenttest';try{var q=new URLSearchParams(location.search),r=document.referrer?new URL(document.referrer):null;
+if(q.get('parenttest')==='1'||(r&&r.origin===location.origin&&r.searchParams.get('parenttest')==='1'))sessionStorage.setItem(K,'1');}catch(e){}
+var f=false;try{f=sessionStorage.getItem(K)==='1';}catch(e){}var a=document.getElementById('nrBack');if(a)a.href='./'+(f?'?parenttest=1':'');})();</script>
 <main id="about">
 <section class="card land" aria-labelledby="aboutT"><h2 id="aboutT">What's included with a Numi<span>Realm</span> parent account</h2>
 <p class="tag">Enter the Realm. Master the Math. Cheer them on.</p>
