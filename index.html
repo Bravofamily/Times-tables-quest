@@ -2019,7 +2019,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='30';
+const APP_VERSION='31';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -3716,7 +3716,7 @@ function practiceTip(id){const pf=save.profiles[id],wl=weakList(pf);
 /* ---------- register screens + rewire every button ---------- */
 Object.assign(SCR,{pick:heroPickScreen,realms:realmMap,chapter:chapterDetail,training,trophies:trophyRoom,guide:guideScreen,profile:heroCards,heroes:heroesHall,hero:heroPage,villain:villainPage,settings:settingsV12});
 settingsScreen=track('settings',settingsV12);
-{const _t=titleScreen;SCR.home=_t;titleScreen=function(){NAVST=[];PEND=null;V12.view=null;V12.ask=null;drStop();DR=null;const was=REG;CUR={n:'home',a:[]};REG=true;try{_t.apply(this,arguments);}finally{REG=was;}v12Home();};}
+{const _t=titleScreen;/* v31: SCR.home must be the CURRENT titleScreen (late-bound), not the pre-v12 renderer: back/popstate to Home used to draw the old v9 Home */SCR.home=function(){return titleScreen.apply(this,arguments);};titleScreen=function(){NAVST=[];PEND=null;V12.view=null;V12.ask=null;drStop();DR=null;const was=REG;CUR={n:'home',a:[]};REG=true;try{_t.apply(this,arguments);}finally{REG=was;}v12Home();};}
 ['subjectScreen','mapScreen','smapScreen'].forEach(n=>{const f=eval(n);const w=track(n,f);SCR[n]=f;if(n==='subjectScreen')subjectScreen=w;else if(n==='mapScreen')mapScreen=w;else smapScreen=w;});
 practiceHub=function(){go('training');};profileScreen=function(){go('profile');};
 function v12Home(){const set=(id,fn)=>{const b=$(id);if(b)b.setAttribute('onclick',fn);};
