@@ -183,3 +183,17 @@ Deno.test("v32: no key -> reason no_key; bad AI output -> bad_output", async () 
   ok(S, "");
 });
 Deno.test("v32 PC-15: constant-time secret compare", () => { ok(F.sameText("abc", "abc") && !F.sameText("abc", "abd") && !F.sameText("abc", "abcd") && !F.sameText("", "x"), "compare"); });
+
+// v32.1: letter-style greeting / sign-off removed, placeholders rejected
+Deno.test("v32.1 cleanAI strips Dear/Best and rejects [placeholders]", () => {
+  const raw = "Dear Parent, This week, {{KID}} played 126 minutes and earned 85 stars. Great work on fractions. Try a fraction card game at home. Best, [Your Name]";
+  const t = F.cleanAI(raw)!;
+  if (!t || t.startsWith("Dear") || t.includes("[") || !t.startsWith("This week")) throw new Error("not cleaned: " + t);
+  if (F.cleanAI("{{KID}} did great this week, ask [Teacher Name] for more ideas at home.") !== null) throw new Error("placeholder kept");
+  if (!F.promptFor({ minutes: 1, days_played: 1, stars: 1, answers: 1, accuracy: 1, strong: [], weak: [], quests_done: 0 }).includes("No greeting")) throw new Error("prompt");
+});
+
+Deno.test("v32.1 weekly email never shows a literal {{KID}}", () => {
+  const h = F.emailHTML({ kids: [{ nickname: "Zed", text: "{{KID}} played. {{KID}} did well.", source: "ai", stats: { weak: [], strong: [] } }], week: "2026-W44", portal: "https://x", unsub: "https://x/u" });
+  if (h.includes("{{KID}}") || !h.includes("Zed played")) throw new Error("placeholder leaked");
+});

@@ -45,3 +45,14 @@ Deno.test("nr-gn: without a secret, makes one key, stores it once, and reuses it
     ok(a.ok && b.ok && posts === 1 && a.srv.x === b.srv.x, "one stored key reused after a cold start");
   } finally { globalThis.fetch = real; Deno.env.delete("SUPABASE_URL"); Deno.env.delete("SUPABASE_SERVICE_ROLE_KEY"); }
 });
+
+// v32.1: public key must be a real P-256 point
+Deno.test("v32.1 okPub rejects junk and off-curve keys", async () => {
+  const k = await crypto.subtle.generateKey(EC, true, ["sign"]);
+  const j: any = await crypto.subtle.exportKey("jwk", k.publicKey);
+  if (!F.okPub({ kty: "EC", crv: "P-256", x: j.x, y: j.y })) throw new Error("valid rejected");
+  if (F.okPub({ kty: "EC", crv: "P-256", x: "bad", y: "bad" })) throw new Error("junk accepted");
+  if (F.okPub({ kty: "EC", crv: "P-256", x: j.x, y: j.x })) throw new Error("off-curve accepted");
+  const r = await F.handle(new Request("http://x", { method: "POST", body: JSON.stringify({ action: "claim", code: "ABC12", role: "host", pub: { kty: "EC", crv: "P-256", x: "bad", y: "bad" } }) }));
+  if (r.status !== 400) throw new Error("handler accepted junk " + r.status);
+});

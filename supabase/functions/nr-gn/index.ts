@@ -32,7 +32,21 @@ async function dbKey(): Promise<string> {
   } catch { return ""; }
 }
 export function _reset() { KEY = null; }
-const okPub = (p: any) => p && p.kty === "EC" && p.crv === "P-256" && typeof p.x === "string" && typeof p.y === "string" && p.x.length < 60 && p.y.length < 60 && !p.d;
+// v32.1: x and y must be 32-byte base64url values forming a real point on P-256
+const P256P = 0xffffffff00000001000000000000000000000000ffffffffffffffffffffffffn;
+const P256B = 0x5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604bn;
+const b64uBig = (s: string): bigint | null => {
+  if (!/^[A-Za-z0-9_-]{43}$/.test(s)) return null;
+  try { const bin = atob(s.replace(/-/g, "+").replace(/_/g, "/") + "="); if (bin.length !== 32) return null;
+    let n = 0n; for (const c of bin) n = (n << 8n) | BigInt(c.charCodeAt(0)); return n; } catch { return null; }
+};
+export const onCurve = (x: bigint, y: bigint) => {
+  if (x >= P256P || y >= P256P) return false;
+  const m = (a: bigint) => ((a % P256P) + P256P) % P256P;
+  return m(y * y) === m(x * x * x - 3n * x + P256B);
+};
+export const okPub = (p: any) => { if (!(p && p.kty === "EC" && p.crv === "P-256" && typeof p.x === "string" && typeof p.y === "string" && !p.d)) return false;
+  const x = b64uBig(p.x), y = b64uBig(p.y); return x !== null && y !== null && onCurve(x, y); };
 export async function handle(req: Request): Promise<Response> {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   if (req.method !== "POST") return json({ ok: false, error: "method" }, 405);

@@ -128,10 +128,14 @@ export function promptFor(st: J): string {
   const facts = { minutes_played: st.minutes, days_played: st.days_played, stars_earned: st.stars, answers: st.answers, accuracy_percent: st.accuracy, strong_skills: st.strong.map((s: J) => s.n), practice_skills: st.weak.map((s: J) => s.n + " (" + s.acc + "%)"), quests_done: st.quests_done };
   return "Write a warm, encouraging 3-sentence weekly update for a parent about their child's math game practice. " +
     "Refer to the child only as {{KID}}. Use only these facts, no invented numbers, no medical or diagnostic language, no comparisons to other children, plain US English, under 80 words. " +
-    "End with one practical idea for home.\nFacts: " + JSON.stringify(facts);
+    "End with one practical idea for home. No greeting, no sign-off, no placeholders other than {{KID}}.\nFacts: " + JSON.stringify(facts);
 }
 export function cleanAI(s: string): string | null {
-  if (typeof s !== "string") return null; const t = s.replace(/\s+/g, " ").trim();
+  if (typeof s !== "string") return null;
+  // v32.1: strip any letter-style greeting / sign-off the model adds anyway
+  let t = s.replace(/\s+/g, " ").trim().replace(/^(dear|hi|hello)\b[^,.!]{0,40}[,.!]\s*/i, "")
+    .replace(/\s*(best|warmly|sincerely|cheers|regards|best regards|warm regards)\s*,?\s*(\[[^\]]*\]|[A-Z][\w ]{0,30})?\s*$/i, "").trim();
+  if (/\[[^\]]*\]/.test(t)) return null;
   if (t.length < 20 || t.length > 700 || !t.includes("{{KID}}") || /https?:|<|>|@/.test(t)) return null; return t;
 }
 // v32: returns a safe reason code (never child data) so a template fallback is visible in logs and in parent test mode
@@ -143,6 +147,7 @@ export async function aiSummaryR(st: J): Promise<{ text: string | null; reason: 
     const r = await fetch(url, { method: "POST", signal: ac.signal, headers: { Authorization: "Bearer " + key, "Content-Type": "application/json" },
       body: JSON.stringify({ model: env("AI_MODEL") || "gpt-4o-mini", temperature: 0.4, max_tokens: 200, messages: [{ role: "system", content: "You write short, kind, factual notes for parents. Never ask for or include personal information." }, { role: "user", content: promptFor(st) }] }) });
     clearTimeout(to);
+    if (!r.ok) { const e = await r.json().catch(() => null); console.log("nr-weekly openai_error " + r.status + " " + String(e && e.error && (e.error.code || e.error.type) || "").slice(0, 60) + " " + String(e && e.error && e.error.message || "").replace(/sk-[A-Za-z0-9_-]+/g, "sk-***").slice(0, 200)); }
     if (!r.ok) return { text: null, reason: r.status === 401 || r.status === 403 ? "bad_key" : r.status === 404 ? "bad_model_or_url" : r.status === 429 ? "rate_limited_or_no_credit" : r.status === 400 ? "bad_request_or_model" : "api_error_" + r.status };
     const j = await r.json().catch(() => null);
     const t = cleanAI(j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content);
