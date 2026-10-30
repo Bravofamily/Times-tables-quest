@@ -218,18 +218,20 @@ async function pcClick(t,id){const d=t.dataset,ck=curKid();
  if(id==='lessonClose'){S.lesson=null;draw();return true;}
  if(id==='openLessons'){S.view='lessons';S.lesson=null;draw();return true;}
  if(id==='openAlerts'||id==='openAlerts2'||id==='openAlerts3'){S.view='alerts';S.err='';S.msg='';draw();return true;}
+ if(id==='delAccount'){delAccount();return true;}
+ if(id==='delVerify'){delVerify();return true;}
  if(id==='markRead'){markRead(alerts());S.msg='All caught up.';draw();return true;}
  if(id==='savePrefs'){const ev={};PREF_EV.forEach(([k])=>ev[k]=!!($('pf_'+k)||{}).checked);
-  const row={events:ev,quiet_start:+$('pfQs').value,quiet_end:+$('pfQe').value,idle_days:+$('pfIdle').value,daily_goal:+$('pfGoal').value,email_weekly:!!($('pfEmail')||{}).checked,email_day:+(($('pfEmailDay')||{}).value||0),updated_at:new Date().toISOString()};let extra='';
+  const row={events:ev,quiet_start:+$('pfQs').value,quiet_end:+$('pfQe').value,idle_days:+$('pfIdle').value,daily_goal:+$('pfGoal').value,email_weekly:!!($('pfEmail')||{}).checked,email_day:+(($('pfEmailDay')||{}).value||0),ai_summaries:!!($('pfAI')||{}).checked,updated_at:new Date().toISOString()};let extra='';
   if(PC.p4){let {error}=await sb.from('notify_prefs').upsert(Object.assign({parent_id:S.user.id},row));
-   if(error&&/email_|PGRST204|column/i.test(JSON.stringify(error))){const r2=Object.assign({},row);delete r2.email_weekly;delete r2.email_day;({error}=await sb.from('notify_prefs').upsert(Object.assign({parent_id:S.user.id},r2)));if(!error)extra=' The weekly email needs the latest setup-part4.sql first.';}
+   if(error&&/email_|ai_summ|PGRST204|column/i.test(JSON.stringify(error))){const r2=Object.assign({},row);delete r2.email_weekly;delete r2.email_day;delete r2.ai_summaries;({error}=await sb.from('notify_prefs').upsert(Object.assign({parent_id:S.user.id},r2)));if(!error)extra=' The weekly email needs the latest setup-part4.sql first.';}
    if(error){S.err=friendly(error);draw();return true;}}
   else{const l=lrd(LOCAL_PC)||{};l.prefs=row;lwr(LOCAL_PC,l);}
   PC.prefs=Object.assign({},PREF_DEF,row);S.err='';S.msg='Preferences saved.'+extra;draw();return true;}
  if(id==='emailPreview'){S.mailNote='Building your preview…';S.mailHTML='';redraw();const r=await callFn({action:'preview'});
   if(r.ok){S.mailNote='Preview sent to '+(r.to||'your email')+'. Check your inbox (and the spam folder).';}
   else if(r.html){S.mailHTML=r.html;S.mailNote=r.error==='email_not_configured'?'Email sending is not set up yet (RESEND_API_KEY), so here is the preview on screen.':r.error==='preview_limit'?'You can send 3 previews a day. Here it is on screen instead.':'We could not send it just now. Here it is on screen.';}
-  else S.mailNote=r.error==='no_kids'?'Add a kid first.':'The weekly email is not switched on for this Parent Area yet. Whoever set it up can follow supabase/EDGE_SETUP.md.';
+  else S.mailNote=r.error==='no_kids'?'Add a kid first.':r.error==='preview_limit'?'You can make 3 previews a day. Try again tomorrow.':'The weekly email is not switched on for this Parent Area yet. Whoever set it up can follow supabase/EDGE_SETUP.md.';
   redraw();return true;}
  if(id==='sumRefresh'&&ck){SUM[ck.k.id]={state:'loading'};redraw();loadSum(ck.k,true);return true;}
  if(id==='celebrate'){confetti();return true;}
@@ -273,7 +275,7 @@ app.addEventListener('input',e=>{if(e.target.id==='qMsg'){S.qmsg=e.target.value;
 app.addEventListener('change',e=>{if(e.target.id==='qSkill'){S.qskill=e.target.value;const ck=curKid(),t=$('qpT');if(t&&ck)t.textContent='Practice '+skillName(ck.pr,S.qskill);}});
 $('bellBtn').onclick=()=>{S.view='alerts';S.err='';S.msg='';draw();};
 $('welcomeBtn').onclick=()=>{S.welcome=true;S.view='family';draw();const w=$('welcomeCard');w&&w.scrollIntoView({block:'start'});};
-$('signOut').onclick=async()=>{await sb.auth.signOut();TOUR.stop();S.sample=false;Object.assign(S,{consented:false,welcome:false,user:null,step:'email',kids:[],view:'family',err:'',msg:''});viewLogin();};
+$('signOut').onclick=async()=>{window.__nrOut=1;await sb.auth.signOut();TOUR.stop();S.sample=false;Object.assign(S,{consented:false,welcome:false,user:null,step:'email',kids:[],view:'family',err:'',msg:''});viewLogin();};
 
 /* ---------- consent ---------- */
 function viewConsent(){render(`<div class="card" id="consentCard"><h2>Before we start</h2>
@@ -302,7 +304,8 @@ function struggles(pr){if(!pr||!pr.skills)return[];return Object.entries(pr.skil
  .filter(s=>(s.t>=5&&s.acc<.7)||(s.l>=3&&s.l>=s.t*.3)).sort((a,b)=>a.acc-b.acc||b.l-a.l).slice(0,3);}
 function starsOf(pr){return pr?REALMS.reduce((a,[id])=>a+(((pr.realms||{})[id]||{}).stars||0),0):0;}
 function reached(pr){let r='Not started yet';if(pr)REALMS.forEach(([id,n])=>{if((((pr.realms||{})[id]||{}).chapters||0)>0)r=n;});return r;}
-function weekStars(ev,pr){if(!ev||!ev.length)return 0;const wk=new Date(Date.now()-7*864e5).toISOString().slice(0,10);const before=[...ev].filter(e=>e.day<wk).pop();return Math.max(0,starsOf(pr)-(before?before.stars_total:0));}
+/* v32: one shared 'this week' = Monday 00:00 UTC to now, on UTC event days (family card + challenge) */
+function weekStars(ev,pr){return starsThisWeek(ev,pr);}
 function mins(s){const m=Math.round((s||0)/60);return m<60?m+' min':Math.floor(m/60)+' h '+(m%60)+' min';}
 function ago(t){if(!t)return 'never';const m=Math.round((Date.now()-new Date(t))/60000);return m<1?'just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' h ago':Math.round(m/1440)+' days ago';}
 function trendSVG(ev){if(!ev||ev.length<2)return '<p class="small" id="noTrend">The trend graph appears after a couple of days of play.</p>';
@@ -385,7 +388,9 @@ const LOCAL_PC='nr-pc-local',SEEN_PC='nr-pc-seen';
 const lrd=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
 const lwr=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const PREF_EV=[['milestone','🏆','New milestone'],['weak','🎯','Weak spot found'],['fixit','🛠️','Fix-it plan finished'],['quest','📜','Quest finished'],['idle','💤','No play for a few days'],['goal','⏱','Daily play-time goal reached']];
-const PREF_DEF={events:{milestone:true,weak:true,fixit:true,quest:true,idle:true,goal:true},quiet_start:20,quiet_end:7,idle_days:3,daily_goal:30,email_weekly:false,email_day:0};
+/* v32: AI-written summaries are OFF until the parent turns them on after reading the notice (owner decision, Oct 30). One constant. */
+const AI_DEFAULT=false;
+const PREF_DEF={ai_summaries:AI_DEFAULT,events:{milestone:true,weak:true,fixit:true,quest:true,idle:true,goal:true},quiet_start:20,quiet_end:7,idle_days:3,daily_goal:30,email_weekly:false,email_day:0};
 /* v28: weekly summary + weekly email via the nr-weekly Edge Function (optional; degrades to an on-device summary) */
 const FN='nr-weekly',SUM={},DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 async function callFn(body){try{const {data,error}=await sb.functions.invoke(FN,{body});if(error){let j=null;try{j=error.context&&typeof error.context.json==='function'?await error.context.json():null}catch(e){}return j&&j.ok!==undefined?j:{ok:false,error:'unavailable'};}return data&&data.ok!==undefined?data:{ok:false,error:'unavailable'};}catch(e){return {ok:false,error:'unavailable'};}}
@@ -393,12 +398,13 @@ function localSum(pr,ev){const m=minsThisWeek(pr,ev),st=starsThisWeek(ev,pr),w=s
  if(!m&&!st)return '{{KID}} has not played yet this week. A short 10-minute session is a great way to start, and a quest from home can help.';
  return `{{KID}} played ${m} minute${m===1?'':'s'} this week and earned ${st} star${st===1?'':'s'}.`+(w.length?` Worth practicing: ${w.join(' and ')}.`:' No weak spots right now. Keep it up!');}
 async function loadSum(k,refresh){const r=await callFn({action:'summary',kid_id:k.id,refresh:!!refresh});const pr=S.progress[k.id],ev=S.events[k.id];
- SUM[k.id]=r.ok?{state:'ok',source:r.source,text:r.text,week:r.week}:{state:'local',source:'template',text:localSum(pr,ev)};if(S.view==='kid'&&S.kid===k.id)redraw();}
+ SUM[k.id]=r.ok?{state:'ok',source:r.source,text:r.text,week:r.week,why:typeof r.ai_reason==='string'?r.ai_reason.slice(0,40):''}:{state:'local',source:'template',text:localSum(pr,ev)};if(S.view==='kid'&&S.kid===k.id)redraw();}
 function summaryHTML(k){const s=SUM[k.id];
  if(!s||s.state==='loading')return `<div class="card" id="summaryCard"><h2>🗞️ This week's summary</h2><p class="small" id="sumLoading">Writing this week's summary…</p></div>`;
  const ai=s.source==='ai',note=ai?'Written by an AI service from this week\u2019s totals only. It never sees names. Please check it against the numbers above.':s.state==='local'?'Made on this device from this week\u2019s numbers. No AI used. AI summaries and the weekly email start once the server part is set up (supabase/EDGE_SETUP.md).':'Made by a simple template from this week\u2019s numbers. No AI used.';
  return `<div class="card" id="summaryCard"><h2>🗞️ This week's summary</h2><p><span class="pill${ai?' aipill':''}" id="sumLabel">${ai?'🤖 AI-written':'📊 Smart summary'}</span></p>
- <p id="sumText" class="sumtext">${esc(String(s.text).split('{{KID}}').join(k.nickname))}</p><p class="small" id="sumNote">${note}</p>
+ <p id="sumText" class="sumtext">${esc(String(s.text).split('{{KID}}').join(k.nickname))}</p><p class="small" id="sumNote">${note}</p><p class="small" id="statsNote">📏 Stars, minutes and accuracy on this page are measured from play, not written by AI. Days and weeks (Monday start) are counted in UTC time, so late-evening play can show on the next day.</p>
+ ${(!ai&&s.state==='ok'&&s.why&&!/^(ok|off|cached)$/.test(s.why))?`<p class="small" id="aiWhy" role="status">🧪 Test mode: AI unavailable (${esc(s.why)}), so the template was used.</p>`:''}
  <div class="row2">${s.state==='ok'?'<button class="btn gray sm" type="button" id="sumRefresh">🔄 Refresh</button>':''}<button class="btn gray sm" type="button" id="openAlerts3">✉️ Weekly email settings</button></div></div>`;}
 function missingTable(e){const s=JSON.stringify(e||{});return /PGRST205|PGRST202|42P01|does not exist|schema cache|not mocked|404/i.test(s);}
 async function loadPC(){
@@ -477,7 +483,7 @@ const CHALLENGES=[
  {key:'clock',icon:'⏰',title:'Clock fives',home:'Look at the kitchen clock together and count the minutes by 5s around the dial.',goal:'minutes',n:40,goalTxt:'Play 40 minutes this week.'}];
 function isoWeek(d){d=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const day=d.getUTCDay()||7;d.setUTCDate(d.getUTCDate()+4-day);const y=d.getUTCFullYear(),w=Math.ceil(((d-Date.UTC(y,0,1))/864e5+1)/7);return y+'-W'+p2(w);}
 function thisChallenge(now){now=now||new Date();const wk=isoWeek(now),n=+wk.slice(0,4)*53+ +wk.slice(6);return {wk,c:CHALLENGES[n%CHALLENGES.length]};}
-function mondayKey(){const t=new Date();t.setHours(12,0,0,0);t.setDate(t.getDate()-((t.getDay()+6)%7));return dk(t);}
+function mondayKey(){const t=new Date();t.setUTCHours(12,0,0,0);t.setUTCDate(t.getUTCDate()-((t.getUTCDay()+6)%7));return t.toISOString().slice(0,10);}
 function starsThisWeek(ev,pr){if(!ev||!ev.length)return 0;const mon=mondayKey(),before=[...ev].filter(e=>String(e.day)<mon).pop();return Math.max(0,starsOf(pr)-(before?before.stars_total:(ev[0].stars_total||0)));}
 function minsThisWeek(pr,ev){const b=playBuckets(playData(pr,ev),'week');return Math.round(b[b.length-1].v);}
 function challengeHTML(k,pr,ev){const {wk,c}=thisChallenge(),done=PC.chal.find(x=>x.kid_id===k.id&&x.week===wk),have=c.goal==='stars'?starsThisWeek(ev,pr):minsThisWeek(pr,ev),pc=Math.min(100,Math.round(100*have/c.n));
@@ -621,11 +627,42 @@ function alertsView(){const al=alerts(),p=PC.prefs||PREF_DEF,ev=p.events||PREF_D
  <div><label for="pfQs">Quiet hours from</label><select id="pfQs">${hrs.map(([h,l])=>`<option value="${h}"${+p.quiet_start===h?' selected':''}>${l}</option>`).join('')}</select></div>
  <div><label for="pfQe">until</label><select id="pfQe">${hrs.map(([h,l])=>`<option value="${h}"${+p.quiet_end===h?' selected':''}>${l}</option>`).join('')}</select></div></div>
  <p class="small">During quiet hours the Parent Area does not show the pop-up banner. Alerts still wait in this list.</p>
+ <fieldset class="prefs" id="aiPrefs"><legend>🤖 AI-written learning summaries (optional)</legend>
+ <p class="small" id="aiNotice">If you turn this on, NumiRealm may send a limited set of aggregated learning information, such as practice time, answer accuracy, completed activities and approved skill categories, to our AI service provider to write a learning summary for you. We do not intentionally send your child's name, email address, account ID or free-text profile information. AI-generated summaries may contain errors and are informational; the learning totals and progress measurements shown separately are the recorded statistics. This stays off unless you turn it on.</p>
+ <label class="consent" for="pfAI"><input type="checkbox" id="pfAI"${p.ai_summaries?' checked':''}><span>I have read this notice. Turn on AI-written summaries.</span></label>
+ <p class="small">When off, you get a template summary built from the same totals, with no AI.</p></fieldset>
  <fieldset class="prefs" id="emailPrefs"><legend>✉️ Weekly email</legend><label class="consent" for="pfEmail"><input type="checkbox" id="pfEmail"${p.email_weekly?' checked':''}><span>Send me a weekly email: each kid's summary, play time, wins, weak spots and this week's family challenge</span></label>
  <div class="pgrid"><div><label for="pfEmailDay">Send it on</label><select id="pfEmailDay">${DAYS.map((d,i)=>`<option value="${i}"${+p.email_day===i?' selected':''}>${d}</option>`).join('')}</select></div></div>
  <p class="small">Goes to ${esc((S.user&&S.user.email)||S.email||'your sign-in email')}. Off until you turn it on. Every email has an unsubscribe link.</p>
  <button class="btn gray" type="button" id="emailPreview">📨 Send me a preview now</button>${S.mailNote?`<p class="pcnote small" id="mailNote" role="status">${esc(S.mailNote)}</p>`:''}${S.mailHTML?`<iframe id="emailPreviewFrame" class="mailframe" title="Email preview" sandbox="" srcdoc="${esc(S.mailHTML)}"></iframe>`:''}</fieldset>
- ${PC.p4?'':'<p class="small" id="prefsLocal">Saved on this device only until the database update (setup-part4.sql) is run.</p>'}${errHTML()}<button class="btn blue" type="button" id="savePrefs">Save preferences</button>${errHTML()}</div>`;}
+ ${PC.p4?'':'<p class="small" id="prefsLocal">Saved on this device only until the database update (setup-part4.sql) is run.</p>'}${errHTML()}<button class="btn blue" type="button" id="savePrefs">Save preferences</button>${errHTML()}</div>
+ <div class="card" id="deleteCard"><h2>🗑️ Delete your NumiRealm Parent Center account</h2>
+ <p class="small">You can request permanent deletion of your NumiRealm Parent Center account and the family information associated with it.</p>
+ <p class="small">When deletion is completed, we will delete your Parent Center sign-in account, parent profile, linked child profiles, and associated learning records, subject to any limited retention required for security, legal, or operational purposes.</p>
+ <p class="small">Deleting your account will also stop future NumiRealm Parent Center emails associated with that account. Emails already delivered, records held temporarily by our email provider, and encrypted backups may remain for a limited period under the retention practices described in our Privacy Notice.</p>
+ <p class="small"><b>Account deletion cannot be undone.</b> Your children will no longer have access to family features connected to this account. The free child game may remain available separately.</p>
+ <p class="small">To protect your account, we may ask you to verify your identity before completing the request. We will provide confirmation when the deletion process has been completed.</p>
+ ${S.delReauth?`<label for="delOtp">Enter the 6-digit code we just emailed you</label><input id="delOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="6"><button class="btn blue" type="button" id="delVerify">Verify and delete</button>`:''}
+ <label for="delConfirm">Type DELETE to confirm</label><input id="delConfirm" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="DELETE">
+ ${S.delNote?`<p class="pcnote small" id="delNote" role="status">${esc(S.delNote)}</p>`:''}<button class="btn red" type="button" id="delAccount"${S.delBusy?' disabled':''}>${S.delBusy?'Deleting…':'Delete my account forever'}</button></div>`;}
+
+/* v32: delete my account (server-side Edge Function nr-delete-account; the service key lives only in the function) */
+async function delVerify(){const c=(($('delOtp')||{}).value||'').trim();if(!/^\d{6}$/.test(c)){S.delNote='Enter the 6-digit code from the email.';return draw();}
+ S.delNote='Checking the code…';draw();const {error}=await sb.auth.verifyOtp({email:S.user.email,token:c,type:'email'});
+ if(error){S.delNote='That code did not work. Check the newest email and try again.';return draw();}
+ S.delReauth=false;S.delOk=true;return delAccount();}
+async function delAccount(){const v=S.delOk?'DELETE':(($('delConfirm')||{}).value||'').trim();S.delOk=false;
+ if(v!=='DELETE'){S.delNote='Type DELETE (in capital letters) to confirm.';return draw();}
+ S.delBusy=true;S.delNote='Deleting your account…';draw();let r;
+ try{const {data,error}=await sb.functions.invoke('nr-delete-account',{body:{confirm:'DELETE'}});
+  if(error){let j=null;try{j=error.context&&typeof error.context.json==='function'?await error.context.json():null}catch(e){}r=j||{ok:false,error:'unreachable'};}else r=data;}catch(e){r={ok:false,error:'unreachable'};}
+ S.delBusy=false;
+ if(r&&r.error==='reauth'){const {error}=await sb.auth.signInWithOtp({email:S.user.email,options:{shouldCreateUser:false}});S.delReauth=!error;S.delNote=error?'We could not send a verification code. Please try again in a minute.':'For your safety, confirm it is you: we emailed a 6-digit code to '+S.user.email+'. Nothing has been deleted yet.';return draw();}
+ if(r&&r.ok&&!r.verified)r={ok:false,error:'partial'};
+ if(!r||!r.ok){S.delNote=r&&r.error==='partial'?'Some of your data was deleted but not all of it. Nothing is lost by trying again: tap Delete again. If it keeps failing, email us and we will finish it.':r&&r.error==='unreachable'?'Could not reach the server, so nothing was deleted. Check your connection and try again.':'Your account was not deleted. Please try again.';return draw();}
+ window.__nrOut=1;try{await sb.auth.signOut({scope:'global'});}catch(e){}try{await sb.auth.signOut({scope:'local'});}catch(e){}
+ try{Object.keys(localStorage).filter(k=>/^nr-pc|^nr-prefs|^sb-/.test(k)).forEach(k=>localStorage.removeItem(k));}catch(e){}
+ TOUR.stop();Object.assign(S,{consented:false,welcome:false,user:null,step:'email',kids:[],view:'family',err:'',delNote:'',msg:'Your account and all its data were deleted. You are signed out.'});viewLogin();}
 
 /* ---------- coming soon ---------- */
 const SOON=[['🤖','“Ask about my kid”','Ask questions about progress in plain language.'],['📄','Teacher report (PDF)','A one-page report to share at school.'],['📲','Phone notifications','Alerts on your phone, not just here.'],['🎙️','Voice notes from home','Record a cheer your kid hears in the game.'],['🏅','Family leaderboard','Friendly ranking between siblings.'],['💳','Premium plan','Extra features for families. The game stays free.'],['🧩','Home-screen widget','Today\u2019s minutes at a glance.']];
@@ -659,7 +696,7 @@ function draw(){if(!S.user)return viewLogin();
   ${errHTML()}<button class="btn blue" type="button" id="makeCode" data-code="${k.id}">➕ Add a device (get a code)</button></div>`);}
  render(`${S.welcome?welcomeHTML():''}${toastHTML()}<div class="card" id="familyCard"><h2>Your family</h2>${S.kids.length?`<div class="grid">${S.kids.map(k=>{const pr=S.progress[k.id],st=struggles(pr)[0];
    return `<button class="kid" type="button" data-kid="${k.id}"><b>${esc(k.nickname)}</b>${pr&&pr.hero?` <span class="small">plays ${esc(HERO[pr.hero]||pr.hero)}</span>`:''}<br>
-   <span class="small">${esc(reached(pr))}</span><br><span class="pill">⭐ ${weekStars(S.events[k.id],pr)} this week</span><span class="pill">⏱ ${mins(pr&&pr.time_played_sec)}</span>${st?`<br><span class="pill warn">Needs practice: ${esc(st.n)}</span>`:''}</button>`;}).join('')}</div>`:'<p id="noKids">Add your first kid to get started.</p><p class="small">Want to look around first? <button class="btn gray sm" id="sampleBtn" type="button">👀 Try it with sample data</button></p>'}
+   <span class="small">${esc(reached(pr))}</span><br><span class="pill" title="Monday to now, days in UTC">⭐ ${weekStars(S.events[k.id],pr)} this week</span><span class="pill">⏱ ${mins(pr&&pr.time_played_sec)}</span>${st?`<br><span class="pill warn">Needs practice: ${esc(st.n)}</span>`:''}</button>`;}).join('')}</div>`:'<p id="noKids">Add your first kid to get started.</p><p class="small">Want to look around first? <button class="btn gray sm" id="sampleBtn" type="button">👀 Try it with sample data</button></p>'}
   ${S.kids.length<2?'<button class="btn" id="addKidBtn" type="button">➕ Add a kid</button>':'<p class="small">This test allows up to 2 kids.</p>'}${errHTML()}</div>
   <div class="card" id="pcCard"><h2>🧭 Parent Center</h2><div class="lsgrid"><button type="button" class="lcard" id="openLessons"><span class="lci" aria-hidden="true">📚</span><b>Learn the method</b><span class="small">${LESSONS.length} two-minute lessons</span></button>
   <button type="button" class="lcard" id="openAlerts2"><span class="lci" aria-hidden="true">🔔</span><b>Alerts & preferences</b><span class="small">${bellCount()} new · shown only here</span></button>
@@ -752,7 +789,10 @@ const TOUR=(function(){
   if(finished)markDone();if(tmp){tmp=false;sampleOff();}S.view='family';if(S.user&&S.consented)draw();}
  $('tourBtn').onclick=()=>start();
  return {start,stop,maybe,done,STEPS,get i(){return i;}};})();
-sb.auth.onAuthStateChange((ev,session)=>{if(ev==='SIGNED_IN'&&session&&!S.user){S.user=session.user;boot();}});
+sb.auth.onAuthStateChange((ev,session)=>{if(ev==='SIGNED_IN'&&session&&!S.user){S.user=session.user;boot();}
+ /* v32 PC-14: sign-out in another tab or an expired session clears this page too */
+ else if(ev==='SIGNED_OUT'&&S.user&&!window.__nrOut){S.user=null;try{SUM&&Object.keys(SUM).forEach(k=>delete SUM[k]);}catch(e){}location.replace(location.pathname+location.search);}
+ else if(ev==='TOKEN_REFRESHED'&&session&&S.user)S.user=session.user;});
 boot().catch(e=>{S.err=friendly(e);viewLogin();});
 </script>
 </body>

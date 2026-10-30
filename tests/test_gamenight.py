@@ -74,11 +74,23 @@ class Hub:
 
 hub=Hub()
 IPHONE=dict(viewport={'width':390,'height':844},device_scale_factor=2,has_touch=True,is_mobile=BR=='chromium')
+# v32 CR-02: GN_SEC=1 sends seat claims to a local nr-gn (throwaway key); otherwise nr-gn "not deployed" (legacy mode)
+GN_SEC=os.environ.get('GN_SEC')=='1';GN_URL=os.environ.get('GN_URL','http://127.0.0.1:8899')
+def gn_route(r):
+    if not GN_SEC: return r.fulfill(status=503,headers={'Access-Control-Allow-Origin':'*','Content-Type':'application/json'},body='{"ok":false,"error":"not_configured"}')
+    if r.request.method=='OPTIONS': return r.fulfill(status=200,headers={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'*'},body='ok')
+    import urllib.request
+    q=urllib.request.Request(GN_URL,data=r.request.post_data.encode(),headers={'Content-Type':'application/json'},method='POST')
+    try:
+        with urllib.request.urlopen(q,timeout=10) as x: b=x.read();st=x.status
+    except urllib.error.HTTPError as e: b=e.read();st=e.code
+    r.fulfill(status=st,headers={'Access-Control-Allow-Origin':'*','Content-Type':'application/json'},body=b)
 def shot(pg,name,full=False):
     if SH: pg.wait_for_timeout(150);pg.screenshot(path=f'{OUT}/{name}.png',full_page=full)
 def ctx(b,phone=True,flag=True):
     c=b.new_context(**(IPHONE if phone else dict(viewport={'width':1280,'height':900})))
     c.route_web_socket(re.compile(r'.*/realtime/v1/websocket.*'),hub.handler)
+    c.route('**/functions/v1/nr-gn',gn_route)
     pg=c.new_page();pg.on('console',lambda m:errs.append(m.text) if m.type=='error' else None);pg.on('pageerror',lambda e:errs.append(str(e)))
     return c,pg
 def solve(q):
@@ -101,7 +113,7 @@ with sync_playwright() as p:
     # v29: the test flag is remembered per device, so forget it before checking a linked device without the flag
     pg.evaluate("localStorage.removeItem('nr-parenttest')");pg.evaluate("localStorage.setItem('nr-parent-link',JSON.stringify({nickname:'Mia',hero:'emi',deviceName:'iPad',code:'X'}))")
     pg.goto(HOST+'/index.html');pg.wait_for_timeout(800)
-    ck(pg.locator('#nrGameNight').count()==1 and pg.locator('#nrParentHome').count()==0,'linked device (no flag): small Game Night card only')
+    ck(pg.locator('#nrParentHome #nrhGN').count()==1,'v30: linked device (no flag): Game Night button in the public Parent card')
     pg.goto(HOST+'/gamenight.html');ck(pg.is_visible('#gnHome') and pg.is_hidden('#testBanner'),'linked device can open Game Night')
     pg.evaluate("localStorage.clear()");c0.close()
     # ---- host: gate + setup ----
@@ -215,7 +227,26 @@ with sync_playwright() as p:
     co,po=ctx(b);co.route('**/vendor/supabase.js',lambda r:r.abort());po.goto(HOST+'/gamenight.html?parenttest=1&join=ABCDE');po.fill('#joinName','Mia');po.click('#joinGo')
     po.wait_for_selector('#connErr,#joinErr',timeout=16000);ck(po.locator('#connErr').count()==1,'no realtime client (offline) -> friendly message')
     # broadcasts never carried answers before reveal
-    leak=[e for e in hub.log if e[2]=='state' and e[3].get('phase')=='question' and 'ans' in json.dumps(e[3].get('q'))]
+    def body(e):
+        pl=e[3] or {}
+        return json.loads(pl['st']) if isinstance(pl.get('st'),str) else pl
+    if GN_SEC:
+        sts=[e for e in hub.log if e[2]=='state'];ans=[e for e in hub.log if e[2]=='answer']
+        ck(sts and all(isinstance(e[3].get('st'),str) and e[3].get('s') for e in sts),f'CR-02: all {len(sts)} host states are signed')
+        ck(ans and all(e[3].get('s') for e in ans),f'CR-02: all {len(ans)} answers are signed')
+        cx,px=ctx(b);px.goto(HOST+'/gamenight.html?parenttest=1');px.wait_for_selector('#gnHome')
+        r=px.evaluate('''async()=>{const G=GN,o={};const a=await G.gnClaim('QWERT','player'),bb=await G.gnClaim('QWERT','player'),h=await G.gnClaim('QWERT','host');
+          o.claims=!!(a&&bb&&h)&&a.pid!==bb.pid;const ca=await G.gnCheck(h,a.claim,a.sig,'QWERT','player');o.valid=!!ca&&ca.pid===a.pid;
+          const msg=JSON.stringify(['QWERT',a.pid,1,'42']);o.ownSig=await G.gnVerify(ca.key,msg,await G.gnSign(a,msg));
+          o.impersonate=await G.gnVerify(ca.key,msg,await G.gnSign(bb,msg));
+          const forged=a.claim.replace(a.pid,bb.pid);o.forgedClaim=await G.gnCheck(h,forged,a.sig,'QWERT','player');
+          o.wrongRoom=await G.gnCheck(h,a.claim,a.sig,'ZZZZZ','player');o.playerAsHost=await G.gnCheck(h,a.claim,a.sig,'QWERT','host');return o;}''')
+        ck(r['claims'] and r['valid'] and r['ownSig'],'CR-02: server-signed seats issued and verified')
+        ck(r['impersonate'] is False,'CR-02: player B cannot sign an answer as player A')
+        ck(r['forgedClaim'] is None,'CR-02: edited claim (stolen id) rejected')
+        ck(r['wrongRoom'] is None and r['playerAsHost'] is None,'CR-02: claim for another room or a player posing as host rejected')
+        cx.close()
+    leak=[e for e in hub.log if e[2]=='state' and body(e).get('phase')=='question' and 'ans' in json.dumps(body(e).get('q'))]
     ck(not leak,'question broadcasts carry no answers')
 real=[e for e in errs if 'WebSocket' not in e and 'websocket' not in e and 'Failed to load resource' not in e and 'supabase.js' not in e]
 ck(not real,f'no console errors {real[:5]}')

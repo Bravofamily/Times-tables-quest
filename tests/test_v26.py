@@ -34,7 +34,7 @@ with sync_playwright() as p:
         pg.on('request',lambda r:pg.sb.append(r.url) if 'supabase' in r.url else None)
         pg.goto(f'http://127.0.0.1:{port}/index.html{q}');pg.wait_for_timeout(1300);return pg
     g=page(P)
-    ck(g.locator('#nrParentHome').count()==0,'no Parent Login card on Home without the flag')
+    ck(g.locator('#nrParentHome').count()==1,'v30: Parent Login card on Home without the flag (public)')
     home=g.evaluate(SNAP);g.evaluate("settingsScreen()");g.wait_for_timeout(400)
     ck(g.locator('#parentLink,#plOpen').count()==0,'no parent link in Settings without the flag')
     sett=g.evaluate(SNAP);ck(g.sb==[],'no Supabase requests without the flag')

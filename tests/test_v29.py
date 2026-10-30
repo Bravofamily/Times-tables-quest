@@ -31,7 +31,7 @@ def home(pg,q=''):
 with sync_playwright() as p:
     b=getattr(p,BR).launch()
     c=ctx(b);pg=c.new_page();pg.on('pageerror',lambda e:errs.append(str(e)))
-    home(pg);ck(not btn(pg),'no flag ever: Parent Login hidden')
+    home(pg);ck(btn(pg) and not pg.evaluate('NRP.FLAG'),'v30: no flag ever: Parent Login shown, test flag off')
     home(pg,'?parenttest=1');ck(btn(pg),'?parenttest=1: Parent Login shown')
     for page,backid in [('parent.html','#nrBack'),('parent-about.html','#nrBack'),('gamenight.html','#backLink')]:
         for q in ['?parenttest=1','']:  # '' = arrived without the query (sign-in redirect, email link, new tab)
@@ -46,7 +46,7 @@ with sync_playwright() as p:
     pg.evaluate("void(document.getElementById('nrSplash')&&document.getElementById('nrSplash').remove())");pg.wait_for_timeout(500)
     pg.screenshot(path=f'{SHOTS}/{BR}-desktop-roundtrip-home.png')
     pg.goto(f'{HOST}/'); pg.wait_for_timeout(900);ck(btn(pg),'start_url ./ (installed app) with the remembered flag: button shown')
-    home(pg,'?parenttest=0');ck(not btn(pg),'?parenttest=0 clears the flag');home(pg);ck(not btn(pg),'stays cleared after reload')
+    home(pg,'?parenttest=0');ck(btn(pg) and not pg.evaluate('NRP.FLAG'),'?parenttest=0 clears the flag (button stays, v30)');home(pg);ck(not pg.evaluate('NRP.FLAG'),'stays cleared after reload')
     c.close()
     c=ctx(b,True);pg=c.new_page();home(pg,'?parenttest=1')
     pg.goto(f'{HOST}/gamenight.html');pg.wait_for_timeout(800);pg.click('#backLink');pg.wait_for_load_state()
@@ -54,7 +54,7 @@ with sync_playwright() as p:
     ck(btn(pg),'phone: gamenight > back keeps the button');pg.screenshot(path=f'{SHOTS}/{BR}-phone-roundtrip-home.png');c.close()
     # linked device without the flag still sees the Game Night card logic unchanged
     c=ctx(b);pg=c.new_page();home(pg);pg.evaluate("localStorage.setItem('nr-parent-link',JSON.stringify({dev:'x',code:'ABC123'}))");home(pg)
-    ck(pg.evaluate("NRP.link()!=null") and not btn(pg),'linked device without flag: SHOW_HOME stays off (unchanged)');c.close()
+    ck(pg.evaluate("NRP.link()!=null") and btn(pg) and not pg.evaluate('NRP.FLAG'),'v30: linked device without flag: Parent Login shown, flag off');c.close()
     # update reload keeps the query
     c=ctx(b);pg=c.new_page();c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"999"}'))
     pg.goto(f'{HOST}/index.html?parenttest=1&link=ABC123');pg.wait_for_timeout(2500)

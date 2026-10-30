@@ -22,7 +22,7 @@ ck(not re.search(r'Enter the realm|Master the math',html),'no lowercase "realm"/
 for k,pat in [('meta description',r'<meta name="description" content="NumiRealm: Enter the Realm\. Master the Math\.">'),('og:description',r'<meta property="og:description" content="Enter the Realm\. Master the Math\.">'),
               ('splash tagline',r'<p class="nrsp-tag">Enter the Realm\. Master the Math\.</p>'),('Home banner',r'<span class="banner">Enter the Realm\. Master the Math\.</span>'),('NR_TAG',r"const NR_TAG='Enter the Realm\. Master the Math\.'")]:
     ck(re.search(pat,html) is not None,f'tagline capitalised: {k}')
-ck(html.count('const SHOW_HOME=NRP.FLAG;')==1 and 'if(SHOW_HOME){if(document.readyState' in html,'top-bar pill uses the same one-line SHOW_HOME switch as the Home card')
+ck(html.count('const SHOW_HOME=true;')==1 and 'if(SHOW_HOME){if(document.readyState' in html,'top-bar pill uses the same one-line SHOW_HOME switch as the Home card')
 def hide_splash(pg): pg.evaluate("void(document.getElementById('nrSplash')&&document.getElementById('nrSplash').remove())")
 with sync_playwright() as p:
     b=getattr(p,BR).launch()
@@ -39,10 +39,10 @@ with sync_playwright() as p:
       label:t.getAttribute('aria-label'),txt:t.innerText.trim(),lines:Math.round(r.height/parseFloat(getComputedStyle(t).lineHeight||20)),titleW:ti.getBoundingClientRect().width,inTop:t.parentNode.id==='top'}})()""")
     for w,tag in [(390,'phone'),(1280,'desktop')]:
         n=page(w,'');tw0=n.evaluate("document.getElementById('topTitle').getBoundingClientRect().width")
-        ck(n.locator('#nrhTop').count()==0,f'{tag}: no top-bar Parent button without the flag')
+        ck(n.locator('#nrhTop').count()==1,f'{tag}: v30: top-bar Parent button shown without the flag')
         ck(n.inner_text('.banner').strip()=='Enter the Realm. Master the Math.' if n.locator('.banner').count() else True,f'{tag}: Home banner shows the official tagline')
         if SH: n.screenshot(path=f'{OUT}/{BR}-{tag}-topbar-noflag.png',clip={'x':0,'y':0,'width':w,'height':110})
-        n.evaluate("settingsScreen()");n.wait_for_timeout(300);ck(n.locator('#nrhTop').count()==0 and n.sb==[],f'{tag}: no top-bar button on Settings and no Supabase requests without the flag')
+        n.evaluate("settingsScreen()");n.wait_for_timeout(300);ck(n.locator('#nrhTop').count()==1 and n.sb==[],f'{tag}: v30: top-bar button on Settings, still no Supabase requests without the flag')
         g=page(w,'?parenttest=1');r=bar(g)
         ck(bool(r) and r['inTop'] and r['afterAll'],f'{tag}: Parent button is in the top bar, right of the stars/owl/sound buttons ({r})')
         ck(r and abs(r['h']-r['mh'])<0.5 and abs(r['top']-r['mtop'])<0.5 and r['h']>=44 and r['w']>=44,f'{tag}: same height as the sound button, >=44px')

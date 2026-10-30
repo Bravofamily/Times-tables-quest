@@ -1,5 +1,23 @@
 # Changes
 
+## v32 (Oct 30, 2026)
+- New: "Delete my account" in Parent Area > Alerts. Type DELETE, then the new nr-delete-account Edge Function (verifies the parent's sign-in) deletes only that parent's rows in every table plus the sign-in account, turns off the weekly email and signs out everywhere. Partial failures say so and are safe to retry. Setup: supabase/DELETE_ACCOUNT_SETUP.md and supabase/setup-part5-v32.sql (cascades).
+- Fix: the family card's "this week" stars now use the same calculation as the weekly challenge (Monday to now).
+- Days and weeks stay in UTC (owner decision); the kid page now says so, and that stats are measured, not AI-written.
+- Weekly email preview: the 3-per-day limit is checked before the AI call, with a clear message.
+- AI weekly summaries are now OFF by default (owner decision). Parent Area > Alerts has an "AI-written summaries" switch with a notice; the function only calls the AI after the parent turns it on, and stops serving a cached AI summary after it is turned off. The prompt holds only totals and skill labels from a fixed list (no names, ids, grade or free text). Needs SQL Part C (`notify_prefs.ai_summaries`); without it every parent counts as OFF.
+- Delete account, safer: needs a sign-in from the last 10 minutes, otherwise a 6-digit code is emailed first. The account comes only from the signed-in token. The app says "deleted" only after the function re-checks that every table is empty and the sign-in is gone; otherwise it shows what is left. Retrying after a lost reply is safe.
+- Family Game Night: room codes and player ids now use the browser's secure random generator (crypto.getRandomValues) instead of Math.random. Players could still pretend to be someone else in a room until server-issued tokens exist (planned, not built).
+- Family Game Night, signed seats (CR-02): each phone makes its own key; the new nr-gn Edge Function signs a 3-hour seat {room, player id, key}. The host only accepts answers signed by that player's key, and players only accept game state signed by the host. A player can no longer answer as someone else or fake the scoreboard. Until nr-gn is deployed (with its GN_SIGNING_JWK secret), Game Night keeps working in the old unsigned mode.
+- Several devices for one kid (PC-06): progress no longer gets overwritten by the last device. New SQL Part E (setup-part6-v32-merge.sql) keeps one snapshot per device and combines them: stars and chapters = highest, attempts and play time = added up, time = latest. The daily play-time log is still last-device-wins.
+- Weekly summary: "Refresh" now always rebuilds it, and a saved summary is rebuilt automatically when new play arrived after it was written (no more stale star counts).
+- AI fallback is visible: when an AI summary can't be made, the function logs a safe reason code (no_key, bad_key, bad_model_or_url, rate_limited_or_no_credit, bad_request_or_model, api_error_<code>, timeout, network_error, bad_output). No child data is logged. In the test Parent Area the summary card shows "AI unavailable (reason)".
+- Unsubscribe link (PC-09): opening the link only shows a "Yes, unsubscribe me" button; the change needs that button (POST) or the mail app's one-click unsubscribe, so link scanners can't unsubscribe parents. Deleted accounts are skipped by the weekly run.
+- Cron secret is compared in constant time (PC-15).
+- Parent Area (PC-14): signing out in another tab or a session ending now clears this page; refreshed sign-ins are picked up.
+- Tests: WebKit parent-suite click made robust (PC-16); new tests for refresh, AI reason codes, unsubscribe confirm, deleted-account skip, Game Night signatures and the multi-device merge.
+- Consent records (draft for legal review, SQL Part D): versioned, append-only tables are prepared but not used by sign-up yet.
+
 ## v31 (Oct 29, 2026)
 - Fix: going back to Home (in-page Back button, browser back, iPhone swipe back) no longer shows an old Home layout (5 tiles without Heroes plus a "Choose your quest" section). The back/history router called a saved copy of the very first Home renderer from before the v12 redesign; it now always calls the current Home, so it is identical to tapping Home in the bottom bar.
 

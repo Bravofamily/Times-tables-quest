@@ -21,7 +21,7 @@
 //   TIME_ZONE     optional, for "which day is it" (default America/New_York)
 //
 // Privacy: the AI provider receives only totals (minutes, stars, accuracy, skill names such as
-// "x7 facts", grade). Never the kid's nickname (replaced by {{KID}}), never email, ids or any text typed by anyone.
+// "x7 facts" from a fixed allowlist). Never the kid's nickname (replaced by {{KID}}), never email, ids or any text typed by anyone.
 
 type J = Record<string, any>;
 const env = (k: string) => { try { return Deno.env.get(k) || ""; } catch { return ""; } };
@@ -62,11 +62,18 @@ const dayDiff = (a: string, b: string) => Math.round((new Date(a + "T00:00:00Z")
 
 // ---------- stats (aggregate only) ----------
 const FAM: J = { add: "addition", sub: "subtraction", mult: "multiplication", div: "division", frac: "fractions" };
-export function skillLabel(key: string, s: J): string {
-  const m = /^mult:x(\d{1,2})$/.exec(key); if (m) return "x" + m[1] + " facts";
-  const n = String((s && s.n) || "").replace(/×/g, "x").replace(/[^A-Za-z0-9 ,+\-]/g, "").trim().slice(0, 40);
-  return n || FAM[key.split(":")[0]] || "a skill";
+// v32 (CR-03): fixed server-side skill allowlist. Labels come ONLY from this table, never from client-written
+// text (progress.skills[*].n), so no free text from the device can reach the AI prompt or the email.
+export const SKILL_FAMILIES = ["add", "sub", "mult", "div", "frac", "mix"] as const;
+const FAM_LABEL: J = { add: "addition", sub: "subtraction", mult: "multiplication", div: "division", frac: "fractions", mix: "mixed operations" };
+export function skillLabel(key: string, _s?: J): string | null {
+  if (typeof key !== "string" || key.length > 24) return null;
+  const m = /^mult:x(\d{1,2})$/.exec(key); if (m && +m[1] >= 0 && +m[1] <= 12) return "x" + (+m[1]) + " facts";
+  const d = /^div:d(\d{1,2})$/.exec(key); if (d && +d[1] >= 1 && +d[1] <= 12) return "dividing by " + (+d[1]);
+  const f = key.split(":")[0]; return (SKILL_FAMILIES as readonly string[]).includes(f) ? FAM_LABEL[f] : null;
 }
+// AI summaries are OFF unless the parent turned them on (notify_prefs.ai_summaries, read server-side).
+export const AI_DEFAULT = false;
 export const TIPS: J = {
   mult: "Skip-count out loud together (7, 14, 21...) for two minutes a day.",
   div: "Turn it into sharing: 13 crackers on 4 plates. How many each, how many left?",
@@ -100,7 +107,7 @@ export function buildStats(kid: J, pr: J | null, events: J[], questsDone: number
     st.answers = t; st.accuracy = t ? Math.round((100 * r) / t) : null;
     if (!play) { const inWeek = ev.filter((e) => e.day > startDay); st.minutes = inWeek.reduce((a, e) => a + Math.max(0, +e.minutes || 0), 0); st.days_played = inWeek.filter((e) => +e.minutes > 0).length; }
   }
-  const sk = Object.entries((pr && pr.skills) || {}).filter(([, s]: any) => s && +s.t >= 5).map(([k, s]: any) => ({ k, fam: k.split(":")[0], n: skillLabel(k, s), a: (+s.r || 0) / (+s.t || 1), t: +s.t }));
+  const sk = Object.entries((pr && pr.skills) || {}).filter(([k, s]: any) => s && +s.t >= 5 && skillLabel(k) !== null).map(([k, s]: any) => ({ k, fam: k.split(":")[0], n: skillLabel(k) as string, a: (+s.r || 0) / (+s.t || 1), t: +s.t }));
   st.weak = sk.filter((s) => s.a < 0.7).sort((a, b) => a.a - b.a).slice(0, 2).map((s) => ({ n: s.n, acc: Math.round(100 * s.a), fam: s.fam }));
   st.strong = sk.filter((s) => s.a >= 0.9 && s.t >= 10).sort((a, b) => b.t - a.t).slice(0, 2).map((s) => ({ n: s.n, acc: Math.round(100 * s.a) }));
   return st;
@@ -118,7 +125,7 @@ export function templateSummary(st: J): string {
   return out.join(" ");
 }
 export function promptFor(st: J): string {
-  const facts = { grade: st.grade, minutes_played: st.minutes, days_played: st.days_played, stars_earned: st.stars, answers: st.answers, accuracy_percent: st.accuracy, strong_skills: st.strong.map((s: J) => s.n), practice_skills: st.weak.map((s: J) => s.n + " (" + s.acc + "%)"), quests_done: st.quests_done };
+  const facts = { minutes_played: st.minutes, days_played: st.days_played, stars_earned: st.stars, answers: st.answers, accuracy_percent: st.accuracy, strong_skills: st.strong.map((s: J) => s.n), practice_skills: st.weak.map((s: J) => s.n + " (" + s.acc + "%)"), quests_done: st.quests_done };
   return "Write a warm, encouraging 3-sentence weekly update for a parent about their child's math game practice. " +
     "Refer to the child only as {{KID}}. Use only these facts, no invented numbers, no medical or diagnostic language, no comparisons to other children, plain US English, under 80 words. " +
     "End with one practical idea for home.\nFacts: " + JSON.stringify(facts);
@@ -127,35 +134,50 @@ export function cleanAI(s: string): string | null {
   if (typeof s !== "string") return null; const t = s.replace(/\s+/g, " ").trim();
   if (t.length < 20 || t.length > 700 || !t.includes("{{KID}}") || /https?:|<|>|@/.test(t)) return null; return t;
 }
-async function aiSummary(st: J): Promise<string | null> {
-  const key = env("AI_API_KEY") || env("OPENAI_API_KEY"); if (!key) return null;
+// v32: returns a safe reason code (never child data) so a template fallback is visible in logs and in parent test mode
+export async function aiSummaryR(st: J): Promise<{ text: string | null; reason: string }> {
+  const key = env("AI_API_KEY") || env("OPENAI_API_KEY"); if (!key) return { text: null, reason: "no_key" };
   const url = (env("AI_BASE_URL") || "https://api.openai.com/v1").replace(/\/$/, "") + "/chat/completions";
   try {
     const ac = new AbortController(); const to = setTimeout(() => ac.abort(), 15000);
     const r = await fetch(url, { method: "POST", signal: ac.signal, headers: { Authorization: "Bearer " + key, "Content-Type": "application/json" },
       body: JSON.stringify({ model: env("AI_MODEL") || "gpt-4o-mini", temperature: 0.4, max_tokens: 200, messages: [{ role: "system", content: "You write short, kind, factual notes for parents. Never ask for or include personal information." }, { role: "user", content: promptFor(st) }] }) });
-    clearTimeout(to); if (!r.ok) return null; const j = await r.json();
-    return cleanAI(j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content);
-  } catch { return null; }
+    clearTimeout(to);
+    if (!r.ok) return { text: null, reason: r.status === 401 || r.status === 403 ? "bad_key" : r.status === 404 ? "bad_model_or_url" : r.status === 429 ? "rate_limited_or_no_credit" : r.status === 400 ? "bad_request_or_model" : "api_error_" + r.status };
+    const j = await r.json().catch(() => null);
+    const t = cleanAI(j && j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content);
+    return t ? { text: t, reason: "ok" } : { text: null, reason: "bad_output" };
+  } catch (e) { return { text: null, reason: (e && (e as Error).name === "AbortError") ? "timeout" : "network_error" }; }
 }
+async function aiSummary(st: J): Promise<string | null> { return (await aiSummaryR(st)).text; }
 
 // ---------- summary for one kid (cached per kid per week) ----------
+export async function aiAllowed(parentId: string): Promise<boolean> {
+  try { const p = (await db(`notify_prefs?parent_id=eq.${parentId}&select=ai_summaries`))[0]; return p && typeof p.ai_summaries === "boolean" ? p.ai_summaries : AI_DEFAULT; }
+  catch { return AI_DEFAULT; } // column missing (setup-part5 not run yet) -> default
+}
 async function summaryFor(kid: J, today: string, refresh = false): Promise<J> {
+  const aiOn = await aiAllowed(kid.parent_id);
   const week = isoWeek(today);
   const cached = (await db(`weekly_summaries?kid_id=eq.${kid.id}&week=eq.${week}&select=*`))[0];
-  const fresh = cached && (Date.now() - new Date(cached.created_at).getTime() < 6 * 3600e3);
-  if (cached && (!refresh || fresh) && !(cached.source === "template" && (env("AI_API_KEY") || env("OPENAI_API_KEY")) && !fresh)) return { week, source: cached.source, text: cached.body, stats: cached.stats };
   const since = addDays(today, -8);
-  const [prA, ev, qd] = await Promise.all([
-    db(`progress?kid_id=eq.${kid.id}&select=skills,play,time_played_sec`),
+  const prA = await db(`progress?kid_id=eq.${kid.id}&select=skills,play,time_played_sec,updated_at`);
+  // v32: the cache is used only if nothing changed since it was written, it still matches the AI setting, and this is not a refresh
+  const age = cached ? Date.now() - new Date(cached.created_at).getTime() : Infinity;
+  const newer = cached && prA[0] && prA[0].updated_at && new Date(prA[0].updated_at).getTime() > new Date(cached.created_at).getTime();
+  const aiMismatch = cached && ((cached.source === "ai" && !aiOn) || (cached.source === "template" && aiOn && age > 6 * 3600e3));
+  if (cached && !refresh && !newer && !aiMismatch) return { week, source: cached.source, text: cached.body, stats: cached.stats, ai_reason: "cached" };
+  const [ev, qd] = await Promise.all([
     db(`progress_events?kid_id=eq.${kid.id}&day=gte.${since}&select=day,stars_total,answers_right,answers_total,minutes&order=day.asc`),
     db(`quests?kid_id=eq.${kid.id}&status=eq.done&done_at=gte.${addDays(today, -7)}T00:00:00Z&select=id`).catch(() => []),
   ]);
   const st = buildStats(kid, prA[0] || null, ev || [], (qd || []).length, today);
-  const ai = await aiSummary(st); const source = ai ? "ai" : "template"; const text = ai || templateSummary(st);
+  const r = aiOn ? await aiSummaryR(st) : { text: null, reason: "off" };
+  if (aiOn && !r.text) console.log("nr-weekly ai_fallback " + r.reason);
+  const source = r.text ? "ai" : "template"; const text = r.text || templateSummary(st);
   await db("weekly_summaries?on_conflict=kid_id,week", { method: "POST", headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
     body: JSON.stringify({ kid_id: kid.id, parent_id: kid.parent_id, week, source, body: text, stats: st, created_at: new Date().toISOString() }) });
-  return { week, source, text, stats: st };
+  return { week, source, text, stats: st, ai_reason: r.reason };
 }
 export const named = (text: string, nick: string) => String(text).split("{{KID}}").join(nick);
 
@@ -205,6 +227,8 @@ async function buildEmail(parentId: string, today: string, preview: boolean): Pr
   for (const k of kids) { const s = await summaryFor(k, today); rows.push({ ...s, nickname: k.nickname }); }
   return { html: emailHTML({ kids: rows, week: isoWeek(today), portal: env("PORTAL_URL") || "https://numirealm.app/parent.html", unsub, preview }), kids: rows.length, unsub };
 }
+// v32 PC-15: constant-time compare for the cron secret
+export function sameText(a: string, b: string): boolean { const x = new TextEncoder().encode(a), y = new TextEncoder().encode(b); let d = x.length ^ y.length; for (let i = 0; i < Math.max(x.length, y.length); i++) d |= (x[i] || 0) ^ (y[i] || 0); return d === 0; }
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 // ---------- handler ----------
@@ -215,13 +239,15 @@ export async function handle(req: Request): Promise<Response> {
     const un = url.searchParams.get("unsub");
     if (un !== null) {
       if (!UUID.test(un)) return html(page("This unsubscribe link is not valid."), 400);
+      // v32 PC-09: a GET (e.g. a mail link scanner) only shows a confirm button; the change needs a POST (button or RFC 8058 one-click)
+      if (req.method !== "POST") return html(page("Stop the NumiRealm weekly email?", `<form method="post" action="?unsub=${encodeURIComponent(un)}"><button type="submit" style="font-size:18px;padding:10px 18px;border-radius:10px;border:0;background:#6d28d9;color:#fff">Yes, unsubscribe me</button></form>`));
       await db(`notify_prefs?unsub_token=eq.${un}`, { method: "PATCH", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ email_weekly: false, updated_at: new Date().toISOString() }) });
       return html(page("You are unsubscribed. NumiRealm will not send you the weekly email any more. You can turn it back on in the Parent Area."));
     }
     if (req.method !== "POST") return json({ ok: false, error: "method" }, 405);
     const body = await req.json().catch(() => ({}));
     if (body.action === "cron") {
-      const cs = env("CRON_SECRET"); if (!cs || req.headers.get("x-cron-secret") !== cs) return json({ ok: false, error: "forbidden" }, 403);
+      const cs = env("CRON_SECRET"); if (!cs || !sameText(req.headers.get("x-cron-secret") || "", cs)) return json({ ok: false, error: "forbidden" }, 403);
       const dow = new Date(today + "T12:00:00Z").getUTCDay(), week = isoWeek(today);
       const due = await db(`notify_prefs?email_weekly=is.true&email_day=eq.${dow}&select=parent_id,unsub_token&limit=500`);
       const sent = new Set(((await db(`email_log?kind=eq.weekly&week=eq.${week}&select=parent_id`)) || []).map((x: J) => x.parent_id));
@@ -251,17 +277,19 @@ export async function handle(req: Request): Promise<Response> {
     if (body.action === "preview") {
       const since = new Date(Date.now() - 864e5).toISOString();
       const recent = await db(`email_log?parent_id=eq.${user.id}&kind=eq.preview&sent_at=gte.${since}&select=id`);
+      // v32: check the 3-per-day limit BEFORE building the email (which can call the AI), and count every
+      // attempt (also when email sending is not configured) so previews cannot be used to run up AI cost.
+      if (recent.length >= 3) return json({ ok: false, error: "preview_limit" }, 429);
+      await db("email_log", { method: "POST", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ parent_id: user.id, kind: "preview", week: isoWeek(today) }) });
       const e = await buildEmail(user.id, today, true);
       if (!e.kids) return json({ ok: false, error: "no_kids" }, 400);
-      if (recent.length >= 3) return json({ ok: false, error: "preview_limit", html: e.html }, 429);
       const r = await sendEmail(user.email, "Preview: your NumiRealm week", e.html, e.unsub);
       if (!r.ok) return json({ ok: false, error: r.error, html: e.html }, r.error === "email_not_configured" ? 200 : 502);
-      await db("email_log", { method: "POST", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ parent_id: user.id, kind: "preview", week: isoWeek(today) }) });
       return json({ ok: true, sent: true, to: user.email });
     }
     return json({ ok: false, error: "action" }, 400);
-  } catch (e) { console.error(String(e)); return json({ ok: false, error: "server" }, 500); }
+  } catch (e) { /* no error messages in logs: they can contain ids or URLs */ console.error("nr-weekly error", (e as Error)?.name || "Error"); return json({ ok: false, error: "server" }, 500); }
 }
-function page(msg: string) { return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NumiRealm</title></head><body style="font-family:Arial,sans-serif;background:#efeaf9;padding:30px"><div style="max-width:480px;margin:auto;background:#fff;border-radius:16px;padding:24px"><h1 style="color:#3b2a7a;font-size:22px">Numi<span style="color:#d9a400">Realm</span></h1><p style="font-size:16px;line-height:1.5">${esc(msg)}</p></div></body></html>`; }
+function page(msg: string, extra = "") { return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NumiRealm</title></head><body style="font-family:Arial,sans-serif;background:#efeaf9;padding:30px"><div style="max-width:480px;margin:auto;background:#fff;border-radius:16px;padding:24px"><h1 style="color:#3b2a7a;font-size:22px">Numi<span style="color:#d9a400">Realm</span></h1><p style="font-size:16px;line-height:1.5">${esc(msg)}</p>${extra}</div></body></html>`; }
 
 if (env("NR_NO_SERVE") !== "1") Deno.serve(handle);

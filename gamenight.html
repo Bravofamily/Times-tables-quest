@@ -96,9 +96,11 @@ const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const cleanName=s=>String(s||'').replace(/[^\p{L}\p{N} '\-]/gu,'').replace(/\s+/g,' ').trim().slice(0,12);
-const uid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);
+/* v32 (CR-02): ids and room codes come from crypto.getRandomValues, not Math.random. */
+const rnd=n=>{const a=new Uint32Array(1),lim=Math.floor(0x100000000/n)*n;do{crypto.getRandomValues(a);}while(a[0]>=lim);return a[0]%n;};
+const uid=()=>{const b=new Uint8Array(12);crypto.getRandomValues(b);return Array.from(b,x=>x.toString(16).padStart(2,'0')).join('');};
 const CODE_CH='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-const newCode=()=>Array.from({length:5},()=>CODE_CH[R(0,CODE_CH.length-1)]).join('');
+const newCode=()=>Array.from({length:5},()=>CODE_CH[rnd(CODE_CH.length)]).join('');
 const cleanCode=s=>String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,5);
 const now=()=>Date.now();
 
@@ -135,6 +137,33 @@ function openChannel(code,key,on,onStatus){const c=client();if(!c){onStatus('NO_
  if(on.presence)ch.on('presence',{event:'sync'},()=>on.presence(ch.presenceState()));
  ch.subscribe(s=>onStatus(s));return ch;}
 const send=(ch,event,payload)=>{try{ch&&ch.send({type:'broadcast',event,payload});}catch(e){}};
+/* ---------- v32 CR-02: server-signed seats ----------
+ Each phone makes its own key. nr-gn signs {code,pid,role,pub,exp}. Peers check that
+ signature, then each message's signature, so nobody can answer as someone else or fake the
+ host. If nr-gn is not deployed yet, the game runs in the old unsigned mode. */
+const EC={name:'ECDSA',namedCurve:'P-256'},ES={name:'ECDSA',hash:'SHA-256'},TE=new TextEncoder();
+const b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const ub64=s=>{s=String(s||'').replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return Uint8Array.from(atob(s),c=>c.charCodeAt(0));};
+const pubKey=j=>crypto.subtle.importKey('jwk',{kty:'EC',crv:'P-256',x:j.x,y:j.y},EC,false,['verify']);
+async function gnVerify(key,text,sig){try{return await crypto.subtle.verify(ES,key,ub64(sig),TE.encode(text));}catch(e){return false;}}
+async function gnSign(sec,text){return b64u(await crypto.subtle.sign(ES,sec.key,TE.encode(text)));}
+async function gnClaim(code,role){try{if(!crypto.subtle)return null;
+ const kp=await crypto.subtle.generateKey(EC,true,['sign','verify']);const pj=await crypto.subtle.exportKey('jwk',kp.publicKey);
+ const r=await fetch(CFG.url+'/functions/v1/nr-gn',{method:'POST',headers:{'Content-Type':'application/json',apikey:CFG.key},body:JSON.stringify({action:'claim',code,role,pub:{kty:'EC',crv:'P-256',x:pj.x,y:pj.y}})});
+ if(!r.ok)return null;const j=await r.json();if(!j||!j.ok)return null;
+ return {key:kp.privateKey,jwk:await crypto.subtle.exportKey('jwk',kp.privateKey),claim:j.claim,sig:j.sig,srvJ:j.srv,srv:await pubKey(j.srv),pid:JSON.parse(j.claim).pid};}catch(e){return null;}}
+async function gnRestore(o){try{if(!o||!o.jwk)return null;const key=await crypto.subtle.importKey('jwk',o.jwk,EC,true,['sign']);const c=JSON.parse(o.claim);if(c.exp<now())return null;
+ return {key,jwk:o.jwk,claim:o.claim,sig:o.sig,srvJ:o.srvJ,srv:await pubKey(o.srvJ),pid:c.pid};}catch(e){return null;}}
+const gnSave=sec=>sec?{jwk:sec.jwk,claim:sec.claim,sig:sec.sig,srvJ:sec.srvJ}:null;
+async function gnCheck(sec,claim,sig,code,role){try{if(!(await gnVerify(sec.srv,String(claim),sig)))return null;const c=JSON.parse(claim);
+ if(c.code!==code||c.role!==role||!(c.exp>now()))return null;c.key=await pubKey(c.pub);return c;}catch(e){return null;}}
+/* host: signed broadcast; player: verify before use */
+async function hostSend(event,obj){const ch=H.ch;if(!H.sec){send(ch,event,obj);return;}const st=JSON.stringify(Object.assign({ev:event,seq:++H.seq},obj));
+ send(ch,event,{st,s:await gnSign(H.sec,st),c:H.sec.claim,cs:H.sec.sig});}
+async function playerOpen(m,event){if(!P.sec)return m;if(!m||typeof m.st!=='string')return null;
+ const c=P.hostC&&P.hostC.raw===m.c?P.hostC:await gnCheck(P.sec,m.c,m.cs,P.me.code,'host');if(!c)return null;
+ if(P.hostC&&P.hostC.pid!==c.pid)return null;c.raw=m.c;P.hostC=c;
+ if(!(await gnVerify(c.key,m.st,m.s)))return null;const o=JSON.parse(m.st);if(o.ev!==event||(o.seq|0)<=(P.seq|0))return null;P.seq=o.seq;return o;}
 
 /* ---------- screens shared ---------- */
 function board(players,me,gains){const L=[...players].sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name));
@@ -180,17 +209,20 @@ function hostSetup(){const s=H.settings||{topics:['mult'],rounds:5,secs:20,mode:
   VOICE_ON=document.getElementById('voice').checked;
   H.settings={topics,rounds:+document.getElementById('rounds').value,secs:+document.getElementById('secs').value,mode:document.getElementById('mode').value,fair:fair.checked,level:document.getElementById('level').value};
   hostOpen();};}
-function hostOpen(){Object.assign(H,{code:newCode(),id:'host-'+uid(),players:{},order:[],phase:'lobby',round:0,qs:{},ans:{},gains:null,born:now(),status:'connecting'});
- H.ch=openChannel(H.code,H.id,{broadcast:{answer:hostAnswer,hello:()=>hostPush()},presence:hostPresence},s=>{H.status=s;
+async function hostOpen(){const code=newCode();app.innerHTML='<section class="card" id="gnOpening"><p>Opening the room…</p></section>';const sec=await gnClaim(code,'host');
+ Object.assign(H,{sec,seq:0,vf:{},pend:{},code,id:sec?sec.pid:'host-'+uid(),players:{},order:[],phase:'lobby',round:0,qs:{},ans:{},gains:null,born:now(),status:'connecting'});
+ H.ch=openChannel(H.code,H.id,{broadcast:{answer:hostAnswerS,hello:()=>hostPush()},presence:hostPresence},s=>{H.status=s;
    if(s==='SUBSCRIBED'){H.ch.track({role:'host'});hostPush();}hostDraw();});
  if(!H.ch){home('Game Night needs an internet connection. Please try again later.');return;}
  clearInterval(H.beat);H.beat=setInterval(()=>{if(now()-H.born>ROOM_TTL){hostEnd('expired');return;}hostPush();},2000);
- addEventListener('pagehide',()=>send(H.ch,'end',{reason:'host_left'}));
+ addEventListener('pagehide',()=>hostSend('end',{reason:'host_left'}));
  hostDraw();}
 function hostPresence(state){const seen=new Set();
- Object.entries(state).forEach(([key,metas])=>{const m=(metas||[])[0]||{};if(m.role!=='player')return;seen.add(key);
+ Object.entries(state).forEach(([key,metas])=>{const m=(metas||[])[0]||{};if(m.role!=='player')return;
+  if(H.sec&&!H.vf[key]){if(!H.pend[key]&&m.c){H.pend[key]=1;gnCheck(H.sec,m.c,m.cs,H.code,'player').then(c=>{if(c&&c.pid===key){H.vf[key]=c;hostPresence(H.ch.presenceState());}});}return;}
+  seen.add(key);
   let p=H.players[key];
-  if(!p){if(H.order.length>=MAX){send(H.ch,'full',{id:key});return;}
+  if(!p){if(H.order.length>=MAX){hostSend('full',{id:key});return;}
    p=H.players[key]={id:key,name:cleanName(m.name)||'Player',hero:HERO[m.hero]?m.hero:'',level:LV[m.level]?m.level:'b',score:0,online:true,joined:H.round};H.order.push(key);
    if(H.phase==='lobby')say(p.name+' joined!');}
   p.online=true;});
@@ -209,6 +241,7 @@ function hostNext(){H.round++;H.phase='question';H.qs={};H.ans={};H.gains=null;
  clearTimeout(H.to);H.to=setTimeout(hostReveal,H.settings.secs*1000+300);
  say(H.round===1?"Here comes the first question!":"Round "+H.round+"!");
  hostPush();hostDraw();}
+async function hostAnswerS(m){if(H.sec){const c=H.vf[m&&m.id];if(!c||typeof m.s!=='string'||!(await gnVerify(c.key,JSON.stringify([H.code,m.id,m.round,String(m.v)]),m.s)))return;}hostAnswer(m);}
 function hostAnswer(m){if(H.phase!=='question'||m.round!==H.round)return;const p=H.players[m.id];if(!p||H.ans[p.id])return;
  const q=hostQuestion(p);const ms=Math.max(0,now()-H.start),T=H.settings.secs*1000;if(ms>T+1500)return;
  const v=Number(String(m.v).trim());const ok=Number.isFinite(v)&&v===q.ans;
@@ -223,12 +256,12 @@ function hostReveal(){if(H.phase!=='question')return;clearTimeout(H.to);H.phase=
  if(H.round>=H.settings.rounds){H.to=setTimeout(hostPodium,REVEAL_MS);}}
 function hostPodium(){clearTimeout(H.to);H.phase='podium';const top=playersList().sort((a,b)=>b.score-a.score)[0];
  H.line=top?`Hooray! ${top.name} wins Game Night! Great math, everyone!`:'Thanks for playing!';say(H.line);hostPush();hostDraw();confetti();}
-function hostEnd(reason){clearInterval(H.beat);clearTimeout(H.to);send(H.ch,'end',{reason:reason||'host_ended'});try{H.ch&&H.ch.unsubscribe();}catch(e){}H.ch=null;home(reason==='expired'?'That room was open for 3 hours, so it closed.':'');}
+function hostEnd(reason){clearInterval(H.beat);clearTimeout(H.to);const ch0=H.ch;hostSend('end',{reason:reason||'host_ended'}).then(()=>{try{ch0&&ch0.unsubscribe();}catch(e){}});H.ch=null;home(reason==='expired'?'That room was open for 3 hours, so it closed.':'');}
 function hostPush(){if(!H.ch||H.status!=='SUBSCRIBED')return;const P=playersList().map(p=>({id:p.id,name:p.name,hero:p.hero,score:p.score,online:p.online,answered:!!(H.ans&&H.ans[p.id])}));
  const pay={phase:H.phase,round:H.round,rounds:H.settings.rounds,secs:H.settings.secs,mode:H.settings.mode,players:P,full:H.order.length>=MAX};
  if(H.phase==='question'){pay.left=Math.max(0,H.deadline-now());pay.q={};playersList().forEach(p=>{const q=hostQuestion(p);pay.q[p.id]={text:q.text,choices:q.choices||null};});}
  if(H.phase==='reveal'){pay.reveal={};playersList().forEach(p=>{const q=H.qs[p.id];if(q)pay.reveal[p.id]={text:q.text,ans:q.ans,mine:H.ans[p.id]?H.ans[p.id].v:null,ok:!!(H.ans[p.id]&&H.ans[p.id].ok),pts:H.ans[p.id]?H.ans[p.id].pts:0};});pay.last=H.round>=H.settings.rounds;}
- send(H.ch,'state',pay);}
+ hostSend('state',pay);}
 function qrSvg(text){try{const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true});}catch(e){return '';}}
 function hostDraw(){const P=playersList(),on=P.filter(p=>p.online);
  const joinUrl=location.origin+location.pathname+'?join='+H.code+(FLAG?'&parenttest=1':'');
@@ -276,12 +309,14 @@ function joinForm(code,err){const m=loadMe()||{};const sel={hero:m.hero||'',leve
  document.getElementById('joinGo').onclick=()=>{const c=cleanCode(document.getElementById('joinCode').value),n=cleanName(nm.value)||(sel.hero?HERO[sel.hero][1]:'');
   if(c.length!==5)return joinForm(c,'Type the 5-letter room code from the host screen.');
   if(!n)return joinForm(c,'Pick a hero or type a nickname.');
-  const me={code:c,id:(m.code===c&&m.id)||'p-'+uid(),name:n,hero:sel.hero,level:document.getElementById('joinLevel').value};saveMe(me);playerJoin(me);};}
-function playerJoin(me){Object.assign(P,{me,state:null,picked:null,hostSeen:false,status:'connecting'});clearTimeout(P.lost);clearTimeout(P.find);
+  const lv=document.getElementById('joinLevel').value;
+  const go=async()=>{let sec=m.code===c?await gnRestore(m.sec):null;if(!sec){app.innerHTML='<section class="card" id="gnJoining"><p>Joining…</p></section>';sec=await gnClaim(c,'player');}
+   const me={code:c,id:sec?sec.pid:((m.code===c&&m.id&&!m.sec)?m.id:'p-'+uid()),name:n,hero:sel.hero,level:lv,sec:gnSave(sec)};saveMe(me);playerJoin(me,sec);};go();};}
+async function playerJoin(me,sec){if(sec===undefined)sec=await gnRestore(me.sec);Object.assign(P,{me,sec,seq:0,hostC:null,state:null,picked:null,hostSeen:false,status:'connecting'});clearTimeout(P.lost);clearTimeout(P.find);
  try{P.ch&&P.ch.unsubscribe();}catch(e){}
- P.ch=openChannel(me.code,me.id,{broadcast:{state:playerState,full:m=>{if(m.id===me.id){playerLeave();joinForm(me.code,'Sorry, this room is full (8 players).');}},
-   end:m=>playerEnded(m.reason)},presence:playerPresence},s=>{P.status=s;
-   if(s==='SUBSCRIBED'){P.ch.track({role:'player',name:me.name,hero:me.hero,level:me.level});send(P.ch,'hello',{id:me.id});}
+ P.ch=openChannel(me.code,me.id,{broadcast:{state:m=>playerOpen(m,'state').then(o=>{if(o)playerState(o);}),full:m0=>playerOpen(m0,'full').then(m=>{if(m&&m.id===me.id){playerLeave();joinForm(me.code,'Sorry, this room is full (8 players).');}}),
+   end:m0=>playerOpen(m0,'end').then(m=>{if(m)playerEnded(m.reason);})},presence:playerPresence},s=>{P.status=s;
+   if(s==='SUBSCRIBED'){P.ch.track(Object.assign({role:'player',name:me.name,hero:me.hero,level:me.level},P.sec?{c:P.sec.claim,cs:P.sec.sig}:{}));send(P.ch,'hello',{id:me.id});}
    else if(s==='CHANNEL_ERROR'||s==='TIMED_OUT'||s==='NO_CLIENT')playerDraw();});
  P.find=setTimeout(()=>{if(!P.state){playerLeave();joinForm(me.code,"We couldn't find that room. Check the code with the host.");}},12000);
  playerDraw();}
@@ -320,7 +355,7 @@ function playerDraw(){const me=P.me,s=P.state;if(!me)return;
    q.choices?`<div class="choices" id="choices">${q.choices.map(c=>`<button class="choice" type="button" data-v="${c}">${c}</button>`).join('')}</div>`:
    `<input id="typeAns" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="Your answer" style="font-size:32px;text-align:center"><button class="btn green" id="typeGo" type="button" style="width:100%;margin-top:10px">Send answer</button>`}</section>`;
   runTimer('pt',P.deadline,s.secs*1000);
-  const answer=v=>{if(P.picked!=null||now()>P.deadline)return;P.picked=String(v);send(P.ch,'answer',{id:me.id,round:s.round,v:String(v)});P.key=null;playerDraw();};
+  const answer=v=>{if(P.picked!=null||now()>P.deadline)return;P.picked=String(v);const a={id:me.id,round:s.round,v:String(v)};if(P.sec)gnSign(P.sec,JSON.stringify([me.code,a.id,a.round,a.v])).then(sg=>send(P.ch,'answer',Object.assign(a,{s:sg})));else send(P.ch,'answer',a);P.key=null;playerDraw();};
   document.querySelectorAll('.choice').forEach(b=>b.onclick=()=>answer(b.dataset.v));
   const ti=document.getElementById('typeAns');if(ti){ti.focus();const go=()=>{const v=ti.value.replace(/[^0-9]/g,'');if(v)answer(v);};document.getElementById('typeGo').onclick=go;ti.onkeydown=e=>{if(e.key==='Enter')go();};}
   return;}
@@ -342,7 +377,7 @@ function boot(){
  if(me&&me.code&&(!j||j===me.code))playerJoin(me); // reconnect after a reload
  else if(j)joinForm(j);else home();}
 boot();
-return {gen,choicesFor,cleanName,cleanCode,H,P,MAX};
+return {gen,choicesFor,cleanName,cleanCode,H,P,MAX,newCode,uid,gnClaim,gnCheck,gnSign,gnVerify};
 })();
 </script>
 </body></html>

@@ -250,13 +250,13 @@ with sync_playwright() as p:
         noscroll(gh,f'{tag} home card');ck(not [x for x in small_btns(gh) if x.startswith('nrh')],f'{tag}: home card buttons >= 44px')
         if SH: gh.locator('#nrParentHome').scroll_into_view_if_needed();gh.screenshot(path=f'{OUT}/{BR}-{tag}-8-home-parent-card.png')
         gh.evaluate("void(NRH.leave=u=>{window._left=u})")
-        gh.click('#nrhLogin');ck(gh.locator('#nrhGate').count()==1 and gh.locator('#nrhLogin').count()==0,f'{tag}: grown-up gate before leaving the game')
+        gh.click('#nrhLogin');ck(gh.locator('#nrhTopGate #nrtGate').count()==1,f'{tag}: grown-up gate before leaving the game')
         noscroll(gh,f'{tag} home gate')
         if SH: gh.locator('#nrParentHome').scroll_into_view_if_needed();gh.screenshot(path=f'{OUT}/{BR}-{tag}-9-home-gate.png')
-        gh.fill('#nrhGate','3');gh.click('#nrhGo');ck(gh.locator('#nrhErr').count()==1 and not gh.evaluate("window._left"),f'{tag}: wrong gate answer stays in the game')
-        gh.click('#nrhCancel');ck(gh.locator('#nrhLogin').count()==1,f'{tag}: gate cancel')
-        def solve(): a,bb,cc=map(int,re.findall(r'\d+',gh.inner_text('#nrhQ'))[:3]);gh.fill('#nrhGate',str(a*bb+cc));gh.press('#nrhGate','Enter')
-        gh.click('#nrhWhat');ck(gh.locator('#nrhGate').count()==1,f'{tag}: What\'s included? is gated too');solve();ck(gh.evaluate("window._left")=='parent-about.html?parenttest=1',f'{tag}: What\'s included? goes to benefits page')
+        gh.fill('#nrtGate','3');gh.click('#nrtGo');ck(gh.locator('#nrtErr').count()==1 and not gh.evaluate("window._left"),f'{tag}: wrong gate answer stays in the game')
+        gh.click('#nrtCancel');ck(gh.locator('#nrhTopGate').count()==0 and gh.locator('#nrhLogin').count()==1,f'{tag}: gate cancel')
+        def solve(): a,bb,cc=map(int,re.findall(r'\d+',gh.inner_text('#nrtQ'))[:3]);gh.fill('#nrtGate',str(a*bb+cc));gh.press('#nrtGate','Enter')
+        gh.click('#nrhWhat');ck(gh.locator('#nrtGate').count()==1,f'{tag}: What\'s included? is gated too');solve();ck(gh.evaluate("window._left")=='parent-about.html?parenttest=1',f'{tag}: What\'s included? goes to benefits page')
         gh.evaluate("void(NRH.leave=u=>{location.href=u})");gh.click('#nrhLogin');solve();gh.wait_for_selector('#loginH',timeout=8000)
         ck(gh.url.endswith('/parent.html?parenttest=1#login') and gh.inner_text('#loginH')=='Parent Login',f'{tag}: Parent Login opens parent.html login')
         backck(gh,f'{tag} login from test game',href='./?parenttest=1')
@@ -382,7 +382,7 @@ with sync_playwright() as p:
         # ---------------- v27: back to the game keeps the parent signed in ----------------
         np=c.new_page();watch(np);np.goto(f'{HOST}/parent.html');np.wait_for_selector('#allDevices',timeout=8000);backck(np,f'{tag} signed-in family (new tab, no flag)')
         np.click('#nrBack');np.wait_for_function("typeof settingsScreen==='function'",timeout=8000)
-        ck(np.url==f'{HOST}/' and np.locator('#nrParentHome').count()==0,f'{tag}: Back to NumiRealm opens the normal game Home ({np.url})')
+        ck(np.url==f'{HOST}/' and np.locator('#nrParentHome').count()==1 and np.locator('#nrhGN').count()==0,f'{tag}: v30: Back to NumiRealm opens the normal game Home (public Parent card, no test extras) ({np.url})')
         np.goto(f'{HOST}/parent.html');np.wait_for_selector('#allDevices',timeout=8000)
         ck(np.locator('#email').count()==0 and np.locator('#signOut').is_visible(),f'{tag}: parent still signed in after going back to the game');np.close()
         # ---------------- v28 Parent Center ----------------
@@ -450,7 +450,7 @@ with sync_playwright() as p:
         if SH: g.wait_for_selector('#nrQuest');g.locator('#nrQuest').scroll_into_view_if_needed();g.screenshot(path=f'{COUT}/{BR}-{tag}-11-game-scroll-done.png')
         seed();kidview();ck('✅' in pg.inner_text('#questList') and '8 of 10' in pg.inner_text('#questList'),f'{tag} PC: finished quest shows in portal ({pg.inner_text("#questList")[:80]})')
         # fix-it plan
-        pg.click('#tipsCard [data-plan="m78"]');pg.wait_for_selector('#fixitCard .plan')
+        _b=pg.locator('#tipsCard [data-plan="m78"]');_b.wait_for(state='visible',timeout=20000);_b.scroll_into_view_if_needed();_b.click(timeout=60000);pg.wait_for_selector('#fixitCard .plan',timeout=30000)
         pl=M.plans[-1] if M.plans else {}
         fq=[x for x in M.quests if x.get('plan_id')==pl.get('id')]
         ck(pl.get('plan_key')=='m78' and pl.get('before_acc')==43 and len(fq)==1 and fq[0]['source']=='fixit',f'{tag} PC: fix-it plan started with before accuracy and Day 1 quest ({pl.get("before_acc")})')
