@@ -76,11 +76,15 @@ hub=Hub()
 IPHONE=dict(viewport={'width':390,'height':844},device_scale_factor=2,has_touch=True,is_mobile=BR=='chromium')
 # v32 CR-02: GN_SEC=1 sends seat claims to a local nr-gn (throwaway key); otherwise nr-gn "not deployed" (legacy mode)
 GN_SEC=os.environ.get('GN_SEC')=='1';GN_URL=os.environ.get('GN_URL','http://127.0.0.1:8899')
+# v33: each test scenario is its own home network (a private 10.x test address in X-Forwarded-For, local test server only), so the
+# real per-IP limits (GN_RL=1, unchanged) see one family per scenario instead of every scenario of the run piling onto one IP.
+NET=[1];_T=int(time.time())  # each run gets its own 10.a.b.x block (unique for ~18 h), so back-to-back runs never share a window
+def new_network(): NET[0]+=1
 def gn_route(r):
     if not GN_SEC: return r.fulfill(status=503,headers={'Access-Control-Allow-Origin':'*','Content-Type':'application/json'},body='{"ok":false,"error":"not_configured"}')
     if r.request.method=='OPTIONS': return r.fulfill(status=200,headers={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'*'},body='ok')
     import urllib.request
-    q=urllib.request.Request(GN_URL,data=r.request.post_data.encode(),headers={'Content-Type':'application/json'},method='POST')
+    q=urllib.request.Request(GN_URL,data=r.request.post_data.encode(),headers={'Content-Type':'application/json','X-Forwarded-For':f'10.{(_T>>8)&255}.{_T&255}.{NET[0]}'},method='POST')
     try:
         with urllib.request.urlopen(q,timeout=10) as x: b=x.read();st=x.status
     except urllib.error.HTTPError as e: b=e.read();st=e.code
@@ -234,15 +238,17 @@ with sync_playwright() as p:
         sts=[e for e in hub.log if e[2]=='state'];ans=[e for e in hub.log if e[2]=='answer']
         ck(sts and all(isinstance(e[3].get('st'),str) and e[3].get('s') for e in sts),f'CR-02: all {len(sts)} host states are signed')
         ck(ans and all(e[3].get('s') for e in ans),f'CR-02: all {len(ans)} answers are signed')
-        cx,px=ctx(b);px.goto(HOST+'/gamenight.html?parenttest=1');px.wait_for_selector('#gnHome')
-        r=px.evaluate('''async()=>{const G=GN,o={};o.noRoom=await G.gnClaim('QWERT','player');const h=await G.gnClaim('QWERT','host');const a=await G.gnClaim('QWERT','player'),bb=await G.gnClaim('QWERT','player');o.taken=await G.gnClaim('QWERT','host');o.rtPlayer=a&&a.rt;o.rtHost=!!(h&&h.rt);
-          o.claims=!!(a&&bb&&h)&&a.pid!==bb.pid;const ca=await G.gnCheck(h,a.claim,a.sig,'QWERT','player');o.valid=!!ca&&ca.pid===a.pid;
-          const msg=JSON.stringify(['QWERT',a.pid,1,'42']);o.ownSig=await G.gnVerify(ca.key,msg,await G.gnSign(a,msg));
+        new_network();cx,px=ctx(b);px.goto(HOST+'/gamenight.html?parenttest=1');px.wait_for_selector('#gnHome')
+        # fresh room code per run (base36 of the run time), so reruns against the same test server never meet an old room
+        rc=''.join('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'[(_T//36**k)%36] for k in range(5))[::-1]
+        r=px.evaluate('''async(RC)=>{const G=GN,o={};o.noRoom=await G.gnClaim(RC,'player');const h=await G.gnClaim(RC,'host');const a=await G.gnClaim(RC,'player'),bb=await G.gnClaim(RC,'player');o.taken=await G.gnClaim(RC,'host');o.rtPlayer=a&&a.rt;o.rtHost=!!(h&&h.rt);
+          o.claims=!!(a&&bb&&h)&&a.pid!==bb.pid;const ca=await G.gnCheck(h,a.claim,a.sig,RC,'player');o.valid=!!ca&&ca.pid===a.pid;
+          const msg=JSON.stringify([RC,a.pid,1,'42']);o.ownSig=await G.gnVerify(ca.key,msg,await G.gnSign(a,msg));
           o.impersonate=await G.gnVerify(ca.key,msg,await G.gnSign(bb,msg));
-          const forged=a.claim.replace(a.pid,bb.pid);o.forgedClaim=await G.gnCheck(h,forged,a.sig,'QWERT','player');
-          o.wrongRoom=await G.gnCheck(h,a.claim,a.sig,'ZZZZZ','player');o.playerAsHost=await G.gnCheck(h,a.claim,a.sig,'QWERT','host');
+          const forged=a.claim.replace(a.pid,bb.pid);o.forgedClaim=await G.gnCheck(h,forged,a.sig,RC,'player');
+          o.wrongRoom=await G.gnCheck(h,a.claim,a.sig,'ZZZZZ','player');o.playerAsHost=await G.gnCheck(h,a.claim,a.sig,RC,'host');
           o.seatMin=Math.round((JSON.parse(a.claim).exp-Date.now())/60000);
-          G.H.sec=h;G.H.code='QWERT';G.gnEndRoom();await new Promise(r=>setTimeout(r,800));o.afterEnd=await G.gnClaim('QWERT','player');return o;}''')
+          G.H.sec=h;G.H.code=RC;G.gnEndRoom();await new Promise(r=>setTimeout(r,800));o.afterEnd=await G.gnClaim(RC,'player');return o;}''',rc)
         ck(r['noRoom']=={'err':'no_room'},'v33: no seat for a room nobody registered')
         ck(r['taken']=={'err':'code_taken'},'v33: a second host cannot take a live room code')
         ck(r['rtHost'] and not r['rtPlayer'],'v33: only the host gets the room token')

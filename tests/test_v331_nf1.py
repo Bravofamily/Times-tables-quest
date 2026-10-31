@@ -30,7 +30,11 @@ with sync_playwright() as p:
         c,pg=ctx_for(br)
         pg.evaluate("openChapter('add',2)");ns['scene'](pg);ns['learn'](pg);pg.wait_for_selector('[data-stage=practice]')
         got=[];deltas=[];plan=[True,False,True,True,False,True]
-        for k in kinds:
+        def kseq():
+            # keypad: keep drawing until at least 3 questions really used the keypad (some draws cannot be turned into one), max 12
+            if name!='keypad': yield from kinds;return
+            while sum(1 for i,_ in got if i=='pad')<3 and len(got)<12: yield 'pad'
+        for k in kseq():
             pg.wait_for_function("TTQ_SUBJ.SS&&TTQ_SUBJ.SS.cur&&!TTQ_SUBJ.SS.locked",timeout=10000)
             if k=='mc':
                 # turn the live question into a 3-option choice of the same answer and re-render (same as Qmc), so sPick is the input path
