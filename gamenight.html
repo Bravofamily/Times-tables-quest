@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-US"><head><meta charset="utf-8">
+<html lang="en-US"><head><meta charset="utf-8"><script src="nr-offline.js"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Family Game Night - NumiRealm</title>
 <meta name="robots" content="noindex">
@@ -149,9 +149,12 @@ async function gnVerify(key,text,sig){try{return await crypto.subtle.verify(ES,k
 async function gnSign(sec,text){return b64u(await crypto.subtle.sign(ES,sec.key,TE.encode(text)));}
 async function gnClaim(code,role){try{if(!crypto.subtle)return null;
  const kp=await crypto.subtle.generateKey(EC,true,['sign','verify']);const pj=await crypto.subtle.exportKey('jwk',kp.publicKey);
- const r=await fetch(CFG.url+'/functions/v1/nr-gn',{method:'POST',headers:{'Content-Type':'application/json',apikey:CFG.key},body:JSON.stringify({action:'claim',code,role,pub:{kty:'EC',crv:'P-256',x:pj.x,y:pj.y}})});
+ const r=await fetch(CFG.url+'/functions/v1/nr-gn',{method:'POST',headers:{'Content-Type':'application/json',apikey:CFG.key},body:JSON.stringify(role==='host'?{action:'register',code,pub:{kty:'EC',crv:'P-256',x:pj.x,y:pj.y}}:{action:'claim',code,role,pub:{kty:'EC',crv:'P-256',x:pj.x,y:pj.y}})});
+ /* v33: 404/409/410 mean the signed-seat server is up but says no; never fall back to unsigned for those */
+ if(r.status===429){let ra=0;try{ra=parseInt((await r.json()).retry_after);}catch(x){}const w=Math.min(3600,Math.max(1,ra||parseInt(r.headers.get('Retry-After'))||60));return {err:'rate_limited',wait:w};}
+ if(r.status===404||r.status===409||r.status===410){let e='';try{e=(await r.json()).error;}catch(x){}return {err:e||String(r.status)};}
  if(!r.ok)return null;const j=await r.json();if(!j||!j.ok)return null;
- return {key:kp.privateKey,jwk:await crypto.subtle.exportKey('jwk',kp.privateKey),claim:j.claim,sig:j.sig,srvJ:j.srv,srv:await pubKey(j.srv),pid:JSON.parse(j.claim).pid};}catch(e){return null;}}
+ return {rt:j.rt||'',key:kp.privateKey,jwk:await crypto.subtle.exportKey('jwk',kp.privateKey),claim:j.claim,sig:j.sig,srvJ:j.srv,srv:await pubKey(j.srv),pid:JSON.parse(j.claim).pid};}catch(e){return null;}}
 async function gnRestore(o){try{if(!o||!o.jwk)return null;const key=await crypto.subtle.importKey('jwk',o.jwk,EC,true,['sign']);const c=JSON.parse(o.claim);if(c.exp<now())return null;
  return {key,jwk:o.jwk,claim:o.claim,sig:o.sig,srvJ:o.srvJ,srv:await pubKey(o.srvJ),pid:c.pid};}catch(e){return null;}}
 const gnSave=sec=>sec?{jwk:sec.jwk,claim:sec.claim,sig:sec.sig,srvJ:sec.srvJ}:null;
@@ -175,7 +178,7 @@ let tick=null;
 function runTimer(id,deadline,total){clearInterval(tick);const f=()=>{const left=Math.max(0,deadline-now());const b=document.getElementById(id+'Bar'),s=document.getElementById(id+'Secs');if(b)b.style.width=(100*left/total)+'%';if(s)s.textContent=Math.ceil(left/1000)+' s';if(!left)clearInterval(tick);};f();tick=setInterval(f,250);}
 
 /* ---------- home ---------- */
-function home(msg){clearInterval(tick);app.innerHTML=`<section class="card" id="gnHome"><h2>🎉 Family Game Night</h2>
+function home(msg){clearInterval(tick);if(window.NR_LOCALONLY){app.innerHTML=`<section class="card" id="gnOffline" role="status"><h2>📴 Game Night is off in offline mode</h2><p>Offline mode keeps everything on this device, and Game Night needs the internet to connect phones, so it is turned off for now.</p><p>Solo play still works. A grown-up can turn offline mode off later.</p><p><a class="btn" id="gnOfflineBack" href="./">🏠 Back to NumiRealm</a></p></section>`;return;}app.innerHTML=`<section class="card" id="gnHome"><h2>🎉 Family Game Night</h2>
  <p>Everyone plays math together, each on their own phone or tablet. Fast right answers win more points!</p>
  ${msg?`<p class="err" id="homeMsg" role="alert">${esc(msg)}</p>`:''}
  <button class="btn" id="joinBtn" type="button">🙋 Join a game</button>
@@ -209,13 +212,14 @@ function hostSetup(){const s=H.settings||{topics:['mult'],rounds:5,secs:20,mode:
   VOICE_ON=document.getElementById('voice').checked;
   H.settings={topics,rounds:+document.getElementById('rounds').value,secs:+document.getElementById('secs').value,mode:document.getElementById('mode').value,fair:fair.checked,level:document.getElementById('level').value};
   hostOpen();};}
-async function hostOpen(){const code=newCode();app.innerHTML='<section class="card" id="gnOpening"><p>Opening the room…</p></section>';const sec=await gnClaim(code,'host');
+async function hostOpen(){let code=newCode();app.innerHTML='<section class="card" id="gnOpening"><p>Opening the room…</p></section>';let sec=await gnClaim(code,'host');
+ for(let i=0;i<4&&sec&&sec.err&&sec.err!=='rate_limited';i++){code=newCode();sec=await gnClaim(code,'host');}if(sec&&sec.err){home(sec.err==='rate_limited'?`Too many new rooms right now. Please wait ${sec.wait>=120?Math.ceil(sec.wait/60)+' minutes':sec.wait+' seconds'} and try again.`:'Could not open a room right now. Please try again.');return;}
  Object.assign(H,{sec,seq:0,vf:{},pend:{},code,id:sec?sec.pid:'host-'+uid(),players:{},order:[],phase:'lobby',round:0,qs:{},ans:{},gains:null,born:now(),status:'connecting'});
  H.ch=openChannel(H.code,H.id,{broadcast:{answer:hostAnswerS,hello:()=>hostPush()},presence:hostPresence},s=>{H.status=s;
    if(s==='SUBSCRIBED'){H.ch.track({role:'host'});hostPush();}hostDraw();});
  if(!H.ch){home('Game Night needs an internet connection. Please try again later.');return;}
  clearInterval(H.beat);H.beat=setInterval(()=>{if(now()-H.born>ROOM_TTL){hostEnd('expired');return;}hostPush();},2000);
- addEventListener('pagehide',()=>hostSend('end',{reason:'host_left'}));
+ addEventListener('pagehide',()=>{hostSend('end',{reason:'host_left'});gnEndRoom();});
  hostDraw();}
 function hostPresence(state){const seen=new Set();
  Object.entries(state).forEach(([key,metas])=>{const m=(metas||[])[0]||{};if(m.role!=='player')return;
@@ -256,7 +260,8 @@ function hostReveal(){if(H.phase!=='question')return;clearTimeout(H.to);H.phase=
  if(H.round>=H.settings.rounds){H.to=setTimeout(hostPodium,REVEAL_MS);}}
 function hostPodium(){clearTimeout(H.to);H.phase='podium';const top=playersList().sort((a,b)=>b.score-a.score)[0];
  H.line=top?`Hooray! ${top.name} wins Game Night! Great math, everyone!`:'Thanks for playing!';say(H.line);hostPush();hostDraw();confetti();}
-function hostEnd(reason){clearInterval(H.beat);clearTimeout(H.to);const ch0=H.ch;hostSend('end',{reason:reason||'host_ended'}).then(()=>{try{ch0&&ch0.unsubscribe();}catch(e){}});H.ch=null;home(reason==='expired'?'That room was open for 3 hours, so it closed.':'');}
+function gnEndRoom(){try{if(H.sec&&H.sec.rt&&CFG.url){const rt=H.sec.rt;H.sec.rt='';fetch(CFG.url+'/functions/v1/nr-gn',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json',apikey:CFG.key},body:JSON.stringify({action:'end',code:H.code,rt})}).catch(()=>{});}}catch(e){}}
+function hostEnd(reason){gnEndRoom();clearInterval(H.beat);clearTimeout(H.to);const ch0=H.ch;hostSend('end',{reason:reason||'host_ended'}).then(()=>{try{ch0&&ch0.unsubscribe();}catch(e){}});H.ch=null;home(reason==='expired'?'That room was open for 3 hours, so it closed.':'');}
 function hostPush(){if(!H.ch||H.status!=='SUBSCRIBED')return;const P=playersList().map(p=>({id:p.id,name:p.name,hero:p.hero,score:p.score,online:p.online,answered:!!(H.ans&&H.ans[p.id])}));
  const pay={phase:H.phase,round:H.round,rounds:H.settings.rounds,secs:H.settings.secs,mode:H.settings.mode,players:P,full:H.order.length>=MAX};
  if(H.phase==='question'){pay.left=Math.max(0,H.deadline-now());pay.q={};playersList().forEach(p=>{const q=hostQuestion(p);pay.q[p.id]={text:q.text,choices:q.choices||null};});}
@@ -310,7 +315,7 @@ function joinForm(code,err){const m=loadMe()||{};const sel={hero:m.hero||'',leve
   if(c.length!==5)return joinForm(c,'Type the 5-letter room code from the host screen.');
   if(!n)return joinForm(c,'Pick a hero or type a nickname.');
   const lv=document.getElementById('joinLevel').value;
-  const go=async()=>{let sec=m.code===c?await gnRestore(m.sec):null;if(!sec){app.innerHTML='<section class="card" id="gnJoining"><p>Joining…</p></section>';sec=await gnClaim(c,'player');}
+  const go=async()=>{let sec=m.code===c?await gnRestore(m.sec):null;if(!sec){app.innerHTML='<section class="card" id="gnJoining"><p>Joining…</p></section>';sec=await gnClaim(c,'player');if(sec&&sec.err)return joinForm(c,sec.err==='rate_limited'?`Too many tries right now. Please wait ${sec.wait>=120?Math.ceil(sec.wait/60)+' minutes':sec.wait+' seconds'} and try again.`:sec.err==='room_ended'?'That room has closed. Ask the host for a new code.':'No open room has that code. Check the code on the host screen.');}
    const me={code:c,id:sec?sec.pid:((m.code===c&&m.id&&!m.sec)?m.id:'p-'+uid()),name:n,hero:sel.hero,level:lv,sec:gnSave(sec)};saveMe(me);playerJoin(me,sec);};go();};}
 async function playerJoin(me,sec){if(sec===undefined)sec=await gnRestore(me.sec);Object.assign(P,{me,sec,seq:0,hostC:null,state:null,picked:null,hostSeen:false,status:'connecting'});clearTimeout(P.lost);clearTimeout(P.find);
  try{P.ch&&P.ch.unsubscribe();}catch(e){}
@@ -370,6 +375,7 @@ function playerDraw(){const me=P.me,s=P.state;if(!me)return;
 
 /* ---------- boot ---------- */
 function boot(){
+ if(window.NR_LOCALONLY){home();return;} // v33 CR33-4: Game Night stays off in offline mode (no join links, no reconnects)
  if(!FLAG&&!LINKED&&!PORTAL){app.innerHTML=`<section class="card" id="gnOff"><h2>🎉 Family Game Night</h2><p>Coming soon!</p><a class="btn" href="./" style="text-decoration:none">Back to the game</a></section>`;return;}
  document.getElementById('testBanner').hidden=!FLAG;
  document.getElementById('backLink').href='./'+FQ;
@@ -377,7 +383,7 @@ function boot(){
  if(me&&me.code&&(!j||j===me.code))playerJoin(me); // reconnect after a reload
  else if(j)joinForm(j);else home();}
 boot();
-return {gen,choicesFor,cleanName,cleanCode,H,P,MAX,newCode,uid,gnClaim,gnCheck,gnSign,gnVerify};
+return {gen,choicesFor,cleanName,cleanCode,H,P,MAX,newCode,uid,gnClaim,gnEndRoom,gnCheck,gnSign,gnVerify};
 })();
 </script>
 </body></html>

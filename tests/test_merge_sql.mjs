@@ -1,9 +1,9 @@
 import { PGlite } from '@electric-sql/pglite'; import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'; import fs from 'fs';
-const db = new PGlite({ extensions: { pgcrypto } }); const S='/workspace/v32-repo/supabase/';
+const db = new PGlite({ extensions: { pgcrypto } }); const S=new URL('../supabase/', import.meta.url).pathname;
 await db.exec(`create role anon; create role authenticated; create role service_role; create schema auth; create table auth.users(id uuid primary key, email text);
 create function auth.uid() returns uuid language sql as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
 create function auth.jwt() returns jsonb language sql as $$ select '{}'::jsonb $$; create extension pgcrypto; create schema extensions;`);
-for (const f of ['setup.sql','setup-part4.sql','setup-part5-v32.sql','setup-part6-v32-merge.sql']) {
+for (const f of ['setup.sql','setup-part4.sql','setup-part5-v32.sql','setup-part6-v32-merge.sql'].concat(process.argv[2]==='part7'?['setup-part7-v33.sql']:[])) {
   try { await db.exec(fs.readFileSync(S+f,'utf8')); console.log('OK',f); } catch(e){ console.log('ERR',f,e.message); }
 }
 const q=async(s,p)=>(await db.query(s,p)).rows; let pass=0,fail=0; const ck=(c,m)=>{c?pass++:fail++;console.log(c?'PASS':'FAIL',m)};

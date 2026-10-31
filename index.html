@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8"><script src="nr-offline.js"></script>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -2019,7 +2019,7 @@ window.TTQ={get S(){return S;},get SC(){return SC;},get save(){return save;},has
 
 // ---- auto-update: home-screen apps keep old HTML cached; check version.json and reload when a new release is out.
 // RELEASE CHECKLIST: bump APP_VERSION here AND "version" in version.json together.
-const APP_VERSION='32';
+const APP_VERSION='33';
 (function(){
  let pending=null,safe=true,checking=false,depth=0;
  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){depth++;let r;try{r=f.apply(this,arguments);}finally{depth--;}safe=true;if(pending)setTimeout(go,400);return r;};};
@@ -2030,7 +2030,7 @@ const APP_VERSION='32';
   try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){return;}
   try{persist();}catch(e){}
   const q=new URLSearchParams(location.search);q.set('v',v);location.replace(location.pathname+'?'+q.toString());} // v29: keep ?parenttest / ?link on update reloads
- function check(force){if(checking||!window.fetch||!/^https?:$/.test(location.protocol))return;checking=true;
+ function check(force){if(window.NR_LOCALONLY)return; /* v33 offline: no version check */ if(checking||!window.fetch||!/^https?:$/.test(location.protocol))return;checking=true;
   fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{
    const v=j&&j.version!=null?String(j.version):null;
    if(v&&v!==APP_VERSION){pending=v;if(force||safe)go();else prompt();}
@@ -4464,7 +4464,7 @@ function masteryBadgesHTML(id){const pf=save.profiles[id],M=pf?mOf(pf):{};const 
 /* ---------- 5. offline play: service worker (cache named by APP_VERSION) + offline notice ---------- */
 function offlineNote(){const off=navigator.onLine===false;let d=$('offNote');if(off&&!d){d=document.createElement('div');d.id='offNote';d.className='offnote';d.setAttribute('role','status');d.textContent='Offline: playing from this device. Progress still saves here.';document.body.appendChild(d);}else if(!off&&d)d.remove();}
 window.addEventListener('online',offlineNote);window.addEventListener('offline',offlineNote);setTimeout(offlineNote,0);
-if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js?v='+encodeURIComponent(APP_VERSION),{updateViaCache:'none'}).then(r=>{try{r.update();}catch(e){}document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){try{r.update();}catch(e){}}});}).catch(()=>{});});} // v29: never use the HTTP cache for sw.js; re-check on launch and when the app comes back
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)&&!(window.NR_LOCALONLY&&navigator.serviceWorker.controller)){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js?v='+encodeURIComponent(APP_VERSION),{updateViaCache:'none'}).then(r=>{if(window.NR_LOCALONLY)return;try{r.update();}catch(e){}document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){try{r.update();}catch(e){}}});}).catch(()=>{});});} // v29: never use the HTTP cache for sw.js; re-check on launch and when the app comes back
 (function(){const st=document.createElement('style');st.textContent=`
 .wex{margin:8px auto 4px;max-width:560px;text-align:left;background:#EEF6FF;border:2px solid #60A5FA;border-radius:14px;padding:8px 14px;color:#0A1F44;font-size:16px;line-height:1.4}
 .wex b{display:block;margin-bottom:2px}.wex ol{margin:0;padding-left:22px}.wex li{margin:2px 0}.wex .fr{font-size:14px}
@@ -4756,6 +4756,7 @@ const NRT=(function(){
    Hidden unless the URL has ?parenttest=1 (or this device is already linked, so it can be unlinked).
    Kid side never logs in: it holds a long random device token and only calls 3 anon RPCs. */
 const NRP=(function(){
+window.NR_LOCALONLY=!!window.NR_LOCALONLY; // v33: set by nr-offline.js (loaded first)
  const CFG={url:'https://uuigasrelqbwxopvqoib.supabase.co',key:'sb_publishable_0E3BTvmAlWAc9wxz1Rl55w_0K6J-bmr'};
  const LK='nr-parent-link',QK='nr-parent-queue',SK='nr-parent-stats';
  const qs=new URLSearchParams(location.search);
@@ -4783,9 +4784,12 @@ const NRP=(function(){
    realms[x.id]={chapters:ch|0,total:total|0,stars:stars|0,max:(total|0)*3};});
   const h=((sts||stats()).h||{})[heroId]||{s:{},sec:0,lan:0,ex:0};const skills={};
   Object.entries(h.s||{}).slice(0,80).forEach(([k,o])=>{skills[k]={n:String(o.n||k).slice(0,40),r:o.r|0,t:o.t|0,l:o.l|0};});
-  return {v:1,hero:heroId,realms,skills,time_played_sec:Math.round(h.sec||0),lanterns_used:h.lan|0,examples_opened:h.ex|0,play:(function(){try{return NRT.summary(heroId);}catch(e){return null;}})(),client_at:new Date().toISOString()};}
+  return {v:1,hero:heroId,realms,skills,time_played_sec:Math.round(h.sec||0),lanterns_used:h.lan|0,examples_opened:h.ex|0,play:(function(){try{return NRT.summary(heroId);}catch(e){return null;}})(),client_at:new Date().toISOString(),lin:nrLin(sv),seq:nrSeq(sv)};}
+ /* v33 CR33-1: per-lineage save counter, goes up by one on every sync snapshot and travels with backups; the server orders snapshots by it (then by server receive time), never by the device clock */
+ function nrSeq(sv){try{const n=Math.min(2e9,(Number.isInteger(sv.seq)&&sv.seq>0?sv.seq:0)+1);sv.seq=n;try{persist&&persist();}catch(e){}return n;}catch(e){return undefined;}}
+ function nrLin(sv){try{if(!/^lin-[A-Za-z0-9_-]{8,40}$/.test(sv.lin||'')){const a=new Uint8Array(12);crypto.getRandomValues(a);sv.lin='lin-'+Array.from(a,b=>b.toString(36).padStart(2,'0')).join('').slice(0,20);try{persist&&persist();}catch(e){}}return sv.lin;}catch(e){return undefined;}}
  /* ---- network ---- */
- async function rpc(fn,body){const r=await fetch(CFG.url+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json',apikey:CFG.key,Authorization:'Bearer '+CFG.key},body:JSON.stringify(body)});
+ async function rpc(fn,body){if(window.NR_LOCALONLY)throw new Error('local_only');const r=await fetch(CFG.url+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json',apikey:CFG.key,Authorization:'Bearer '+CFG.key},body:JSON.stringify(body)});
   if(!r.ok)throw new Error('http_'+r.status);return r.json();}
  function queue(){const L=link();if(!L)return;const p=payload(save,L.hero);if(!p)return;wr(QK,{payload:p,at:Date.now()});clearTimeout(st.t);st.t=setTimeout(flush,3000);}
  let flushing=false;
@@ -4834,8 +4838,10 @@ const NRP=(function(){
    if(L)try{await rpc('unlink_this_device',{p_device_token:L.token});}catch(e){}},
   syncNow(){queue();clearTimeout(st.t);flush();}};
  /* ---- hooks (no-ops unless linked) ---- */
- const _ans=answer;answer=function(v){let ok=null;try{if(S&&!S.locked&&S.onAnswer&&S.cur)ok=v===S.cur.ans;}catch(e){}const r=_ans.apply(this,arguments);if(ok!==null)rec('ans',ok);return r;};
- const _sp=sPick;sPick=function(i){let ok=null;try{if(SS&&SS.cur&&!SS.locked)ok=!!SS.cur.check(i);}catch(e){}const r=_sp.apply(this,arguments);if(ok!==null)rec('ans',ok);return r;};
+ /* v33.1 NF-1: hook the round's own onAnswer (one call per finished question, every input type: pad, choice, long division, long multiplication).
+    Marker _nrp is carried through other wrappers (e.g. offline metrics _nrm) so each recorder wraps a question exactly once. */
+ function wrapOA(o){try{if(o&&typeof o.onAnswer==='function'&&!o.onAnswer._nrp){const f=o.onAnswer;const g=function(ok){try{rec('ans',!!ok);}catch(e){}return f.apply(this,arguments);};g._nrp=1;g._nrm=f._nrm;o.onAnswer=g;}}catch(e){}}
+ ['answer','sPick','sOK','ldAnswer','lmAnswer'].forEach(n=>{try{const f=eval(n);if(typeof f!=='function')return;const g=function(){try{wrapOA(typeof SS!=='undefined'?SS:null);wrapOA(typeof S!=='undefined'?S:null);}catch(e){}return f.apply(this,arguments);};eval(n+'=g');}catch(e){}});
  const _sh=showHint;showHint=function(full){if(!full)rec('lan');return _sh.apply(this,arguments);};
  const _sH=sHint;sHint=function(full){if(!full&&SS&&SS.cur)rec('lan');return _sH.apply(this,arguments);};
  const _ex=exOpen;exOpen=function(){rec('ex');return _ex.apply(this,arguments);};
@@ -4851,6 +4857,88 @@ const NRP=(function(){
 if(NRP.FLAG&&new URLSearchParams(location.search).get('link'))setTimeout(()=>{try{if(save.hero)settingsScreen();}catch(e){}},400);
 
 /* NRH-BEGIN */
+/* ===== v33.1 Offline session metrics (supervised usability session) =====
+   Only exists in offline mode (?localonly=1). Everything stays in this browser (localStorage 'nr-session-metrics').
+   Grown-ups open it by pressing and holding the "Offline mode" badge for 1.5 s, then answering a grown-up check.
+   Export = a file made on this device (download or the phone's own Share sheet). No network request, no names except the hero nickname. */
+const NRM=(function(){
+ if(!window.NR_LOCALONLY)return {on:false};
+ const K='nr-session-metrics',CAP=2000;
+ const rd=()=>{try{const v=JSON.parse(localStorage.getItem(K)||'null');return v&&typeof v==='object'&&v.v===1?v:null;}catch(e){return null;}};
+ const wr=v=>{try{localStorage.setItem(K,JSON.stringify(v));}catch(e){}};
+ const now=()=>Date.now();
+ function fresh(){return {v:1,started:new Date().toISOString(),t0:now(),last:now(),active_sec:0,ans:[],hints:0,examples:0,errors:[],hidden:0,reopen:0,unclean_prev:0,open:false,heroes:{}};}
+ let M=rd()||fresh();
+ if(M.open)M.unclean_prev++; M.open=true; M.reopen++; wr(M);
+ addEventListener('pagehide',()=>{M.open=false;wr(M);});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){M.hidden++;M.open=false;}else M.open=true;wr(M);});
+ const err=(m)=>{if(M.errors.length<50)M.errors.push({at:new Date().toISOString(),m:String(m||'error').replace(/https?:\/\/\S+/g,'[url]').slice(0,160)});wr(M);};
+ addEventListener('error',e=>err((e&&e.message)||'script error'));
+ addEventListener('unhandledrejection',e=>{const r=e&&e.reason;const m=String((r&&r.message)||r||'rejection');if(/offline_mode|local_only/.test(m))return;err('promise: '+m);});
+ let qT=now();
+ function skill(){try{if(typeof SS!=='undefined'&&SS&&SS.sid)return {k:SS.sid+':c'+SS.c,n:String((SS.ch&&SS.ch.skill)||SS.sid).slice(0,40)};}catch(e){}
+  try{if(typeof S!=='undefined'&&S&&S.n)return {k:'mult:x'+S.n,n:'×'+S.n+' facts'};}catch(e){}return {k:'other',n:'other'};}
+ function hero(){try{const p=save.profiles[save.hero];if(p){M.heroes[save.hero]=String(p.name||'Hero').slice(0,24);return save.hero;}}catch(e){}return null;}
+ function ans(ok){const t=now(),c=skill();const sec=Math.min(120,Math.max(0,(t-qT)/1000));qT=t;
+  if(M.ans.length<CAP)M.ans.push({k:c.k,n:c.n,ok:!!ok,s:Math.round(sec*10)/10,h:hero(),at:t-M.t0});M.last=t;wr(M);}
+ /* hook the round's own onAnswer (one call per finished question, every input type: pad, choice, long division, long multiplication) */
+ function wrapOA(o){try{if(o&&typeof o.onAnswer==='function'&&!o.onAnswer._nrm){const f=o.onAnswer;const g=function(ok){try{ans(!!ok);}catch(e){}return f.apply(this,arguments);};g._nrm=1;g._nrp=f._nrp;o.onAnswer=g;}}catch(e){}}
+ const W=n=>{try{const f=window[n]||eval(n);if(typeof f!=='function')return;const g=function(){try{wrapOA(typeof SS!=='undefined'?SS:null);wrapOA(typeof S!=='undefined'?S:null);}catch(e){}return f.apply(this,arguments);};eval(n+'=g');}catch(e){}};
+ ['answer','sPick','sOK','ldAnswer','lmAnswer'].forEach(W);
+ try{const _h=showHint;showHint=function(full){if(!full){M.hints++;wr(M);}return _h.apply(this,arguments);};}catch(e){}
+ try{const _H=sHint;sHint=function(full){if(!full&&SS&&SS.cur){M.hints++;wr(M);}return _H.apply(this,arguments);};}catch(e){}
+ try{const _x=exOpen;exOpen=function(){M.examples++;wr(M);return _x.apply(this,arguments);};}catch(e){}
+ setInterval(()=>{if(document.hidden)return;let on=false;try{on=!!((typeof S!=='undefined'&&S&&S.cur)||(typeof SS!=='undefined'&&SS&&SS.cur));}catch(e){}if(on){M.active_sec+=10;wr(M);}},10000);
+ function summary(){const A=M.ans,by={};A.forEach(a=>{const o=by[a.k]||(by[a.k]={skill:a.n,attempts:0,correct:0,sec:0});o.attempts++;if(a.ok)o.correct++;o.sec+=a.s;});
+  const tables=Object.entries(by).map(([k,o])=>({key:k,skill:o.skill,attempts:o.attempts,correct:o.correct,accuracy_pct:o.attempts?Math.round(100*o.correct/o.attempts):0,avg_sec_per_question:o.attempts?Math.round(10*o.sec/o.attempts)/10:0}));
+  const ss=A.map(a=>a.s).sort((x,y)=>x-y),med=ss.length?ss[Math.floor(ss.length/2)]:0,ok=A.filter(a=>a.ok).length;
+  let sa=false;try{sa=!!(matchMedia('(display-mode: standalone)').matches||navigator.standalone);}catch(e){}
+  return {format:'numirealm-session-metrics',format_version:1,app_version:(typeof APP_VERSION!=='undefined'?String(APP_VERSION):'?'),offline_mode:true,
+   session:{started:M.started,exported:new Date().toISOString(),length_min:Math.round((now()-M.t0)/6000)/10,active_play_min:Math.round(M.active_sec/6)/10,times_backgrounded:M.hidden,times_opened:M.reopen,unclean_exits_detected:M.unclean_prev},
+   heroes:Object.values(M.heroes),totals:{attempts:A.length,correct:ok,accuracy_pct:A.length?Math.round(100*ok/A.length):0,median_sec_per_question:med,hints_used:M.hints,examples_opened:M.examples},
+   tables_practiced:tables,errors:M.errors,
+   device:{user_agent:navigator.userAgent,platform:String(navigator.platform||''),language:String(navigator.language||''),screen:screen.width+'x'+screen.height,viewport:innerWidth+'x'+innerHeight,pixel_ratio:devicePixelRatio||1,touch:('ontouchstart' in window)||navigator.maxTouchPoints>0,home_screen_app:sa},
+   note:'Made on this device in offline mode. Nothing was sent anywhere. Device, OS and browser come from the browser itself.'};}
+ function text(s){const L=[`NumiRealm session metrics (offline) - app v${s.app_version}`,`Started: ${s.session.started}  Exported: ${s.session.exported}`,
+  `Session: ${s.session.length_min} min, active play ${s.session.active_play_min} min, backgrounded ${s.session.times_backgrounded}x, opened ${s.session.times_opened}x, unclean exits ${s.session.unclean_exits_detected}`,
+  `Hero: ${s.heroes.join(', ')||'-'}`,`Answers: ${s.totals.attempts}, correct ${s.totals.correct} (${s.totals.accuracy_pct}%), median ${s.totals.median_sec_per_question} s/question, hints ${s.totals.hints_used}, examples ${s.totals.examples_opened}`,'Practiced:'];
+  s.tables_practiced.forEach(t=>L.push(`  ${t.skill}: ${t.correct}/${t.attempts} (${t.accuracy_pct}%), ${t.avg_sec_per_question} s avg`));
+  L.push(`Errors: ${s.errors.length}`);s.errors.slice(0,10).forEach(e=>L.push('  '+e.at+' '+e.m));L.push('Device: '+s.device.user_agent,`Screen ${s.device.screen}, viewport ${s.device.viewport}, home-screen app: ${s.device.home_screen_app}`);return L.join('\n');}
+ function fname(){const d=new Date(),p=n=>String(n).padStart(2,'0');return `numirealm-session-${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}.json`;}
+ function download(){const s=summary(),b=new Blob([JSON.stringify(s,null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=fname();document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove();},2000);return s;}
+ async function share(){const s=summary();const f=new File([JSON.stringify(s,null,2)],fname(),{type:'application/json'});
+  try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'NumiRealm session metrics'});return 'shared';}}catch(e){if(e&&e.name==='AbortError')return 'cancelled';}
+  try{if(navigator.share){await navigator.share({title:'NumiRealm session metrics',text:text(s)});return 'shared-text';}}catch(e){if(e&&e.name==='AbortError')return 'cancelled';}
+  download();return 'downloaded';}
+ function close(){const d=document.getElementById('nrmDlg');if(d)d.remove();}
+ function panel(){close();const s=summary();const d=document.createElement('div');d.id='nrmDlg';d.setAttribute('role','dialog');d.setAttribute('aria-modal','true');d.setAttribute('aria-label','Session metrics');
+  d.style.cssText='position:fixed;inset:0;z-index:100000;background:#0A1F44cc;display:flex;align-items:center;justify-content:center;padding:12px';
+  d.innerHTML=`<div style="background:#fff;color:#0A1F44;border-radius:20px;padding:16px;max-width:520px;width:100%;max-height:92vh;overflow:auto;font:15px Poppins,sans-serif">
+   <h3 style="margin:0 0 6px;font-size:20px">📊 Session metrics (grown-ups)</h3><p style="margin:0 0 8px">Saved only on this device. Exporting makes a file here; nothing is sent anywhere.</p>
+   <pre id="nrmTxt" style="white-space:pre-wrap;background:#F1F5F9;border-radius:12px;padding:10px;font-size:13px;max-height:40vh;overflow:auto"></pre>
+   <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+   <button id="nrmShare" class="btn" style="min-height:48px">📤 Share / save</button><button id="nrmDl" class="btn" style="min-height:48px">⬇️ Download JSON</button>
+   <button id="nrmNew" class="btn" style="min-height:48px">🔄 Start a new session</button><button id="nrmClose" class="btn" style="min-height:48px">🏠 Back to NumiRealm</button></div>
+   <p id="nrmMsg" role="status" style="margin:8px 0 0;min-height:20px"></p></div>`;
+  document.body.appendChild(d);d.querySelector('#nrmTxt').textContent=text(s);const msg=t=>{d.querySelector('#nrmMsg').textContent=t;};
+  d.querySelector('#nrmDl').onclick=()=>{download();msg('File saved on this device.');};
+  d.querySelector('#nrmShare').onclick=async()=>{const r=await share();msg(r==='cancelled'?'Share cancelled.':r==='downloaded'?'File saved on this device.':'Shared from this device.');};
+  d.querySelector('#nrmNew').onclick=()=>{if(!confirm('Start a new session? The current numbers on this device are cleared (export them first).'))return;M=fresh();M.open=true;M.reopen=1;wr(M);qT=now();panel();msg('New session started.');};
+  d.querySelector('#nrmClose').onclick=close;}
+ function gate(){close();const a=6+Math.floor(Math.random()*4),b=6+Math.floor(Math.random()*4);const d=document.createElement('div');d.id='nrmDlg';d.setAttribute('role','dialog');d.setAttribute('aria-modal','true');
+  d.style.cssText='position:fixed;inset:0;z-index:100000;background:#0A1F44cc;display:flex;align-items:center;justify-content:center;padding:12px';
+  d.innerHTML=`<div style="background:#fff;color:#0A1F44;border-radius:20px;padding:16px;max-width:420px;width:100%;font:15px Poppins,sans-serif"><h3 style="margin:0 0 6px;font-size:20px">Grown-ups only</h3>
+   <label for="nrmA">What is ${a} × ${b} + 11?</label><input id="nrmA" inputmode="numeric" autocomplete="off" style="display:block;width:100%;box-sizing:border-box;min-height:48px;font-size:18px;margin:8px 0">
+   <div style="display:flex;gap:8px;flex-wrap:wrap"><button id="nrmGo" class="btn" style="min-height:48px">Open metrics</button><button id="nrmClose" class="btn" style="min-height:48px">🏠 Back to NumiRealm</button></div><p id="nrmErr" role="alert" style="min-height:20px;margin:6px 0 0"></p></div>`;
+  document.body.appendChild(d);const go=()=>{if(+d.querySelector('#nrmA').value===a*b+11)panel();else d.querySelector('#nrmErr').textContent='Not quite. Ask a grown-up.';};
+  d.querySelector('#nrmGo').onclick=go;d.querySelector('#nrmA').onkeydown=e=>{if(e.key==='Enter')go();};d.querySelector('#nrmClose').onclick=close;setTimeout(()=>d.querySelector('#nrmA').focus(),50);}
+ function hook(){const b=document.getElementById('nrOfflineBadge');if(!b){setTimeout(hook,300);return;}if(b.dataset.nrm)return;b.dataset.nrm='1';
+  b.style.pointerEvents='auto';b.style.touchAction='none';b.style.userSelect='none';b.style.webkitUserSelect='none';b.title='Grown-ups: press and hold for session metrics';let t=null;
+  const down=e=>{t=setTimeout(()=>{t=null;gate();},1500);},up=()=>{if(t){clearTimeout(t);t=null;}};
+  b.addEventListener('pointerdown',down);['pointerup','pointercancel','pointerleave'].forEach(x=>b.addEventListener(x,up));b.addEventListener('contextmenu',e=>e.preventDefault());}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
+ return {on:true,summary,text,download,share,open:gate,_panel:panel,_raw:()=>M};})();
+
 /* ===== Parent Area PHASE 1 (TEST): Home-screen card for grown-ups =====
    SHOW_HOME is the one-line switch: today it follows ?parenttest=1; set it to true to show it to everyone. */
 const NRH=(function(){
@@ -4929,7 +5017,7 @@ const NRQ=(function(){
  function mine(){const L=link();return !!(L&&save&&save.hero&&save.hero===L.hero);}
  /* shown on Home when the linked hero is playing, or before any hero is picked; answers only count for the linked hero */
  function shown(){const L=link();return !!(L&&save&&(!save.hero||save.hero===L.hero));}
- async function call(fn,body){const r=await fetch(NRP.CFG.url+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json',apikey:NRP.CFG.key,Authorization:'Bearer '+NRP.CFG.key},body:JSON.stringify(body)});
+ async function call(fn,body){if(window.NR_LOCALONLY)throw new Error('local_only');const r=await fetch(NRP.CFG.url+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json',apikey:NRP.CFG.key,Authorization:'Bearer '+NRP.CFG.key},body:JSON.stringify(body)});
   if(!r.ok)throw new Error('http_'+r.status);return r.json();}
  async function refresh(){const L=link();if(!L||st.busy||navigator.onLine===false)return;st.busy=true;
   try{await sendProgress();const r=await call('get_home',{p_device_token:L.token});

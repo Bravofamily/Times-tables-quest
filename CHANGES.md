@@ -1,5 +1,16 @@
 # Changes
 
+## v33 (Oct 31, 2026)
+- Family Game Night server (nr-gn v4, live since Oct 30): the host now opens a room with a signed "register" and gets a private room token; only that host can end the room, and ended rooms refuse new seats. If a room code is taken, the host page quietly tries a new code.
+- Game Night limits: too many new rooms, joins or wrong codes from one network now show a friendly "please wait N seconds/minutes" message instead of a broken screen. Wrong or closed codes say so ("No open room has that code", "That room has closed").
+- When the host closes the page or ends the game, the room is ended on the server too.
+- New offline mode (?localonly=1, off with ?localonly=0, remembered on this device): nothing leaves the device (no Supabase, no Game Night server, no fonts or version check). An "Offline mode" badge shows on every page; Game Night and the Parent Area show a friendly "off in offline mode" card. Solo play works as before.
+- Offline mode only: a session metrics panel (questions, correct answers, time, device) with a JSON export, for supervised test sessions. Nothing is sent anywhere.
+- Fix (NF-1): the Parent Area now counts every kind of answer (keypad, tap choices, long division, long multiplication), so stars and attempts are no longer too low for keypad-heavy kids.
+- Several devices: each save carries a per-device save counter so the server orders snapshots by it, not by the device clock (needs SQL part 7, already applied).
+- The service worker caches nr-offline.js so offline mode also works after the first visit.
+- TEST banner stays on parent and Game Night test pages.
+
 ## v32 (Oct 30, 2026)
 - New: "Delete my account" in Parent Area > Alerts. Type DELETE, then the new nr-delete-account Edge Function (verifies the parent's sign-in) deletes only that parent's rows in every table plus the sign-in account, turns off the weekly email and signs out everywhere. Partial failures say so and are safe to retry. Setup: supabase/DELETE_ACCOUNT_SETUP.md and supabase/setup-part5-v32.sql (cascades).
 - Fix: the family card's "this week" stars now use the same calculation as the weekly challenge (Monday to now).

@@ -61,7 +61,7 @@ def handler(route):
             return ok({'ok':True,'week':'2026-W44','source':M.fn,'text':t,'stats':{}})
         if body.get('action')=='preview':
             if M.fnmail=='sent': return ok({'ok':True,'sent':True,'to':'parent@example.com'})
-            h=open('/tmp/nr-email-preview.html',encoding='utf-8').read() if os.path.exists('/tmp/nr-email-preview.html') else '<h1>Preview</h1>'
+            h=open('/tmp/nr-email-preview.html',encoding='utf-8').read() if os.path.exists('/tmp/nr-email-preview.html') else '<h1>Preview</h1><p>Weekly summary (fallback fixture: run tests/test_edge.ts to write /tmp/nr-email-preview.html)</p><a href="#">Unsubscribe</a>'
             return ok({'ok':False,'error':'email_not_configured','html':h})
         return ok({'ok':False,'error':'action'},400)
     if path=='/auth/v1/otp': return ok({})
@@ -201,7 +201,7 @@ with sync_playwright() as p:
         ck(ab.locator('#benefits li').count()==7 and ab.locator('#soon li').count()==1 and at.count('Coming soon')==1 and 'Weekly summary and email' in at and 'Premium area' in at,f'{tag}: benefits page: 7 benefits, 1 Coming soon')
         ck(all(x in at for x in ['6 realms','Needs practice','Trend graphs','Up to 2 kids','offline','Nickname only','No ads, no tracking','Delete any time']),f'{tag}: benefits + kid-safety text')
         ck('stays free' in ab.inner_text('#freeNote') and not re.search(r'[$€£]|\bprice|/mo\b|per month',ab.inner_text('body'),re.I),f'{tag}: game-stays-free, no prices')
-        ck(ab.evaluate("![...document.scripts].some(s=>s.src)&&![...document.querySelectorAll('link[href^=http],img[src^=http]')].length"),f'{tag}: benefits page loads nothing external, needs no sign-in')
+        ck(ab.evaluate("![...document.scripts].some(s=>s.src&&new URL(s.src).origin!==location.origin)&&![...document.querySelectorAll('link[href^=http],img[src^=http]')].length"),f'{tag}: benefits page loads nothing external, needs no sign-in')
         noscroll(ab,f'{tag} benefits page');backck(ab,f'{tag} benefits page');hdrshot(ab,f'{BR}-{tag}-whats-included-header')
         if SH: ab.screenshot(path=f'{OUT}/{BR}-{tag}-10-benefits-page.png',full_page=True)
         ab.click('#ctaLogin');ab.wait_for_selector('#loginH');ck(ab.url.endswith('/parent.html#login') and ab.inner_text('#loginH')=='Parent Login',f'{tag}: benefits CTA opens Parent Login');ab.close()
@@ -286,7 +286,7 @@ with sync_playwright() as p:
         ck(all(P['realms'][k]['stars']==exp[k][0] and P['realms'][k]['total']==exp[k][1] and P['realms'][k]['max']==exp[k][1]*3 for k in exp),f'{tag}: realm stars/totals match the game ({P["realms"]})')
         ck(P['realms']['add']['chapters']==3 and P['realms']['mult']['chapters']==3 and P['realms']['frac']['chapters']==1 and P['realms']['sub']['chapters']==0,f'{tag}: chapters counted (0-star chapters ignored, other heroes ignored)')
         ck(P['skills']=={'mult:x7':{'n':'×7 facts','r':6,'t':10,'l':3}} and P['time_played_sec']==125 and P['lanterns_used']==3 and P['examples_opened']==2 and P['hero']=='emi',f'{tag}: skills/time/lanterns/examples normalized')
-        ck(set(P.keys())=={'v','hero','realms','skills','time_played_sec','lanterns_used','examples_opened','play','client_at'} and 'name' not in json.dumps(P['realms']),f'{tag}: payload has only the minimal fields')
+        ck(set(P.keys())=={'v','hero','realms','skills','time_played_sec','lanterns_used','examples_opened','play','client_at','lin','seq'} and str(P.get('lin','')).startswith('lin-') and 'name' not in json.dumps(P['realms']),f'{tag}: payload has only the minimal fields')
         g.evaluate("NRP.stats&&localStorage.removeItem('nr-parent-stats');SS={sid:'frac',c:3,ch:{skill:'halves, thirds and fourths'},cur:{}};NRP.rec('ans',true);NRP.rec('ans',false);NRP.rec('lan');NRP.rec('ex');SS=null")
         st=g.evaluate("JSON.parse(localStorage.getItem('nr-parent-stats')).h.emi")
         ck(st['s']['frac:c3']=={'n':'halves, thirds and fourths','r':1,'t':2,'l':1} and st['lan']==1 and st['ex']==1,f'{tag}: answers/lanterns/examples recorded per skill while linked')

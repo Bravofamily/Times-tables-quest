@@ -1,0 +1,20 @@
+// v33 CR33-3: gn_rate_hit SQL (PGlite, synthetic keys only)
+import { PGlite } from '@electric-sql/pglite'; import { pgcrypto } from '@electric-sql/pglite/contrib/pgcrypto'; import fs from 'fs';
+const S = new URL('../supabase/', import.meta.url).pathname; const db = new PGlite({ extensions: { pgcrypto } });
+await db.exec(`create role anon; create role authenticated; create role service_role; create schema auth; create table auth.users(id uuid primary key, email text);
+create function auth.uid() returns uuid language sql as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
+create function auth.jwt() returns jsonb language sql as $$ select '{}'::jsonb $$; create extension pgcrypto; create schema extensions;`);
+for (const f of ['setup.sql','setup-part4.sql','setup-part5-v32.sql','setup-part6-v32-merge.sql','setup-part7-v33.sql','setup-part7-v33.sql']) await db.exec(fs.readFileSync(S + f, 'utf8'));
+let pass = 0, fail = 0; const ck = (c, m) => { c ? pass++ : fail++; console.log(c ? 'PASS' : 'FAIL', m); };
+const hit = async (k, n, w, p = false) => (await db.query(`select public.gn_rate_hit($1,$2,$3,$4) r`, [k, n, w, p])).rows[0].r;
+let oks = 0; for (let i = 0; i < 6; i++) if ((await hit('ip:abc:regm', 5, 60)).ok) oks++;
+ck(oks === 5, 'gn_rate_hit allows exactly 5 then refuses');
+const r = await hit('ip:abc:regm', 5, 60); ck(!r.ok && r.retry >= 1 && r.retry <= 60, 'refusal carries retry 1..60 s');
+ck((await hit('ip:abc:regm', 5, 60, true)).ok === false && (await hit('ip:other', 5, 60, true)).ok === true, 'peek does not count');
+const row = (await db.query(`select n from public.gn_rate where bucket like 'ip:abc:regm@%'`)).rows[0]; ck(row.n === 5, 'counter stops at the limit');
+ck((await hit('x'.repeat(200), 5, 60)).ok === false, 'oversized key refused');
+await db.exec(`insert into public.gn_rate values('old@1',3,now()-interval '1 hour')`); for (let i = 0; i < 400; i++) await hit('p' + i, 5, 60);
+ck((await db.query(`select count(*)::int c from public.gn_rate where bucket='old@1'`)).rows[0].c === 0, 'expired buckets get purged');
+const g = (await db.query(`select has_function_privilege('anon','public.gn_rate_hit(text,int,int,boolean)','execute') a, has_function_privilege('authenticated','public.gn_rate_hit(text,int,int,boolean)','execute') b, has_table_privilege('anon','public.gn_rate','select') c`)).rows[0];
+ck(!g.a && !g.b && !g.c, 'anon/authenticated cannot call gn_rate_hit or read gn_rate');
+console.log(`RESULT gn-rate-sql ${pass}/${pass + fail}`);

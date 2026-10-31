@@ -224,7 +224,7 @@ with sync_playwright() as p:
     pp.wait_for_selector('#hostAway',timeout=4000);ck(True,'player sees host-lost warning')
     pp.wait_for_selector('#gnEnded',timeout=14000);ck('host left' in pp.inner_text('#endMsg'),'after grace the game ends (host left)')
     # offline: hub refuses -> friendly error
-    co,po=ctx(b);co.route('**/vendor/supabase.js',lambda r:r.abort());po.goto(HOST+'/gamenight.html?parenttest=1&join=ABCDE');po.fill('#joinName','Mia');po.click('#joinGo')
+    co,po=ctx(b);co.route('**/vendor/supabase.js',lambda r:r.abort());co.route('**/functions/v1/nr-gn',lambda r:r.abort());po.goto(HOST+'/gamenight.html?parenttest=1&join=ABCDE');po.fill('#joinName','Mia');po.click('#joinGo')
     po.wait_for_selector('#connErr,#joinErr',timeout=16000);ck(po.locator('#connErr').count()==1,'no realtime client (offline) -> friendly message')
     # broadcasts never carried answers before reveal
     def body(e):
@@ -235,12 +235,23 @@ with sync_playwright() as p:
         ck(sts and all(isinstance(e[3].get('st'),str) and e[3].get('s') for e in sts),f'CR-02: all {len(sts)} host states are signed')
         ck(ans and all(e[3].get('s') for e in ans),f'CR-02: all {len(ans)} answers are signed')
         cx,px=ctx(b);px.goto(HOST+'/gamenight.html?parenttest=1');px.wait_for_selector('#gnHome')
-        r=px.evaluate('''async()=>{const G=GN,o={};const a=await G.gnClaim('QWERT','player'),bb=await G.gnClaim('QWERT','player'),h=await G.gnClaim('QWERT','host');
+        r=px.evaluate('''async()=>{const G=GN,o={};o.noRoom=await G.gnClaim('QWERT','player');const h=await G.gnClaim('QWERT','host');const a=await G.gnClaim('QWERT','player'),bb=await G.gnClaim('QWERT','player');o.taken=await G.gnClaim('QWERT','host');o.rtPlayer=a&&a.rt;o.rtHost=!!(h&&h.rt);
           o.claims=!!(a&&bb&&h)&&a.pid!==bb.pid;const ca=await G.gnCheck(h,a.claim,a.sig,'QWERT','player');o.valid=!!ca&&ca.pid===a.pid;
           const msg=JSON.stringify(['QWERT',a.pid,1,'42']);o.ownSig=await G.gnVerify(ca.key,msg,await G.gnSign(a,msg));
           o.impersonate=await G.gnVerify(ca.key,msg,await G.gnSign(bb,msg));
           const forged=a.claim.replace(a.pid,bb.pid);o.forgedClaim=await G.gnCheck(h,forged,a.sig,'QWERT','player');
-          o.wrongRoom=await G.gnCheck(h,a.claim,a.sig,'ZZZZZ','player');o.playerAsHost=await G.gnCheck(h,a.claim,a.sig,'QWERT','host');return o;}''')
+          o.wrongRoom=await G.gnCheck(h,a.claim,a.sig,'ZZZZZ','player');o.playerAsHost=await G.gnCheck(h,a.claim,a.sig,'QWERT','host');
+          o.seatMin=Math.round((JSON.parse(a.claim).exp-Date.now())/60000);
+          G.H.sec=h;G.H.code='QWERT';G.gnEndRoom();await new Promise(r=>setTimeout(r,800));o.afterEnd=await G.gnClaim('QWERT','player');return o;}''')
+        ck(r['noRoom']=={'err':'no_room'},'v33: no seat for a room nobody registered')
+        ck(r['taken']=={'err':'code_taken'},'v33: a second host cannot take a live room code')
+        ck(r['rtHost'] and not r['rtPlayer'],'v33: only the host gets the room token')
+        ck(55<=r['seatMin']<=60,f"v33: player seat lasts 60 min ({r['seatMin']})")
+        ck(r['afterEnd']=={'err':'room_ended'},'v33: after the host ends the room, no new seats (revoked)')
+        pn=px.context.new_page();pn.goto(HOST+'/gamenight.html?parenttest=1&join=NOPE2');pn.fill('#joinName','Mia');pn.click('#joinGo')
+        pn.wait_for_selector('#joinErr',timeout=10000);je=pn.inner_text('#joinErr')
+        if os.environ.get('GN_RL')=='1' and 'Too many tries' in je: ck('wait' in je and 'try again' in je,'v33 real limits: too many bad codes -> friendly "please wait" message (429), no unsigned fallback')
+        else: ck('No open room' in je,'v33: unknown code -> clear message, no unsigned fallback')
         ck(r['claims'] and r['valid'] and r['ownSig'],'CR-02: server-signed seats issued and verified')
         ck(r['impersonate'] is False,'CR-02: player B cannot sign an answer as player A')
         ck(r['forgedClaim'] is None,'CR-02: edited claim (stolen id) rejected')

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-US">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8"><script src="nr-offline.js"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex">
 <meta name="nr-game" content="./"><!-- where the kid game lives, relative to this page. Use "./" when deployed next to index.html -->
@@ -286,7 +286,7 @@ function viewConsent(){render(`<div class="card" id="consentCard"><h2>Before we 
 
 /* ---------- data ---------- */
 let booting=null;function boot(){if(!booting)booting=boot2().finally(()=>{booting=null});return booting;}
-async function boot2(){const {data}=await sb.auth.getSession();S.user=data&&data.session?data.session.user:null;if(!S.user){S.step='email';viewLogin();if(/signup|login/.test(location.hash)){const f=$('loginCard');if(f)f.scrollIntoView({block:'start'});}return;}
+async function boot2(){if(window.NR_LOCALONLY){const m=document.querySelector('main')||document.body;m.innerHTML='<section class="card" id="pOffline" role="status"><h2>📴 Parent Area is off in offline mode</h2><p>Offline mode keeps everything on this device, so this page will not sign in or load family data. Open the game on a device with offline mode off to use the Parent Area.</p></section>';return;}const {data}=await sb.auth.getSession();S.user=data&&data.session?data.session.user:null;if(!S.user){S.step='email';viewLogin();if(/signup|login/.test(location.hash)){const f=$('loginCard');if(f)f.scrollIntoView({block:'start'});}return;}
  const p=await sb.from('parents').select('id').eq('id',S.user.id).maybeSingle();
  if(!p.data){const ins=await sb.from('parents').insert({id:S.user.id});if(ins.error&&!/duplicate/i.test(ins.error.message)){S.err=friendly(ins.error);return viewLogin();}}
  const c=await sb.from('parent_consent').select('id').eq('parent_id',S.user.id).limit(1);
