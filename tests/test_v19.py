@@ -58,8 +58,8 @@ ck(m.get('name')=='NumiRealm' and sorted(i['sizes'] for i in m.get('icons',[]))=
 ck(not re.search(r'(src|href)="(?!https?://fonts\.|data:|#|https?://)[^"]+\.(png|svg|ico|webmanifest)"',HTML),'no extra icon/logo files referenced (all inline)')
 ck(HTML.index('id="nrSplash"')<HTML.index('<script>'),'loading screen is static HTML (paints before the app script)')
 ck("'ttq-save-v2'" in HTML,'save key ttq-save-v2 kept')
-LOGO="""(sel)=>[...document.querySelectorAll(sel)].filter(e=>e.getClientRects().length).map(s=>{const r=s.getBoundingClientRect(),t=s.querySelector('text');
- return {w:r.width,h:r.height,txt:t.textContent,n:t.getNumberOfChars(),fill:t.getAttribute('fill'),tl:t.getAttribute('textLength'),right:r.right<=innerWidth+1,left:r.left>=-1}})"""
+LOGO="""(sel)=>[...document.querySelectorAll(sel)].filter(e=>e.getClientRects().length).map(s=>{const r=s.getBoundingClientRect(),t=s.querySelector('path.nrwordpath'),g=s.querySelector('linearGradient[id^=nrw]');
+ return {w:r.width,h:r.height,txt:s.getAttribute('aria-label'),n:s.querySelector('text')?0:9,fill:t.getAttribute('fill'),tl:g&&g.getAttribute('gradientUnits')==='userSpaceOnUse',right:r.right<=innerWidth+1,left:r.left>=-1}})"""
 with sync_playwright() as p:
     for eng in ['chromium','webkit']:
         b=getattr(p,eng).launch()

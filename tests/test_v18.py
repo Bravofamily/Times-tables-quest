@@ -68,8 +68,8 @@ with sync_playwright() as p:
     pg.evaluate("save.hero='emi';go('smapScreen','div')");pg.wait_for_timeout(300)
     ck(pg.locator('#app .nrstrip [data-brand]').count()==1 and pg.evaluate("getComputedStyle(document.querySelector('#app .nrstrip')).borderBottomColor")=='rgb(37, 99, 235)','realm intro: wordmark + realm color accent header')
     pg.evaluate("go('realms')");pg.wait_for_timeout(300)
-    css=pg.evaluate("(()=>{const e=document.querySelector('.nrword svg.nrlogo text');return [e.textContent,e.getAttribute('fill')]})()")
-    ck(css[0]=='NumiRealm' and css[1].startswith('url('),'wordmark is one SVG text with one gradient (Safari-safe)')
+    css=pg.evaluate("(()=>{const s=document.querySelector('.nrword svg.nrlogo'),e=s.querySelector('path.nrwordpath');return [s.getAttribute('aria-label'),e.getAttribute('fill'),!s.querySelector('text')]})()")
+    ck(css[0]=='NumiRealm' and css[1].startswith('url(') and css[2],'wordmark is one outlined SVG path with one gradient, labelled NumiRealm (v35.4: font-independent)')
     # ---------- 3. tokens ----------
     tokv=pg.evaluate("HERO_ORDER.map(id=>[id,HERO_ID[id].c,HERO_ID[id].a,HERO_ID[id].e,HERO_ID[id].title,V16C[id]])")
     ck(len(tokv)==7 and len({t[1] for t in tokv})==7 and len({t[3] for t in tokv})==7,'7 heroes with unique primary colors and emblems')

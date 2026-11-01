@@ -51,9 +51,9 @@ def ctx(b,w,h,last='emi',touch=False):
     c.route('**/version.json*',lambda r:r.fulfill(status=200,content_type='application/json',body='{"version":"22"}'))
     pg=c.new_page();pg.on('pageerror',lambda e:errs.append(str(e)));pg.goto(URL);pg.wait_for_selector('.hhero');pg.wait_for_timeout(500);return c,pg
 LOGO="""(()=>{const l=document.querySelector('.hhero .logo'),r=l.getBoundingClientRect(),h=document.querySelector('.hhero').getBoundingClientRect(),
- fs=parseFloat(getComputedStyle(l).fontSize),sv=l.querySelector('svg.nrlogo'),tx=sv.querySelector('text'),tb=tx.getBBox();
- return {txt:l.textContent,lines:l.getClientRects().length,h:r.height,fs,inside:r.left>=h.left-1&&r.right<=h.right+1,
- noOverflow:document.documentElement.scrollWidth<=innerWidth,clip:tx.getAttribute('fill').startsWith('url(')&&tx.getNumberOfChars()===9?'text':'no',img:tb.width>tb.height*2.5}})()"""
+ fs=parseFloat(getComputedStyle(l).fontSize),sv=l.querySelector('svg.nrlogo'),tx=sv.querySelector('path.nrwordpath'),tb=tx.getBBox();
+ return {txt:l.innerText.trim(),lines:l.getClientRects().length,h:r.height,fs,inside:r.left>=h.left-1&&r.right<=h.right+1,
+ noOverflow:document.documentElement.scrollWidth<=innerWidth,clip:tx.getAttribute('fill').startsWith('url(')&&sv.getAttribute('aria-label')==='NumiRealm'?'text':'no',img:tb.width>tb.height*2.5}})()"""
 ORDER="""[...document.querySelectorAll('#app .hhero, #app .hplay, #app .tiles, #app h2.quest, #app .subjcards, #app .realms, #app .herosec')]
  .filter(e=>e.getClientRects().length&&getComputedStyle(e).display!=='none'&&e.offsetHeight>0).map(e=>e.classList.contains('hhero')?'banner':e.classList.contains('hplay')?'play':
  e.classList.contains('tiles')?'tiles':e.classList.contains('quest')?'questh':e.classList.contains('subjcards')?'quest':e.classList.contains('realms')?'realms':'heroes')"""
